@@ -3,10 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 25.0.1704.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyRemoteCopy.UI", "FantasyRemoteCopy.UI\FantasyRemoteCopy.UI.csproj", "{F326F31B-9C72-4AB6-BF3E-C1B63D077685}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyRemoteCopy.Core", "FantasyRemoteCopy.Core\FantasyRemoteCopy.Core.csproj", "{C429C6BD-45DA-4027-96B3-AB6FB70C34E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F326F31B-9C72-4AB6-BF3E-C1B63D077685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F326F31B-9C72-4AB6-BF3E-C1B63D077685}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F326F31B-9C72-4AB6-BF3E-C1B63D077685}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F326F31B-9C72-4AB6-BF3E-C1B63D077685}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C429C6BD-45DA-4027-96B3-AB6FB70C34E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C429C6BD-45DA-4027-96B3-AB6FB70C34E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C429C6BD-45DA-4027-96B3-AB6FB70C34E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C429C6BD-45DA-4027-96B3-AB6FB70C34E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
