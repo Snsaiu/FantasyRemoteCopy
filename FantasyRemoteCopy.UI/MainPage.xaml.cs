@@ -18,8 +18,12 @@ public partial class MainPage : ContentPage
 	
 
 	private async void OnCounterClicked(object sender, EventArgs e)
-	{
-		IScanLocalNetIp scanLocalNetIp = new DefaultScanLocalNetIp(new DefaultLocalIp());
+    {
+
+
+        this.info.Text = DateTime.Now.ToString();
+
+        IScanLocalNetIp scanLocalNetIp = new DefaultScanLocalNetIp(new DefaultLocalIp());
 	  var res=	await scanLocalNetIp.ScanLocalNetIpAsync();
 	  if (res.Ok)
 	  {

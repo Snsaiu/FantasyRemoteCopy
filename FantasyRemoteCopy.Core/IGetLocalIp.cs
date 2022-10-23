@@ -8,7 +8,7 @@ namespace FantasyRemoteCopy.Core
 	public interface IGetLocalIp
 	{
 
-		ResultBase<string> GetLocalIp();
+		ResultBase<List<string>> GetLocalIp();
 		
 	}
 }

@@ -12,10 +12,11 @@ namespace FantasyRemoteCopy.Core.Impls
 		{
 		}
 
-		public ResultBase<string> GetLocalIp()
+		public ResultBase<List<string>> GetLocalIp()
 		{
 			try
 			{
+				List<string> ips=new List<string>();
 				IPHostEntry host;
 				string localIP = "";
 				host = Dns.GetHostEntry(Dns.GetHostName());
@@ -27,23 +28,23 @@ namespace FantasyRemoteCopy.Core.Impls
 					string[] temp = localIP.Split('.');
 
 					if (ip.AddressFamily == AddressFamily.InterNetwork && temp[0] == "192")
-					{
-						break;
-					}
+                    {
+                        ips.Add(localIP);
+                    }
 					else
 					{
 						localIP = null;
 					}
 				}
 
-				if (string.IsNullOrEmpty(localIP))
-					return new ErrorResultModel<string>("无法获得本级ip地址");
+				if (ips.Count==0)
+					return new ErrorResultModel<List<string>>("无法获得本机ip地址");
 
-				return new SuccessResultModel<string>(localIP);
+				return new SuccessResultModel<List<string>>(ips);
 			}
 			catch (Exception e)
 			{
-				return new ErrorResultModel<string>(e.Message);
+				return new ErrorResultModel<List<string>>(e.Message);
 			}
 			
 		}

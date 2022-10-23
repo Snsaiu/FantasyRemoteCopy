@@ -22,50 +22,58 @@ public class DefaultScanLocalNetIp:IScanLocalNetIp
 
        try
        {
-           string localIp = localIpResult.Data;
+           var localIps = localIpResult.Data;
 
            List<string> ips = new List<string>();
+          
+           List<Task> tasks=new List<Task>();
 
-           string ipDuan = localIp.Remove(localIp.LastIndexOf('.'));
-           //MessageBox.Show(ipDuan);
-           //枚举网段计算机
-           Ping myPing = new Ping();
-           string data = "";
-           byte[] buffer = Encoding.ASCII.GetBytes(data);
-
-             await Task.Run(() =>
+           foreach (var ip in localIps)
            {
-               for (int i = 1; i <= 255; i++)
+
+              var t=  Task.Run(() =>
                {
-                   string pingIP = ipDuan + "." + i.ToString();
+                   string ipDuan = ip.Remove(ip.LastIndexOf('.'));
+                   //MessageBox.Show(ipDuan);
+                   //枚举网段计算机
+                   Ping myPing = new Ping();
+                   string data = "";
+                   byte[] buffer = Encoding.ASCII.GetBytes(data);
 
-                   try
+
+                   for (int i = 1; i <= 255; i++)
                    {
-                       PingReply pingReply = myPing.Send(pingIP, 30, buffer);
+                       string pingIP = ipDuan + "." + i.ToString();
 
-                       if (pingReply.Status == IPStatus.Success)
+                       try
                        {
-                
-                           ips.Add(pingIP);
+                           PingReply pingReply = myPing.Send(pingIP, 1, buffer);
+
+                           if (pingReply.Status == IPStatus.Success)
+                           {
+
+                               ips.Add(pingIP);
+                           }
+                       }
+                       catch (Exception e)
+                       {
+
                        }
                    }
-                   catch (Exception e)
-                   {
-                    
-                   }
-                 
+
+               });
+          
+                tasks.Add(t);
   
-               }
+           }
 
-               for (int i = 0; i < ips.Count; i++)
-               {
-                   if(ips[i]==localIp)
-                       ips.RemoveAt(i);
-               }
-
-           });
-           
-           return new SuccessResultModel<List<string>>(ips);
+           await Task.WhenAll(tasks);
+           //for (int i = 0; i < ips.Count; i++)
+           //{
+           //    if (ips[i] == ip)
+           //        ips.RemoveAt(i);
+           //}
+            return new SuccessResultModel<List<string>>(ips);
 
        }
        catch (Exception e)
