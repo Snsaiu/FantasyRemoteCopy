@@ -47,7 +47,7 @@ public class DefaultScanLocalNetIp:IScanLocalNetIp
 
                        try
                        {
-                           PingReply pingReply = myPing.Send(pingIP, 1, buffer);
+                           PingReply pingReply = myPing.Send(pingIP, 10, buffer);
 
                            if (pingReply.Status == IPStatus.Success)
                            {
@@ -68,11 +68,17 @@ public class DefaultScanLocalNetIp:IScanLocalNetIp
            }
 
            await Task.WhenAll(tasks);
-           //for (int i = 0; i < ips.Count; i++)
-           //{
-           //    if (ips[i] == ip)
-           //        ips.RemoveAt(i);
-           //}
+            for (int i = 0; i < localIps.Count; i++)
+            {
+                for (int j = 0; j < ips.Count; j++)
+                {
+                    if (ips[j] == localIps[i])
+                    {
+                        ips.RemoveAt(j);
+                        j--;
+                    }
+                }
+            }
             return new SuccessResultModel<List<string>>(ips);
 
        }
