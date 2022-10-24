@@ -1,6 +1,5 @@
 ﻿using FantasyRemoteCopy.Core;
 using FantasyRemoteCopy.Core.Platforms;
-using FantasyRemoteCopy.Core.Impls;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FantasyRemoteCopy.UI;

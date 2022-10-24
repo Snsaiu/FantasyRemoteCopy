@@ -4,6 +4,7 @@ using Android.Content.PM;
 using Android.Net.Wifi;
 using Android.OS;
 using Android.Text.Format;
+using Java.Net;
 
 namespace FantasyRemoteCopy.UI;
 
@@ -13,11 +14,14 @@ public class MainActivity : MauiAppCompatActivity
     protected override void OnCreate(Bundle savedInstanceState)
     {
        
-        Context context = this.Application.ApplicationContext;
-        WifiManager wm = (WifiManager)context.GetSystemService(Context.WifiService);
-        String ip = Formatter.FormatIpAddress(wm.ConnectionInfo.IpAddress);
+   
 
         base.OnCreate(savedInstanceState);
     }
+
+
+
+
+
 }
 

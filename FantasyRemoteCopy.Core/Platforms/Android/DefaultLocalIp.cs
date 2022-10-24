@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using Android.Content;
+using Android.Net.Wifi;
+using Android.Text.Format;
 using FantasyResultModel;
 using FantasyResultModel.Impls;
+using Application=Android.App;
 
-namespace FantasyRemoteCopy.Core.Impls
+
+namespace FantasyRemoteCopy.Core.Platforms
 {
 	public class DefaultLocalIp:IGetLocalIp
 	{
@@ -17,27 +22,14 @@ namespace FantasyRemoteCopy.Core.Impls
 			try
 			{
 				List<string> ips=new List<string>();
-				IPHostEntry host;
-				string localIP = "";
-				host = Dns.GetHostEntry(Dns.GetHostName());
 
-				foreach (IPAddress ip in host.AddressList)
-				{
-					localIP = ip.ToString();
+                Context context = Application.Application.Context; //Android.ApplicationContext;
+                WifiManager wm = (WifiManager)context.GetSystemService(Context.WifiService);
+                String ip = Formatter.FormatIpAddress(wm.ConnectionInfo.IpAddress);
 
-					string[] temp = localIP.Split('.');
 
-					if (ip.AddressFamily == AddressFamily.InterNetwork && temp[0] == "192")
-                    {
-                        ips.Add(localIP);
-                    }
-					else
-					{
-						localIP = null;
-					}
-				}
 
-				if (ips.Count==0)
+                if (ips.Count==0)
 					return new ErrorResultModel<List<string>>("无法获得本机ip地址");
 
 				return new SuccessResultModel<List<string>>(ips);
