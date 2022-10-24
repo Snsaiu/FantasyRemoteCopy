@@ -12,13 +12,20 @@ namespace FantasyRemoteCopy.Core.Platforms
 {
     public class DefaultScanLocalNetIp : IScanLocalNetIp
     {
-        public DefaultScanLocalNetIp()
+        private readonly IGetLocalIp _getLocalIp;
+        public DefaultScanLocalNetIp(IGetLocalIp getLocalIp)
         {
+            _getLocalIp = getLocalIp;
         }
 
         public async Task<ResultBase<List<string>>> ScanLocalNetIpAsync()
         {
             List<string> res = new List<string>();
+            
+            var localIpResult = this._getLocalIp.GetLocalIp();
+            if (localIpResult.Ok == false)
+                return await Task.FromResult(new ErrorResultModel<List<string>>(localIpResult.ErrorMsg));
+
             try
             {
               await  Task.Run(() =>
@@ -40,7 +47,22 @@ namespace FantasyRemoteCopy.Core.Platforms
 
                 });
 
-                return new SuccessResultModel<List<string>>(res);
+              List<string> ipsres=new List<string>();
+              for (int i = 0; i < localIpResult.Data.Count; i++)
+              {
+                  string ipDuan = localIpResult.Data[i].Remove(localIpResult.Data[i].LastIndexOf('.'));
+
+                    for (int j = 0; j < res.Count; j++)
+                  {
+                      if (res[j].StartsWith(ipDuan))
+                      {
+                          ipsres.Add(res[j]);
+                      }
+                  }
+
+              }
+
+               return new SuccessResultModel<List<string>>(ipsres);
 
 
             }

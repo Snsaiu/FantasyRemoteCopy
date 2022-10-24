@@ -19,28 +19,7 @@ public partial class MainPage : ContentPage
 		InitializeComponent();
         this.scanLocalNetIp = scanLocalNetIp;
     }
-    public void GetAllMacAddressesAndIppairs()
-    {
-      
-        System.Diagnostics.Process pProcess = new System.Diagnostics.Process();
-        pProcess.StartInfo.FileName = "arp";
-        pProcess.StartInfo.Arguments = "-a ";
-        pProcess.StartInfo.UseShellExecute = false;
-        pProcess.StartInfo.RedirectStandardOutput = true;
-        pProcess.StartInfo.CreateNoWindow = true;
-        pProcess.Start();
-        string cmdOutput = pProcess.StandardOutput.ReadToEnd();
-        string pattern = @"(?<ip>([0-9]{1,3}\.?){4})\s*(?<mac>([a-f0-9]{2}-?){6})";
-
-        foreach (Match m in Regex.Matches(cmdOutput, pattern, RegexOptions.IgnoreCase))
-        {
-
-            this.info.Text += m.Groups["ip"].Value+"\n";
-         
-        }
-
-       
-    }
+   
 
     private async void OnCounterClicked(object sender, EventArgs e)
     {
