@@ -20,19 +20,9 @@
     <None Remove="FantasyResultModel" />
     <None Remove="Impls\" />
     <None Remove="Platforms\" />
-    <None Remove="Platforms\Android\" />
-    <None Remove="Platforms\iOS\" />
-    <None Remove="Platforms\MacCatalyst\" />
-    <None Remove="Platforms\Windows\" />
-    <None Remove="Platforms\Tizen\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Impls\" />
-    <Folder Include="Platforms\" />
-    <Folder Include="Platforms\Android\" />
-    <Folder Include="Platforms\iOS\" />
-    <Folder Include="Platforms\MacCatalyst\" />
-    <Folder Include="Platforms\Windows\" />
     <Folder Include="Platforms\Tizen\" />
   </ItemGroup>
   <ItemGroup>

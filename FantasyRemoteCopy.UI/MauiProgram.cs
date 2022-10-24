@@ -1,4 +1,7 @@
-﻿namespace FantasyRemoteCopy.UI;
+﻿using FantasyRemoteCopy.Core;
+using FantasyRemoteCopy.Core.Platforms;
+
+namespace FantasyRemoteCopy.UI;
 
 public static class MauiProgram
 {
@@ -13,6 +16,7 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
+		builder.Services.AddTransient<IScanLocalNetIp, DefaultScanLocalNetIp>();
 		return builder.Build();
 	}
 }

@@ -11,12 +11,14 @@ namespace FantasyRemoteCopy.UI;
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
+    private readonly IScanLocalNetIp scanLocalNetIp;
+    int count = 0;
 
-	public MainPage()
+	public MainPage(IScanLocalNetIp scanLocalNetIp)
 	{
 		InitializeComponent();
-	}
+        this.scanLocalNetIp = scanLocalNetIp;
+    }
     public void GetAllMacAddressesAndIppairs()
     {
       
@@ -43,13 +45,10 @@ public partial class MainPage : ContentPage
     private async void OnCounterClicked(object sender, EventArgs e)
     {
 
-        this.GetAllMacAddressesAndIppairs();
 
-        return;
-        this.info.Text = DateTime.Now.ToString();
-
-        IScanLocalNetIp scanLocalNetIp = new DefaultScanLocalNetIp(new DefaultLocalIp());
-	  var res=	await scanLocalNetIp.ScanLocalNetIpAsync();
+        var res= await this.scanLocalNetIp.ScanLocalNetIpAsync();
+  
+	  //var res=	await scanLocalNetIp.ScanLocalNetIpAsync();
 	  if (res.Ok)
 	  {
 		 string x=  string.Join("*", res.Data);
