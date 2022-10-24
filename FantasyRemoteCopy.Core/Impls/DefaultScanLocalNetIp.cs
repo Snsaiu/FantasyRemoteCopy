@@ -47,7 +47,7 @@ public class DefaultScanLocalNetIp:IScanLocalNetIp
 
                        try
                        {
-                           PingReply pingReply = myPing.Send(pingIP, 10, buffer);
+                           PingReply pingReply = myPing.Send(pingIP, 50, buffer);
 
                            if (pingReply.Status == IPStatus.Success)
                            {
