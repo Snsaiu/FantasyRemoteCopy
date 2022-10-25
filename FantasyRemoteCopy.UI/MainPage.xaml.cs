@@ -16,14 +16,19 @@ public partial class MainPage : ContentPage
     private readonly IScanLocalNetIp scanLocalNetIp;
     private readonly ISendData _sendData;
     private readonly IReceiveData _receiveData;
+    private readonly IUserService _userService;
     int count = 0;
 
-	public MainPage(IScanLocalNetIp scanLocalNetIp,ISendData sendData,IReceiveData receiveData)
+	public MainPage(IScanLocalNetIp scanLocalNetIp
+		,ISendData sendData
+		,IReceiveData receiveData
+		,IUserService userService)
 	{
 		InitializeComponent();
         this.scanLocalNetIp = scanLocalNetIp;
         _sendData = sendData;
         _receiveData = receiveData;
+        _userService = userService;
         this._receiveData.LiseningInvite();
 	}
    
@@ -32,7 +37,7 @@ public partial class MainPage : ContentPage
     {
 
 	    TransformData td = new TransformData();
-	    td.Port = "5796";
+	    td.Port = "5976";
 	    td.TargetIp = "192.168.0.106";
 	    td.Type = DataType.ValidateAccount;
 	    string txt = "hello world";
