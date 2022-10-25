@@ -8,15 +8,12 @@ public abstract class DbBase
     protected SQLiteConnection connection;
     public DbBase()
     {
-        this.dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        this.dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
             "fantasyDb.db");
 
         this.connection = new SQLiteConnection(this.dbPath);
-
-        if (this.ExistTable()==false)
-        {
-            this.CreateTable();
-        }
+        this.CreateTable();
+        
     }
 
     /// <summary>
@@ -24,9 +21,4 @@ public abstract class DbBase
     /// </summary>
     protected abstract void CreateTable();
 
-    /// <summary>
-    /// 检查表是否已经存在
-    /// </summary>
-    /// <returns>存在返回true，否则返回false</returns>
-    protected abstract bool ExistTable();
 }

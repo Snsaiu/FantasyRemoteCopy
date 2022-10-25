@@ -35,6 +35,7 @@
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Center" />
+            <Button Clicked="AddUserEvent" Text="添加用户"></Button>
 
         </VerticalStackLayout>
     </ScrollView>

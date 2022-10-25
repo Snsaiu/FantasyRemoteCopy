@@ -59,6 +59,15 @@ public partial class MainPage : ContentPage
 
 
     }
+
+    private void AddUserEvent(object sender, EventArgs e)
+    {
+        this._userService.SaveUser(new UserInfo
+        {
+            Name = "小明"
+        });
+
+    }
 }
 
 
