@@ -1,4 +1,4 @@
-using SQLite;
+
 
 namespace FantasyRemoteCopy.Core.Models;
 
@@ -8,9 +8,7 @@ namespace FantasyRemoteCopy.Core.Models;
 public class UserInfo
 {
 
-    [PrimaryKey,AutoIncrement]
-    public int Id { get; set; }
-
+ 
     /// <summary>
     /// 用户名（唯一编号）
     /// </summary>

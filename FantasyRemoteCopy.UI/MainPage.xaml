@@ -36,6 +36,7 @@
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Center" />
             <Button Clicked="AddUserEvent" Text="添加用户"></Button>
+            <Button Clicked="GetUserEvent" Text="获得用户"> </Button>
 
         </VerticalStackLayout>
     </ScrollView>

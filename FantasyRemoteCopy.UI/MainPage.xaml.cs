@@ -68,6 +68,15 @@ public partial class MainPage : ContentPage
         });
 
     }
+
+    private async void GetUserEvent(object sender, EventArgs e)
+    {
+	  var res=  await this._userService.GetCurrentUser();
+	  if (res.Ok)
+	  {
+		  this.info.Text = "找到用户：" + res.Data.Name;
+	  }
+    }
 }
 
 
