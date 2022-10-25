@@ -19,7 +19,8 @@ public static class MauiProgram
 			});
 		builder.Services.AddTransient<IGetLocalIp, DefaultLocalIp>();
 		builder.Services.AddTransient<IScanLocalNetIp, DefaultScanLocalNetIp>();
-		builder.Services.AddTransient<IReceiveData, TcpReceiveData>();
+		builder.Services.AddSingleton<IReceiveData, TcpReceiveData>();
+		builder.Services.AddTransient<ISendData, TcpDataSender>();
 		builder.Services.AddTransient<MainPage>();
 		return builder.Build();
 	}

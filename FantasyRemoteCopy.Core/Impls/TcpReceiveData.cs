@@ -18,21 +18,22 @@ namespace FantasyRemoteCopy.Core.Impls
 
 		public void LiseningInvite()
 		{
-            var tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            //IPAddress ipaddress = IPAddress.Parse("0.0.0.0");
-			EndPoint endPoint = new IPEndPoint(IPAddress.Any, 7090);
-			tcpClient.Connect(endPoint);
+            var udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        
+			EndPoint endPoint = new IPEndPoint(IPAddress.Any, 5976);
+			udpSocket.Bind(endPoint);
 			Thread t = new Thread(() =>
 			{
 
 				while(true)
 				{
 					byte[] data = new byte[1024];
-					int length=tcpClient.Receive(data);
+					int length=udpSocket.Receive(data);
 
 				}
 
 			});
+			t.IsBackground = true;
 			t.Start();
 
         }

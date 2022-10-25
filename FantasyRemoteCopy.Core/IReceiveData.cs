@@ -6,6 +6,9 @@ namespace FantasyRemoteCopy.Core
 	public delegate void ReceiveDataDelegate(TransformData data);
 	public interface IReceiveData
 	{
+
+				
+
 		/// <summary>
 		/// 接收数据
 		/// </summary>

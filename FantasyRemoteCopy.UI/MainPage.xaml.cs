@@ -38,7 +38,7 @@ public partial class MainPage : ContentPage
 	    string txt = "hello world";
 		td.Data= Encoding.UTF8.GetBytes(txt);
 
-		await this._sendData.SendAsync(td);
+		await this._sendData.SendInviteAsync(td);
 	    //      var res= await this.scanLocalNetIp.ScanLocalNetIpAsync();
 	    //
 	    // //var res=	await scanLocalNetIp.ScanLocalNetIpAsync();
