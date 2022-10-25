@@ -32,8 +32,8 @@ public partial class MainPage : ContentPage
     {
 
 	    TransformData td = new TransformData();
-	    td.Port = "7090";
-	    td.TargetIp = "192.168.3.60";
+	    td.Port = "5796";
+	    td.TargetIp = "192.168.0.106";
 	    td.Type = DataType.ValidateAccount;
 	    string txt = "hello world";
 		td.Data= Encoding.UTF8.GetBytes(txt);

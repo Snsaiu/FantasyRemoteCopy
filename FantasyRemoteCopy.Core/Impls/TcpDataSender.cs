@@ -25,13 +25,16 @@ public class TcpDataSender:ISendData
         return await Task.FromResult(new SuccessResultModel<bool>(true));
     }
 
-    public Task<ResultBase<bool>> SendInviteAsync(TransformData data)
+    public async Task<ResultBase<bool>> SendInviteAsync(TransformData data)
     {
         Socket udpClient = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         IPAddress ipaddress = IPAddress.Parse(data.TargetIp);
         EndPoint point = new IPEndPoint(ipaddress,int.Parse(data.Port));
-        udpClient.SendTo(data.Data, point);
-        udpClient.Close();
+
+        udpClient.SetSocketOption(SocketOptionLevel.IP,SocketOptionName.PacketInformation,true);
+        var s = new ArraySegment<byte>(data.Data);
+        await udpClient.SendToAsync(s, SocketFlags.None, point);
+        
         return null;
     }
 }
