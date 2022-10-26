@@ -49,7 +49,7 @@ public class SendDataBussiness
                 
                 SendInviteModel sm=new SendInviteModel();
                 sm.MasterName = userRes.Data.Name;
-                sm.DevicePlatform = DeviceInfo.Current.Platform;
+                sm.DevicePlatform = DeviceInfo.Current.Platform.ToString();
                 sm.DeviceName = DeviceInfo.Current.Name;
 
                 string smStr=JsonConvert.SerializeObject(sm);

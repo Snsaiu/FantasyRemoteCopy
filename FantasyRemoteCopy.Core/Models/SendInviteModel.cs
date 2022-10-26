@@ -25,6 +25,6 @@ public class SendInviteModel
     /// <summary>
     /// 设备类型
     /// </summary>
-    public DevicePlatform DevicePlatform { get; set; }
+    public string DevicePlatform { get; set; }
 }
 
