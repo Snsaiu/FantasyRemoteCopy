@@ -1,9 +1,12 @@
 using System.Text;
 using FantasyRemoteCopy.Core;
+using FantasyRemoteCopy.Core.Consts;
 using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.Core.Models;
 using FantasyResultModel;
 using FantasyResultModel.Impls;
+
+using Newtonsoft.Json;
 
 namespace FantasyRemoteCopy.UI.Bussiness;
 
@@ -36,17 +39,28 @@ public class SendDataBussiness
        if (userRes.Ok == false)
            return new ErrorResultModel<bool>(userRes.ErrorMsg);
 
+       
   
        foreach (string ip in scanRes.Data)
        {
 
             try
             {
+                
+                SendInviteModel sm=new SendInviteModel();
+                sm.MasterName = userRes.Data.Name;
+                sm.DevicePlatform = DeviceInfo.Current.Platform;
+                sm.DeviceName = DeviceInfo.Current.Name;
+
+                string smStr=JsonConvert.SerializeObject(sm);
+
                 TransformData td = new TransformData();
-                td.Data = Encoding.UTF8.GetBytes(userRes.Data.Name);
+
+
+                td.Data = Encoding.UTF8.GetBytes(smStr);
                 td.Type = DataType.ValidateAccount;
                 td.TargetIp = ip;
-                td.Port = "5976";
+                td.Port = ConstParams.INVITE_PORT;
                 await this._sendData.SendInviteAsync(td);
 
             }

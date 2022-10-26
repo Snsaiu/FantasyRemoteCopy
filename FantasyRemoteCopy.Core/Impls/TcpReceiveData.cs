@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using FantasyRemoteCopy.Core.Consts;
 using FantasyRemoteCopy.Core.Models;
 using Newtonsoft.Json;
 
@@ -28,7 +29,7 @@ namespace FantasyRemoteCopy.Core.Impls
 		{
             var udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         
-			EndPoint endPoint = new IPEndPoint(IPAddress.Any, 5976);
+			EndPoint endPoint = new IPEndPoint(IPAddress.Any, int.Parse( ConstParams.INVITE_PORT));
 			udpSocket.SetSocketOption(SocketOptionLevel.IP,SocketOptionName.PacketInformation,true);
 			udpSocket.Bind(endPoint);
 

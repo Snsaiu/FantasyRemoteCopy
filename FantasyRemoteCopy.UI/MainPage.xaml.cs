@@ -29,11 +29,11 @@ public partial class MainPage : ContentPage
         InitializeComponent();
 		this.info.Text = "";
 		this.indicator.IsVisible = false;
-        this._receiveBussiness.DiscoverEnableIpEvent += (ip) =>
+        this._receiveBussiness.DiscoverEnableIpEvent += (model) =>
         {
 			Application.Current.Dispatcher.Dispatch(() =>
 			{
-				this.info.Text += ip + "\n";
+				this.info.Text += $"{model.MasterName} {model.DeviceName} {model.DevicePlatform.ToString()}" + "\n";
 			});
 		
         };
