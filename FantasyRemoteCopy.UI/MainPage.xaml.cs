@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using FantasyRemoteCopy.Core;
+using FantasyRemoteCopy.Core.Consts;
 using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.Core.Impls;
 using FantasyRemoteCopy.Core.Models;
@@ -30,7 +31,11 @@ public partial class MainPage : ContentPage
     private async void OnCounterClicked(object sender, EventArgs e)
     {
 
-	    this._sendDataBussiness.DeviceDiscover();
+	    EnableIps.Ips.Clear();
+	   await  this._sendDataBussiness.DeviceDiscover();
+
+	   await Task.Delay(5000);
+	   this.info.Text = string.Join("\n", EnableIps.Ips);
 
     }
 

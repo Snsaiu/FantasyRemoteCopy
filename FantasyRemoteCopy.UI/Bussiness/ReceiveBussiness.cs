@@ -1,4 +1,5 @@
 using FantasyRemoteCopy.Core;
+using FantasyRemoteCopy.Core.Consts;
 using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.Core.Models;
 
@@ -34,7 +35,8 @@ public class ReceiveBussiness
         }
         else if (data.Type == DataType.ReceiveValidateAccountResult)
         {
-            
+
+           EnableIps.Ips.Add(data.TargetIp);
         }
         
         

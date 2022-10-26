@@ -20,10 +20,12 @@
     <None Remove="FantasyResultModel" />
     <None Remove="Impls\" />
     <None Remove="Platforms\" />
+    <None Remove="Consts\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Impls\" />
     <Folder Include="Platforms\Tizen\" />
+    <Folder Include="Consts\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FantasyResultModel" Version="1.0.0" />
