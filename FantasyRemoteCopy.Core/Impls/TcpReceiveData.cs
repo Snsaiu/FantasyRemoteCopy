@@ -2,6 +2,8 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using FantasyRemoteCopy.Core.Models;
+using Newtonsoft.Json;
 
 namespace FantasyRemoteCopy.Core.Impls
 {
@@ -11,6 +13,9 @@ namespace FantasyRemoteCopy.Core.Impls
 		{
 
 		}
+
+		public event ReceiveDataDelegate ReceiveDataEvent;
+		public event ReceiveInviteDelegate ReceiveInviteEvent;
 
 		public void LiseningData()
 		{
@@ -27,16 +32,20 @@ namespace FantasyRemoteCopy.Core.Impls
 
 			_ = Task.Run(async () =>
 			{
-
 				SocketReceiveFromResult res;
 				byte[] _buffer_recv = new byte[4096];
 				ArraySegment<byte> _buffer_recv_segment = new(_buffer_recv);
 				
 				while (true)
 				{
-
 					res = await udpSocket.ReceiveFromAsync(_buffer_recv_segment, SocketFlags.None, endPoint);
-					Console.WriteLine($"接收消息{Encoding.UTF8.GetString(_buffer_recv,0,res.ReceivedBytes)}");
+					string str = Encoding.UTF8.GetString(_buffer_recv, 0, res.ReceivedBytes);
+
+					 var transformdata= JsonConvert.DeserializeObject<TransformData>(str);
+					 
+					// transformdata.TargetIp;
+					 this.ReceiveInviteEvent?.Invoke(transformdata);
+
 				}
 			});
 

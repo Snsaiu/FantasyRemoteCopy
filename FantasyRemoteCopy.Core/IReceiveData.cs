@@ -4,10 +4,14 @@ namespace FantasyRemoteCopy.Core
 {
 
 	public delegate void ReceiveDataDelegate(TransformData data);
+
+	public delegate void ReceiveInviteDelegate(TransformData data);
 	public interface IReceiveData
 	{
 
-				
+
+		event ReceiveDataDelegate ReceiveDataEvent;
+		event ReceiveInviteDelegate ReceiveInviteEvent;
 
 		/// <summary>
 		/// 接收数据

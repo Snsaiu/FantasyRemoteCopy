@@ -26,8 +26,9 @@ public class ConfigUserService:IUserService
        return new SuccessResultModel<UserInfo>(user);
     }
 
-    public Task<ResultBase<bool>> ClearUser()
+    public async Task<ResultBase<bool>> ClearUser()
     {
-        throw new NotImplementedException();
+         Preferences.Default.Clear();
+        return new SuccessResultModel<bool>(true);
     }
 }

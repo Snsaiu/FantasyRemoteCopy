@@ -1,8 +1,10 @@
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using FantasyRemoteCopy.Core.Models;
 using FantasyResultModel;
 using FantasyResultModel.Impls;
+using Newtonsoft.Json;
 
 namespace FantasyRemoteCopy.Core.Impls;
 
@@ -32,9 +34,12 @@ public class TcpDataSender:ISendData
         EndPoint point = new IPEndPoint(ipaddress,int.Parse(data.Port));
 
         udpClient.SetSocketOption(SocketOptionLevel.IP,SocketOptionName.PacketInformation,true);
-        var s = new ArraySegment<byte>(data.Data);
-        await udpClient.SendToAsync(s, SocketFlags.None, point);
-        
+
+        string dataStr = JsonConvert.SerializeObject(data);
+        byte[] byteData = Encoding.UTF8.GetBytes(dataStr);
+        var s = new ArraySegment<byte>(byteData);
+       int res=  await udpClient.SendToAsync(s, SocketFlags.None, point);
+        udpClient.Close();
         return null;
     }
 }
