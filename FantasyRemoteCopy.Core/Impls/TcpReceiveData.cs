@@ -89,6 +89,8 @@ namespace FantasyRemoteCopy.Core.Impls
                     string str = Encoding.UTF8.GetString(_buffer_recv, 0, res.ReceivedBytes);
 
                     var transformdata = JsonConvert.DeserializeObject<TransformData>(str);
+                    DataMetaModel dmm=JsonConvert.DeserializeObject<DataMetaModel>(Encoding.UTF8.GetString(transformdata.Data));
+                    ConstParams.ReceiveMetas.Add(dmm);
                   //  transformdata.TargetIp = (((System.Net.IPEndPoint)res.RemoteEndPoint).Address).ToString();
 
 				  if(transformdata.Type==Enums.DataType.RequestBuildConnect)
@@ -96,7 +98,7 @@ namespace FantasyRemoteCopy.Core.Impls
                     await  Task.Run(() =>
                       {
 
-                          this.LiseningData(transformdata.TargetIp, 1024);
+                          this.LiseningData(transformdata.TargetIp, dmm.Size);
 
                       });
 
