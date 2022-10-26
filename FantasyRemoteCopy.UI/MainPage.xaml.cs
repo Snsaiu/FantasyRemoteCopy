@@ -18,7 +18,8 @@ public partial class MainPage : ContentPage
 	private readonly ReceiveBussiness _receiveBussiness;
 
 
-	public MainPage(SendDataBussiness sendDataBussiness,ReceiveBussiness receiveBussiness)
+	public MainPage(SendDataBussiness sendDataBussiness,
+		ReceiveBussiness receiveBussiness)
 	{
 		_sendDataBussiness = sendDataBussiness;
 		_receiveBussiness = receiveBussiness;
@@ -29,7 +30,7 @@ public partial class MainPage : ContentPage
     private async void OnCounterClicked(object sender, EventArgs e)
     {
 
-	  
+	    this._sendDataBussiness.DeviceDiscover();
 
     }
 

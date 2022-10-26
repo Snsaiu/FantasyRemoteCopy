@@ -43,8 +43,8 @@ public class SendDataBussiness
            td.Data = Encoding.UTF8.GetBytes(userRes.Data.Name);
            td.Type = DataType.ValidateAccount;
            td.TargetIp = ip;
-           td.Port = "6754";
-           this._sendData.SendInviteAsync(td);
+           td.Port = "5976";
+           await this._sendData.SendInviteAsync(td);
        }
 
        return new SuccessResultModel<bool>(true);

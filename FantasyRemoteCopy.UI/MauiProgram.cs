@@ -24,7 +24,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<ISendData, TcpDataSender>();
 		builder.Services.AddTransient<IUserService, ConfigUserService>();
 		builder.Services.AddTransient<SendDataBussiness>();
-		builder.Services.AddTransient<ReceiveBussiness>();
+		builder.Services.AddSingleton<ReceiveBussiness>();
 		builder.Services.AddTransient<MainPage>();
 		return builder.Build();
 	}
