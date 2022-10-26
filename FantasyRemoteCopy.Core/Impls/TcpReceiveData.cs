@@ -45,7 +45,7 @@ namespace FantasyRemoteCopy.Core.Impls
 
 					 var transformdata= JsonConvert.DeserializeObject<TransformData>(str);
 					transformdata.TargetIp = (((System.Net.IPEndPoint)res.RemoteEndPoint).Address).ToString();
-					transformdata.Port = "5977";
+					
                     // transformdata.TargetIp;
                      this.ReceiveInviteEvent?.Invoke(transformdata);
 
