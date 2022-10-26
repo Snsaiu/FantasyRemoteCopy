@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using FantasyResultModel;
@@ -13,7 +14,6 @@ namespace FantasyRemoteCopy.Core.Platforms
     public class DefaultScanLocalNetIp : IScanLocalNetIp
     {
         private readonly IGetLocalIp _getLocalIp;
-
         public DefaultScanLocalNetIp(IGetLocalIp getLocalIp)
         {
             _getLocalIp = getLocalIp;
@@ -21,76 +21,72 @@ namespace FantasyRemoteCopy.Core.Platforms
 
         public async Task<ResultBase<List<string>>> ScanLocalNetIpAsync()
         {
+            List<string> res = new List<string>();
+
             var localIpResult = this._getLocalIp.GetLocalIp();
             if (localIpResult.Ok == false)
                 return await Task.FromResult(new ErrorResultModel<List<string>>(localIpResult.ErrorMsg));
 
             try
             {
-                var localIps = localIpResult.Data;
-
-                List<string> ips = new List<string>();
-
-                List<Task> tasks = new List<Task>();
-
-                foreach (var ip in localIps)
+                await Task.Run(() =>
                 {
+                    System.Diagnostics.Process pProcess = new System.Diagnostics.Process();
+                    pProcess.StartInfo.FileName = "arp";
+                    pProcess.StartInfo.Arguments = "-a ";
+                    pProcess.StartInfo.UseShellExecute = false;
+                    pProcess.StartInfo.RedirectStandardOutput = true;
+                    pProcess.StartInfo.CreateNoWindow = true;
+                    pProcess.Start();
+                    string cmdOutput = pProcess.StandardOutput.ReadToEnd();
+                    string pattern = @"(?<ip>([0-9]{1,3}\.?){4})\s*\) at ([0-9]|[a-z])";
 
-                    var t = Task.Run(() =>
+                    foreach (Match m in Regex.Matches(cmdOutput, pattern, RegexOptions.IgnoreCase))
                     {
-                        string ipDuan = ip.Remove(ip.LastIndexOf('.'));
-                        //MessageBox.Show(ipDuan);
-                        //枚举网段计算机
-                        Ping myPing = new Ping();
-                        string data = "";
-                        byte[] buffer = Encoding.ASCII.GetBytes(data);
+                        res.Add(m.Groups["ip"].Value);
+                    }
 
+                });
 
-                        for (int i = 1; i < 255; i++)
+                List<string> ipsres = new List<string>();
+                for (int i = 0; i < localIpResult.Data.Count; i++)
+                {
+                    string ipDuan = localIpResult.Data[i].Remove(localIpResult.Data[i].LastIndexOf('.'));
+
+                    for (int j = 0; j < res.Count; j++)
+                    {
+                        if (localIpResult.Data[i] == res[j])
                         {
-                            string pingIP = ipDuan + "." + i.ToString();
-
-                            try
-                            {
-                                PingReply pingReply = myPing.Send(pingIP, 50, buffer);
-
-                                if (pingReply.Status == IPStatus.Success)
-                                {
-
-                                    ips.Add(pingIP);
-                                }
-                            }
-                            catch (Exception e)
-                            {
-
-                            }
+                            res.RemoveAt(j);
+                            j--;
+                            continue;
                         }
 
-                    });
-
-                    tasks.Add(t);
-
-                }
-
-                await Task.WhenAll(tasks);
-                for (int i = 0; i < localIps.Count; i++)
-                {
-                    for (int j = 0; j < ips.Count; j++)
-                    {
-                        if (ips[j] == localIps[i])
+                        if (res[j].EndsWith(".255"))
                         {
-                            ips.RemoveAt(j);
+                            res.RemoveAt(j);
                             j--;
+                            continue;
+                        }
+
+                        if (res[j].StartsWith(ipDuan))
+                        {
+                            ipsres.Add(res[j]);
                         }
                     }
+
                 }
-                return new SuccessResultModel<List<string>>(ips);
+
+                return new SuccessResultModel<List<string>>(ipsres);
+
 
             }
             catch (Exception e)
             {
                 return new ErrorResultModel<List<string>>(e.Message);
             }
+
+
 
         }
     }
