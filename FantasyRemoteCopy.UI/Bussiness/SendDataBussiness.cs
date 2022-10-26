@@ -29,6 +29,7 @@ public class SendDataBussiness
     public async Task<ResultBase<bool>> SendData(TransformData data)
     {
         data.Type = DataType.BuildConnected;
+        data.Port = ConstParams.TcpIp_Port;
        await  this._sendData.SendDataAsync(data);
         return null;
     }

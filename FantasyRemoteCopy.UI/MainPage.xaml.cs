@@ -63,6 +63,8 @@ public partial class MainPage : ContentPage
     {
         var tf = new TransformData { Type = DataType.BuildConnected };
         tf.DataGuid = "479237";
+
+        tf.TargetIp = "192.168.0.106";
 		
 
 
