@@ -17,6 +17,7 @@ namespace FantasyRemoteCopy.Core.Impls
 
 		public event ReceiveDataDelegate ReceiveDataEvent;
 		public event ReceiveInviteDelegate ReceiveInviteEvent;
+        public event ReceiveBuildConnectionDelegate ReceiveBuildConnectionEvent;
 
         /// <summary>
         /// 建立tcp数据
@@ -91,20 +92,24 @@ namespace FantasyRemoteCopy.Core.Impls
                     var transformdata = JsonConvert.DeserializeObject<TransformData>(str);
                     DataMetaModel dmm=JsonConvert.DeserializeObject<DataMetaModel>(Encoding.UTF8.GetString(transformdata.Data));
                     ConstParams.ReceiveMetas.Add(dmm);
-                  //  transformdata.TargetIp = (((System.Net.IPEndPoint)res.RemoteEndPoint).Address).ToString();
+                 
+                    //  transformdata.TargetIp = (((System.Net.IPEndPoint)res.RemoteEndPoint).Address).ToString();
 
-				  if(transformdata.Type==Enums.DataType.RequestBuildConnect)
-                  {
-                    await  Task.Run(() =>
-                      {
+                    this.ReceiveBuildConnectionEvent?.Invoke(transformdata);
 
-                          this.LiseningData(transformdata.TargetIp, dmm.Size);
+                    //if(transformdata.Type==Enums.DataType.RequestBuildConnect)
+                    //            {
 
-                      });
+                    //                await  Task.Run(() =>
+                    //                {
 
-                  }
+                    //                    this.LiseningData(transformdata.TargetIp, dmm.Size);
 
-                    
+                    //                });
+
+                    //            }
+
+
 
                 }
             });

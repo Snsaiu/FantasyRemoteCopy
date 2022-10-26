@@ -4,6 +4,7 @@ using FantasyRemoteCopy.Core.Models;
 
 using Newtonsoft.Json;
 using System.Text;
+using FantasyRemoteCopy.Core.Consts;
 
 namespace FantasyRemoteCopy.UI.Bussiness;
 
@@ -24,12 +25,36 @@ public class ReceiveBussiness
         _sendData = sendData;
         this.userService = userService;
         this._receiveData.ReceiveInviteEvent += InviteHandle;
+        this._receiveData.ReceiveBuildConnectionEvent += BuildConnectionHandle;
         this._receiveData.LiseningInvite();
-    
         this._receiveData.LiseningBuildConnection();
     }
-    
-    
+
+    private void BuildConnectionHandle(TransformData data)
+    {
+        if (data.Type == DataType.BuildConnected)
+        {
+            Task.Run(() =>
+            {
+                DataMetaModel dmm = JsonConvert.DeserializeObject<DataMetaModel>(Encoding.UTF8.GetString(data.Data));
+                ConstParams.ReceiveMetas.Add(dmm);
+
+                this._receiveData.LiseningData(data.TargetIp, dmm.Size);
+            });
+            data.Type= DataType.BuildConnected;
+            this._sendData.SendBuildConnectionAsync(data);
+
+        }
+        else if(data.Type == DataType.BuildConnected) 
+        {
+
+            // ·¢ËÍÊý¾Ý
+
+        }
+
+
+    }
+
 
     public void InviteHandle(TransformData data)
     {

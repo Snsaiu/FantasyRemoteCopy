@@ -55,6 +55,10 @@
 	<ItemGroup>
 	  <MauiImage Remove="Resources\Images\dotnet_bot.svg" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Bussiness\5uevxmka.tri~" />
+	</ItemGroup>
 	<ItemGroup>
 	  <BundleResource Include="Resources\Images\dotnet_bot.svg" />
 	</ItemGroup>
