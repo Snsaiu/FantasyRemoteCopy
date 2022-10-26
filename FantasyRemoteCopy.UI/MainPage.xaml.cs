@@ -16,15 +16,17 @@ public partial class MainPage : ContentPage
 {
 	private readonly SendDataBussiness _sendDataBussiness;
 	private readonly ReceiveBussiness _receiveBussiness;
+    private readonly IUserService userService;
 
-
-	public MainPage(SendDataBussiness sendDataBussiness,
-		ReceiveBussiness receiveBussiness)
+    public MainPage(SendDataBussiness sendDataBussiness,
+		ReceiveBussiness receiveBussiness,IUserService userService)
 	{
 		_sendDataBussiness = sendDataBussiness;
 		_receiveBussiness = receiveBussiness;
+        this.userService = userService;
+		
 
-		InitializeComponent();
+        InitializeComponent();
 		this.info.Text = "";
 		this.indicator.IsVisible = false;
         this._receiveBussiness.DiscoverEnableIpEvent += (ip) =>
@@ -41,7 +43,11 @@ public partial class MainPage : ContentPage
     private  void OnCounterClicked(object sender, EventArgs e)
     {
 		this.info.Text = "";
-
+		var userRes= this.userService.GetCurrentUser().GetAwaiter().GetResult();
+		if(userRes.Ok==false)
+		{
+			this.userService.SaveUser(new UserInfo { Name = "小明" });
+		}
 		this.indicator.IsVisible = true;
 		 Task.Run(async() =>
 		{
@@ -50,12 +56,6 @@ public partial class MainPage : ContentPage
 		{
 			this.indicator.IsVisible = false;
 		});
-
-		   
-
-	  
-        
-		
 
     }
 

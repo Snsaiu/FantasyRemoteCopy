@@ -53,7 +53,15 @@ namespace FantasyRemoteCopy.Core.Platforms
                   string ipDuan = localIpResult.Data[i].Remove(localIpResult.Data[i].LastIndexOf('.'));
 
                     for (int j = 0; j < res.Count; j++)
-                  {
+                    {
+
+                        if (res[j].EndsWith(".255"))
+                        {
+                            res.RemoveAt(j);
+                            j--;
+                            continue;
+                        }
+
                       if (res[j].StartsWith(ipDuan))
                       {
                           ipsres.Add(res[j]);
