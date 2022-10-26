@@ -5,7 +5,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using FantasyRemoteCopy.Core;
-using FantasyRemoteCopy.Core.Consts;
 using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.Core.Impls;
 using FantasyRemoteCopy.Core.Models;
@@ -24,18 +23,39 @@ public partial class MainPage : ContentPage
 	{
 		_sendDataBussiness = sendDataBussiness;
 		_receiveBussiness = receiveBussiness;
+
 		InitializeComponent();
-	}
+		this.info.Text = "";
+		this.indicator.IsVisible = false;
+        this._receiveBussiness.DiscoverEnableIpEvent += (ip) =>
+        {
+			Application.Current.Dispatcher.Dispatch(() =>
+			{
+				this.info.Text += ip + "\n";
+			});
+		
+        };
+    }
    
 
-    private async void OnCounterClicked(object sender, EventArgs e)
+    private  void OnCounterClicked(object sender, EventArgs e)
     {
+		this.info.Text = "";
 
-	    EnableIps.Ips.Clear();
-	   await  this._sendDataBussiness.DeviceDiscover();
+		this.indicator.IsVisible = true;
+		 Task.Run(async() =>
+		{
+            await this._sendDataBussiness.DeviceDiscover();
+		}).WaitAsync(TimeSpan.FromSeconds(10)).GetAwaiter().OnCompleted(() =>
+		{
+			this.indicator.IsVisible = false;
+		});
 
-	   await Task.Delay(5000);
-	   this.info.Text = string.Join("\n", EnableIps.Ips);
+		   
+
+	  
+        
+		
 
     }
 

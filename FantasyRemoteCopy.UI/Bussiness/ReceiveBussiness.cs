@@ -1,15 +1,19 @@
 using FantasyRemoteCopy.Core;
-using FantasyRemoteCopy.Core.Consts;
 using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.Core.Models;
 
 namespace FantasyRemoteCopy.UI.Bussiness;
+
+public delegate void DiscoverEnableIpDelegate(string ip);
 
 public class ReceiveBussiness
 {
     private readonly IReceiveData _receiveData;
     private readonly ISendData _sendData;
     private readonly IUserService userService;
+
+    public event DiscoverEnableIpDelegate DiscoverEnableIpEvent;
+   
 
     public ReceiveBussiness(IReceiveData receiveData,ISendData sendData,IUserService userService)
     {
@@ -36,7 +40,7 @@ public class ReceiveBussiness
         else if (data.Type == DataType.ReceiveValidateAccountResult)
         {
 
-           EnableIps.Ips.Add(data.TargetIp);
+            this.DiscoverEnableIpEvent?.Invoke(data.TargetIp);
         }
         
         

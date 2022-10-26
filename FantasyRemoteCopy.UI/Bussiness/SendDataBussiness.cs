@@ -35,19 +35,29 @@ public class SendDataBussiness
        var userRes= await this._userService.GetCurrentUser();
        if (userRes.Ok == false)
            return new ErrorResultModel<bool>(userRes.ErrorMsg);
-       
+
+  
        foreach (string ip in scanRes.Data)
        {
 
-           TransformData td = new TransformData();
-           td.Data = Encoding.UTF8.GetBytes(userRes.Data.Name);
-           td.Type = DataType.ValidateAccount;
-           td.TargetIp = ip;
-           td.Port = "5976";
-           await this._sendData.SendInviteAsync(td);
+            try
+            {
+                TransformData td = new TransformData();
+                td.Data = Encoding.UTF8.GetBytes(userRes.Data.Name);
+                td.Type = DataType.ValidateAccount;
+                td.TargetIp = ip;
+                td.Port = "5976";
+                await this._sendData.SendInviteAsync(td);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
        }
 
-       return new SuccessResultModel<bool>(true);
+       return await Task.FromResult(new SuccessResultModel<bool>(true));
 
     }
 }

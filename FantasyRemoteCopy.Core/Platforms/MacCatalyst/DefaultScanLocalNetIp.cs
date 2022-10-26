@@ -46,7 +46,7 @@ namespace FantasyRemoteCopy.Core.Platforms
                         byte[] buffer = Encoding.ASCII.GetBytes(data);
 
 
-                        for (int i = 1; i <= 255; i++)
+                        for (int i = 1; i < 255; i++)
                         {
                             string pingIP = ipDuan + "." + i.ToString();
 
