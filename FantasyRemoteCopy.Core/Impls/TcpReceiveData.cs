@@ -19,7 +19,9 @@ namespace FantasyRemoteCopy.Core.Impls
 
 		public void LiseningData()
 		{
-
+			var tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+			
+			
 		}
 
 		public void LiseningInvite()

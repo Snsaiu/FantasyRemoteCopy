@@ -1,4 +1,5 @@
 using FantasyRemoteCopy.Core;
+using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.Core.Models;
 
 namespace FantasyRemoteCopy.UI.Bussiness;
@@ -25,7 +26,18 @@ public class ReceiveBussiness
     {
         //todo validate user 
 
-        this._sendData.SendDataAsync(data);
+        if (data.Type == DataType.ValidateAccount)
+        {
+            data.Type = DataType.ReceiveValidateAccountResult;
+            
+            this._sendData.SendInviteAsync(data);
+        }
+        else if (data.Type == DataType.ReceiveValidateAccountResult)
+        {
+            
+        }
+        
+        
         
 
     }
