@@ -59,12 +59,14 @@ public partial class MainPage : ContentPage
 
     }
 
-    private void AddUserEvent(object sender, EventArgs e)
+    private async void AddUserEvent(object sender, EventArgs e)
     {
-        // this._userService.SaveUser(new UserInfo
-        // {
-        //     Name = "小明"
-        // });
+        var tf = new TransformData { Type = DataType.BuildConnected };
+        tf.DataGuid = "479237";
+		
+
+
+        await this._sendDataBussiness.SendData(tf);
 
     }
 

@@ -26,6 +26,7 @@ public class ReceiveBussiness
         this._receiveData.ReceiveInviteEvent += InviteHandle;
         this._receiveData.LiseningInvite();
         this._receiveData.LiseningData();
+        this._receiveData.LiseningBuildConnection();
     }
     
     

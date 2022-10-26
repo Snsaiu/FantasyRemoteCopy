@@ -28,5 +28,10 @@ public class TransformData
     /// </summary>
     public string Port { get; set; }
 
+    /// <summary>
+    /// 发送数据时候的唯一编号
+    /// </summary>
+    public string DataGuid{ get; set; }
+
 }
 

@@ -24,6 +24,14 @@ public class SendDataBussiness
         _sendData = sendData;
         _userService = userService;
     }
+
+
+    public async Task<ResultBase<bool>> SendData(TransformData data)
+    {
+        data.Type = DataType.BuildConnected;
+       await  this._sendData.SendDataAsync(data);
+        return null;
+    }
     
     /// <summary>
     /// 设备发现
