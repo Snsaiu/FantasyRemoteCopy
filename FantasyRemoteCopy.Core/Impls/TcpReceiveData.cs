@@ -42,9 +42,10 @@ namespace FantasyRemoteCopy.Core.Impls
 					string str = Encoding.UTF8.GetString(_buffer_recv, 0, res.ReceivedBytes);
 
 					 var transformdata= JsonConvert.DeserializeObject<TransformData>(str);
-					 
-					// transformdata.TargetIp;
-					 this.ReceiveInviteEvent?.Invoke(transformdata);
+					transformdata.TargetIp = (((System.Net.IPEndPoint)res.RemoteEndPoint).Address).ToString();
+					transformdata.Port = "5977";
+                    // transformdata.TargetIp;
+                     this.ReceiveInviteEvent?.Invoke(transformdata);
 
 				}
 			});

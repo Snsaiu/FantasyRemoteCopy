@@ -7,11 +7,13 @@ public class ReceiveBussiness
 {
     private readonly IReceiveData _receiveData;
     private readonly ISendData _sendData;
+    private readonly IUserService userService;
 
-    public ReceiveBussiness(IReceiveData receiveData,ISendData sendData)
+    public ReceiveBussiness(IReceiveData receiveData,ISendData sendData,IUserService userService)
     {
         _receiveData = receiveData;
         _sendData = sendData;
+        this.userService = userService;
         this._receiveData.ReceiveInviteEvent += InviteHandle;
         this._receiveData.LiseningInvite();
         this._receiveData.LiseningData();
@@ -21,8 +23,10 @@ public class ReceiveBussiness
 
     public void InviteHandle(TransformData data)
     {
+        //todo validate user 
 
-        TransformData td = new TransformData();
+        this._sendData.SendDataAsync(data);
+        
 
     }
 }
