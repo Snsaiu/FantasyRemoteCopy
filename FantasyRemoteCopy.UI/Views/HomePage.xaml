@@ -61,7 +61,7 @@
 
         <Grid Grid.Row="2">
             <Grid.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding SearchCommand}"/>
+                <TapGestureRecognizer Tapped="SearchClickEvent" Command="{Binding SearchCommand}"/>
             </Grid.GestureRecognizers>
             <Border BackgroundColor="Orange" Stroke="transparent" WidthRequest="90" HeightRequest="90" HorizontalOptions="End" Margin="0,0,10,10">
                 <Border.StrokeShape>

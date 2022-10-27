@@ -9,4 +9,9 @@ public partial class HomePage : ContentPage
 		InitializeComponent();
 		this.BindingContext = vm;
 	}
+
+    private void SearchClickEvent(object sender, EventArgs e)
+    {
+
+    }
 }

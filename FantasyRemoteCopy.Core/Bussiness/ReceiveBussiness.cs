@@ -102,6 +102,14 @@ public class ReceiveBussiness
             return;
         }
 
+        var sourceData= JsonConvert.DeserializeObject<SendInviteModel>(Encoding.UTF8.GetString(data.Data));
+
+        if (sourceData.MasterName != userData.Data.Name)
+        {
+            return;
+        }
+
+
         if (data.Type == TransformType.ValidateAccount)
         {
             data.Type = TransformType.ReceiveValidateAccountResult;
