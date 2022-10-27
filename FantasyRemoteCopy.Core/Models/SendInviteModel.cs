@@ -26,5 +26,10 @@ public class SendInviteModel
     /// 设备类型
     /// </summary>
     public string DevicePlatform { get; set; }
+
+    /// <summary>
+    /// 设备IP
+    /// </summary>
+    public string DeviceIP { get; set; }
 }
 

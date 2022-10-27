@@ -18,6 +18,9 @@ public partial class MainPage : ContentPage
 	private readonly ReceiveBussiness _receiveBussiness;
     private readonly IUserService userService;
 
+
+	private List<SendInviteModel> sendInviteModels= new List<SendInviteModel>();
+
     public MainPage(SendDataBussiness sendDataBussiness,
 		ReceiveBussiness receiveBussiness,IUserService userService)
 	{
@@ -31,9 +34,11 @@ public partial class MainPage : ContentPage
 		this.indicator.IsVisible = false;
         this._receiveBussiness.DiscoverEnableIpEvent += (model) =>
         {
-			Application.Current.Dispatcher.Dispatch(() =>
+            this.sendInviteModels.Add(model);
+            Application.Current.Dispatcher.Dispatch(() =>
 			{
-				this.info.Text += $"{model.MasterName} {model.DeviceName} {model.DevicePlatform.ToString()}" + "\n";
+				
+				this.info.Text += $"{model.DeviceIP} {model.DeviceName} {model.DevicePlatform.ToString()}" + "\n";
 			});
 		
         };
@@ -44,6 +49,7 @@ public partial class MainPage : ContentPage
 
     private  void OnCounterClicked(object sender, EventArgs e)
     {
+		this.sendInviteModels.Clear();
 		this.info.Text = "";
 		var userRes= this.userService.GetCurrentUser().GetAwaiter().GetResult();
 		if(userRes.Ok==false)
@@ -66,7 +72,7 @@ public partial class MainPage : ContentPage
         var tf = new TransformData { Type = DataType.BuildConnected };
         tf.DataGuid = "479237";
 
-        tf.TargetIp = "192.168.0.106";
+		tf.TargetIp = this.sendInviteModels.First().DeviceIP;
 		
 
 
