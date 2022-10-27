@@ -73,7 +73,7 @@ public class ReceiveBussiness
             sm.MasterName = userData.Data.Name;
             sm.DevicePlatform = DeviceInfo.Current.Platform.ToString();
             sm.DeviceName = DeviceInfo.Current.Name;
-
+         
             string smStr = JsonConvert.SerializeObject(sm);
 
             data.Data = Encoding.UTF8.GetBytes(smStr);
@@ -84,7 +84,7 @@ public class ReceiveBussiness
         {
 
             var sm= JsonConvert.DeserializeObject<SendInviteModel>(Encoding.UTF8.GetString(data.Data));
-
+            sm.DeviceIP = data.TargetIp;
             this.DiscoverEnableIpEvent?.Invoke(sm);
         }
         
