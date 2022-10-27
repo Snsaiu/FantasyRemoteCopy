@@ -23,7 +23,7 @@
             <!--用户名和设备昵称-->
             <VerticalStackLayout Grid.Column="1">
             <Label Text="{Binding UserName}"  VerticalOptions="Center" Margin="10,20,0,0" FontSize="25"></Label>
-            <Label Text="{Binding DeviceNickName,StringFormat='NickName of Device:{0}'}"  Margin="10,0,0,0"></Label>
+            <Label Text="{Binding DeviceNickName,StringFormat='Nick Name of Device:{0}'}"  Margin="10,0,0,0"></Label>
             </VerticalStackLayout>
 
             <Grid Grid.Column="2">
@@ -32,18 +32,18 @@
         </Grid>
 
         <!--列表-->
-        <CollectionView Grid.Row="1">
+        <CollectionView Grid.Row="1" ItemsSource="{Binding DiscoveredDevices}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid ColumnDefinitions="auto,*,auto">
-                        <Image WidthRequest="50" HeightRequest="10"/>
+                        <Image WidthRequest="50" HeightRequest="10" Source="{Binding Img}"/>
                         <Grid Grid.Column="1" ColumnDefinitions="*,*,*,*">
-                            <Label></Label>
-                            <Label Grid.Row="1"></Label>
-                            <Label Grid.Row="2"></Label>
-                            <Label Grid.Row="3"></Label>
+                            <Label Text="{Binding DeviceType,StringFormat='Device Type:{0}'}"></Label>
+                            <Label Text="{Binding NickName,StringFormat='Nick Name:{0}'}" Grid.Row="1"></Label>
+                            <Label Text="{Binding DeviceName,StringFormat='Device Name:{0}'}" Grid.Row="2"></Label>
+                            <Label Text="{Binding Ip,StringFormat='Ip:{0}'}" Grid.Row="3"></Label>
                         </Grid>
-                        <ImageButton Grid.Column="2" Source="share.png"></ImageButton>
+                        <ImageButton Grid.Column="2" WidthRequest="50" HeightRequest="50" Source="share.png"></ImageButton>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
@@ -52,6 +52,9 @@
         <!--搜索按钮-->
 
         <Grid Grid.Row="2">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding SearchCommand}"/>
+            </Grid.GestureRecognizers>
             <Border BackgroundColor="Orange" Stroke="transparent" WidthRequest="90" HeightRequest="90" HorizontalOptions="End" Margin="0,0,10,10">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="50" />
