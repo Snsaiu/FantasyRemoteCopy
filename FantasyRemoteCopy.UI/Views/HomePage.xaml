@@ -4,6 +4,7 @@
              x:Class="FantasyRemoteCopy.UI.Views.HomePage"
              NavigationPage.HasBackButton="False"
              NavigationPage.HasNavigationBar="False"
+             BackgroundColor="AliceBlue"
                 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:convters="clr-namespace:FantasyRemoteCopy.UI.Converters"
              >
@@ -35,9 +36,14 @@
         <CollectionView Grid.Row="1" ItemsSource="{Binding DiscoveredDevices}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid ColumnDefinitions="auto,*,auto">
-                        <Image WidthRequest="50" HeightRequest="10" Source="{Binding Img}"/>
-                        <Grid Grid.Column="1" ColumnDefinitions="*,*,*,*">
+                    <Grid Padding="5" ColumnDefinitions="auto,*,auto" BackgroundColor="White" >
+                        <Image WidthRequest="50" HeightRequest="50" Source="{Binding Img}"/>
+                        <Grid Grid.Column="1" Margin="5,0" RowDefinitions="*,*,*,*">
+                            <Grid.Resources>
+                                <Style TargetType="Label">
+                                    <Setter Property="Margin" Value="0,2"/>
+                                </Style>
+                            </Grid.Resources>
                             <Label Text="{Binding DeviceType,StringFormat='Device Type:{0}'}"></Label>
                             <Label Text="{Binding NickName,StringFormat='Nick Name:{0}'}" Grid.Row="1"></Label>
                             <Label Text="{Binding DeviceName,StringFormat='Device Name:{0}'}" Grid.Row="2"></Label>

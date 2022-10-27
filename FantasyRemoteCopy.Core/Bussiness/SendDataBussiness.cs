@@ -85,7 +85,7 @@ public class SendDataBussiness
                 sm.MasterName = userRes.Data.Name;
                 sm.DevicePlatform = DeviceInfo.Current.Platform.ToString();
                 sm.DeviceName = DeviceInfo.Current.Name;
-
+                sm.NickName = userRes.Data.DeviceNickName;
                 string smStr=JsonConvert.SerializeObject(sm);
 
                 TransformData td = new TransformData();

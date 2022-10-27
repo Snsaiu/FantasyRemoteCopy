@@ -110,6 +110,7 @@ public class ReceiveBussiness
             sm.MasterName = userData.Data.Name;
             sm.DevicePlatform = DeviceInfo.Current.Platform.ToString();
             sm.DeviceName = DeviceInfo.Current.Name;
+            sm.NickName = userData.Data.DeviceNickName;
          
             string smStr = JsonConvert.SerializeObject(sm);
 
