@@ -10,6 +10,8 @@ using FantasyRemoteCopy.Core.Impls;
 using FantasyRemoteCopy.Core.Models;
 using FantasyRemoteCopy.UI.Bussiness;
 
+using Newtonsoft.Json;
+
 namespace FantasyRemoteCopy.UI;
 
 public partial class MainPage : ContentPage
@@ -73,7 +75,12 @@ public partial class MainPage : ContentPage
         tf.DataGuid = "479237";
 
 		tf.TargetIp = this.sendInviteModels.First().DeviceIP;
+
+		string sendTxt = "这是一个测试数据";
+		byte[] bytes= Encoding.UTF8.GetBytes(sendTxt);
+		DataMetaModel dm=new DataMetaModel { Guid= tf.DataGuid ,Size=bytes.Length, Sended=false};
 		
+		tf.Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dm));
 
 
         await this._sendDataBussiness.SendData(tf);
