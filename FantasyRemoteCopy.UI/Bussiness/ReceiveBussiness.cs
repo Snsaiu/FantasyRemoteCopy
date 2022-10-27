@@ -40,14 +40,15 @@ public class ReceiveBussiness
             DataMetaModel dmm = JsonConvert.DeserializeObject<DataMetaModel>(Encoding.UTF8.GetString(data.Data));
             dmm.State = MetaState.Received;
             ConstParams.ReceiveMetas.Add(dmm);
+
             await  Task.Run( () =>
             {
-              
-
                 this._receiveData.LiseningData(data.TargetIp, dmm.Size);
             });
-            data.Type= TransformType.BuildConnected;
             
+            data.Type= TransformType.BuildConnected;
+            data.Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dmm));
+
            await this._sendData.SendBuildConnectionAsync(data);
         }
         else if(data.Type == TransformType.BuildConnected) 
