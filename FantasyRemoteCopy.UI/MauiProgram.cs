@@ -6,6 +6,7 @@ using FantasyRemoteCopy.Core.Bussiness;
 using FantasyRemoteCopy.UI.Views;
 using FantasyRemoteCopy.UI.ViewModels;
 using CommunityToolkit.Maui;
+using FantasyRemoteCopy.UI.Views.Dialogs;
 
 namespace FantasyRemoteCopy.UI;
 
@@ -36,6 +37,10 @@ public static class MauiProgram
 
 		builder.Services.AddTransient<SettingPage>();
 		builder.Services.AddTransient<SettingPageModel>();
+
+		builder.Services.AddTransient<SendTypeDialog>();
+
+	
 
 		return builder.Build();
 	}

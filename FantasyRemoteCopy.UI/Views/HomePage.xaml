@@ -5,6 +5,7 @@
              NavigationPage.HasBackButton="False"
              NavigationPage.HasNavigationBar="False"
              BackgroundColor="AliceBlue"
+           x:Name="cp"
                 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:convters="clr-namespace:FantasyRemoteCopy.UI.Converters"
              >
@@ -51,7 +52,7 @@
                             <Label Margin="0,1" Text="{Binding DeviceName,StringFormat='Device Name：{0}'}" Grid.Row="2"  FontSize="10"></Label>
                             <Label Margin="0,1" Text="{Binding Ip,StringFormat='Ip：{0}'}" Grid.Row="3"  FontSize="10"></Label>
                         </Grid>
-                        <ImageButton Grid.Column="2" WidthRequest="50" HeightRequest="50" Source="share.png"></ImageButton>
+                        <ImageButton Command="{Binding BindingContext.ShareCommand ,Source={x:Reference cp}}" CommandParameter="{Binding .}" Grid.Column="2" WidthRequest="50" HeightRequest="50" Source="share.png"></ImageButton>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

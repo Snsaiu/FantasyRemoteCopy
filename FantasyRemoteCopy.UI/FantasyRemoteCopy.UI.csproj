@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0-android31.0;net6.0-ios15.4;net6.0-maccatalyst15.4</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks>net6.0-maccatalyst15.4;net7.0-android31.0;net7.0-ios15.4</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
 		<OutputType>Exe</OutputType>
@@ -58,7 +58,7 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Images\android.png" />
-	  <None Remove="Resources\Images\fill.png" />
+	  <None Remove="Resources\Images\file.png" />
 	  <None Remove="Resources\Images\ipad.png" />
 	  <None Remove="Resources\Images\iphone.png" />
 	  <None Remove="Resources\Images\mac.png" />
@@ -76,7 +76,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <MauiImage Include="Resources\Images\android.png" />
-	  <MauiImage Include="Resources\Images\fill.png" />
+	  <MauiImage Include="Resources\Images\file.png" />
 	  <MauiImage Include="Resources\Images\ipad.png" />
 	  <MauiImage Include="Resources\Images\iphone.png" />
 	  <MauiImage Include="Resources\Images\mac.png" />
@@ -91,6 +91,9 @@
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0-preview3" />
 	</ItemGroup>
 	<ItemGroup>
+	  <MauiXaml Update="Views\Dialogs\SendTypeDialog.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\HomePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -100,5 +103,20 @@
 	  <MauiXaml Update="Views\SettingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0-android31.0'">
+	  <PackageReference Include="Fantasy.Maui.Controls">
+	    <Version>1.0.0</Version>
+	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0-ios15.4'">
+	  <PackageReference Include="Fantasy.Maui.Controls">
+	    <Version>1.0.0</Version>
+	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0-windows10.0.19041.0'">
+	  <PackageReference Include="Fantasy.Maui.Controls">
+	    <Version>1.0.0</Version>
+	  </PackageReference>
 	</ItemGroup>
 </Project>

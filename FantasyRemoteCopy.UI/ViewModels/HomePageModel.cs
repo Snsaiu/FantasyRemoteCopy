@@ -15,6 +15,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FantasyRemoteCopy.UI.Views.Dialogs;
+using CommunityToolkit.Maui.Views;
 
 namespace FantasyRemoteCopy.UI.ViewModels
 {
@@ -90,6 +92,16 @@ namespace FantasyRemoteCopy.UI.ViewModels
         public  void Search()
         {
             this.deviceDiscover();
+        }
+
+
+
+        [ICommand]
+        public async void Share(DiscoveredDeviceModel model)
+        {
+            var sendDialog = App.Current.Services.GetService<SendTypeDialog>();
+            sendDialog.InitData(model);
+            await Application.Current.MainPage.ShowPopupAsync<SendTypeDialog>(sendDialog);
         }
 
         [ICommand]
