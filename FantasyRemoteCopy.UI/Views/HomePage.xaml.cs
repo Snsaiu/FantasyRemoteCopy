@@ -1,7 +1,7 @@
+using FantasyRemoteCopy.UI.Animation;
 using FantasyRemoteCopy.UI.ViewModels;
 
-using Fantasy.Maui.Controls;
-using Fantasy.Maui.Controls.Animation;
+
 
 namespace FantasyRemoteCopy.UI.Views;
 
