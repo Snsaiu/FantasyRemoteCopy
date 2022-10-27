@@ -59,7 +59,7 @@ public class ReceiveBussiness
             var findDmm= ConstParams.WillSendMetasQueue.FirstOrDefault(x => x.Guid == dmm.Guid);
             if(findDmm!=null)
             {
-                if(findDmm.State==MetaState.Received)
+                if(dmm.State==MetaState.Received)
                 {
                     findDmm.State = MetaState.Sending;
                     var detail = ConstParams.DataContents.FirstOrDefault(x => x.Guid == findDmm.Guid);

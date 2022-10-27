@@ -39,21 +39,23 @@ public class SendDataBussiness
         tf.DataGuid = Guid.NewGuid().ToString();
 
         byte[] bytes = Encoding.UTF8.GetBytes(content);
+
+        tf.TargetIp = targetip;
+
         DataMetaModel dm = new DataMetaModel { Guid = tf.DataGuid, Size = bytes.Length, State = MetaState.Receiving };
         dm.DataType = DataType.Text;
         dm.TargetIp = tf.TargetIp;
         dm.Guid = tf.DataGuid;
-        ConstParams.WillSendMetasQueue.Add(dm);
 
-        ConstParams.DataContents.Add(new DataContent { Guid=dm.Guid,Content=content});
-
-      
-        tf.TargetIp = targetip;
-        tf.Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dm));
-        
         tf.Type = TransformType.RequestBuildConnect;
         tf.Port = ConstParams.BuildTcpIp_Port;
-       await  this._sendData.SendRquestBuildConnectionDataAsync(tf);
+
+        tf.Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dm));
+  
+        ConstParams.WillSendMetasQueue.Add(dm);
+
+        ConstParams.DataContents.Add(new DataContent { Guid = dm.Guid, Content = content });
+        await  this._sendData.SendRquestBuildConnectionDataAsync(tf);
         return null;
     }
     
