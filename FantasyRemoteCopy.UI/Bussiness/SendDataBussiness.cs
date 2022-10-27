@@ -36,20 +36,21 @@ public class SendDataBussiness
     public async Task<ResultBase<bool>> SendData(string targetip, string content, DataType datatype)
     {
         var tf = new TransformData ();
-   
+        tf.DataGuid = Guid.NewGuid().ToString();
+
         byte[] bytes = Encoding.UTF8.GetBytes(content);
         DataMetaModel dm = new DataMetaModel { Guid = tf.DataGuid, Size = bytes.Length, State = MetaState.Receiving };
         dm.DataType = DataType.Text;
         dm.TargetIp = tf.TargetIp;
-
+        dm.Guid = tf.DataGuid;
         ConstParams.WillSendMetasQueue.Add(dm);
 
         ConstParams.DataContents.Add(new DataContent { Guid=dm.Guid,Content=content});
 
-        tf.DataGuid = Guid.NewGuid().ToString();
+      
         tf.TargetIp = targetip;
         tf.Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dm));
-        dm.Guid=tf.DataGuid;
+        
         tf.Type = TransformType.RequestBuildConnect;
         tf.Port = ConstParams.BuildTcpIp_Port;
        await  this._sendData.SendRquestBuildConnectionDataAsync(tf);
