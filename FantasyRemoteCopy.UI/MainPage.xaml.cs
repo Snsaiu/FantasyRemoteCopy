@@ -8,7 +8,7 @@ using FantasyRemoteCopy.Core;
 using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.Core.Impls;
 using FantasyRemoteCopy.Core.Models;
-using FantasyRemoteCopy.UI.Bussiness;
+using FantasyRemoteCopy.Core.Bussiness;
 
 using Newtonsoft.Json;
 
@@ -44,6 +44,14 @@ public partial class MainPage : ContentPage
 			});
 		
         };
+
+		this._receiveBussiness.ReceiveDataEvent += (d) =>
+		{
+			var str= Encoding.UTF8.GetString(d.Data);
+			var dm= JsonConvert.DeserializeObject<DataMetaModel>(str);
+			
+
+		};
 
 	
     }

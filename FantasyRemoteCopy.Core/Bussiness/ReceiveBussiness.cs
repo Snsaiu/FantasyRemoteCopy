@@ -6,11 +6,13 @@ using Newtonsoft.Json;
 using System.Text;
 using FantasyRemoteCopy.Core.Consts;
 
-namespace FantasyRemoteCopy.UI.Bussiness;
+namespace FantasyRemoteCopy.Core.Bussiness;
 
 public delegate void DiscoverEnableIpDelegate(SendInviteModel sendInviteModel);
 
 public delegate void SendErrorDelegate(string error);
+
+public delegate void ReceiveDataDelegate(TransformData data);
 
 public class ReceiveBussiness
 {
@@ -21,6 +23,7 @@ public class ReceiveBussiness
     public event DiscoverEnableIpDelegate DiscoverEnableIpEvent;
    public event SendErrorDelegate SendErrorEvent;
 
+    public event ReceiveDataDelegate ReceiveDataEvent;
 
     public ReceiveBussiness(IReceiveData receiveData,ISendData sendData,IUserService userService)
     {
@@ -29,8 +32,15 @@ public class ReceiveBussiness
         this.userService = userService;
         this._receiveData.ReceiveInviteEvent += InviteHandle;
         this._receiveData.ReceiveBuildConnectionEvent += BuildConnectionHandle;
+        this._receiveData.ReceiveDataEvent += (d) =>
+        {
+            this.ReceiveDataEvent?.Invoke(d);
+        };
+
         this._receiveData.LiseningInvite();
         this._receiveData.LiseningBuildConnection();
+
+
     }
 
     private async void BuildConnectionHandle(TransformData data)
@@ -41,12 +51,12 @@ public class ReceiveBussiness
             dmm.State = MetaState.Received;
             ConstParams.ReceiveMetas.Add(dmm);
 
-            await  Task.Run( () =>
+            await Task.Run(() =>
             {
-                this._receiveData.LiseningData(data.TargetIp, dmm.Size);
-            });
-            
-            data.Type= TransformType.BuildConnected;
+                 this._receiveData.LiseningData(data.TargetIp, dmm.Size);
+        });
+
+        data.Type= TransformType.BuildConnected;
             data.Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dmm));
 
            await this._sendData.SendBuildConnectionAsync(data);

@@ -2,82 +2,95 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+
 using FantasyRemoteCopy.Core.Consts;
 using FantasyRemoteCopy.Core.Models;
+
 using Newtonsoft.Json;
 
 namespace FantasyRemoteCopy.Core.Impls
 {
-	public class TcpReceiveData:IReceiveData
-	{
-		public TcpReceiveData()
-		{
+    public class TcpReceiveData : IReceiveData
+    {
+        public TcpReceiveData()
+        {
 
-		}
+        }
 
-		public event ReceiveDataDelegate ReceiveDataEvent;
-		public event ReceiveInviteDelegate ReceiveInviteEvent;
+        public event ReceiveDataDelegate ReceiveDataEvent;
+        public event ReceiveInviteDelegate ReceiveInviteEvent;
         public event ReceiveBuildConnectionDelegate ReceiveBuildConnectionEvent;
+
+
 
         /// <summary>
         /// 建立tcp数据
         /// </summary>
         /// <param name="ip"></param>
         /// <param name="byteCount"></param>
-		public  async Task LiseningData(string ip,long byteCount)
-		{
-			var tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            tcpSocket.Bind(new IPEndPoint(IPAddress.Parse(ip), int.Parse(ConstParams.TcpIp_Port)));
+        public async Task LiseningData(string ip, long byteCount)
+        {
+            try
+            {
 
-            byte[] bytes = new byte[byteCount+2048];
-            
+
+
+                Socket tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                tcpSocket.Bind(new IPEndPoint(IPAddress.Any, int.Parse(ConstParams.TcpIp_Port)));
+
                 tcpSocket.Listen();
-                var socket =await  tcpSocket.AcceptAsync();
-            int length= await socket.ReceiveAsync(bytes, SocketFlags.None);
-                TransformData td = JsonConvert.DeserializeObject<TransformData>(Encoding.UTF8.GetString(bytes, 0, length));
-            socket.Close();
-            socket = null;
-            tcpSocket.Close();
-                tcpSocket= null;
-            
 
-  
+                byte[] bytes = new byte[byteCount + 2048];
+                var socket = await tcpSocket.AcceptAsync();
+                int length = await socket.ReceiveAsync(bytes, SocketFlags.None);
+                TransformData td = JsonConvert.DeserializeObject<TransformData>(Encoding.UTF8.GetString(bytes, 0, length));
+                socket.Close();
+                socket = null;
+                tcpSocket.Close();
+                tcpSocket = null;
+                this.ReceiveDataEvent?.Invoke(td);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
         }
 
 
         public void LiseningInvite()
-		{
+        {
             var udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        
-			EndPoint endPoint = new IPEndPoint(IPAddress.Any, int.Parse( ConstParams.INVITE_PORT));
-			udpSocket.SetSocketOption(SocketOptionLevel.IP,SocketOptionName.PacketInformation,true);
-			udpSocket.Bind(endPoint);
 
-			_ = Task.Run(async () =>
-			{
-				SocketReceiveFromResult res;
-				byte[] _buffer_recv = new byte[4096];
-				ArraySegment<byte> _buffer_recv_segment = new(_buffer_recv);
-				
-				while (true)
-				{
-					res = await udpSocket.ReceiveFromAsync(_buffer_recv_segment, SocketFlags.None, endPoint);
-					string str = Encoding.UTF8.GetString(_buffer_recv, 0, res.ReceivedBytes);
+            EndPoint endPoint = new IPEndPoint(IPAddress.Any, int.Parse(ConstParams.INVITE_PORT));
+            udpSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.PacketInformation, true);
+            udpSocket.Bind(endPoint);
 
-					 var transformdata= JsonConvert.DeserializeObject<TransformData>(str);
-					transformdata.TargetIp = (((System.Net.IPEndPoint)res.RemoteEndPoint).Address).ToString();
-					
+            _ = Task.Run(async () =>
+            {
+                SocketReceiveFromResult res;
+                byte[] _buffer_recv = new byte[4096];
+                ArraySegment<byte> _buffer_recv_segment = new(_buffer_recv);
+
+                while (true)
+                {
+                    res = await udpSocket.ReceiveFromAsync(_buffer_recv_segment, SocketFlags.None, endPoint);
+                    string str = Encoding.UTF8.GetString(_buffer_recv, 0, res.ReceivedBytes);
+
+                    var transformdata = JsonConvert.DeserializeObject<TransformData>(str);
+                    transformdata.TargetIp = (((System.Net.IPEndPoint)res.RemoteEndPoint).Address).ToString();
+
                     // transformdata.TargetIp;
-                     this.ReceiveInviteEvent?.Invoke(transformdata);
+                    this.ReceiveInviteEvent?.Invoke(transformdata);
 
-				}
-			});
-
-
-		}
+                }
+            });
 
 
-		
+        }
+
+
+
 
 
         public void LiseningBuildConnection()
@@ -100,10 +113,10 @@ namespace FantasyRemoteCopy.Core.Impls
                     string str = Encoding.UTF8.GetString(_buffer_recv, 0, res.ReceivedBytes);
 
                     var transformdata = JsonConvert.DeserializeObject<TransformData>(str);
-                    DataMetaModel dmm=JsonConvert.DeserializeObject<DataMetaModel>(Encoding.UTF8.GetString(transformdata.Data));
+                    DataMetaModel dmm = JsonConvert.DeserializeObject<DataMetaModel>(Encoding.UTF8.GetString(transformdata.Data));
                     ConstParams.ReceiveMetas.Add(dmm);
-                 
-                      transformdata.TargetIp = (((System.Net.IPEndPoint)res.RemoteEndPoint).Address).ToString();
+
+                    transformdata.TargetIp = (((System.Net.IPEndPoint)res.RemoteEndPoint).Address).ToString();
 
                     this.ReceiveBuildConnectionEvent?.Invoke(transformdata);
 

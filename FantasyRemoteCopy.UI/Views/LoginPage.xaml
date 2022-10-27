@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FantasyRemoteCopy.UI.Views.LoginPage"
+              NavigationPage.HasBackButton="False"
+             NavigationPage.HasNavigationBar="False"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             >
+    <Grid RowDefinitions="*">
+        <VerticalStackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+
+
+            <Label Text="FRC" FontSize="50" FontAttributes="Italic" TextColor="OrangeRed" HorizontalOptions="Center"/>
+            <Entry WidthRequest="200" Placeholder="input your login name" Text="{Binding UserName}"  Margin="10"/>
+            <Entry WidthRequest="200" Placeholder="input your device name" Text="{Binding DeviceNickName}" Margin="10"/>
+            <Button WidthRequest="200" Text="LOGIN" Command="{Binding LoginCommand}"></Button>
+
+
+        </VerticalStackLayout>
+
+        <ActivityIndicator IsRunning="True" IsVisible="{Binding IsBusy}" >
+        </ActivityIndicator>
+    </Grid>
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding InitCommand}"/>
+    </ContentPage.Behaviors>
+</ContentPage>

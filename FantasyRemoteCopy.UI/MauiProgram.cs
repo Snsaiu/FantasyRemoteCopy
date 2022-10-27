@@ -2,7 +2,10 @@
 using FantasyRemoteCopy.Core.Platforms;
 using Microsoft.Extensions.DependencyInjection;
 using FantasyRemoteCopy.Core.Impls;
-using FantasyRemoteCopy.UI.Bussiness;
+using FantasyRemoteCopy.Core.Bussiness;
+using FantasyRemoteCopy.UI.Views;
+using FantasyRemoteCopy.UI.ViewModels;
+using CommunityToolkit.Maui;
 
 namespace FantasyRemoteCopy.UI;
 
@@ -17,7 +20,7 @@ public static class MauiProgram
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-			});
+			}).UseMauiCommunityToolkit();
 		builder.Services.AddTransient<IGetLocalIp, DefaultLocalIp>();
 		builder.Services.AddTransient<IScanLocalNetIp, DefaultScanLocalNetIp>();
 		builder.Services.AddSingleton<IReceiveData, TcpReceiveData>();
@@ -25,7 +28,15 @@ public static class MauiProgram
 		builder.Services.AddTransient<IUserService, ConfigUserService>();
 		builder.Services.AddTransient<SendDataBussiness>();
 		builder.Services.AddSingleton<ReceiveBussiness>();
-		builder.Services.AddTransient<MainPage>();
+		builder.Services.AddTransient<LoginPage>();
+		builder.Services.AddTransient<LoginPageModel>();
+		
+		builder.Services.AddTransient<HomePage>();
+		builder.Services.AddTransient<HomePageModel>();
+
+		builder.Services.AddTransient<SettingPage>();
+		builder.Services.AddTransient<SettingPageModel>();
+
 		return builder.Build();
 	}
 }

@@ -7,6 +7,7 @@ namespace FantasyRemoteCopy.Core
 
 	public delegate void ReceiveInviteDelegate(TransformData data);
 
+	
 
 
 	/// <summary>

@@ -8,7 +8,7 @@ using FantasyResultModel.Impls;
 
 using Newtonsoft.Json;
 
-namespace FantasyRemoteCopy.UI.Bussiness;
+namespace FantasyRemoteCopy.Core.Bussiness;
 
 public class SendDataBussiness
 {

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FantasyRemoteCopy.UI.Views.HomePage"
+             NavigationPage.HasBackButton="False"
+             NavigationPage.HasNavigationBar="False"
+                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:convters="clr-namespace:FantasyRemoteCopy.UI.Converters"
+             >
+    <Grid RowDefinitions="auto,*,auto">
+        <Grid Padding="5" ColumnDefinitions="auto,*,auto" BackgroundColor="CadetBlue">
+            
+            <!--图片-->
+            <Grid>
+                <Border HeightRequest="80" Stroke="transparent" WidthRequest="80" BackgroundColor="OrangeRed">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="50" />
+                </Border.StrokeShape>
+            </Border>
+            <Label Text="{Binding UserName,Converter={convters:TextToHeaderCharConverter}}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="30"></Label>
+            </Grid>
+            
+            <!--用户名和设备昵称-->
+            <VerticalStackLayout Grid.Column="1">
+            <Label Text="{Binding UserName}"  VerticalOptions="Center" Margin="10,20,0,0" FontSize="25"></Label>
+            <Label Text="{Binding DeviceNickName,StringFormat='NickName of Device:{0}'}"  Margin="10,0,0,0"></Label>
+            </VerticalStackLayout>
+
+            <Grid Grid.Column="2">
+                <ImageButton WidthRequest="50" Command="{Binding GotoSettingPageCommand}" BackgroundColor="Transparent" Source="setting.png" HeightRequest="50"></ImageButton>
+            </Grid>
+        </Grid>
+
+        <!--列表-->
+        <CollectionView Grid.Row="1">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="auto,*,auto">
+                        <Image WidthRequest="50" HeightRequest="10"/>
+                        <Grid Grid.Column="1" ColumnDefinitions="*,*,*,*">
+                            <Label></Label>
+                            <Label Grid.Row="1"></Label>
+                            <Label Grid.Row="2"></Label>
+                            <Label Grid.Row="3"></Label>
+                        </Grid>
+                        <ImageButton Grid.Column="2" Source="share.png"></ImageButton>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        
+        <!--搜索按钮-->
+
+        <Grid Grid.Row="2">
+            <Border BackgroundColor="Orange" Stroke="transparent" WidthRequest="90" HeightRequest="90" HorizontalOptions="End" Margin="0,0,10,10">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="50" />
+                </Border.StrokeShape>
+            </Border>
+            <Image  BackgroundColor="Transparent" Source="search.png" HeightRequest="80" HorizontalOptions="End" Margin="0,0,16,10" WidthRequest="80">
+
+            </Image>
+        </Grid>
+
+
+        <ActivityIndicator IsRunning="True" IsVisible="{Binding IsBusy}" Grid.Row="1"/>
+    </Grid>
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding InitCommand}"/>
+    </ContentPage.Behaviors>
+</ContentPage>

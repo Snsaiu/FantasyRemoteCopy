@@ -57,12 +57,46 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Bussiness\5uevxmka.tri~" />
+	  <None Remove="Resources\Images\android.png" />
+	  <None Remove="Resources\Images\fill.png" />
+	  <None Remove="Resources\Images\ipad.png" />
+	  <None Remove="Resources\Images\iphone.png" />
+	  <None Remove="Resources\Images\search.png" />
+	  <None Remove="Resources\Images\setting.png" />
+	  <None Remove="Resources\Images\share.png" />
+	  <None Remove="Resources\Images\text.png" />
+	  <None Remove="Resources\Images\windows.png" />
 	</ItemGroup>
 	<ItemGroup>
 	  <BundleResource Include="Resources\Images\dotnet_bot.svg" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\FantasyRemoteCopy.Core\FantasyRemoteCopy.Core.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiImage Include="Resources\Images\android.png" />
+	  <MauiImage Include="Resources\Images\fill.png" />
+	  <MauiImage Include="Resources\Images\ipad.png" />
+	  <MauiImage Include="Resources\Images\iphone.png" />
+	  <MauiImage Include="Resources\Images\search.png" />
+	  <MauiImage Include="Resources\Images\setting.png" />
+	  <MauiImage Include="Resources\Images\share.png" />
+	  <MauiImage Include="Resources\Images\text.png" />
+	  <MauiImage Include="Resources\Images\windows.png" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.3.0" />
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0-preview3" />
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiXaml Update="Views\HomePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SettingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 </Project>
