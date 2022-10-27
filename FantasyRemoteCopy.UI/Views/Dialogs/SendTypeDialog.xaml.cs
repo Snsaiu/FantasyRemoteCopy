@@ -15,7 +15,7 @@ public partial class SendTypeDialog : Popup
     public void InitData(DiscoveredDeviceModel model)
     {
         this.discoveredDeviceModel = model;
-        this.toLabel.Text ="To£º" + this.discoveredDeviceModel.NickName;
+        this.toLabel.Text ="Toï¼š" + this.discoveredDeviceModel.NickName;
     }
 
 }
