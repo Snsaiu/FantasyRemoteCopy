@@ -38,16 +38,12 @@
                 <DataTemplate>
                     <Grid Padding="5" ColumnDefinitions="auto,*,auto" BackgroundColor="White" >
                         <Image WidthRequest="50" HeightRequest="50" Source="{Binding Img}"/>
-                        <Grid Grid.Column="1" Margin="5,0" RowDefinitions="*,*,*,*">
-                            <Grid.Resources>
-                                <Style TargetType="Label">
-                                    <Setter Property="Margin" Value="0,2"/>
-                                </Style>
-                            </Grid.Resources>
-                            <Label Text="{Binding DeviceType,StringFormat='Device Type:{0}'}"></Label>
-                            <Label Text="{Binding NickName,StringFormat='Nick Name:{0}'}" Grid.Row="1"></Label>
-                            <Label Text="{Binding DeviceName,StringFormat='Device Name:{0}'}" Grid.Row="2"></Label>
-                            <Label Text="{Binding Ip,StringFormat='Ip:{0}'}" Grid.Row="3"></Label>
+                        <Grid Grid.Column="1" Margin="10,0,5,0" RowDefinitions="*,auto,auto,auto">
+                    
+                            <Label Margin="0,2,0,2" Text="{Binding NickName,StringFormat='Nick Name：{0}'}" FontAttributes="Bold"></Label>
+                            <Label Margin="0,1" Text="{Binding DeviceType,StringFormat='Device Type：{0}'}" Grid.Row="1" FontSize="10"></Label>
+                            <Label Margin="0,1" Text="{Binding DeviceName,StringFormat='Device Name：{0}'}" Grid.Row="2"  FontSize="10"></Label>
+                            <Label Margin="0,1" Text="{Binding Ip,StringFormat='Ip：{0}'}" Grid.Row="3"  FontSize="10"></Label>
                         </Grid>
                         <ImageButton Grid.Column="2" WidthRequest="50" HeightRequest="50" Source="share.png"></ImageButton>
                     </Grid>

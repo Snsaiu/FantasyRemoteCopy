@@ -109,9 +109,14 @@ namespace FantasyRemoteCopy.UI.ViewModels
             Task.Run(async () =>
             {
                 await this.sendDataBussiness.DeviceDiscover();
-            }).WaitAsync(TimeSpan.FromSeconds(10)).GetAwaiter().OnCompleted(() =>
+            }).WaitAsync(TimeSpan.FromSeconds(10)).GetAwaiter().OnCompleted(async () =>
             {
                 this.IsBusy = false;
+
+                if(this.DiscoveredDevices.Count==0)
+                {
+                    await Application.Current.MainPage.DisplayAlert("warning", "No connectable devices found! ", "Ok");
+                }
             });
         }
 
