@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FantasyRemoteCopy.UI.Views.HomePage"
@@ -39,7 +39,13 @@
                     <Grid Padding="5" ColumnDefinitions="auto,*,auto" BackgroundColor="White" >
                         <Image WidthRequest="50" HeightRequest="50" Source="{Binding Img}"/>
                         <Grid Grid.Column="1" Margin="10,0,5,0" RowDefinitions="*,auto,auto,auto">
-                    
+
+                            <Grid.Resources>
+                                <Style TargetType="Label">
+                                    <Setter Property="TextColor" Value="Black"/>
+                                </Style>
+
+                            </Grid.Resources>
                             <Label Margin="0,2,0,2" Text="{Binding NickName,StringFormat='Nick Name：{0}'}" FontAttributes="Bold"></Label>
                             <Label Margin="0,1" Text="{Binding DeviceType,StringFormat='Device Type：{0}'}" Grid.Row="1" FontSize="10"></Label>
                             <Label Margin="0,1" Text="{Binding DeviceName,StringFormat='Device Name：{0}'}" Grid.Row="2"  FontSize="10"></Label>
@@ -68,7 +74,7 @@
         </Grid>
 
 
-        <ActivityIndicator IsRunning="True" IsVisible="{Binding IsBusy}" Grid.Row="1"/>
+        <ActivityIndicator IsRunning="True" Color="LightGray" IsVisible="{Binding IsBusy}" Grid.Row="1"/>
     </Grid>
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding InitCommand}"/>
