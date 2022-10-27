@@ -24,14 +24,24 @@ namespace FantasyRemoteCopy.Core.Impls
         /// </summary>
         /// <param name="ip"></param>
         /// <param name="byteCount"></param>
-		public async Task LiseningData(string ip,long byteCount)
+		public  async Task LiseningData(string ip,long byteCount)
 		{
 			var tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            tcpSocket.Connect(new IPEndPoint(IPAddress.Parse(ip), int.Parse(ConstParams.TcpIp_Port)));
+            tcpSocket.Bind(new IPEndPoint(IPAddress.Parse(ip), int.Parse(ConstParams.TcpIp_Port)));
+
             byte[] bytes = new byte[byteCount+2048];
-            int length= await tcpSocket.ReceiveAsync(bytes,SocketFlags.None);
-            TransformData td=JsonConvert.DeserializeObject<TransformData>(Encoding.UTF8.GetString(bytes,0,length));
+            
+                tcpSocket.Listen();
+                var socket =await  tcpSocket.AcceptAsync();
+            int length= await socket.ReceiveAsync(bytes, SocketFlags.None);
+                TransformData td = JsonConvert.DeserializeObject<TransformData>(Encoding.UTF8.GetString(bytes, 0, length));
+            socket.Close();
+            socket = null;
             tcpSocket.Close();
+                tcpSocket= null;
+            
+
+  
         }
 
 
@@ -93,7 +103,7 @@ namespace FantasyRemoteCopy.Core.Impls
                     DataMetaModel dmm=JsonConvert.DeserializeObject<DataMetaModel>(Encoding.UTF8.GetString(transformdata.Data));
                     ConstParams.ReceiveMetas.Add(dmm);
                  
-                    //  transformdata.TargetIp = (((System.Net.IPEndPoint)res.RemoteEndPoint).Address).ToString();
+                      transformdata.TargetIp = (((System.Net.IPEndPoint)res.RemoteEndPoint).Address).ToString();
 
                     this.ReceiveBuildConnectionEvent?.Invoke(transformdata);
 

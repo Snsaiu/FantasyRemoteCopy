@@ -49,6 +49,7 @@ public class SendDataBussiness
         tf.DataGuid = Guid.NewGuid().ToString();
         tf.TargetIp = targetip;
         tf.Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dm));
+        dm.Guid=tf.DataGuid;
         tf.Type = TransformType.RequestBuildConnect;
         tf.Port = ConstParams.BuildTcpIp_Port;
        await  this._sendData.SendRquestBuildConnectionDataAsync(tf);

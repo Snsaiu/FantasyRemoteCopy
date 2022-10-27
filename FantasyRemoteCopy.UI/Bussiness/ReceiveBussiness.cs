@@ -37,13 +37,13 @@ public class ReceiveBussiness
     {
         if (data.Type == TransformType.RequestBuildConnect)
         {
-           await Task.Run(async () =>
+          await  Task.Run( () =>
             {
                 DataMetaModel dmm = JsonConvert.DeserializeObject<DataMetaModel>(Encoding.UTF8.GetString(data.Data));
                 dmm.State = MetaState.Received;
                 ConstParams.ReceiveMetas.Add(dmm);
 
-              await  this._receiveData.LiseningData(data.TargetIp, dmm.Size);
+                this._receiveData.LiseningData(data.TargetIp, dmm.Size);
             });
             data.Type= TransformType.BuildConnected;
             
@@ -63,7 +63,7 @@ public class ReceiveBussiness
                     var detail = ConstParams.DataContents.FirstOrDefault(x => x.Guid == findDmm.Guid);
                     if (detail == null)
                     {
-                        this.SendErrorEvent?.Invoke("发送数据时，发现数据时空的！请重新发送");
+                        this.SendErrorEvent?.Invoke("sending data error ! because data is none!");
                         ConstParams.DataContents.Remove(detail);
                         ConstParams.WillSendMetasQueue.Remove(findDmm);
 

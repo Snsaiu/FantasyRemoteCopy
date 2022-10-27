@@ -30,7 +30,7 @@ public enum TransformType
 
     SendingTxtData,
 
-    SendingFileData,
+    SendingFileData
 
        
 }
