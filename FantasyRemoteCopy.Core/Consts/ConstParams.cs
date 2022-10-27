@@ -24,4 +24,15 @@ public static class ConstParams
     /// 接收到的元数据
     /// </summary>
     public static List<DataMetaModel> ReceiveMetas=new List<DataMetaModel>();
+
+    /// <summary>
+    /// 即将发送的数据队列
+    /// </summary>
+    public static List<DataMetaModel> WillSendMetasQueue=new List<DataMetaModel>();
+
+
+    /// <summary>
+    /// 数据内容
+    /// </summary>
+    public static List<DataContent> DataContents= new List<DataContent>();
 }

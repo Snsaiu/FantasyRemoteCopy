@@ -25,7 +25,7 @@ namespace FantasyRemoteCopy.Core
         /// <summary>
         /// 接收数据
         /// </summary>
-        public void LiseningData(string ip, long byteCount);
+        public Task LiseningData(string ip, long byteCount);
 
 		/// <summary>
 		/// 接收邀请

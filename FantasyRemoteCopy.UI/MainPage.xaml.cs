@@ -71,19 +71,9 @@ public partial class MainPage : ContentPage
 
     private async void AddUserEvent(object sender, EventArgs e)
     {
-        var tf = new TransformData { Type = DataType.BuildConnected };
-        tf.DataGuid = "479237";
-
-		tf.TargetIp = this.sendInviteModels.First().DeviceIP;
-
-		string sendTxt = "这是一个测试数据";
-		byte[] bytes= Encoding.UTF8.GetBytes(sendTxt);
-		DataMetaModel dm=new DataMetaModel { Guid= tf.DataGuid ,Size=bytes.Length, Sended=false};
-		
-		tf.Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dm));
 
 
-        await this._sendDataBussiness.SendData(tf);
+		await this._sendDataBussiness.SendData(this.sendInviteModels.First().DeviceIP, "helloworld", DataType.Text);
 
     }
 

@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+
+using FantasyRemoteCopy.Core.Consts;
 using FantasyRemoteCopy.Core.Models;
 using FantasyResultModel;
 using FantasyResultModel.Impls;
@@ -17,7 +19,7 @@ public class TcpDataSender:ISendData
         
     }
 
-    public async Task<ResultBase<bool>> SendDataAsync(TransformData data)
+    public async Task<ResultBase<bool>> SendRquestBuildConnectionDataAsync(TransformData data)
     {
         Socket udpClient = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         IPAddress ipaddress = IPAddress.Parse(data.TargetIp);
@@ -64,4 +66,50 @@ public class TcpDataSender:ISendData
         udpClient.Close();
         return null;
     }
+
+    public async Task<ResultBase<bool>> SendDataAsync(DataMetaModel data,string content)
+    {
+        Socket tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        IPAddress ipaddress = IPAddress.Parse(data.TargetIp);
+        EndPoint point = new IPEndPoint(ipaddress, int.Parse(ConstParams.TcpIp_Port));
+        
+        //only for text
+        if(data.DataType==DataType.Text)
+        {
+            tcpClient.Connect(point);
+            TransformData td = new TransformData();
+            td.DataGuid = data.Guid ;
+            td.TargetIp = data.TargetIp;
+            td.Port = ConstParams.TcpIp_Port;
+            if(data.DataType== DataType.Text)
+            {
+                td.Type = Enums.TransformType.SendingTxtData;
+            }
+            else
+            {
+                td.Type = Enums.TransformType.SendingFileData;
+            }
+          
+            td.Data= Encoding.UTF8.GetBytes(content);
+
+            ArraySegment<byte>b= Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(td));
+            await tcpClient.SendAsync(b, SocketFlags.None);
+        
+           var dmm= ConstParams.WillSendMetasQueue.FirstOrDefault(x => x.Guid == data.Guid);
+            if(dmm!=null)
+            {
+                dmm.State = MetaState.Sended;
+            }
+           
+            tcpClient.Close();
+         
+        }
+        else // for file type
+        {
+
+        }
+        return new SuccessResultModel<bool>(true);
+    }
+
+
 }

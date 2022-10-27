@@ -10,6 +10,8 @@ namespace FantasyRemoteCopy.UI.Bussiness;
 
 public delegate void DiscoverEnableIpDelegate(SendInviteModel sendInviteModel);
 
+public delegate void SendErrorDelegate(string error);
+
 public class ReceiveBussiness
 {
     private readonly IReceiveData _receiveData;
@@ -17,7 +19,8 @@ public class ReceiveBussiness
     private readonly IUserService userService;
 
     public event DiscoverEnableIpDelegate DiscoverEnableIpEvent;
-   
+   public event SendErrorDelegate SendErrorEvent;
+
 
     public ReceiveBussiness(IReceiveData receiveData,ISendData sendData,IUserService userService)
     {
@@ -30,30 +33,52 @@ public class ReceiveBussiness
         this._receiveData.LiseningBuildConnection();
     }
 
-    private void BuildConnectionHandle(TransformData data)
+    private async void BuildConnectionHandle(TransformData data)
     {
-        if (data.Type == DataType.BuildConnected)
+        if (data.Type == TransformType.RequestBuildConnect)
         {
-            Task.Run(() =>
+           await Task.Run(async () =>
             {
                 DataMetaModel dmm = JsonConvert.DeserializeObject<DataMetaModel>(Encoding.UTF8.GetString(data.Data));
+                dmm.State = MetaState.Received;
                 ConstParams.ReceiveMetas.Add(dmm);
 
-                this._receiveData.LiseningData(data.TargetIp, dmm.Size);
+              await  this._receiveData.LiseningData(data.TargetIp, dmm.Size);
             });
-            data.Type= DataType.BuildConnected;
-            this._sendData.SendBuildConnectionAsync(data);
-
+            data.Type= TransformType.BuildConnected;
+            
+           await this._sendData.SendBuildConnectionAsync(data);
         }
-        else if(data.Type == DataType.BuildConnected) 
+        else if(data.Type == TransformType.BuildConnected) 
         {
 
-            // 发送数据
+            DataMetaModel dmm = JsonConvert.DeserializeObject<DataMetaModel>(Encoding.UTF8.GetString(data.Data));
+            // 找到元数据
+            var findDmm= ConstParams.WillSendMetasQueue.FirstOrDefault(x => x.Guid == dmm.Guid);
+            if(findDmm!=null)
+            {
+                if(findDmm.State==MetaState.Received)
+                {
+                    findDmm.State = MetaState.Sending;
+                    var detail = ConstParams.DataContents.FirstOrDefault(x => x.Guid == findDmm.Guid);
+                    if (detail == null)
+                    {
+                        this.SendErrorEvent?.Invoke("发送数据时，发现数据时空的！请重新发送");
+                        ConstParams.DataContents.Remove(detail);
+                        ConstParams.WillSendMetasQueue.Remove(findDmm);
+
+                        return;
+                    }  
+
+
+                 await this._sendData.SendDataAsync(findDmm,detail.Content);
+                }
+            }
 
         }
-
-
     }
+
+
 
 
     public void InviteHandle(TransformData data)
@@ -65,9 +90,9 @@ public class ReceiveBussiness
             return;
         }
 
-        if (data.Type == DataType.ValidateAccount)
+        if (data.Type == TransformType.ValidateAccount)
         {
-            data.Type = DataType.ReceiveValidateAccountResult;
+            data.Type = TransformType.ReceiveValidateAccountResult;
 
             SendInviteModel sm = new SendInviteModel();
             sm.MasterName = userData.Data.Name;
@@ -80,7 +105,7 @@ public class ReceiveBussiness
             
             this._sendData.SendInviteAsync(data);
         }
-        else if (data.Type == DataType.ReceiveValidateAccountResult)
+        else if (data.Type == TransformType.ReceiveValidateAccountResult)
         {
 
             var sm= JsonConvert.DeserializeObject<SendInviteModel>(Encoding.UTF8.GetString(data.Data));

@@ -3,11 +3,9 @@ namespace FantasyRemoteCopy.Core.Enums;
 /// <summary>
 /// 文本传输类型
 /// </summary>
-public enum DataType
+public enum TransformType
 {
-    Image,
-    Text,
-    File,
+  
     /// <summary>
     /// 客户端群发进行设备发现
     /// </summary>
@@ -28,5 +26,11 @@ public enum DataType
     /// <summary>
     /// 建立完成
     /// </summary>
-    BuildConnected
+    BuildConnected,
+
+    SendingTxtData,
+
+    SendingFileData,
+
+       
 }

@@ -26,11 +26,32 @@ public class SendDataBussiness
     }
 
 
-    public async Task<ResultBase<bool>> SendData(TransformData data)
+    /// <summary>
+    /// 发送数据
+    /// </summary>
+    /// <param name="targetip">目标ip，要发送的设备的ip地址</param>
+    /// <param name="content">发送内容，如果datatype 是file或者image 那么content是文件路径，否则是文本内容</param>
+    /// <param name="datatype">content的类型</param>
+    /// <returns></returns>
+    public async Task<ResultBase<bool>> SendData(string targetip, string content, DataType datatype)
     {
-        data.Type = DataType.RequestBuildConnect;
-        data.Port = ConstParams.BuildTcpIp_Port;
-       await  this._sendData.SendDataAsync(data);
+        var tf = new TransformData ();
+   
+        byte[] bytes = Encoding.UTF8.GetBytes(content);
+        DataMetaModel dm = new DataMetaModel { Guid = tf.DataGuid, Size = bytes.Length, State = MetaState.Receiving };
+        dm.DataType = DataType.Text;
+        dm.TargetIp = tf.TargetIp;
+
+        ConstParams.WillSendMetasQueue.Add(dm);
+
+        ConstParams.DataContents.Add(new DataContent { Guid=dm.Guid,Content=content});
+
+        tf.DataGuid = Guid.NewGuid().ToString();
+        tf.TargetIp = targetip;
+        tf.Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dm));
+        tf.Type = TransformType.RequestBuildConnect;
+        tf.Port = ConstParams.BuildTcpIp_Port;
+       await  this._sendData.SendRquestBuildConnectionDataAsync(tf);
         return null;
     }
     
@@ -67,7 +88,7 @@ public class SendDataBussiness
 
 
                 td.Data = Encoding.UTF8.GetBytes(smStr);
-                td.Type = DataType.ValidateAccount;
+                td.Type = TransformType.ValidateAccount;
                 td.TargetIp = ip;
                 td.Port = ConstParams.INVITE_PORT;
                 await this._sendData.SendInviteAsync(td);

@@ -24,13 +24,13 @@ namespace FantasyRemoteCopy.Core.Impls
         /// </summary>
         /// <param name="ip"></param>
         /// <param name="byteCount"></param>
-		public void LiseningData(string ip,long byteCount)
+		public async Task LiseningData(string ip,long byteCount)
 		{
 			var tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             tcpSocket.Connect(new IPEndPoint(IPAddress.Parse(ip), int.Parse(ConstParams.TcpIp_Port)));
-            byte[] bytes = new byte[byteCount];
-            int length= tcpSocket.Receive(bytes);
-            TransformData td=JsonConvert.DeserializeObject<TransformData>(Encoding.UTF8.GetString(bytes));
+            byte[] bytes = new byte[byteCount+2048];
+            int length= await tcpSocket.ReceiveAsync(bytes,SocketFlags.None);
+            TransformData td=JsonConvert.DeserializeObject<TransformData>(Encoding.UTF8.GetString(bytes,0,length));
             tcpSocket.Close();
         }
 

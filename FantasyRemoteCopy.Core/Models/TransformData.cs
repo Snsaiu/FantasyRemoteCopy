@@ -16,7 +16,7 @@ public class TransformData
     /// <summary>
     /// 数据类型
     /// </summary>
-    public DataType Type { get; set; }
+    public TransformType Type { get; set; }
     
     /// <summary>
     /// 目标ip
