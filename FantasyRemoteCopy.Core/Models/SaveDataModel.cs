@@ -16,7 +16,7 @@ public class SaveDataModel
 
     public DateTime Time { get; set; }
 
-    public SaveDataType  DatType { get; set; }
+    public SaveDataType  DataType { get; set; }
 
     public string SourceDeviceNickName { get; set; }
 

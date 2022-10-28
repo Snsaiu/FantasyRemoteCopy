@@ -16,9 +16,9 @@ public class DbUserService:DbBase,IUserService
     }
     
 
-    protected override void CreateTable()
+    protected override async Task CreateTable()
     {
-        this.connection.CreateTable<UserInfo>();
+      await  this.connection.CreateTableAsync<UserInfo>();
     }
 
 
@@ -26,9 +26,9 @@ public class DbUserService:DbBase,IUserService
     public async Task<ResultBase<bool>> SaveUser(UserInfo user)
     {
         int res = 0;
-        await Task.Run(() =>
+        await Task.Run(async () =>
         {
-           res=  this.connection.Insert(user);
+           res= await this.connection.InsertAsync(user);
         });
         if (res > 0)
         {

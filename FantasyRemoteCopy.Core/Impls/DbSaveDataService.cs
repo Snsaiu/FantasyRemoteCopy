@@ -10,7 +10,7 @@ public class DbSaveDataService:DbBase,ISaveDataService
 {
     protected override async Task CreateTable()
     {
-      await  this.connection.CreateTableAsync<UserInfo>();
+      await  this.connection.CreateTableAsync<SaveDataModel>();
     }
 
     public async Task<ResultBase<List<SaveDataModel>>> GetAllAsync()

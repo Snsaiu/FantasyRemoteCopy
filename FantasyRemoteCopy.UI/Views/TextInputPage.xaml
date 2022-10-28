@@ -7,7 +7,7 @@
             >
     <Grid RowDefinitions="*,auto">
 
-        <Editor x:Name="edit" Placeholder="input content here"  ></Editor>
-        <Button Text="SEND" Clicked="SendDataEvent" Grid.Row="1" BackgroundColor="DodgerBlue" TextColor="White"></Button>
+        <Editor x:Name="edit" Unfocused="UnFocusedEvent" Placeholder="input content here"  ></Editor>
+        <Button Text="SEND" Clicked="SendDataEvent" x:Name="sendBtn" Grid.Row="1" BackgroundColor="DodgerBlue" TextColor="White"></Button>
     </Grid>
 </ContentPage>
