@@ -80,10 +80,16 @@ public class ReceiveBussiness
                         ConstParams.WillSendMetasQueue.Remove(findDmm);
 
                         return;
-                    }  
+                    }
+
+                    var userRes = await this.userService.GetCurrentUser();
+                    if (userRes.Ok == false)
+                    {
+                        throw new Exception(userRes.ErrorMsg);
+                    }
 
 
-                 await this._sendData.SendDataAsync(findDmm,detail.Content);
+                 await this._sendData.SendDataAsync(findDmm,detail.Content,userRes.Data.DeviceNickName );
                 }
             }
 

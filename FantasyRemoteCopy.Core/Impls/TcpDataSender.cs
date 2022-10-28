@@ -67,7 +67,7 @@ public class TcpDataSender:ISendData
         return null;
     }
 
-    public async Task<ResultBase<bool>> SendDataAsync(DataMetaModel data,string content)
+    public async Task<ResultBase<bool>> SendDataAsync(DataMetaModel data,string content,string deviceNickName)
     {
         Socket tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         IPAddress ipaddress = IPAddress.Parse(data.TargetIp);
