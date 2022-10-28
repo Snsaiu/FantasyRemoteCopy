@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FantasyRemoteCopy.UI.Views.SettingPage"
              Title="Setting">
-    <VerticalStackLayout>
+    <Grid RowDefinitions="*,auto">
 
-        <Button  Text="LOGOUT" BackgroundColor="Red" Command="{Binding LogoutCommand}" VerticalOptions="End"></Button>
-    </VerticalStackLayout>
+        <Button  Grid.Row="1" Text="LOGOUT" BackgroundColor="Red" TextColor="White" Command="{Binding LogoutCommand}"  VerticalOptions="EndAndExpand"></Button>
+    </Grid>
 </ContentPage>

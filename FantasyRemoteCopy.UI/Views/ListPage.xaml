@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:behaviors="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="FantasyRemoteCopy.UI.Views.ListPage"
+             x:Name="cp"
              BackgroundColor="AliceBlue"
+           
              Title="History">
     <Grid>
 
@@ -22,29 +24,29 @@
                                 <Label FontSize="10" TextColor="Gray" Text="{Binding SourceDeviceName,StringFormat='Source：{0}'}" Grid.Row="1"></Label>
                                 <Label FontSize="10" TextColor="Gray" Text="{Binding Time}" Grid.Row="2"></Label>
                             </Grid>
-                            <HorizontalStackLayout Grid.Column="2">
-                                <HorizontalStackLayout.Resources>
+                            <Grid Grid.Column="2" ColumnDefinitions="auto,auto,auto,auto,auto">
+                                <Grid.Resources>
                                     <Style TargetType="ImageButton">
                                         <Setter Property="HeightRequest" Value="30"/>
                                         <Setter Property="WidthRequest" Value="30"/>
                                         <Setter Property="BackgroundColor" Value="Transparent"/>
                                         <Setter Property="Margin" Value="5,0"/>
                                     </Style>
-                                </HorizontalStackLayout.Resources>
-                                <ImageButton Source="copy.png"  IsVisible="{Binding IsText}"></ImageButton>
-                                <ImageButton Source="detail.png"  IsVisible="{Binding IsText}"></ImageButton>
-                                <ImageButton Source="openfile.png"  IsVisible="{Binding IsFile}"></ImageButton>
-                                <ImageButton Source="openfolder.png"  IsVisible="{Binding IsFile}"></ImageButton>
-                                <ImageButton Source="delete.png" ></ImageButton>
-                            </HorizontalStackLayout>
+                                </Grid.Resources>
+                                <ImageButton Command="{Binding BindingContext.CopyContentCommand,Source={Reference cp}}" CommandParameter="{Binding .}" Source="copy.png" IsVisible="{Binding IsText}">
+                                  
+                                </ImageButton>
+                                <ImageButton Grid.Column="1" Source="detail.png" Command="{Binding BindingContext.DetailCommand, Source={x:Reference cp}}" CommandParameter="{Binding .}"  IsVisible="{Binding IsText}"></ImageButton>
+                                <ImageButton Grid.Column="2" Source="openfile.png"  IsVisible="{Binding IsFile}"></ImageButton>
+                                <ImageButton Grid.Column="3" Source="openfolder.png"  IsVisible="{Binding IsFile}"></ImageButton>
+                                <ImageButton Grid.Column="4" Source="delete.png" Command="{Binding BindingContext.DeleteCommand ,Source={x:Reference cp}}" CommandParameter="{Binding .}"  ></ImageButton>
+                            </Grid>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </ScrollView>
     </Grid>
-
-
     <ContentPage.Behaviors>
         <behaviors:EventToCommandBehavior EventName="Loaded" Command="{Binding InitCommand}"/>
     </ContentPage.Behaviors>
