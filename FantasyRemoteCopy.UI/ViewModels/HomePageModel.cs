@@ -65,6 +65,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
                     sdm.Time = DateTime.Now;
                     sdm.SourceDeviceNickName = d.TargetDeviceNickName;
                     this._dataService.AddAsync(sdm);
+                    this.NewMessageVisible=true;
                 }
 
 
@@ -73,6 +74,9 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
 
         }
+
+        [ObservableProperty]
+        private bool newMessageVisible = false;
 
         [ObservableProperty]
         private bool isBusy = false;
@@ -111,6 +115,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         [ICommand]
         public async void GotoList()
         {
+            this.NewMessageVisible = false;
             var listPage = App.Current.Services.GetService<ListPage>();
             await Application.Current.MainPage.Navigation.PushAsync(listPage);
 

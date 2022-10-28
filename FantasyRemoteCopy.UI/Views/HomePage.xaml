@@ -30,7 +30,11 @@
 
             <Grid Grid.Column="2">
                 <HorizontalStackLayout>
-                    <ImageButton Margin="5,0" Source="list.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Command="{Binding GotoListCommand}"></ImageButton>
+                    <AbsoluteLayout VerticalOptions="Center" Margin="5,0">
+                        <ImageButton  Source="list.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Command="{Binding GotoListCommand}"></ImageButton>
+                        <Ellipse IsVisible="{Binding NewMessageVisible}" AbsoluteLayout.LayoutFlags="XProportional" AbsoluteLayout.LayoutBounds="1,0" Fill="red" WidthRequest="10" HeightRequest="10" HorizontalOptions="End"></Ellipse>
+                    </AbsoluteLayout>
+                    
                     <ImageButton WidthRequest="50" Command="{Binding GotoSettingPageCommand}" BackgroundColor="Transparent" Source="setting.png" HeightRequest="50"></ImageButton>
                 </HorizontalStackLayout>
                
@@ -64,19 +68,11 @@
         
         <!--搜索按钮-->
 
-        <Grid Grid.Row="2">
-            <Grid.GestureRecognizers>
-                <TapGestureRecognizer Tapped="SearchClickEvent" Command="{Binding SearchCommand}"/>
-            </Grid.GestureRecognizers>
-            <Border BackgroundColor="Orange" Stroke="transparent" WidthRequest="90" HeightRequest="90" HorizontalOptions="End" Margin="0,0,10,10">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="50" />
-                </Border.StrokeShape>
-            </Border>
-            <Image  BackgroundColor="Transparent" Source="search.png" HeightRequest="80" HorizontalOptions="End" Margin="0,0,16,10" WidthRequest="80">
+     
+            <ImageButton Grid.Row="2" x:Name="searchBtn" Clicked="SearchClickEvent" Command="{Binding SearchCommand}"  BackgroundColor="Transparent" Source="search.png" HeightRequest="80" HorizontalOptions="End" Margin="0,0,16,10" WidthRequest="80">
 
-            </Image>
-        </Grid>
+            </ImageButton>
+   
 
 
         <ActivityIndicator IsRunning="True" Color="LightGray" IsVisible="{Binding IsBusy}" Grid.Row="1"/>

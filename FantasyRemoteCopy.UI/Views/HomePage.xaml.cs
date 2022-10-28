@@ -16,7 +16,6 @@ public partial class HomePage : ContentPage
 
     private void SearchClickEvent(object sender, EventArgs e)
     {
-        var g = sender as Grid;
-        g.OnceAninmation(TransformType.Fadein, 0.5, 1, 100, Easing.Linear);
+        this.searchBtn.OnceAninmation(TransformType.Fadein, 0.5, 1, 100, Easing.Linear);
     }
 }
