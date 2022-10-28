@@ -3,27 +3,40 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:behaviors="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="FantasyRemoteCopy.UI.Views.ListPage"
+             BackgroundColor="AliceBlue"
              Title="History">
     <Grid>
 
         <ScrollView>
             <CollectionView ItemsSource="{Binding Models}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical"
+                                       ItemSpacing="2" />
+                </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid ColumnDefinitions="auto,*,auto">
-                            <Image Source="{Binding Image }" WidthRequest="50" HeightRequest="50"></Image>
-                            <Grid RowDefinitions="*,auto,auto" Grid.Column="1">
-                                <Label Text="{Binding Title}"></Label>
-                                <Label Text="{Binding SourceDeviceName,StringFormat='Source：{0}'}" Grid.Row="1"></Label>
-                                <Label Text="{Binding Time}" Grid.Row="2"></Label>
+                        <Grid ColumnDefinitions="auto,*,auto" BackgroundColor="White">
+                            <Image Source="{Binding Image }" WidthRequest="60" HeightRequest="60"></Image>
+                            <Grid Margin="5,0,0,0" HeightRequest="55" RowDefinitions="*,auto,auto" Grid.Column="1">
+                                <Label TextColor="Black" FontSize="12" Text="{Binding Title}"></Label>
+                                <Label FontSize="10" TextColor="Gray" Text="{Binding SourceDeviceName,StringFormat='Source：{0}'}" Grid.Row="1"></Label>
+                                <Label FontSize="10" TextColor="Gray" Text="{Binding Time}" Grid.Row="2"></Label>
                             </Grid>
-                            <VerticalStackLayout Grid.Column="2">
-                                <Button Text="Copy" IsVisible="{Binding IsText}"></Button>
-                                <Button Text="Detail" IsVisible="{Binding IsText}"></Button>
-                                <Button Text="Open File" IsVisible="{Binding IsFile}"></Button>
-                                <Button Text="Open Folder" IsVisible="{Binding IsFile}"></Button>
-                                <Button Text="Delete"></Button>
-                            </VerticalStackLayout>
+                            <HorizontalStackLayout Grid.Column="2">
+                                <HorizontalStackLayout.Resources>
+                                    <Style TargetType="ImageButton">
+                                        <Setter Property="HeightRequest" Value="30"/>
+                                        <Setter Property="WidthRequest" Value="30"/>
+                                        <Setter Property="BackgroundColor" Value="Transparent"/>
+                                        <Setter Property="Margin" Value="5,0"/>
+                                    </Style>
+                                </HorizontalStackLayout.Resources>
+                                <ImageButton Source="copy.png"  IsVisible="{Binding IsText}"></ImageButton>
+                                <ImageButton Source="detail.png"  IsVisible="{Binding IsText}"></ImageButton>
+                                <ImageButton Source="openfile.png"  IsVisible="{Binding IsFile}"></ImageButton>
+                                <ImageButton Source="openfolder.png"  IsVisible="{Binding IsFile}"></ImageButton>
+                                <ImageButton Source="delete.png" ></ImageButton>
+                            </HorizontalStackLayout>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

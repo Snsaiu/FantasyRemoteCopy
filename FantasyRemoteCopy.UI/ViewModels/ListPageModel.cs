@@ -35,11 +35,11 @@ public partial class ListPageModel
             {
                 if (item.Content.Length > 20)
                 {
-                    sm.Title=item.Content.Substring(0,20)+"...";
+                    sm.Title=item.Content.Replace(" ","").Replace("\n","").Substring(0,20)+"...";
                 }
                 else
                 {
-                    sm.Title = item.Content;
+                    sm.Title = item.Content.Replace(" ", "").Replace("\n", "");
                 }
                 sm.IsText = true;
                 sm.IsFile = false;
