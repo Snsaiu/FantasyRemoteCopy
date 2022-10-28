@@ -78,6 +78,7 @@ public class TcpDataSender:ISendData
         {
             tcpClient.Connect(point);
             TransformData td = new TransformData();
+            td.TargetDeviceNickName= deviceNickName;
             td.DataGuid = data.Guid ;
             td.TargetIp = data.TargetIp;
             td.Port = ConstParams.TcpIp_Port;
