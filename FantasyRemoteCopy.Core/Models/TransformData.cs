@@ -24,6 +24,11 @@ public class TransformData
     public string TargetIp { get; set; }
 
     /// <summary>
+    /// 目标设备名称
+    /// </summary>
+    public string TargetDeviceNickName { get; set; }
+
+    /// <summary>
     /// 目标端口号
     /// </summary>
     public string Port { get; set; }

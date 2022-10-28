@@ -24,10 +24,11 @@ namespace FantasyRemoteCopy.UI.ViewModels
     public partial class HomePageModel
     {
 
-        public HomePageModel(IUserService userService, SendDataBussiness sendDataBussiness,ReceiveBussiness receiveBussiness) {
+        public HomePageModel(IUserService userService, SendDataBussiness sendDataBussiness,ReceiveBussiness receiveBussiness,ISaveDataService dataService) {
             this.userService = userService;
             this.sendDataBussiness = sendDataBussiness;
             this.receiveBussiness = receiveBussiness;
+            _dataService = dataService;
 
             this.DiscoveredDevices = new ObservableCollection<DiscoveredDeviceModel>();
             
@@ -54,7 +55,18 @@ namespace FantasyRemoteCopy.UI.ViewModels
             this.receiveBussiness.ReceiveDataEvent += (d) =>
             {
                 var str = Encoding.UTF8.GetString(d.Data);
-                var dm = JsonConvert.DeserializeObject<DataMetaModel>(str);
+
+                if (d.Type == Core.Enums.TransformType.SendingTxtData)
+                {
+                    SaveDataModel sdm=new SaveDataModel();
+                    sdm.Content= str;
+                    sdm.DataType = SaveDataType.Txt;
+                    sdm.Guid = d.DataGuid;
+                    sdm.Time = DateTime.Now;
+                    sdm.SourceDeviceNickName = d.TargetDeviceNickName;
+                    this._dataService.AddAsync(sdm);
+                }
+
 
 
             };
@@ -76,6 +88,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         private readonly IUserService userService;
         private readonly SendDataBussiness sendDataBussiness;
         private readonly ReceiveBussiness receiveBussiness;
+        private readonly ISaveDataService _dataService;
 
         [ICommand]
         public async void Init()

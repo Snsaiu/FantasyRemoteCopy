@@ -42,6 +42,12 @@ public class SendDataBussiness
 
         tf.TargetIp = targetip;
 
+        var userRes = await this._userService.GetCurrentUser();
+        if (userRes.Ok == false)
+            return new ErrorResultModel<bool>(userRes.ErrorMsg);
+
+        tf.TargetDeviceNickName = userRes.Data.DeviceNickName;
+
         DataMetaModel dm = new DataMetaModel { Guid = tf.DataGuid, Size = bytes.Length, State = MetaState.Receiving };
         dm.DataType = DataType.Text;
         dm.TargetIp = tf.TargetIp;
