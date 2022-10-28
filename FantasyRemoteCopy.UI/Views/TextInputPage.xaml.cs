@@ -16,7 +16,7 @@ public partial class TextInputPage : ContentPage
     public void InitData(DiscoveredDeviceModel model)
     {
         this.discoveredDeviceModel = model;
-        this.cp.Title = "To£º" + this.discoveredDeviceModel.NickName;
+        this.cp.Title = "Toï¼š" + this.discoveredDeviceModel.NickName;
     }
     
 
@@ -27,7 +27,7 @@ public partial class TextInputPage : ContentPage
     }
 
     /// <summary>
-    /// ·¢ËÍÊý¾Ý
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -42,7 +42,7 @@ public partial class TextInputPage : ContentPage
     }
 
     /// <summary>
-    /// ÎÄ±¾Ê§È¥½¹µã
+    /// ï¿½Ä±ï¿½Ê§È¥ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
