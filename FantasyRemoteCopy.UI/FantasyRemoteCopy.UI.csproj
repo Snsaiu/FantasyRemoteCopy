@@ -96,6 +96,7 @@
 	  <None Remove="Resources\Images\detail.png" />
 	  <None Remove="Resources\Images\file.png" />
 	  <None Remove="Resources\Images\fileicon.png" />
+	  <None Remove="Resources\Images\header.png" />
 	  <None Remove="Resources\Images\ipad.png" />
 	  <None Remove="Resources\Images\iphone.png" />
 	  <None Remove="Resources\Images\list.png" />
@@ -123,6 +124,7 @@
 	  <MauiImage Include="Resources\Images\detail.png" />
 	  <MauiImage Include="Resources\Images\file.png" />
 	  <MauiImage Include="Resources\Images\fileicon.png" />
+	  <MauiImage Include="Resources\Images\header.png" />
 	  <MauiImage Include="Resources\Images\ipad.png" />
 	  <MauiImage Include="Resources\Images\iphone.png" />
 	  <MauiImage Include="Resources\Images\list.png" />

@@ -73,8 +73,8 @@ public partial class ListPageModel
     public async void CopyContent(SaveItemModel model)
     {
        await Clipboard.Default.SetTextAsync(model.Content);
-       await Toast.Make("Success copy!",CommunityToolkit.Maui.Core.ToastDuration.Short,12).Show();
-   
+       await Application.Current.MainPage.DisplayAlert("Information", "Success copy!", "Ok");
+
 
     }
 

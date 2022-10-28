@@ -16,13 +16,42 @@ namespace FantasyRemoteCopy.UI.ViewModels
     public partial class SettingPageModel
     {
         private readonly IUserService userService;
+        private readonly IGlobalScanLocalNetIp _globalScanLocalNetIp;
 
-        public SettingPageModel(IUserService userService) {
+        [ObservableProperty]
+        [AlsoNotifyCanExecuteFor(nameof(LogoutCommand))]
+        [AlsoNotifyCanExecuteFor(nameof(GlobalSearchCommand))]
+        [AlsoNotifyChangeFor(nameof(IsNotBusy))]
+        private bool isBusy = false;
+
+        public bool IsNotBusy
+        {
+            get => !this.IsBusy;
+        }
+
+        public SettingPageModel(IUserService userService,IGlobalScanLocalNetIp globalScanLocalNetIp)
+        {
             this.userService = userService;
+            _globalScanLocalNetIp = globalScanLocalNetIp;
         }
 
 
-        [ICommand]
+        [ICommand(CanExecute = nameof(IsNotBusy))]
+        public  void GlobalSearch()
+        {
+            this.IsBusy = true;
+            Task.Run( async() =>
+            { 
+               await this._globalScanLocalNetIp.GlobalSearch();
+
+            }).GetAwaiter().OnCompleted(() =>
+            {
+                this.IsBusy = false; 
+                Application.Current.MainPage.DisplayAlert("Information", "Search Complete !", "Ok");
+            });
+        }
+
+        [ICommand(CanExecute =nameof(IsNotBusy))]
         public async void Logout()
         {
             await this.userService.ClearUser();

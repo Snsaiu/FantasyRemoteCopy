@@ -5,6 +5,21 @@
              Title="Setting">
     <Grid RowDefinitions="*,auto">
 
+        <VerticalStackLayout>
+
+            <Border Stroke="Transparent" HeightRequest="40">
+                <Grid ColumnDefinitions="*,auto">
+                    <VerticalStackLayout >
+                        <Label Text="全局刷新"></Label>
+                        <Label Margin="5,0"  TextColor="Grey"  Text="一直未发现设备请尝试点击，全局刷新等待时间较长！" FontSize="10"></Label>
+                    </VerticalStackLayout>
+                    <Button Grid.Column="1" Text="全局刷新" Command="{Binding GlobalSearchCommand}"></Button>
+                </Grid>
+            </Border>
+
+        </VerticalStackLayout>
+
         <Button  Grid.Row="1" Text="LOGOUT" BackgroundColor="Red" TextColor="White" Command="{Binding LogoutCommand}"  VerticalOptions="EndAndExpand"></Button>
+        <ActivityIndicator IsRunning="True" IsVisible="{Binding IsBusy}"/>
     </Grid>
 </ContentPage>

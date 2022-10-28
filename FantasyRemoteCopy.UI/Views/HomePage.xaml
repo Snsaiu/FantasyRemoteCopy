@@ -10,8 +10,9 @@
              xmlns:convters="clr-namespace:FantasyRemoteCopy.UI.Converters"
              >
     <Grid RowDefinitions="auto,*,auto">
-        <Grid Padding="5" ColumnDefinitions="auto,*,auto" BackgroundColor="CadetBlue">
-            
+        <Image Source="header.png" IsOpaque="true" Opacity="0.6"></Image>
+        <Grid Padding="5" ColumnDefinitions="auto,*,auto" >
+           
             <!--图片-->
             <Grid>
                 <Border HeightRequest="80" Stroke="transparent" WidthRequest="80" BackgroundColor="OrangeRed">
@@ -43,6 +44,10 @@
 
         <!--列表-->
         <CollectionView Grid.Row="1" ItemsSource="{Binding DiscoveredDevices}">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical"
+                                   ItemSpacing="2" />
+            </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="5" ColumnDefinitions="auto,*,auto" BackgroundColor="White" >

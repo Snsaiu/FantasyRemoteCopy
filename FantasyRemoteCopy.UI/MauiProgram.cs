@@ -23,6 +23,8 @@ public static class MauiProgram
 			}).UseMauiCommunityToolkit();
 		builder.Services.AddTransient<IGetLocalIp, DefaultLocalIp>();
 		builder.Services.AddTransient<IScanLocalNetIp, DefaultScanLocalNetIp>();
+		builder.Services.AddTransient<IGlobalScanLocalNetIp, GlobalScanLocalNetIp>();
+
 		builder.Services.AddSingleton<IReceiveData, TcpReceiveData>();
 		builder.Services.AddTransient<ISendData, TcpDataSender>();
 		builder.Services.AddTransient<IUserService, ConfigUserService>();
