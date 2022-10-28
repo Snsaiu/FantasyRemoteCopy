@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:behaviors="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
@@ -9,7 +9,7 @@
              Title="History">
     <Grid>
 
-        <ScrollView>
+    
             <CollectionView ItemsSource="{Binding Models}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical"
@@ -41,11 +41,14 @@
                                 <ImageButton Grid.Column="3" Source="openfolder.png"  IsVisible="{Binding IsFile}"></ImageButton>
                                 <ImageButton Grid.Column="4" Source="delete.png" Command="{Binding BindingContext.DeleteCommand ,Source={x:Reference cp}}" CommandParameter="{Binding .}"  ></ImageButton>
                             </Grid>
+
+
+
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </ScrollView>
+     
     </Grid>
     <ContentPage.Behaviors>
         <behaviors:EventToCommandBehavior EventName="Loaded" Command="{Binding InitCommand}"/>
