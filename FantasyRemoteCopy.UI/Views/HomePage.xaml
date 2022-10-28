@@ -9,12 +9,13 @@
                 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:convters="clr-namespace:FantasyRemoteCopy.UI.Converters"
              >
-    <Grid RowDefinitions="auto,*,auto">
-        <Image Source="header.png" IsOpaque="true" Opacity="0.6"></Image>
+    <Grid RowDefinitions="100,*,auto">
+        <Image   Aspect="AspectFill" Grid.ColumnSpan="3" Source="header.png" IsOpaque="true" Opacity="0.6"></Image>
         <Grid Padding="5" ColumnDefinitions="auto,*,auto" >
            
             <!--图片-->
             <Grid>
+               
                 <Border HeightRequest="80" Stroke="transparent" WidthRequest="80" BackgroundColor="OrangeRed">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="50" />
