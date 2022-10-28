@@ -60,7 +60,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                 this.UserName = userRes.Data.Name;
                 this.DeviceNickName = userRes.Data.DeviceNickName;
-                await Task.Delay(TimeSpan.FromSeconds(2));
+                //await Task.Delay(TimeSpan.FromSeconds(2));
 
                 var homepage= App.Current.Services.GetService<HomePage>();
                 await Application.Current.MainPage.Navigation.PushAsync(homepage);

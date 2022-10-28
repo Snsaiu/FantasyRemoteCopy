@@ -19,17 +19,21 @@
                     <RoundRectangle CornerRadius="50" />
                 </Border.StrokeShape>
             </Border>
-            <Label Text="{Binding UserName,Converter={convters:TextToHeaderCharConverter}}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="30"></Label>
+            <Label Text="{Binding UserName,Converter={convters:TextToHeaderCharConverter}}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="60"></Label>
             </Grid>
             
             <!--用户名和设备昵称-->
             <VerticalStackLayout Grid.Column="1">
             <Label Text="{Binding UserName}"  VerticalOptions="Center" Margin="10,20,0,0" FontSize="25"></Label>
-            <Label Text="{Binding DeviceNickName,StringFormat='Nick Name of Device:{0}'}"  Margin="10,0,0,0"></Label>
+            <Label Text="{Binding DeviceNickName,StringFormat='Nick Name of Device:{0}'}" FontSize="10" Margin="10,0,0,0"></Label>
             </VerticalStackLayout>
 
             <Grid Grid.Column="2">
-                <ImageButton WidthRequest="50" Command="{Binding GotoSettingPageCommand}" BackgroundColor="Transparent" Source="setting.png" HeightRequest="50"></ImageButton>
+                <HorizontalStackLayout>
+                    <ImageButton Margin="5,0" Source="list.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Command="{Binding GotoListCommand}"></ImageButton>
+                    <ImageButton WidthRequest="50" Command="{Binding GotoSettingPageCommand}" BackgroundColor="Transparent" Source="setting.png" HeightRequest="50"></ImageButton>
+                </HorizontalStackLayout>
+               
             </Grid>
         </Grid>
 

@@ -95,6 +95,14 @@ namespace FantasyRemoteCopy.UI.ViewModels
         }
 
 
+        [ICommand]
+        public async void GotoList()
+        {
+            var listPage = App.Current.Services.GetService<ListPage>();
+            await Application.Current.MainPage.Navigation.PushAsync(listPage);
+
+        }
+
 
         [ICommand]
         public async void Share(DiscoveredDeviceModel model)

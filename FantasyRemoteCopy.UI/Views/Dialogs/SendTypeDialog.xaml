@@ -13,6 +13,9 @@
         <Grid ColumnDefinitions="*,*" Grid.Row="1" RowDefinitions="*,auto" BackgroundColor="White" Padding="10">
 
             <Grid RowDefinitions="auto,auto">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TextInputEvent"/>
+                </Grid.GestureRecognizers>
                 <Image Source="text.png" HeightRequest="50" WidthRequest="50"></Image>
                 <Label Text="TEXT" TextColor="Black" HorizontalTextAlignment="Center" Grid.Row="1"/>
             </Grid>

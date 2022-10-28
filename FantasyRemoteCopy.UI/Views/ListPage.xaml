@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FantasyRemoteCopy.UI.Views.ListPage"
+             xmlns:local="clr-namespace:FantasyRemoteCopy.UI.ViewModels"
+             x:DataType="local:ListPageModel"
+             Title="History">
+    <Grid>
+
+        <ScrollView>
+            <CollectionView ItemsSource="{Binding Models}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="auto,*,auto">
+                            <Image Source="{Binding Image }" WidthRequest="50" HeightRequest="50"></Image>
+                            <Grid RowDefinitions="*,auto,auto" Grid.Column="1">
+                                <Label Text="{Binding Title}"></Label>
+                                <Label Text="{Binding SourceDeviceName,StringFormat='Source：{0}'}" Grid.Row="1"></Label>
+                                <Label Text="{Binding Time}" Grid.Row="2"></Label>
+                            </Grid>
+                            <VerticalStackLayout Grid.Column="2">
+                                <Button Text="Copy" IsVisible="{Binding IsText}"></Button>
+                                <Button Text="Detail" IsVisible="{Binding IsText}"></Button>
+                                <Button Text="Open File" IsVisible="{Binding IsFile}"></Button>
+                                <Button Text="Open Folder" IsVisible="{Binding IsFile}"></Button>
+                                <Button Text="Delete"></Button>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+    </Grid>
+</ContentPage>

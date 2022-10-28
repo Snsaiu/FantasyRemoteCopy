@@ -18,4 +18,12 @@ public partial class SendTypeDialog : Popup
         this.toLabel.Text ="To：" + this.discoveredDeviceModel.NickName;
     }
 
+    private async void TextInputEvent(object sender, EventArgs e)
+    {
+        
+        var inputPage= App.Current.Services.GetService<TextInputPage>();
+        inputPage.InitData(discoveredDeviceModel);
+        await Application.Current.MainPage.Navigation.PushAsync(inputPage);
+        this.Close();
+    }
 }

@@ -27,6 +27,8 @@ public static class MauiProgram
 		builder.Services.AddSingleton<IReceiveData, TcpReceiveData>();
 		builder.Services.AddTransient<ISendData, TcpDataSender>();
 		builder.Services.AddTransient<IUserService, ConfigUserService>();
+		builder.Services.AddTransient<ISaveDataService,DbSaveDataService>();
+
 		builder.Services.AddTransient<SendDataBussiness>();
 		builder.Services.AddSingleton<ReceiveBussiness>();
 		builder.Services.AddTransient<LoginPage>();
@@ -39,6 +41,11 @@ public static class MauiProgram
 		builder.Services.AddTransient<SettingPageModel>();
 
 		builder.Services.AddTransient<SendTypeDialog>();
+
+		builder.Services.AddTransient<TextInputPage>();
+
+		builder.Services.AddTransient<ListPage>();
+		builder.Services.AddTransient<ListPageModel>();
 
 	
 

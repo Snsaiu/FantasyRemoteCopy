@@ -5,13 +5,13 @@ namespace FantasyRemoteCopy.Core.Impls;
 public abstract class DbBase
 {
     protected readonly string dbPath;
-    protected SQLiteConnection connection;
+    protected SQLiteAsyncConnection connection;
     public DbBase()
     {
         this.dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
             "fantasyDb.db");
 
-        this.connection = new SQLiteConnection(this.dbPath);
+        this.connection = new SQLiteAsyncConnection(this.dbPath);
         this.CreateTable();
         
     }
@@ -19,6 +19,6 @@ public abstract class DbBase
     /// <summary>
     /// 创建表
     /// </summary>
-    protected abstract void CreateTable();
+    protected abstract Task CreateTable();
 
 }

@@ -59,13 +59,16 @@
 	<ItemGroup>
 	  <None Remove="Resources\Images\android.png" />
 	  <None Remove="Resources\Images\file.png" />
+	  <None Remove="Resources\Images\fileicon.png" />
 	  <None Remove="Resources\Images\ipad.png" />
 	  <None Remove="Resources\Images\iphone.png" />
+	  <None Remove="Resources\Images\list.png" />
 	  <None Remove="Resources\Images\mac.png" />
 	  <None Remove="Resources\Images\search.png" />
 	  <None Remove="Resources\Images\setting.png" />
 	  <None Remove="Resources\Images\share.png" />
 	  <None Remove="Resources\Images\text.png" />
+	  <None Remove="Resources\Images\texticon.png" />
 	  <None Remove="Resources\Images\windows.png" />
 	</ItemGroup>
 	<ItemGroup>
@@ -77,13 +80,16 @@
 	<ItemGroup>
 	  <MauiImage Include="Resources\Images\android.png" />
 	  <MauiImage Include="Resources\Images\file.png" />
+	  <MauiImage Include="Resources\Images\fileicon.png" />
 	  <MauiImage Include="Resources\Images\ipad.png" />
 	  <MauiImage Include="Resources\Images\iphone.png" />
+	  <MauiImage Include="Resources\Images\list.png" />
 	  <MauiImage Include="Resources\Images\mac.png" />
 	  <MauiImage Include="Resources\Images\search.png" />
 	  <MauiImage Include="Resources\Images\setting.png" />
 	  <MauiImage Include="Resources\Images\share.png" />
 	  <MauiImage Include="Resources\Images\text.png" />
+	  <MauiImage Include="Resources\Images\texticon.png" />
 	  <MauiImage Include="Resources\Images\windows.png" />
 	</ItemGroup>
 	<ItemGroup>
@@ -97,10 +103,16 @@
 	  <MauiXaml Update="Views\HomePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\ListPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\SettingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\TextInputPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
