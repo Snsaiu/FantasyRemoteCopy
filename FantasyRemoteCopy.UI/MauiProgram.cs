@@ -1,6 +1,5 @@
 ﻿using FantasyRemoteCopy.Core;
 using FantasyRemoteCopy.Core.Platforms;
-using Microsoft.Extensions.DependencyInjection;
 using FantasyRemoteCopy.Core.Impls;
 using FantasyRemoteCopy.Core.Bussiness;
 using FantasyRemoteCopy.UI.Views;
