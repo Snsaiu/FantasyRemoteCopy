@@ -20,6 +20,7 @@ namespace FantasyRemoteCopy.Core.Impls
         public event ReceiveDataDelegate ReceiveDataEvent;
         public event ReceiveInviteDelegate ReceiveInviteEvent;
         public event ReceiveBuildConnectionDelegate ReceiveBuildConnectionEvent;
+        public event ReceivingDataDelegate ReceivingDataEvent;
 
 
 
@@ -30,27 +31,34 @@ namespace FantasyRemoteCopy.Core.Impls
         /// <param name="byteCount"></param>
         public async Task LiseningData(string ip, long byteCount)
         {
+            Socket tcpSocket = null;
+            Socket socket = null;
             try
             {
-                Socket tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 tcpSocket.Bind(new IPEndPoint(IPAddress.Any, int.Parse(ConstParams.TcpIp_Port)));
-
+                this.ReceivingDataEvent?.Invoke(ip);
                 tcpSocket.Listen();
 
-                byte[] bytes = new byte[byteCount + 2048];
-                var socket = await tcpSocket.AcceptAsync();
+                byte[] bytes = new byte[byteCount + 2097152];
+                socket = await tcpSocket.AcceptAsync();
                 int length = await socket.ReceiveAsync(bytes, SocketFlags.None);
-                TransformData td = JsonConvert.DeserializeObject<TransformData>(Encoding.UTF8.GetString(bytes, 0, length));
-                socket.Close();
-                socket = null;
-                tcpSocket.Close();
-                tcpSocket = null;
+                TransformData td =
+                    JsonConvert.DeserializeObject<TransformData>(Encoding.UTF8.GetString(bytes, 0, length));
+               
                 this.ReceiveDataEvent?.Invoke(td);
             }
             catch (Exception e)
             {
 
                 throw;
+            }
+            finally
+            {
+                socket.Close();
+                socket = null;
+                tcpSocket.Close();
+                tcpSocket = null;
             }
         }
 

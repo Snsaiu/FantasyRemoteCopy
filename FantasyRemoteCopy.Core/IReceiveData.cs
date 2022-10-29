@@ -7,6 +7,12 @@ namespace FantasyRemoteCopy.Core
 
 	public delegate void ReceiveInviteDelegate(TransformData data);
 
+	/// <summary>
+	/// 正在接收数据
+	/// </summary>
+	/// <param name="ip"></param>
+    public delegate void ReceivingDataDelegate(string ip);
+
 	
 
 
@@ -23,6 +29,8 @@ namespace FantasyRemoteCopy.Core
 		event ReceiveDataDelegate ReceiveDataEvent;
 		event ReceiveInviteDelegate ReceiveInviteEvent;
 		event ReceiveBuildConnectionDelegate ReceiveBuildConnectionEvent;
+		event ReceivingDataDelegate ReceivingDataEvent;
+
         /// <summary>
         /// 接收数据
         /// </summary>

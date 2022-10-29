@@ -24,11 +24,12 @@ namespace FantasyRemoteCopy.UI.ViewModels
     public partial class HomePageModel
     {
 
-        public HomePageModel(IUserService userService, SendDataBussiness sendDataBussiness,ReceiveBussiness receiveBussiness,ISaveDataService dataService) {
+        public HomePageModel(IUserService userService, SendDataBussiness sendDataBussiness,ReceiveBussiness receiveBussiness,ISaveDataService dataService,IFileSaveLocation fileSaveLocation) {
             this.userService = userService;
             this.sendDataBussiness = sendDataBussiness;
             this.receiveBussiness = receiveBussiness;
             _dataService = dataService;
+            _fileSaveLocation = fileSaveLocation;
 
             this.DiscoveredDevices = new ObservableCollection<DiscoveredDeviceModel>();
             
@@ -51,6 +52,10 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
 
             };
+            this.receiveBussiness.ReceivingDataEvent += (ip) =>
+            {
+                this.IsDownLoadingVisible = true;
+            };
 
             this.receiveBussiness.ReceiveDataEvent += (d) =>
             {
@@ -66,6 +71,37 @@ namespace FantasyRemoteCopy.UI.ViewModels
                     sdm.SourceDeviceNickName = d.TargetDeviceNickName;
                     this._dataService.AddAsync(sdm);
                     this.NewMessageVisible=true;
+                    this.IsDownLoadingVisible = false;
+                }
+                else
+                {
+                   var sdm=  JsonConvert.DeserializeObject<FileDataModel>(str);
+                   var saveLocation = this._fileSaveLocation.GetSaveLocation();
+                   var fileFullName = Path.Combine(saveLocation, sdm.FileNameWithExtension);
+                    Task.Run(() =>
+                   {
+                     
+                       using (FileStream fs = new FileStream(fileFullName, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.ReadWrite))
+                       {
+                           fs.Write(sdm.ContentBytes, 0, sdm.ContentBytes.Length);
+                       }
+
+                   }).GetAwaiter().OnCompleted(() =>
+                   {
+
+                       SaveDataModel sdm = new SaveDataModel();
+                       sdm.Content = fileFullName;
+                       sdm.DataType = SaveDataType.File;
+                       sdm.Guid = d.DataGuid;
+                       sdm.Time = DateTime.Now;
+                       sdm.SourceDeviceNickName = d.TargetDeviceNickName;
+                       this._dataService.AddAsync(sdm);
+
+                       this.NewMessageVisible = true;
+                       this.IsDownLoadingVisible=false;
+
+                   });
+
                 }
 
 
@@ -74,6 +110,9 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
 
         }
+
+        [ObservableProperty]
+        private bool isDownLoadingVisible;
 
         [ObservableProperty]
         private bool newMessageVisible = false;
@@ -93,6 +132,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         private readonly SendDataBussiness sendDataBussiness;
         private readonly ReceiveBussiness receiveBussiness;
         private readonly ISaveDataService _dataService;
+        private readonly IFileSaveLocation _fileSaveLocation;
 
         [ICommand]
         public async void Init()

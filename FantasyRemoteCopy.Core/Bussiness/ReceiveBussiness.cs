@@ -14,6 +14,8 @@ public delegate void SendErrorDelegate(string error);
 
 public delegate void ReceiveDataDelegate(TransformData data);
 
+public delegate void ReceivingDataDelegate(string ip);
+
 public class ReceiveBussiness
 {
     private readonly IReceiveData _receiveData;
@@ -24,6 +26,7 @@ public class ReceiveBussiness
    public event SendErrorDelegate SendErrorEvent;
 
     public event ReceiveDataDelegate ReceiveDataEvent;
+    public event ReceivingDataDelegate ReceivingDataEvent;
 
     public ReceiveBussiness(IReceiveData receiveData,ISendData sendData,IUserService userService)
     {
@@ -35,6 +38,10 @@ public class ReceiveBussiness
         this._receiveData.ReceiveDataEvent += (d) =>
         {
             this.ReceiveDataEvent?.Invoke(d);
+        };
+        this._receiveData.ReceivingDataEvent += (ip) =>
+        {
+            this.ReceivingDataEvent?.Invoke(ip);
         };
 
         this._receiveData.LiseningInvite();

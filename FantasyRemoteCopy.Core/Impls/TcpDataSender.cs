@@ -125,6 +125,8 @@ public class TcpDataSender:ISendData
             byte[] contentBytes = new byte[st.Length];
 
             int readAsync = await st.ReadAsync(contentBytes,0,(int)st.Length);
+
+            st.Close();
             fdm.ContentBytes = contentBytes.ToArray();
 
             td.Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(fdm));

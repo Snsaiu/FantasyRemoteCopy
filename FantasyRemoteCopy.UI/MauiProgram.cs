@@ -21,6 +21,8 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			}).UseMauiCommunityToolkit();
+
+		builder.Services.AddTransient<IFileSaveLocation, AppDataFolderFileSaveLocation>();
 		builder.Services.AddTransient<IGetLocalIp, DefaultLocalIp>();
 		builder.Services.AddTransient<IScanLocalNetIp, DefaultScanLocalNetIp>();
 		builder.Services.AddTransient<IGlobalScanLocalNetIp, GlobalScanLocalNetIp>();

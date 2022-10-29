@@ -11,8 +11,12 @@ public partial class HomePage : ContentPage
 	public HomePage(HomePageModel vm)
 	{
 		InitializeComponent();
+
 		this.BindingContext = vm;
-	}
+        downloadEllipse.LoopAnimation(TransformType.Fadein, 0, 1, 200, Easing.Default);
+        downloadEllipseFill.LoopAnimation(TransformType.Fadein, 1, 0, 200, Easing.Default);
+
+    }
 
     private void SearchClickEvent(object sender, EventArgs e)
     {

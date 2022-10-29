@@ -32,6 +32,11 @@
 
             <Grid Grid.Column="2">
                 <HorizontalStackLayout>
+                    <Grid>
+                        <Ellipse Fill="Red" IsVisible="{Binding IsDownLoadingVisible}" WidthRequest="8" HeightRequest="8" x:Name="downloadEllipseFill" VerticalOptions="Center" />
+                        <Ellipse Fill="Transparent" IsVisible="{Binding IsDownLoadingVisible}" Stroke="red" WidthRequest="10" HeightRequest="10" x:Name="downloadEllipse" VerticalOptions="Center" />
+                    </Grid>
+                 
                     <AbsoluteLayout VerticalOptions="Center" Margin="5,0">
                         <ImageButton  Source="list.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Command="{Binding GotoListCommand}"></ImageButton>
                         <Ellipse IsVisible="{Binding NewMessageVisible}" AbsoluteLayout.LayoutFlags="XProportional" AbsoluteLayout.LayoutBounds="1,0" Fill="red" WidthRequest="10" HeightRequest="10" HorizontalOptions="End"></Ellipse>
