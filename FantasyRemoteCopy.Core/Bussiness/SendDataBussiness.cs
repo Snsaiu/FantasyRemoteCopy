@@ -38,7 +38,23 @@ public class SendDataBussiness
         var tf = new TransformData ();
         tf.DataGuid = Guid.NewGuid().ToString();
 
-        byte[] bytes = Encoding.UTF8.GetBytes(content);
+
+
+        long contentSize = 0;
+
+        if (datatype == DataType.Text)
+        {
+          var bytes= Encoding.UTF8.GetBytes(content);
+          contentSize= bytes.Length;
+        }
+        else
+        {
+          FileInfo f=new FileInfo(content);
+          contentSize = f.Length;
+            
+        }
+       
+
 
         tf.TargetIp = targetip;
 
@@ -48,10 +64,16 @@ public class SendDataBussiness
 
         tf.TargetDeviceNickName = userRes.Data.DeviceNickName;
 
-        DataMetaModel dm = new DataMetaModel { Guid = tf.DataGuid, Size = bytes.Length, State = MetaState.Receiving };
-        dm.DataType = DataType.Text;
+        DataMetaModel dm = new DataMetaModel { Guid = tf.DataGuid, Size = contentSize, State = MetaState.Receiving };
+        dm.DataType = datatype;
         dm.TargetIp = tf.TargetIp;
         dm.Guid = tf.DataGuid;
+        if (datatype == DataType.File)
+        {
+            dm.SourcePosition = content;
+        }
+        
+      
 
         tf.Type = TransformType.RequestBuildConnect;
         tf.Port = ConstParams.BuildTcpIp_Port;

@@ -39,7 +39,7 @@ public class DataMetaModel
 
 public enum DataType
 {
-    Image,
+    //Image,
     Text,
     File,
 }

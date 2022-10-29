@@ -21,6 +21,9 @@
             </Grid>
 
             <Grid Grid.Column="1" RowDefinitions="auto,auto">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="FileInputEvent"/>
+                </Grid.GestureRecognizers>
                 <Image Source="file.png" HeightRequest="50" WidthRequest="50"></Image>
                 <Label Text="FILE" TextColor="Black" HorizontalTextAlignment="Center" Grid.Row="1"/>
             </Grid>

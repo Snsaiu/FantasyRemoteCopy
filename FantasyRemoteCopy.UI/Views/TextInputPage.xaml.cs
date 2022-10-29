@@ -34,8 +34,7 @@ public partial class TextInputPage : ContentPage
     private async void SendDataEvent(object sender, EventArgs e)
     {
 
-        DataMetaModel dm = new DataMetaModel();
-
+      
        await this._sendData.SendData(this.discoveredDeviceModel.Ip, this.edit.Text,DataType.Text);
        await Task.Delay(1000);
       await Application.Current.MainPage.Navigation.PopAsync();

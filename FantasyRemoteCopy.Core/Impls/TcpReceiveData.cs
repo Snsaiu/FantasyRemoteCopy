@@ -32,9 +32,6 @@ namespace FantasyRemoteCopy.Core.Impls
         {
             try
             {
-
-
-
                 Socket tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 tcpSocket.Bind(new IPEndPoint(IPAddress.Any, int.Parse(ConstParams.TcpIp_Port)));
 
@@ -58,6 +55,9 @@ namespace FantasyRemoteCopy.Core.Impls
         }
 
 
+        /// <summary>
+        /// 建立邀请
+        /// </summary>
         public void LiseningInvite()
         {
             var udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);

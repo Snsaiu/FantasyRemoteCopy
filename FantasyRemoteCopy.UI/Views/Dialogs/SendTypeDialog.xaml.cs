@@ -1,14 +1,19 @@
 using CommunityToolkit.Maui.Views;
+using FantasyRemoteCopy.Core.Bussiness;
+using FantasyRemoteCopy.Core.Models;
 using FantasyRemoteCopy.UI.Models;
 
 namespace FantasyRemoteCopy.UI.Views.Dialogs;
 
 public partial class SendTypeDialog : Popup
 {
-	public SendTypeDialog()
-	{
-		InitializeComponent();
-	}
+    private readonly SendDataBussiness _sendData;
+
+    public SendTypeDialog(SendDataBussiness sendData)
+    {
+        _sendData = sendData;
+        InitializeComponent();
+    }
 
     private DiscoveredDeviceModel discoveredDeviceModel;
 
@@ -25,5 +30,28 @@ public partial class SendTypeDialog : Popup
         inputPage.InitData(discoveredDeviceModel);
         await Application.Current.MainPage.Navigation.PushAsync(inputPage);
         this.Close();
+    }
+
+    private  async void FileInputEvent(object sender, EventArgs e)
+    {
+        try
+        {
+        
+          var f=await  FilePicker.Default.PickAsync();
+          if (f != null)
+          {
+             
+              await this._sendData.SendData(this.discoveredDeviceModel.Ip, f.FullPath, DataType.File);
+              await Task.Delay(1000);
+            
+            }
+
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+            throw;
+        }
+     
     }
 }

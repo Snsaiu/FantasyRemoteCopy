@@ -18,4 +18,6 @@ public partial class HomePage : ContentPage
     {
         this.searchBtn.OnceAninmation(TransformType.Fadein, 0.5, 1, 100, Easing.Linear);
     }
+
+
 }
