@@ -6,6 +6,7 @@ using System.Text;
 using FantasyRemoteCopy.Core.Consts;
 using FantasyRemoteCopy.Core.Models;
 
+
 using Newtonsoft.Json;
 
 namespace FantasyRemoteCopy.Core.Impls
@@ -24,42 +25,97 @@ namespace FantasyRemoteCopy.Core.Impls
 
 
 
+       
+
+
         /// <summary>
         /// 建立tcp数据
         /// </summary>
         /// <param name="ip"></param>
         /// <param name="byteCount"></param>
-        public async Task LiseningData(string ip, long byteCount)
+        public  void LiseningData(string ip, long byteCount)
         {
-            Socket tcpSocket = null;
-            Socket socket = null;
-            try
-            {
-                tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                tcpSocket.Bind(new IPEndPoint(IPAddress.Any, int.Parse(ConstParams.TcpIp_Port)));
-                this.ReceivingDataEvent?.Invoke(ip);
-                tcpSocket.Listen();
 
-                byte[] bytes = new byte[byteCount + 2097152];
-                socket = await tcpSocket.AcceptAsync();
-                int length = await socket.ReceiveAsync(bytes, SocketFlags.None);
-                TransformData td =
-                    JsonConvert.DeserializeObject<TransformData>(Encoding.UTF8.GetString(bytes, 0, length));
-               
-                this.ReceiveDataEvent?.Invoke(td);
-            }
-            catch (Exception e)
-            {
+           var listener = new TcpListener(IPAddress.Parse(ip), int.Parse(ConstParams.TcpIp_Port));
+           listener.Start();
+            Task.Run(() =>
+           {
 
-                throw;
-            }
-            finally
-            {
-                socket.Close();
-                socket = null;
-                tcpSocket.Close();
-                tcpSocket = null;
-            }
+               while (true)
+               {
+                   try
+                   {
+                       TcpClient client = listener.AcceptTcpClient();
+
+                       if (client.Connected)
+                       {
+                          
+                       }
+                       NetworkStream stream = client.GetStream();
+                       if (stream != null)
+                       {
+                           byte[] buffer = new byte[byteCount+1024*1024];
+                               int real_count= stream.Read(buffer,0,buffer.Length);
+                             
+                               stream.Flush();
+                               stream.Close();
+                               client.Close();
+
+                           TransformData td =
+                               JsonConvert.DeserializeObject<TransformData>(Encoding.UTF8.GetString(buffer, 0, real_count));
+
+                           this.ReceiveDataEvent?.Invoke(td);
+
+                       }
+                       return;
+                   }
+                   catch (Exception ex)
+                   {
+                     
+                   }
+               }
+
+
+
+           }).GetAwaiter().OnCompleted(() =>
+           {
+
+               listener.Stop();
+
+           });
+
+
+        
+   
+            //Socket tcpSocket = null;
+            //Socket socket = null;
+            //try
+            //{
+            //    tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            //    tcpSocket.Bind(new IPEndPoint(IPAddress.Any, int.Parse(ConstParams.TcpIp_Port)));
+            //    this.ReceivingDataEvent?.Invoke(ip);
+            //    tcpSocket.Listen();
+
+            //    byte[] bytes = new byte[byteCount + 2097152];
+            //    socket = await tcpSocket.AcceptAsync();
+            //    int length = await socket.ReceiveAsync(bytes, SocketFlags.None);
+            //    TransformData td =
+            //        JsonConvert.DeserializeObject<TransformData>(Encoding.UTF8.GetString(bytes, 0, length));
+
+            //    this.ReceiveDataEvent?.Invoke(td);
+            //}
+            //catch (Exception e)
+            //{
+
+            //    throw;
+            //}
+            //finally
+            //{
+            //    socket.Close();
+            //    socket = null;
+            //    tcpSocket.Close();
+            //    tcpSocket = null;
+            //}
         }
 
 
