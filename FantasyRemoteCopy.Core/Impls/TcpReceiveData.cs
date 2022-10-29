@@ -36,11 +36,11 @@ namespace FantasyRemoteCopy.Core.Impls
         public  void LiseningData(string ip, long byteCount)
         {
 
-           var listener = new TcpListener(IPAddress.Parse(ip), int.Parse(ConstParams.TcpIp_Port));
+           var listener = new TcpListener( int.Parse(ConstParams.TcpIp_Port));
            listener.Start();
             Task.Run(() =>
            {
-
+               this.ReceivingDataEvent?.Invoke(ip);
                while (true)
                {
                    try
@@ -54,10 +54,16 @@ namespace FantasyRemoteCopy.Core.Impls
                        NetworkStream stream = client.GetStream();
                        if (stream != null)
                        {
-                           byte[] buffer = new byte[byteCount+1024*1024];
-                               int real_count= stream.Read(buffer,0,buffer.Length);
-                             
-                               stream.Flush();
+                           byte[] buffer = new byte[byteCount + 1024*1024];
+                         int real_count= stream.Read(buffer, 0, buffer.Length);
+                           //byte[] buffer = new byte[512];
+                           //while ((size = stream.Read(buffer, 0, buffer.Length)) > 0)
+                           //{
+                           //    fs.Write(buffer, 0, size);
+                           //    len += size;
+                           //}
+
+                           stream.Flush();
                                stream.Close();
                                client.Close();
 
