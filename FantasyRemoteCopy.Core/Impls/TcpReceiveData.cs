@@ -56,6 +56,12 @@ namespace FantasyRemoteCopy.Core.Impls
                        {
                            byte[] buffer = new byte[byteCount + 1024*1024];
                          int real_count= stream.Read(buffer, 0, buffer.Length);
+
+                         while (real_count!=0)
+                         {
+                             int x= stream.Read(buffer, real_count, 1024 * 1024);
+                             real_count = real_count + x;
+                         }
                            //byte[] buffer = new byte[512];
                            //while ((size = stream.Read(buffer, 0, buffer.Length)) > 0)
                            //{
