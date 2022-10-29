@@ -21,24 +21,24 @@ public class TcpDataSender:ISendData
 
 
     /// <summary>
-    /// ÏòÔ¶³ÌÖ÷»ú·¢ËÍÊý¾Ý
+    /// ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
-    /// <param name="socket">Òª·¢ËÍÊý¾ÝÇÒÒÑ¾­Á¬½Óµ½Ô¶³ÌÖ÷»úµÄ Socket</param>
-    /// <param name="buffer">´ý·¢ËÍµÄÊý¾Ý</param>
-    /// <param name="outTime">·¢ËÍÊý¾ÝµÄ³¬Ê±Ê±¼ä£¬ÒÔÃëÎªµ¥Î»£¬¿ÉÒÔ¾«È·µ½Î¢Ãë</param>
-    /// <returns>0:·¢ËÍÊý¾Ý³É¹¦£»-1:³¬Ê±£»-2:·¢ËÍÊý¾Ý³öÏÖ´íÎó£»-3:·¢ËÍÊý¾ÝÊ±³öÏÖÒì³£</returns>
+    /// <param name="socket">Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Óµï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Socket</param>
+    /// <param name="buffer">ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½</param>
+    /// <param name="outTime">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÝµÄ³ï¿½Ê±Ê±ï¿½ä£¬ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½Ô¾ï¿½È·ï¿½ï¿½Î¢ï¿½ï¿½</param>
+    /// <returns>0:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý³É¹ï¿½ï¿½ï¿½-1:ï¿½ï¿½Ê±ï¿½ï¿½-2:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý³ï¿½ï¿½Ö´ï¿½ï¿½ï¿½-3:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ì³£</returns>
     /// <remarks >
-    /// µ± outTime Ö¸¶¨Îª-1Ê±£¬½«Ò»Ö±µÈ´ýÖ±µ½ÓÐÊý¾ÝÐèÒª·¢ËÍ
+    /// ï¿½ï¿½ outTime Ö¸ï¿½ï¿½Îª-1Ê±ï¿½ï¿½ï¿½ï¿½Ò»Ö±ï¿½È´ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½
     /// </remarks>
     private  int sendData(Socket socket, byte[] buffer, int outTime)
     {
         if (socket == null || socket.Connected == false)
         {
-            throw new ArgumentException("²ÎÊýsocket Îªnull£¬»òÕßÎ´Á¬½Óµ½Ô¶³Ì¼ÆËã»ú");
+            throw new ArgumentException("ï¿½ï¿½ï¿½ï¿½socket Îªnullï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½Óµï¿½Ô¶ï¿½Ì¼ï¿½ï¿½ï¿½ï¿½");
         }
         if (buffer == null || buffer.Length == 0)
         {
-            throw new ArgumentException("²ÎÊýbuffer Îªnull ,»òÕß³¤¶ÈÎª 0");
+            throw new ArgumentException("ï¿½ï¿½ï¿½ï¿½buffer Îªnull ,ï¿½ï¿½ï¿½ß³ï¿½ï¿½ï¿½Îª 0");
         }
 
         int flag = 0;
@@ -50,29 +50,29 @@ public class TcpDataSender:ISendData
             while (true)
             {
                 if ((socket.Poll(outTime * 100, SelectMode.SelectWrite) == true))
-                {        // ÊÕ¼¯ÁË×ã¹»¶àµÄ´«³öÊý¾Ýºó¿ªÊ¼·¢ËÍ
+                {        // ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½ã¹»ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ýºï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
                     sndLen = socket.Send(buffer, sndLen, left, SocketFlags.None);
                     left -= sndLen;
                     if (left == 0)
-                    {                                        // Êý¾ÝÒÑ¾­È«²¿·¢ËÍ
+                    {                                        // ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                         flag = 0;
                         break;
                     }
                     else
                     {
                         if (sndLen > 0)
-                        {                                    // Êý¾Ý²¿·ÖÒÑ¾­±»·¢ËÍ
+                        {                                    // ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                             continue;
                         }
                         else
-                        {                                                // ·¢ËÍÊý¾Ý·¢Éú´íÎó
+                        {                                                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                             flag = -2;
                             break;
                         }
                     }
                 }
                 else
-                {                                                        // ³¬Ê±ÍË³ö
+                {                                                        // ï¿½ï¿½Ê±ï¿½Ë³ï¿½
                     flag = -1;
                     break;
                 }
@@ -171,6 +171,7 @@ public class TcpDataSender:ISendData
         else // for file type
         {
             tcpClient.Connect(point);
+        
             TransformData td = new TransformData();
             td.TargetDeviceNickName = deviceNickName;
             td.DataGuid = data.Guid;
@@ -187,7 +188,7 @@ public class TcpDataSender:ISendData
             var dmm = ConstParams.WillSendMetasQueue.FirstOrDefault(x => x.Guid == data.Guid);
             if (dmm == null)
             {
-                return new ErrorResultModel<bool>("¶ÓÁÐÖÐÃ»ÓÐ·¢ÏÖÎÄ¼þÐÅÏ¢");
+                return new ErrorResultModel<bool>("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð·ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ï¢");
             }
 
             FileStream st = new FileStream(content, FileMode.Open,FileAccess.Read,FileShare.ReadWrite);

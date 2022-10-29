@@ -37,14 +37,15 @@ public partial class SendTypeDialog : Popup
         try
         {
         
-          var f=await  FilePicker.Default.PickAsync();
+          var f=await  FilePicker.PickAsync();
           if (f != null)
           {
              
               await this._sendData.SendData(this.discoveredDeviceModel.Ip, f.FullPath, DataType.File);
-              await Task.Delay(1000);
-            
+           
+
             }
+           
 
         }
         catch (Exception exception)

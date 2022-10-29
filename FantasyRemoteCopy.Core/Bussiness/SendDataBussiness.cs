@@ -38,7 +38,7 @@ public class SendDataBussiness
         var tf = new TransformData ();
         tf.DataGuid = Guid.NewGuid().ToString();
 
-
+        await Task.Delay(1000);
 
         long contentSize = 0;
 
