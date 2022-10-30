@@ -8,7 +8,7 @@ using FantasyRemoteCopy.UI.Models;
 
 using System.Collections.ObjectModel;
 using FantasyRemoteCopy.UI.Views;
-using Windows.Storage.Pickers;
+
 
 namespace FantasyRemoteCopy.UI.ViewModels;
 
@@ -18,7 +18,7 @@ public partial class ListPageModel
 {
     private readonly ISaveDataService _saveDataService;
     private readonly IOpenFolder _openFolder;
-    private readonly FolderPicker _folderPicker;
+
 
 
     [ObservableProperty]
@@ -102,19 +102,22 @@ public partial class ListPageModel
             return;
         }
         this.IsBusy = true;
-       
-          var openOk=  await Launcher.OpenAsync(model.Content);
+
+#if WINDOWS
+                var openOk=  await Launcher.OpenAsync(model.Content);
           if (openOk)
           {
-              //var t= Toast.Make($"{model.Title}已经打开",CommunityToolkit.Maui.Core.ToastDuration.Short,15);
-              //await t.Show();
-            // await Application.Current.MainPage.DisplaySnackbar("hello");
-              //await Application.Current.MainPage.DisplayAlert("Information", $"{model.Title}已经打开", "Ok");
           }
           else
           {
-              await Application.Current.MainPage.DisplayAlert("Warning", $"{model.Title}打开失败", "Ok");
-        }
+              await Application.Current.MainPage.DisplayAlert("Warning", $"{model.Title} Open Error", "Ok");
+        }  
+#elif MACCATALYST
+
+        System.Diagnostics.Process.Start("open", model.Content);
+        
+#endif
+
             this.IsBusy = false;
             
        
@@ -130,6 +133,14 @@ public partial class ListPageModel
     public async void Delete(SaveItemModel model)
     {
         this.IsBusy = true;
+        if (model.IsFile)
+        {
+            if (File.Exists(model.Content))
+            {
+                File.Delete(model.Content);
+            }
+        }
+        
        var res=  await this._saveDataService.DeleteDataAsync(model.Guid);
        if (res.Ok)
        {

@@ -36,16 +36,29 @@ public partial class SendTypeDialog : Popup
     {
         try
         {
+          
         
           var f=await FilePicker.PickAsync();
+           
           if (f != null)
           {
-             
-              await this._sendData.SendData(this.discoveredDeviceModel.Ip, f.FullPath, DataType.File);
-           
 
-            }
-           
+              FileInfo finfo = new FileInfo(f.FullPath);
+              if (finfo.Length > 1073741824)
+              {
+                    
+                  await App.Current.MainPage.DisplayAlert("Warning", "File cannot be larger than 1G ！", "Ok");
+                  return;
+              }
+              
+              await this._sendData.SendData(this.discoveredDeviceModel.Ip, f.FullPath, DataType.File);
+
+              await Application.Current.MainPage.DisplayAlert("Information", "Sended!", "Ok");
+              this.Close();
+
+
+          }
+            //this.Close();
 
         }
         catch (Exception exception)

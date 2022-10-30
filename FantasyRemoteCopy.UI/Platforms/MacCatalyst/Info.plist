@@ -28,5 +28,10 @@
 	<string>Assets.xcassets/appicon.appiconset</string>
 	<key>Keychain</key>
 	<true/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+    <string>lyft</string>  
+    <string>fb</string>
+</array>
 </dict>
 </plist>

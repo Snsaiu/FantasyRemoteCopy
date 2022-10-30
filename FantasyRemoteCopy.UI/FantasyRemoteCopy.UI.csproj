@@ -171,18 +171,15 @@
 	  </MauiXaml>
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0-android31.0'">
-	  <PackageReference Include="Fantasy.Maui.Controls">
-	    <Version>1.0.0</Version>
+	  <PackageReference Include="Fantasy.Maui.Controls" Version="1.0.0">
 	  </PackageReference>
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0-ios15.4'">
-	  <PackageReference Include="Fantasy.Maui.Controls">
-	    <Version>1.0.0</Version>
+	  <PackageReference Include="Fantasy.Maui.Controls" Version="1.0.0">
 	  </PackageReference>
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0-windows10.0.19041.0'">
-	  <PackageReference Include="Fantasy.Maui.Controls">
-	    <Version>1.0.0</Version>
+	  <PackageReference Include="Fantasy.Maui.Controls" Version="1.0.0">
 	  </PackageReference>
 	</ItemGroup>
 	<ItemGroup>

@@ -1,4 +1,4 @@
-﻿using FantasyResultModel;
+﻿    using FantasyResultModel;
 using FantasyResultModel.Impls;
 
 using Microsoft.Maui.Controls.PlatformConfiguration;

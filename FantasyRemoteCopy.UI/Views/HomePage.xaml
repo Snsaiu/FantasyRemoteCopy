@@ -27,7 +27,7 @@
             <!--用户名和设备昵称-->
             <VerticalStackLayout Grid.Column="1">
             <Label TextColor="Black" Text="{Binding UserName}"  VerticalOptions="Center" Margin="10,20,0,0" FontSize="25"></Label>
-            <Label TextColor="Black" Text="{Binding DeviceNickName,StringFormat='Nick Name of Device:{0}'}" FontSize="10" Margin="10,0,0,0"></Label>
+            <Label TextColor="Black" Text="{Binding DeviceNickName,StringFormat='Nick Name of Device:{0}'}" FontSize="{OnPlatform MacCatalyst=15,WinUI=10}" Margin="10,0,0,0"></Label>
             </VerticalStackLayout>
 
             <Grid Grid.Column="2">
