@@ -30,6 +30,7 @@
 
    
         </Grid>
+        <ActivityIndicator IsRunning="True" x:Name="act" IsVisible="false"></ActivityIndicator>
     </Grid>
 
 </views:Popup>

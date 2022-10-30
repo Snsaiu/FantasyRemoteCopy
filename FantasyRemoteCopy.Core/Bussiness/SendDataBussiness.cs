@@ -84,7 +84,7 @@ public class SendDataBussiness
 
         ConstParams.DataContents.Add(new DataContent { Guid = dm.Guid, Content = content });
         await  this._sendData.SendRquestBuildConnectionDataAsync(tf);
-        return null;
+        return new SuccessResultModel<bool>(true);
     }
     
     /// <summary>
