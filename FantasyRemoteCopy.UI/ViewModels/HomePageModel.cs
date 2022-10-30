@@ -52,10 +52,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
 
             };
-            this.receiveBussiness.ReceivingDataEvent += (ip) =>
-            {
-                this.IsDownLoadingVisible = true;
-            };
+
 
             this.receiveBussiness.ReceiveDataEvent += (d) =>
             {
@@ -108,6 +105,30 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
             };
 
+            this.receiveBussiness.ReceivingDataEvent += (ip) =>
+            {
+                this.IsDownLoadingVisible = true;
+                if (DiscoveredDevices != null)
+                {
+                    var find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    if (find != null)
+                    {
+                        find.IsDownLoading = true;
+                    }
+                }
+            };
+
+            this.receiveBussiness.ReceivedFileFinishedEvent += (ip) =>
+            {
+                if (DiscoveredDevices != null)
+                {
+                    var find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    if (find != null)
+                    {
+                        find.IsDownLoading = false;
+                    }
+                }
+            };
 
         }
 

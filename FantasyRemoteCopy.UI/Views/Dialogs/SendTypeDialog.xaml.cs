@@ -56,9 +56,12 @@ public partial class SendTypeDialog : Popup
               if (res != null)
               {
                   this.act.IsVisible = false;
-                    await Application.Current.MainPage.DisplayAlert("Information", "Sended!", "Ok");
-                  
-                  this.Close();
+#if WINDOWS
+                  await Application.Current.MainPage.DisplayAlert("Information", "Sended!", "Ok");
+#endif
+
+
+                    this.Close();
 
                 }
 
