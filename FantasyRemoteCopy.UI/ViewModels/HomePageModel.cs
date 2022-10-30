@@ -75,6 +75,14 @@ namespace FantasyRemoteCopy.UI.ViewModels
                    var sdm=  JsonConvert.DeserializeObject<FileDataModel>(str);
                    var saveLocation = this._fileSaveLocation.GetSaveLocation();
                    var fileFullName = Path.Combine(saveLocation, sdm.FileNameWithExtension);
+                   if (File.Exists(fileFullName))
+                   {
+                       string onlyFileName = Path.GetFileNameWithoutExtension(fileFullName);
+                       string extension = Path.GetExtension(fileFullName);
+                       var newFileName = onlyFileName + "_" + Guid.NewGuid().ToString().Substring(1, 4) + extension;
+                       fileFullName=Path.Combine(saveLocation, newFileName);
+                   }
+
                     Task.Run(() =>
                    {
                      
