@@ -49,12 +49,30 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
                 this.DiscoveredDevices.Add(ddm);
 
-
-
             };
             this.receiveBussiness.ReceivingDataEvent += (ip) =>
             {
                 this.IsDownLoadingVisible = true;
+                if (DiscoveredDevices != null)
+                {
+                    var find= DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    if (find != null)
+                    {
+                        find.IsDownLoading = true;
+                    }
+                }
+            };
+
+            this.receiveBussiness.ReceivedFileFinishedEvent += (ip) =>
+            {
+                if (DiscoveredDevices != null)
+                {
+                    var find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    if (find != null)
+                    {
+                        find.IsDownLoading = false;
+                    }
+                }
             };
 
             this.receiveBussiness.ReceiveDataEvent += (d) =>

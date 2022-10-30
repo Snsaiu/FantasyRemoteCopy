@@ -7,13 +7,13 @@
 
         <VerticalStackLayout>
 
-            <Border Stroke="Transparent" HeightRequest="40">
+            <Border Stroke="Transparent" HeightRequest="50">
                 <Grid ColumnDefinitions="*,auto">
-                    <VerticalStackLayout >
-                        <Label Text="全局刷新"></Label>
-                        <Label Margin="5,0"  TextColor="Grey"  Text="一直未发现设备请尝试点击，全局刷新等待时间较长！" FontSize="10"></Label>
+                    <VerticalStackLayout VerticalOptions="Center" >
+                        <Label Margin="5,0" Text="Global Refresh"></Label>
+                        <Label Margin="5,0"  TextColor="Grey" MaxLines="2" Text="No device has been found. Please try to click. The global refresh takes a long time!" FontSize="10"></Label>
                     </VerticalStackLayout>
-                    <Button Grid.Column="1" Text="全局刷新" Command="{Binding GlobalSearchCommand}"></Button>
+                    <Button Grid.Column="1" Text="Global Refresh" Command="{Binding GlobalSearchCommand}"></Button>
                 </Grid>
             </Border>
 

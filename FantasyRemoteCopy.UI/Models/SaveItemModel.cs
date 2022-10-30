@@ -31,4 +31,5 @@ public partial class SaveItemModel
 
     [ObservableProperty]
     private bool isText;
+
 }

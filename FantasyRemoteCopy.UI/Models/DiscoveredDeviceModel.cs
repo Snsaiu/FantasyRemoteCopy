@@ -30,5 +30,8 @@ namespace FantasyRemoteCopy.UI.Models
         [ObservableProperty]
         private string deviceName;
 
+        [ObservableProperty]
+        private bool isDownLoading = false;
+
     }
 }

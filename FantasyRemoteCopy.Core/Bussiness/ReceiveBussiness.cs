@@ -16,6 +16,8 @@ public delegate void ReceiveDataDelegate(TransformData data);
 
 public delegate void ReceivingDataDelegate(string ip);
 
+public delegate void ReceivedFileFinishedDelegate(string ip);
+
 public class ReceiveBussiness
 {
     private readonly IReceiveData _receiveData;
@@ -27,6 +29,8 @@ public class ReceiveBussiness
 
     public event ReceiveDataDelegate ReceiveDataEvent;
     public event ReceivingDataDelegate ReceivingDataEvent;
+
+    public event ReceivedFileFinishedDelegate ReceivedFileFinishedEvent;
 
     public ReceiveBussiness(IReceiveData receiveData,ISendData sendData,IUserService userService)
     {
@@ -43,7 +47,10 @@ public class ReceiveBussiness
         {
             this.ReceivingDataEvent?.Invoke(ip);
         };
-
+        this._receiveData.ReceivedFileFinishedEvent += (ip) =>
+        {
+            this.ReceivedFileFinishedEvent?.Invoke(ip);
+        };
         this._receiveData.LiseningInvite();
         this._receiveData.LiseningBuildConnection();
 

@@ -148,6 +148,9 @@
 	  </Compile>
 	</ItemGroup>
 	<ItemGroup>
+	  <MauiXaml Update="Controls\BlinCircle.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Dialogs\SendTypeDialog.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

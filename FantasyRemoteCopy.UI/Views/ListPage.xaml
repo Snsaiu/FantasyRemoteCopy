@@ -37,8 +37,8 @@
                                   
                                 </ImageButton>
                                 <ImageButton Grid.Column="1" Source="detail.png" Command="{Binding BindingContext.DetailCommand, Source={x:Reference cp}}" CommandParameter="{Binding .}"  IsVisible="{Binding IsText}"></ImageButton>
-                                <ImageButton Grid.Column="2" Source="openfile.png"  IsVisible="{Binding IsFile}"></ImageButton>
-                                <ImageButton Grid.Column="3" Source="openfolder.png"  IsVisible="{Binding IsFile}"></ImageButton>
+                            <ImageButton Grid.Column="2" Source="openfile.png" Command="{Binding BindingContext.OpenFileCommand,Source={x:Reference cp}}" CommandParameter="{Binding .}" IsVisible="{Binding IsFile}"></ImageButton>
+                            <ImageButton Grid.Column="3" Command="{Binding BindingContext.OpenFolderCommand,Source={x:Reference cp}}" CommandParameter="{Binding .}" Source="openfolder.png"  IsVisible="{Binding IsFile}"></ImageButton>
                                 <ImageButton Grid.Column="4" Source="delete.png" Command="{Binding BindingContext.DeleteCommand ,Source={x:Reference cp}}" CommandParameter="{Binding .}"  ></ImageButton>
                             </Grid>
 

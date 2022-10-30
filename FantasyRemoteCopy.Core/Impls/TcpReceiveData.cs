@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -22,10 +23,7 @@ namespace FantasyRemoteCopy.Core.Impls
         public event ReceiveInviteDelegate ReceiveInviteEvent;
         public event ReceiveBuildConnectionDelegate ReceiveBuildConnectionEvent;
         public event ReceivingDataDelegate ReceivingDataEvent;
-
-
-
-       
+        public event ReceivedFileFinishedDelegate ReceivedFileFinishedEvent;
 
 
         /// <summary>
@@ -49,32 +47,26 @@ namespace FantasyRemoteCopy.Core.Impls
 
                        if (client.Connected)
                        {
-                          
                        }
                        NetworkStream stream = client.GetStream();
                        if (stream != null)
                        {
                            byte[] buffer = new byte[byteCount + 1024*1024];
-                         int real_count= stream.Read(buffer, 0, buffer.Length);
+                          
+                           int bytesRead;          // 读取的字节数
+                           MemoryStream msStream = new MemoryStream();
+                           do
+                           {
+                               bytesRead = stream.Read(buffer, 0, buffer.Length);
+                               msStream.Write(buffer, 0, bytesRead);
+                           } while (bytesRead > 0);
 
-                         while (real_count!=0)
-                         {
-                             int x= stream.Read(buffer, real_count, 1024 * 1024);
-                             real_count = real_count + x;
-                         }
-                           //byte[] buffer = new byte[512];
-                           //while ((size = stream.Read(buffer, 0, buffer.Length)) > 0)
-                           //{
-                           //    fs.Write(buffer, 0, size);
-                           //    len += size;
-                           //}
-
-                           stream.Flush();
-                               stream.Close();
-                               client.Close();
+                           buffer = msStream.GetBuffer();
+                          // string msg = Encoding.UTF8.GetString(buffer);
 
                            TransformData td =
-                               JsonConvert.DeserializeObject<TransformData>(Encoding.UTF8.GetString(buffer, 0, real_count));
+                               JsonConvert.DeserializeObject<TransformData>(Encoding.UTF8.GetString(buffer));
+                           this.ReceivedFileFinishedEvent?.Invoke(ip);
 
                            this.ReceiveDataEvent?.Invoke(td);
 

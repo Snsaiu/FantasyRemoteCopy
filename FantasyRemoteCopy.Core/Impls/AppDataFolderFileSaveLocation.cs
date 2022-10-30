@@ -4,7 +4,9 @@ public class AppDataFolderFileSaveLocation:IFileSaveLocation
 {
     public string GetSaveLocation()
     {
-        return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-            );
+        var path= Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FRCData");
+        if(Directory.Exists(path)==false)
+            Directory.CreateDirectory(path);
+        return path;
     }
 }

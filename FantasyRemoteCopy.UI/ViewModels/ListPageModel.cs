@@ -8,6 +8,7 @@ using FantasyRemoteCopy.UI.Models;
 
 using System.Collections.ObjectModel;
 using FantasyRemoteCopy.UI.Views;
+using Windows.Storage.Pickers;
 
 namespace FantasyRemoteCopy.UI.ViewModels;
 
@@ -16,6 +17,8 @@ namespace FantasyRemoteCopy.UI.ViewModels;
 public partial class ListPageModel
 {
     private readonly ISaveDataService _saveDataService;
+    private readonly IOpenFolder _openFolder;
+    private readonly FolderPicker _folderPicker;
 
 
     [ObservableProperty]
@@ -26,9 +29,10 @@ public partial class ListPageModel
 
 
 
-    public ListPageModel(ISaveDataService saveDataService)
+    public ListPageModel(ISaveDataService saveDataService,IOpenFolder openFolder)
     {
         _saveDataService = saveDataService;
+        _openFolder = openFolder;
     }
 
 
@@ -55,7 +59,8 @@ public partial class ListPageModel
             {
                 sm.IsText = false;
                 sm.IsFile = true;
-                sm.Title = item.Content;
+
+                sm.Title = Path.GetFileName( item.Content);
                 sm.Image = ImageSource.FromFile("fileicon.png");
             }
 
@@ -79,6 +84,44 @@ public partial class ListPageModel
     }
 
 
+    [ICommand]
+    public async void OpenFile(SaveItemModel model)
+    {
+        // 判断文件是否存在
+        if (File.Exists(model.Content) == false)
+        {
+            var res = await this._saveDataService.DeleteDataAsync(model.Guid);
+            if (res.Ok)
+            {
+                this.Models.Remove(model);
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Warning", res.ErrorMsg, "Ok");
+            }
+            return;
+        }
+        this.IsBusy = true;
+       
+          var openOk=  await Launcher.OpenAsync(model.Content);
+          if (openOk)
+          {
+              //var t= Toast.Make($"{model.Title}已经打开",CommunityToolkit.Maui.Core.ToastDuration.Short,15);
+              //await t.Show();
+            // await Application.Current.MainPage.DisplaySnackbar("hello");
+              //await Application.Current.MainPage.DisplayAlert("Information", $"{model.Title}已经打开", "Ok");
+          }
+          else
+          {
+              await Application.Current.MainPage.DisplayAlert("Warning", $"{model.Title}打开失败", "Ok");
+        }
+            this.IsBusy = false;
+            
+       
+
+
+    }
+
     /// <summary>
     /// 删除命令
     /// </summary>
@@ -98,6 +141,17 @@ public partial class ListPageModel
         }
        this.IsBusy = false;
     }
+
+
+    [ICommand]
+    public async void OpenFolder(SaveItemModel model)
+    {
+        var p= Directory.GetParent(model.Content).ToString();
+       //var p=  Path.GetFullPath(model.Content);
+
+       this._openFolder.OpenFolder(p);
+    }
+
 
     [ICommand]
     public async void Detail(SaveItemModel model)

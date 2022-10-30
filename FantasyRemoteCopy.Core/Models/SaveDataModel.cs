@@ -23,6 +23,8 @@ public class SaveDataModel
     public string Guid { get; set; }
 
     public string Content { get; set; }
+
+
 }
 
 public enum SaveDataType

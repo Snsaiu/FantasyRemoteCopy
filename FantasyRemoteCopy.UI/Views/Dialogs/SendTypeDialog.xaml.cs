@@ -37,7 +37,7 @@ public partial class SendTypeDialog : Popup
         try
         {
         
-          var f=await  FilePicker.PickAsync();
+          var f=await FilePicker.PickAsync();
           if (f != null)
           {
              
