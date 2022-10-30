@@ -1,10 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-    <TargetFrameworks>net6.0-android31.0;net6.0-ios15.4;net6.0-maccatalyst15.4</TargetFrameworks>
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
-		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
+    <TargetFrameworks>net7.0-ios15.4;net7.0-maccatalyst15.4</TargetFrameworks>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>FantasyRemoteCopy.UI</RootNamespace>
 		<UseMaui>true</UseMaui>
@@ -39,13 +36,14 @@
 		<GenerateTestArtifacts>True</GenerateTestArtifacts>
 		<AppInstallerUri>C:\</AppInstallerUri>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+		<TargetFramework>net7.0-maccatalyst15.4</TargetFramework>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios15.4|AnyCPU'">
 	  <CodesignKey>iPhone Developer</CodesignKey>
 	  <Prefer32Bit>False</Prefer32Bit>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-maccatalyst15.4|AnyCPU'">
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-maccatalyst15.4|AnyCPU'">
 	  <CodesignKey>Mac Developer</CodesignKey>
 	  <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
 	  <EnableCodeSigning>False</EnableCodeSigning>
@@ -60,7 +58,7 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-ios15.4|AnyCPU'">
 	  <Prefer32Bit>False</Prefer32Bit>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-maccatalyst15.4|AnyCPU'">
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-maccatalyst15.4|AnyCPU'">
 	  <Prefer32Bit>False</Prefer32Bit>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
@@ -85,10 +83,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiImage Remove="Resources\Images\dotnet_bot.svg" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Remove="Resources\AppIcon\logo.png" />
 	  <None Remove="Resources\Images\android.png" />
 	  <None Remove="Resources\Images\copy.png" />
@@ -110,9 +104,6 @@
 	  <None Remove="Resources\Images\texticon.png" />
 	  <None Remove="Resources\Images\windows.png" />
 	  <None Remove="Resources\Splash\splash.png" />
-	</ItemGroup>
-	<ItemGroup>
-	  <BundleResource Include="Resources\Images\dotnet_bot.svg" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\FantasyRemoteCopy.Core\FantasyRemoteCopy.Core.csproj" />
