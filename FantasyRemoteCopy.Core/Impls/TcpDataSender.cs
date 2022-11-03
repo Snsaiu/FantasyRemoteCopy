@@ -20,6 +20,11 @@ public class TcpDataSender:ISendData
     }
 
 
+   public event SendingDataDelegate SendingDataEvent;
+
+   public event SendFinishedDelegate SendFinishedEvent;
+
+
     /// <summary>
     /// ��Զ��������������
     /// </summary>
@@ -139,9 +144,9 @@ public class TcpDataSender:ISendData
         Socket tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         IPAddress ipaddress = IPAddress.Parse(data.TargetIp);
         EndPoint point = new IPEndPoint(ipaddress, int.Parse(ConstParams.TcpIp_Port));
-        
+        this.SendingDataEvent?.Invoke(data.TargetIp);
         //only for text
-        if(data.DataType==DataType.Text)
+        if (data.DataType==DataType.Text)
         {
             tcpClient.Connect(point);
             TransformData td = new TransformData();
@@ -202,7 +207,10 @@ public class TcpDataSender:ISendData
             td.Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(fdm));
 
             ArraySegment<byte> b = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(td));
+
+        
             await tcpClient.SendAsync(b, SocketFlags.None);
+            this.SendFinishedEvent?.Invoke(data.TargetIp);
 
             dmm.State = MetaState.Sended;
 

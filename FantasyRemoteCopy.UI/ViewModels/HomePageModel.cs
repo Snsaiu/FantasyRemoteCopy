@@ -138,6 +138,30 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 }
             };
 
+            this.sendDataBussiness.SendingDataEvent += (ip) =>
+            {
+                if (DiscoveredDevices != null)
+                {
+                    var find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    if (find != null)
+                    {
+                        find.IsSendingData = true;
+                    }
+                }
+            };
+            this.sendDataBussiness.SendFinishedEvent += (ip) =>
+            {
+
+                if (DiscoveredDevices != null)
+                {
+                    var find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    if (find != null)
+                    {
+                        find.IsSendingData = false;
+                    }
+                }
+            };
+
         }
 
         [ObservableProperty]
@@ -194,6 +218,12 @@ namespace FantasyRemoteCopy.UI.ViewModels
         [ICommand]
         public async void Share(DiscoveredDeviceModel model)
         {
+            if(model.IsSendingData)
+            {
+                await Application.Current.MainPage.DisplayAlert("Warning", "Sorry, the file is being uploaded. Please try again after the upload is completed!","Ok");
+                return;
+            }
+
             var sendDialog = App.Current.Services.GetService<SendTypeDialog>();
             sendDialog.InitData(model);
             await Application.Current.MainPage.ShowPopupAsync<SendTypeDialog>(sendDialog);

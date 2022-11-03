@@ -71,9 +71,10 @@
                             <Label Margin="0,1" Text="{Binding DeviceName,StringFormat='Device Name：{0}'}" Grid.Row="2"  FontSize="10"></Label>
                             <Label Margin="0,1" Text="{Binding Ip,StringFormat='Ip：{0}'}" Grid.Row="3"  FontSize="10"></Label>
                         </Grid>
-                        <Grid ColumnDefinitions="10,auto" Grid.Column="2">
-                            <controls:BlinCircle IsVisible="{Binding IsDownLoading}"></controls:BlinCircle>
-                            <ImageButton Command="{Binding BindingContext.ShareCommand ,Source={x:Reference cp}}" CommandParameter="{Binding .}"  WidthRequest="50" Grid.Column="1" HeightRequest="50" Source="share.png"></ImageButton>
+                        <Grid ColumnDefinitions="10,10,auto" Grid.Column="2">
+                              <controls:BlinCircle Color="blue" IsVisible="{Binding IsSendingData}"></controls:BlinCircle>
+                            <controls:BlinCircle Grid.Column="1" Color="red" IsVisible="{Binding IsDownLoading}"></controls:BlinCircle>
+                            <ImageButton Command="{Binding BindingContext.ShareCommand ,Source={x:Reference cp}}" CommandParameter="{Binding .}"  WidthRequest="50" Grid.Column="2" HeightRequest="50" Source="share.png"></ImageButton>
                         </Grid>
                         
                     </Grid>

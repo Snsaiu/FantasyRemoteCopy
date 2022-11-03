@@ -10,6 +10,18 @@ using Newtonsoft.Json;
 
 namespace FantasyRemoteCopy.Core.Bussiness;
 
+/// <summary>
+/// 发送文件的委托
+/// </summary>
+/// <param name="ip"></param>
+public delegate void SendingDataDelegate(string ip);
+
+/// <summary>
+/// 发送完成的委托
+/// </summary>
+/// <param name="ip"></param>
+public delegate void SendFinishedDelegate(string ip);
+
 public class SendDataBussiness
 {
     private readonly IScanLocalNetIp _scanLocalNetIp;
@@ -23,8 +35,20 @@ public class SendDataBussiness
         _scanLocalNetIp = scanLocalNetIp;
         _sendData = sendData;
         _userService = userService;
+
+        this._sendData.SendingDataEvent += (ip) =>
+        {
+            this.SendingDataEvent?.Invoke(ip);
+        };
+        this._sendData.SendFinishedEvent += (ip) =>
+        {
+            this.SendFinishedEvent?.Invoke(ip);
+        };
     }
 
+  public  event SendingDataDelegate SendingDataEvent;
+
+   public event SendFinishedDelegate SendFinishedEvent;
 
     /// <summary>
     /// 发送数据

@@ -3,8 +3,28 @@ using FantasyResultModel;
 
 namespace FantasyRemoteCopy.Core;
 
+
+/// <summary>
+/// 发送文件的委托
+/// </summary>
+/// <param name="ip"></param>
+public delegate void SendingDataDelegate(string ip);
+
+/// <summary>
+/// 发送完成的委托
+/// </summary>
+/// <param name="ip"></param>
+public delegate void SendFinishedDelegate(string ip);
+
+
+
 public interface ISendData
 {
+
+    event SendingDataDelegate SendingDataEvent;
+
+    event SendFinishedDelegate SendFinishedEvent;
+
     Task<ResultBase<bool>> SendRquestBuildConnectionDataAsync(TransformData data);
    
 

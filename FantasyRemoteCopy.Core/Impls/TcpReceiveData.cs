@@ -51,7 +51,7 @@ namespace FantasyRemoteCopy.Core.Impls
                        NetworkStream stream = client.GetStream();
                        if (stream != null)
                        {
-                           byte[] buffer = new byte[byteCount + 1024*1024];
+                           byte[] buffer = new byte[1024];
                           
                            int bytesRead;          // 读取的字节数
                            MemoryStream msStream = new MemoryStream();
@@ -61,11 +61,11 @@ namespace FantasyRemoteCopy.Core.Impls
                                msStream.Write(buffer, 0, bytesRead);
                            } while (bytesRead > 0);
 
-                           buffer = msStream.GetBuffer();
+                          var resbuffer = msStream.GetBuffer();
                           // string msg = Encoding.UTF8.GetString(buffer);
 
                            TransformData td =
-                               JsonConvert.DeserializeObject<TransformData>(Encoding.UTF8.GetString(buffer));
+                               JsonConvert.DeserializeObject<TransformData>(Encoding.UTF8.GetString(resbuffer));
                            this.ReceivedFileFinishedEvent?.Invoke(ip);
 
                            this.ReceiveDataEvent?.Invoke(td);

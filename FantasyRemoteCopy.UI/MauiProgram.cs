@@ -31,7 +31,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<IGlobalScanLocalNetIp, GlobalScanLocalNetIp>();
 
 		builder.Services.AddSingleton<IReceiveData, TcpReceiveData>();
-		builder.Services.AddTransient<ISendData, TcpDataSender>();
+		builder.Services.AddSingleton<ISendData, TcpDataSender>();
 		builder.Services.AddTransient<IUserService, ConfigUserService>();
 		builder.Services.AddTransient<ISaveDataService,DbSaveDataService>();
 
