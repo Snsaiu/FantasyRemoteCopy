@@ -46,9 +46,7 @@ namespace FantasyRemoteCopy.Core.Impls
                    {
                        TcpClient client = listener.AcceptTcpClient();
 
-                       if (client.Connected)
-                       {
-                       }
+              
                        NetworkStream stream = client.GetStream();
                        if (stream != null)
                        {
@@ -58,18 +56,18 @@ namespace FantasyRemoteCopy.Core.Impls
                            int bytesRead=0;          // 读取的字节数
                          
                            MemoryStream msStream = new MemoryStream();
-                           bool header = true;
+                          // bool header = true;
                            do
                            {
                                bytesRead = stream.Read(buffer,0, 1024);
-                               if(header)
-                               {
-                                   string size= Encoding.UTF8.GetString(buffer);
-                                   byteCount= long.Parse(size);
-                                   header = false;
-                                   continue;
-                               }
-                               msStream.Write(buffer);
+                               //if(header)
+                               //{
+                               //    string size= Encoding.UTF8.GetString(buffer);
+                               //    byteCount= long.Parse(size);
+                               //    header = false;
+                               //    continue;
+                               //}
+                               msStream.Write(buffer,0,bytesRead);
                                currentBytes += bytesRead;
                                var currentProcess= Math.Round(currentBytes / (double)byteCount,2);
                                this.ReceivingProcessEvent?.Invoke(ip, currentProcess);
