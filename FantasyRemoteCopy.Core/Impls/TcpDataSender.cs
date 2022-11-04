@@ -141,7 +141,7 @@ public class TcpDataSender:ISendData
 
     public async Task<ResultBase<bool>> SendDataAsync(DataMetaModel data,string content,string deviceNickName)
     {
-        Socket tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        var tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         IPAddress ipaddress = IPAddress.Parse(data.TargetIp);
         EndPoint point = new IPEndPoint(ipaddress, int.Parse(ConstParams.TcpIp_Port));
         this.SendingDataEvent?.Invoke(data.TargetIp);
@@ -193,7 +193,7 @@ public class TcpDataSender:ISendData
             var dmm = ConstParams.WillSendMetasQueue.FirstOrDefault(x => x.Guid == data.Guid);
             if (dmm == null)
             {
-                return new ErrorResultModel<bool>("������û�з����ļ���Ϣ");
+                return new ErrorResultModel<bool>("can not find file meta data! send error!");
             }
 
             FileStream st = new FileStream(content, FileMode.Open,FileAccess.Read,FileShare.ReadWrite);
@@ -209,10 +209,10 @@ public class TcpDataSender:ISendData
             ArraySegment<byte> b = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(td));
 
         
-            await tcpClient.SendAsync(b, SocketFlags.None);
+             tcpClient.Send(b, SocketFlags.None);
             this.SendFinishedEvent?.Invoke(data.TargetIp);
             dmm.State = MetaState.Sended;
-
+            tcpClient.Shutdown(SocketShutdown.Both);
             tcpClient.Close();
         }
         return new SuccessResultModel<bool>(true);
