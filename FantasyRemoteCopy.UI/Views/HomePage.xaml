@@ -73,8 +73,8 @@
                         </Grid>
                         <Grid ColumnDefinitions="auto,10,10,auto" Grid.Column="2">
                             <Grid Grid.Column="0"  ColumnDefinitions="auto,auto" IsVisible="{Binding IsDownLoading}">
-                                <ProgressBar WidthRequest="80"  Progress="{Binding DownloadProcess}"></ProgressBar>
-                                <Label Text="{Binding DownloadProcess ,StringFormat='{0:P0}'}" VerticalTextAlignment="Center" Grid.Column="1"  VerticalOptions="Center" FontSize="12"></Label>
+                                <ProgressBar WidthRequest="80" ProgressColor="OrangeRed" Progress="{Binding DownloadProcess}"></ProgressBar>
+                                <Label TextColor="Gray" Text="{Binding DownloadProcess ,StringFormat='{0:P0}'}" VerticalTextAlignment="Center" Grid.Column="1"  VerticalOptions="Center" FontSize="12"></Label>
                             </Grid>
                             <controls:BlinCircle Color="blue" Grid.Column="1" IsVisible="{Binding IsSendingData}"></controls:BlinCircle>
                             <controls:BlinCircle  Color="red" Grid.Column="2" IsVisible="{Binding IsDownLoading}"></controls:BlinCircle>
