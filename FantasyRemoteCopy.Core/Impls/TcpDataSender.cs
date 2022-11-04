@@ -214,7 +214,7 @@ public class TcpDataSender:ISendData
             int numBytes;
             byte[] contentsize=Encoding.UTF8.GetBytes(b.ToArray().Length.ToString());
             tcpClient.Send(contentsize, SocketFlags.None);
-
+            await Task.Delay(1000);
             try
             {
                 while ((numBytes = ms.Read(filechunk, 0, 1024)) > 0)
