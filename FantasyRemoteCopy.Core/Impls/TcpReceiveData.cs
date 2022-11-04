@@ -46,9 +46,7 @@ namespace FantasyRemoteCopy.Core.Impls
                    {
                        TcpClient client = listener.AcceptTcpClient();
 
-                       if (client.Connected)
-                       {
-                       }
+              
                        NetworkStream stream = client.GetStream();
                        if (stream != null)
                        {
@@ -58,7 +56,7 @@ namespace FantasyRemoteCopy.Core.Impls
                            int bytesRead=0;          // 读取的字节数
                          
                            MemoryStream msStream = new MemoryStream();
-                           bool header = true;
+                          // bool header = true;
                            do
                            {
                                bytesRead = stream.Read(buffer, 0, 1024);
