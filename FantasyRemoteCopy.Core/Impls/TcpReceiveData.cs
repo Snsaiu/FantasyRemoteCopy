@@ -61,15 +61,15 @@ namespace FantasyRemoteCopy.Core.Impls
                            bool header = true;
                            do
                            {
-                               bytesRead = stream.Read(buffer,0, 1024);
-                               if(header)
+                               bytesRead = stream.Read(buffer, 0, 1024);
+                               if (header)
                                {
-                                   string size= Encoding.UTF8.GetString(buffer);
-                                   byteCount= long.Parse(size);
+                                   string size = Encoding.UTF8.GetString(buffer);
+                                   byteCount = long.Parse(size);
                                    header = false;
                                    continue;
                                }
-                               msStream.Write(buffer);
+                               msStream.Write(buffer,0, bytesRead);
                                currentBytes += bytesRead;
                                var currentProcess= Math.Round(currentBytes / (double)byteCount,2);
                                this.ReceivingProcessEvent?.Invoke(ip, currentProcess);

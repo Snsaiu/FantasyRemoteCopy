@@ -11,7 +11,7 @@ namespace FantasyRemoteCopy.UI;
 public partial class App : Application
 {
 
-    const int WindowWidth = 400;
+    const int WindowWidth = 500;
     const int WindowHeight = 800;
 
     /// <summary>

@@ -56,7 +56,7 @@
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Padding="5" RowDefinitions="*,auto"  ColumnDefinitions="auto,*,auto" BackgroundColor="White" >
+                    <Grid Padding="5"   ColumnDefinitions="auto,*,auto" BackgroundColor="White" >
                         <Image HeightRequest="{OnPlatform WinUI=70,MacCatalyst=50}" WidthRequest="{OnPlatform WinUI=70,MacCatalyst=50}" Source="{Binding Img}"/>
                         <Grid Grid.Column="1" Margin="10,0,5,0" RowDefinitions="*,auto,auto,auto">
 
@@ -71,15 +71,16 @@
                             <Label Margin="0,1" Text="{Binding DeviceName,StringFormat='Device Name：{0}'}" Grid.Row="2"  FontSize="10"></Label>
                             <Label Margin="0,1" Text="{Binding Ip,StringFormat='Ip：{0}'}" Grid.Row="3"  FontSize="10"></Label>
                         </Grid>
-                        <Grid ColumnDefinitions="10,10,auto" Grid.Column="2">
-                              <controls:BlinCircle Color="blue" IsVisible="{Binding IsSendingData}"></controls:BlinCircle>
-                            <controls:BlinCircle Grid.Column="1" Color="red" IsVisible="{Binding IsDownLoading}"></controls:BlinCircle>
-                            <ImageButton Command="{Binding BindingContext.ShareCommand ,Source={x:Reference cp}}" CommandParameter="{Binding .}"  WidthRequest="50" Grid.Column="2" HeightRequest="50" Source="share.png"></ImageButton>
+                        <Grid ColumnDefinitions="auto,10,10,auto" Grid.Column="2">
+                            <Grid Grid.Column="0"  ColumnDefinitions="auto,auto" IsVisible="{Binding IsDownLoading}">
+                                <ProgressBar WidthRequest="80"  Progress="{Binding DownloadProcess}"></ProgressBar>
+                                <Label Text="{Binding DownloadProcess ,StringFormat='{0:P0}'}" VerticalTextAlignment="Center" Grid.Column="1"  VerticalOptions="Center" FontSize="12"></Label>
+                            </Grid>
+                            <controls:BlinCircle Color="blue" Grid.Column="1" IsVisible="{Binding IsSendingData}"></controls:BlinCircle>
+                            <controls:BlinCircle  Color="red" Grid.Column="2" IsVisible="{Binding IsDownLoading}"></controls:BlinCircle>
+                            <ImageButton Command="{Binding BindingContext.ShareCommand ,Source={x:Reference cp}}" CommandParameter="{Binding .}"  WidthRequest="50" Grid.Column="3" HeightRequest="50" Source="share.png"></ImageButton>
                         </Grid>
-                        <HorizontalStackLayout Grid.Column="1" HorizontalOptions="EndAndExpand" IsVisible="{Binding IsDownLoading}" Grid.Row="1">
-                            <ProgressBar WidthRequest="100" Progress="{Binding DownloadProcess}"></ProgressBar>
-                            <Label Text="{Binding DownloadProcess,StringFormat='{0}%'}" ></Label>
-                        </HorizontalStackLayout>
+              
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
