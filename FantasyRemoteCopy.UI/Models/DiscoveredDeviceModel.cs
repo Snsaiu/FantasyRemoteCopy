@@ -36,5 +36,8 @@ namespace FantasyRemoteCopy.UI.Models
         [ObservableProperty]
         private bool isSendingData = false;
 
+        [ObservableProperty]
+        private double downloadProcess = 0;
+
     }
 }

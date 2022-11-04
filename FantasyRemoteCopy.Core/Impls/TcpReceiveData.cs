@@ -24,6 +24,7 @@ namespace FantasyRemoteCopy.Core.Impls
         public event ReceiveBuildConnectionDelegate ReceiveBuildConnectionEvent;
         public event ReceivingDataDelegate ReceivingDataEvent;
         public event ReceivedFileFinishedDelegate ReceivedFileFinishedEvent;
+        public event ReceivingProcessDelegate ReceivingProcessEvent;
 
 
         /// <summary>
@@ -51,14 +52,21 @@ namespace FantasyRemoteCopy.Core.Impls
                        NetworkStream stream = client.GetStream();
                        if (stream != null)
                        {
-                           byte[] buffer = new byte[1024];
-                          
-                           int bytesRead;          // 读取的字节数
+                           byte[] buffer = new byte[256];
+
+                           long currentBytes = 0;
+                           int bytesRead=0;          // 读取的字节数
+                         
                            MemoryStream msStream = new MemoryStream();
                            do
                            {
-                               bytesRead = stream.Read(buffer, 0, buffer.Length);
-                               msStream.Write(buffer, 0, bytesRead);
+                               bytesRead = stream.Read(buffer,0,256);
+                               msStream.Write(buffer);
+                               currentBytes += bytesRead;
+                               var currentProcess= Math.Round(currentBytes / (double)byteCount,2);
+                               this.ReceivingProcessEvent?.Invoke(ip, currentProcess);
+                              
+
                            } while (bytesRead > 0);
 
                           var resbuffer = msStream.GetBuffer();

@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FantasyRemoteCopy.UI.Views.Dialogs;
 using CommunityToolkit.Maui.Views;
+using System.Diagnostics;
 
 namespace FantasyRemoteCopy.UI.ViewModels
 {
@@ -134,6 +135,19 @@ namespace FantasyRemoteCopy.UI.ViewModels
                     if (find != null)
                     {
                         find.IsDownLoading = false;
+                        find.DownloadProcess = 0;
+                    }
+                }
+            };
+
+            this.receiveBussiness.ReceivingProcessEvent += (ip,process) =>
+            {
+                if (DiscoveredDevices != null)
+                {
+                    var find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    if (find != null)
+                    {
+                        find.DownloadProcess = process;
                     }
                 }
             };

@@ -15,7 +15,7 @@ namespace FantasyRemoteCopy.Core
 
 	public delegate void ReceivedFileFinishedDelegate(string ip);
 
-	
+	public delegate void ReceivingProcessDelegate(string ip, double process);
 
 
 	/// <summary>
@@ -32,6 +32,7 @@ namespace FantasyRemoteCopy.Core
 		event ReceiveInviteDelegate ReceiveInviteEvent;
 		event ReceiveBuildConnectionDelegate ReceiveBuildConnectionEvent;
 		event ReceivingDataDelegate ReceivingDataEvent;
+		event ReceivingProcessDelegate ReceivingProcessEvent;
 
 		event ReceivedFileFinishedDelegate ReceivedFileFinishedEvent;
 

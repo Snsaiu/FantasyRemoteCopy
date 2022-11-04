@@ -211,7 +211,6 @@ public class TcpDataSender:ISendData
         
             await tcpClient.SendAsync(b, SocketFlags.None);
             this.SendFinishedEvent?.Invoke(data.TargetIp);
-
             dmm.State = MetaState.Sended;
 
             tcpClient.Close();
