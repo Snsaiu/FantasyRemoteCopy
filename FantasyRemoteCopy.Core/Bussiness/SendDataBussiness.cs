@@ -142,7 +142,6 @@ public class SendDataBussiness
 
                 TransformData td = new TransformData();
 
-
                 td.Data = Encoding.UTF8.GetBytes(smStr);
                 td.Type = TransformType.ValidateAccount;
                 td.TargetIp = ip;

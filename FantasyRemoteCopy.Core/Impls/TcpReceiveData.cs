@@ -58,9 +58,17 @@ namespace FantasyRemoteCopy.Core.Impls
                            int bytesRead=0;          // 读取的字节数
                          
                            MemoryStream msStream = new MemoryStream();
+                           bool header = true;
                            do
                            {
                                bytesRead = stream.Read(buffer,0, 1024);
+                               if(header)
+                               {
+                                   string size= Encoding.UTF8.GetString(buffer);
+                                   byteCount= long.Parse(size);
+                                   header = false;
+                                   continue;
+                               }
                                msStream.Write(buffer);
                                currentBytes += bytesRead;
                                var currentProcess= Math.Round(currentBytes / (double)byteCount,2);

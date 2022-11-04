@@ -212,6 +212,8 @@ public class TcpDataSender:ISendData
             MemoryStream ms = new MemoryStream(b.ToArray());
             byte[] filechunk = new byte[1024];
             int numBytes;
+            byte[] contentsize=Encoding.UTF8.GetBytes(b.ToArray().Length.ToString());
+            tcpClient.Send(contentsize, SocketFlags.None);
 
             try
             {
