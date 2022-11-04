@@ -213,8 +213,8 @@ public class TcpDataSender:ISendData
             byte[] filechunk = new byte[1024];
             int numBytes;
             byte[] contentsize=Encoding.UTF8.GetBytes(b.ToArray().Length.ToString());
-            tcpClient.Send(contentsize, SocketFlags.None);
-            await Task.Delay(1000);
+          //  tcpClient.Send(contentsize,0,contentsize.Length,SocketFlags.None);
+          //  await Task.Delay(1000);
             try
             {
                 while ((numBytes = ms.Read(filechunk, 0, 1024)) > 0)
@@ -232,7 +232,7 @@ public class TcpDataSender:ISendData
                     //}
                 }
 
-                tcpClient.Shutdown(SocketShutdown.Both);
+               // tcpClient.Shutdown(SocketShutdown.Send);
             }
             catch (Exception e)
             {
