@@ -161,7 +161,10 @@ public class TcpDataSender:ISendData
             td.Data= Encoding.UTF8.GetBytes(content);
 
             ArraySegment<byte>b= Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(td));
-           
+            byte[] contentsize = Encoding.UTF8.GetBytes(b.ToArray().Length.ToString());
+            //tcpClient.Send(contentsize, 0, contentsize.Length, SocketFlags.None);
+            this.sendData(tcpClient, contentsize, 10);
+            await Task.Delay(1000);
             this.sendData(tcpClient, b.ToArray(),10);
             // await tcpClient.SendAsync(b, SocketFlags.None);
         
@@ -172,7 +175,8 @@ public class TcpDataSender:ISendData
             }
            
             tcpClient.Close();
-         
+            this.SendFinishedEvent?.Invoke(data.TargetIp);
+
         }
         else // for file type
         {
@@ -213,8 +217,8 @@ public class TcpDataSender:ISendData
             byte[] filechunk = new byte[1024];
             int numBytes;
             byte[] contentsize=Encoding.UTF8.GetBytes(b.ToArray().Length.ToString());
-          //  tcpClient.Send(contentsize,0,contentsize.Length,SocketFlags.None);
-          //  await Task.Delay(1000);
+            tcpClient.Send(contentsize,0,contentsize.Length,SocketFlags.None);
+           await Task.Delay(1000);
             try
             {
                 while ((numBytes = ms.Read(filechunk, 0, 1024)) > 0)
