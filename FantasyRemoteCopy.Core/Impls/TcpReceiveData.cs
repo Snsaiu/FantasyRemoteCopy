@@ -52,7 +52,7 @@ namespace FantasyRemoteCopy.Core.Impls
                        NetworkStream stream = client.GetStream();
                        if (stream != null)
                        {
-                           byte[] buffer = new byte[256];
+                           byte[] buffer = new byte[1024];
 
                            long currentBytes = 0;
                            int bytesRead=0;          // 读取的字节数
@@ -60,7 +60,7 @@ namespace FantasyRemoteCopy.Core.Impls
                            MemoryStream msStream = new MemoryStream();
                            do
                            {
-                               bytesRead = stream.Read(buffer,0,256);
+                               bytesRead = stream.Read(buffer,0, 1024);
                                msStream.Write(buffer);
                                currentBytes += bytesRead;
                                var currentProcess= Math.Round(currentBytes / (double)byteCount,2);

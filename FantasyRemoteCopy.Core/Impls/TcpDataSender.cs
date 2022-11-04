@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 
 using FantasyRemoteCopy.Core.Consts;
 using FantasyRemoteCopy.Core.Models;
@@ -208,12 +209,44 @@ public class TcpDataSender:ISendData
 
             ArraySegment<byte> b = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(td));
 
-        
-             tcpClient.Send(b, SocketFlags.None);
+            MemoryStream ms = new MemoryStream(b.ToArray());
+            byte[] filechunk = new byte[1024];
+            int numBytes;
+
+            try
+            {
+                while ((numBytes = ms.Read(filechunk, 0, 1024)) > 0)
+                {
+                    if (tcpClient.Send(filechunk, numBytes, SocketFlags.None) != numBytes)
+                    {
+                        throw new Exception("Error in sending the file");
+                    }
+                    //bytesSoFar += numBytes;
+                    //Byte progress = (byte)(bytesSoFar * 100 / totalBytes);
+                    //if (progress > lastStatus && progress != 100)
+                    //{
+                    //    Console.WriteLine("File sending progress:{0}", lastStatus);
+                    //    lastStatus = progress;
+                    //}
+                }
+
+                tcpClient.Shutdown(SocketShutdown.Both);
+            }
+            catch (Exception e)
+            {
+
+                
+            }
+            finally
+            {
+                 
+            tcpClient.Close();
+            }
+            
+          
             this.SendFinishedEvent?.Invoke(data.TargetIp);
             dmm.State = MetaState.Sended;
-            tcpClient.Shutdown(SocketShutdown.Both);
-            tcpClient.Close();
+           
         }
         return new SuccessResultModel<bool>(true);
     }
