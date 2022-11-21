@@ -6,6 +6,7 @@ using FantasyRemoteCopy.UI.Views;
 using FantasyRemoteCopy.UI.ViewModels;
 using CommunityToolkit.Maui;
 using FantasyRemoteCopy.UI.Views.Dialogs;
+using FantasyMvvm;
 
 namespace FantasyRemoteCopy.UI;
 
@@ -20,10 +21,11 @@ public static class MauiProgram
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-			}).UseMauiCommunityToolkit();
-
-
-
+			})
+			.UseMauiCommunityToolkit()
+			.UseFantasyApplication()
+			.UseGetProvider();
+		
         builder.Services.AddTransient<IOpenFolder, DefaultOpenFolder>();
 		builder.Services.AddTransient<IFileSaveLocation, AppDataFolderFileSaveLocation>();
 		builder.Services.AddTransient<IGetLocalIp, DefaultLocalIp>();
@@ -40,18 +42,15 @@ public static class MauiProgram
 		builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddTransient<LoginPageModel>();
 		
-		builder.Services.AddTransient<HomePage>();
-		builder.Services.AddTransient<HomePageModel>();
-
-		builder.Services.AddTransient<SettingPage>();
-		builder.Services.AddTransient<SettingPageModel>();
+		builder.UseRegistPage<HomePage,HomePageModel>("HomePage");
+		builder.UseRegistPage<SettingPage,SettingPageModel>("SettingPage");
 
 		builder.Services.AddTransient<SendTypeDialog>();
 
-		builder.Services.AddTransient<TextInputPage>();
+		builder.UseRegistPage<TextInputPage,TextInputPage>("TextInputPage");
 
-		builder.Services.AddTransient<ListPage>();
-		builder.Services.AddTransient<ListPageModel>();
+		builder.UseRegistPage<ListPage, ListPageModel>("ListPage");
+
 
 	
 
