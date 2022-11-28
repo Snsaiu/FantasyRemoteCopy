@@ -4,9 +4,9 @@ namespace FantasyRemoteCopy.UI.Views;
 
 public partial class SettingPage : ContentPage
 {
-	public SettingPage(SettingPageModel vm)
+	public SettingPage()
 	{
 		InitializeComponent();
-		this.BindingContext = vm;
+	
 	}
 }

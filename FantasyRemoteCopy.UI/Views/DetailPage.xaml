@@ -6,7 +6,7 @@
              x:Class="FantasyRemoteCopy.UI.Views.DetailPage">
     <Grid RowDefinitions="*,auto">
 
-        <Editor x:Name="edit" ></Editor>
-        <Button Text="COPY" Clicked="CopyDataEvent" x:Name="sendBtn" Grid.Row="1" BackgroundColor="DodgerBlue" TextColor="White"></Button>
+        <Editor x:Name="edit" Text="{Binding Content}"></Editor>
+        <Button Text="COPY" Command="{Binding CopyCommand}" x:Name="sendBtn" Grid.Row="1" BackgroundColor="DodgerBlue" TextColor="White"></Button>
     </Grid>
 </ContentPage>

@@ -4,11 +4,11 @@ namespace FantasyRemoteCopy.UI.Views;
 
 public partial class ListPage : ContentPage
 {
-	public ListPage(ListPageModel vm)
+	public ListPage()
 	{
 		InitializeComponent();
 
-		this.BindingContext = vm;
+
 
 	}
 }

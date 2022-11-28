@@ -6,19 +6,22 @@ using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
+using FantasyMvvm;
+using FantasyMvvm.FantasyNavigation;
 using FantasyRemoteCopy.Core;
 using FantasyRemoteCopy.UI.Views;
 
 namespace FantasyRemoteCopy.UI.ViewModels
 {
-    [ObservableObject]
-    public partial class LoginPageModel
+    
+    public partial class LoginPageModel:FantasyPageModelBase
     {
+        private readonly INavigationService _navigationService;
 
-        public LoginPageModel(IUserService userService)
+        public LoginPageModel(IUserService userService,INavigationService navigationService)
         {
             this.userService = userService;
+            this._navigationService = navigationService;
         }
 
         [ObservableProperty]
@@ -43,10 +46,12 @@ namespace FantasyRemoteCopy.UI.ViewModels
         {
             this.IsBusy = true;
             await this.userService.SaveUser(new Core.Models.UserInfo() { Name = this.UserName, DeviceNickName = this.DeviceNickName });
-            var homepage = App.Current.Services.GetService<HomePage>();
-            await Application.Current.MainPage.Navigation.PushAsync(homepage);
-            var removePage = App.Current.MainPage.Navigation.NavigationStack.First();
-            App.Current.MainPage.Navigation.RemovePage(removePage);
+
+           await this._navigationService.NavigationToAsync(nameof(HomePage), false, null);
+            //var homepage = App.Current.Services.GetService<HomePage>();
+            //await Application.Current.MainPage.Navigation.PushAsync(homepage);
+            //var removePage = App.Current.MainPage.Navigation.NavigationStack.First();
+            //App.Current.MainPage.Navigation.RemovePage(removePage);
         }
 
         [ICommand]
@@ -62,10 +67,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 this.DeviceNickName = userRes.Data.DeviceNickName;
                 //await Task.Delay(TimeSpan.FromSeconds(2));
 
-                var homepage= App.Current.Services.GetService<HomePage>();
-                await Application.Current.MainPage.Navigation.PushAsync(homepage);
-                var removePage = App.Current.MainPage.Navigation.NavigationStack.First();
-                App.Current.MainPage.Navigation.RemovePage(removePage);
+                await this._navigationService.NavigationToAsync(nameof(HomePage), false, null);
             }
             this.IsBusy = false;
 

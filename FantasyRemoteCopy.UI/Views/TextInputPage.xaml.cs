@@ -26,19 +26,6 @@ public partial class TextInputPage : ContentPage
         InitializeComponent();
     }
 
-    /// <summary>
-    /// ��������
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private async void SendDataEvent(object sender, EventArgs e)
-    {
-
-      
-       await this._sendData.SendData(this.discoveredDeviceModel.Ip, this.edit.Text,DataType.Text);
-       await Task.Delay(1000);
-      await Application.Current.MainPage.Navigation.PopAsync();
-    }
 
     /// <summary>
     /// �ı�ʧȥ����

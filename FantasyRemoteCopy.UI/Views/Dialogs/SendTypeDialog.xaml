@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <views:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        Size="300,200"
@@ -14,7 +14,7 @@
 
             <Grid RowDefinitions="auto,auto">
                 <Grid.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="TextInputEvent"/>
+                    <TapGestureRecognizer Command="{Binding TextInputCommand}"/>
                 </Grid.GestureRecognizers>
                 <Image Source="text.png" HeightRequest="50" WidthRequest="50"></Image>
                 <Label Text="TEXT" TextColor="Black" HorizontalTextAlignment="Center" Grid.Row="1"/>
@@ -22,7 +22,7 @@
 
             <Grid Grid.Column="1" RowDefinitions="auto,auto">
                 <Grid.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="FileInputEvent"/>
+                    <TapGestureRecognizer Command="{Binding FileInputCommand}"/>
                 </Grid.GestureRecognizers>
                 <Image Source="file.png" HeightRequest="50" WidthRequest="50"></Image>
                 <Label Text="FILE" TextColor="Black" HorizontalTextAlignment="Center" Grid.Row="1"/>
@@ -30,7 +30,7 @@
 
    
         </Grid>
-        <ActivityIndicator IsRunning="True" x:Name="act" IsVisible="false"></ActivityIndicator>
+        <ActivityIndicator IsRunning="True"  IsVisible="{Binding IsBusy}"></ActivityIndicator>
     </Grid>
 
 </views:Popup>
