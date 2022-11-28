@@ -18,20 +18,35 @@ using System.Threading.Tasks;
 using FantasyRemoteCopy.UI.Views.Dialogs;
 using CommunityToolkit.Maui.Views;
 using System.Diagnostics;
+using FantasyMvvm;
+using FantasyMvvm.FantasyDialogService;
+using FantasyMvvm.FantasyRegionManager;
+using FantasyMvvm.FantasyNavigation;
+using FantasyMvvm.FantasyModels.Impls;
 
 namespace FantasyRemoteCopy.UI.ViewModels
 {
-    [ObservableObject]
-    public partial class HomePageModel
-    {
 
-        public HomePageModel(IUserService userService, SendDataBussiness sendDataBussiness,ReceiveBussiness receiveBussiness,ISaveDataService dataService,IFileSaveLocation fileSaveLocation) {
+    public partial class HomePageModel:FantasyPageModelBase
+    {
+        private readonly IDialogService _dialogService = null;
+
+        private readonly IRegionManager _regionManager = null;
+
+        private readonly INavigationService _navigationService = null;
+
+        public HomePageModel(IUserService userService, SendDataBussiness sendDataBussiness,ReceiveBussiness receiveBussiness,ISaveDataService dataService,IFileSaveLocation fileSaveLocation,IDialogService dialogService,IRegionManager regionManager,INavigationService navigationService) {
             this.userService = userService;
             this.sendDataBussiness = sendDataBussiness;
             this.receiveBussiness = receiveBussiness;
             _dataService = dataService;
             _fileSaveLocation = fileSaveLocation;
+            this._dialogService = dialogService;
 
+            this._regionManager = regionManager;
+
+            this._navigationService = navigationService;
+           
             this.DiscoveredDevices = new ObservableCollection<DiscoveredDeviceModel>();
             
             //发现可用的设备回调
@@ -223,8 +238,9 @@ namespace FantasyRemoteCopy.UI.ViewModels
         public async void GotoList()
         {
             this.NewMessageVisible = false;
-            var listPage = App.Current.Services.GetService<ListPage>();
-            await Application.Current.MainPage.Navigation.PushAsync(listPage);
+
+            await this._navigationService.NavigationToAsync(nameof(ListPage), null);
+
 
         }
 
@@ -234,20 +250,24 @@ namespace FantasyRemoteCopy.UI.ViewModels
         {
             if(model.IsSendingData)
             {
-                await Application.Current.MainPage.DisplayAlert("Warning", "Sorry, the file is being uploaded. Please try again after the upload is completed!","Ok");
+               
+             await this._dialogService.DisplayAlert("Warning", "Sorry, the file is being uploaded. Please try again after the upload is completed!","Ok");
                 return;
             }
 
-            var sendDialog = App.Current.Services.GetService<SendTypeDialog>();
-            sendDialog.InitData(model);
-            await Application.Current.MainPage.ShowPopupAsync<SendTypeDialog>(sendDialog);
+
+            NavigationParameter parameter = new NavigationParameter();
+            parameter.Add("data", model);
+           await this._dialogService.ShowPopUpDialogAsync(nameof(SendTypeDialog), parameter, null);
         }
 
         [ICommand]
         public async void GotoSettingPage()
         {
-            var settingpage = App.Current.Services.GetService<SettingPage>();
-            await Application.Current.MainPage.Navigation.PushAsync(settingpage);
+        
+
+            await this._navigationService.NavigationToAsync(nameof(SettingPage), null);
+
         }
 
         /// <summary>

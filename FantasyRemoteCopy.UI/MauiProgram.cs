@@ -7,6 +7,7 @@ using FantasyRemoteCopy.UI.ViewModels;
 using CommunityToolkit.Maui;
 using FantasyRemoteCopy.UI.Views.Dialogs;
 using FantasyMvvm;
+using FantasyRemoteCopy.UI.ViewModels.DialogModels;
 
 namespace FantasyRemoteCopy.UI;
 
@@ -39,17 +40,17 @@ public static class MauiProgram
 
 		builder.Services.AddTransient<SendDataBussiness>();
 		builder.Services.AddSingleton<ReceiveBussiness>();
-		builder.Services.AddTransient<LoginPage>();
-		builder.Services.AddTransient<LoginPageModel>();
-		
-		builder.UseRegistPage<HomePage,HomePageModel>("HomePage");
-		builder.UseRegistPage<SettingPage,SettingPageModel>("SettingPage");
 
-		builder.Services.AddTransient<SendTypeDialog>();
+		builder.UseRegisterPage<LoginPage, LoginPageModel>();
+		builder.UseRegisterPage<HomePage,HomePageModel>();
+		builder.UseRegisterPage<SettingPage,SettingPageModel>();
 
-		builder.UseRegistPage<TextInputPage,TextInputPage>("TextInputPage");
 
-		builder.UseRegistPage<ListPage, ListPageModel>("ListPage");
+		builder.UseRegisterPage<TextInputPage,TextInputPageModel>();
+
+		builder.UseRegisterPage<ListPage, ListPageModel>();
+		builder.UseRegisterDialog<SendTypeDialog, SendTypeDialogModel>();
+
 
 
 	

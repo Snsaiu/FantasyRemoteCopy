@@ -4,9 +4,9 @@ namespace FantasyRemoteCopy.UI.Views;
 
 public partial class LoginPage : ContentPage
 {
-	public LoginPage(LoginPageModel pagemodel)
+	public LoginPage( )
 	{
 		InitializeComponent();
-		this.BindingContext = pagemodel;
+
 	}
 }

@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
+using FantasyMvvm;
+using FantasyMvvm.FantasyDialogService;
+using FantasyMvvm.FantasyNavigation;
 using FantasyRemoteCopy.Core;
 using FantasyRemoteCopy.UI.Views;
 
@@ -12,8 +14,8 @@ using System.Threading.Tasks;
 
 namespace FantasyRemoteCopy.UI.ViewModels
 {
-    [ObservableObject]
-    public partial class SettingPageModel
+  
+    public partial class SettingPageModel:FantasyPageModelBase
     {
         private readonly IUserService userService;
         private readonly IGlobalScanLocalNetIp _globalScanLocalNetIp;
@@ -29,9 +31,13 @@ namespace FantasyRemoteCopy.UI.ViewModels
             get => !this.IsBusy;
         }
 
-        public SettingPageModel(IUserService userService,IGlobalScanLocalNetIp globalScanLocalNetIp)
+        private readonly INavigationService _navigationService;
+        private readonly IDialogService _dialogService;
+        public SettingPageModel(IUserService userService,IGlobalScanLocalNetIp globalScanLocalNetIp,INavigationService navigationService,IDialogService dialogService)
         {
             this.userService = userService;
+            this._dialogService = dialogService;
+            this._navigationService = navigationService;
             _globalScanLocalNetIp = globalScanLocalNetIp;
         }
 
@@ -56,10 +62,11 @@ namespace FantasyRemoteCopy.UI.ViewModels
         {
             await this.userService.ClearUser();
 
-            var loginPage = App.Current.Services.GetService<LoginPage>();
-            await Application.Current.MainPage.Navigation.PushAsync(loginPage);
-            var removePage = App.Current.MainPage.Navigation.NavigationStack.First();
-            App.Current.MainPage.Navigation.RemovePage(removePage);
+            this._navigationService.NavigationToAsync(nameof(LoginPage), false, null);
+            //var loginPage = App.Current.Services.GetService<LoginPage>();
+            //await Application.Current.MainPage.Navigation.PushAsync(loginPage);
+            //var removePage = App.Current.MainPage.Navigation.NavigationStack.First();
+            //App.Current.MainPage.Navigation.RemovePage(removePage);
         }
     }
 }

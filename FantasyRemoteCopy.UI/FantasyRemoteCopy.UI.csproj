@@ -108,9 +108,6 @@
 	  <None Remove="FantasyMvvm" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\FantasyRemoteCopy.Core\FantasyRemoteCopy.Core.csproj" />
-	</ItemGroup>
-	<ItemGroup>
 	  <MauiImage Include="Resources\Images\android.png" />
 	  <MauiImage Include="Resources\Images\copy.png" />
 	  <MauiImage Include="Resources\Images\delete.png" />
@@ -134,7 +131,7 @@
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Maui" Version="3.0.0" />
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0-preview3" />
-	  <PackageReference Include="FantasyMvvm" Version="1.0.1-preview" />
+	  <PackageReference Include="FantasyMvvm" Version="1.0.1.3-preview" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Update="Views\DetailPage.xaml.cs">
@@ -178,5 +175,8 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Properties\PublishProfiles\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\FantasyRemoteCopy.Core\FantasyRemoteCopy.Core.csproj" />
 	</ItemGroup>
 </Project>

@@ -8,13 +8,14 @@ using FantasyRemoteCopy.UI.Models;
 
 using System.Collections.ObjectModel;
 using FantasyRemoteCopy.UI.Views;
-
+using FantasyMvvm;
+using FantasyMvvm.FantasyDialogService;
+using FantasyMvvm.FantasyNavigation;
+using FantasyMvvm.FantasyModels.Impls;
 
 namespace FantasyRemoteCopy.UI.ViewModels;
 
-
-[ObservableObject]
-public partial class ListPageModel
+public partial class ListPageModel:FantasyPageModelBase
 {
     private readonly ISaveDataService _saveDataService;
     private readonly IOpenFolder _openFolder;
@@ -28,11 +29,16 @@ public partial class ListPageModel
     private bool isBusy = false;
 
 
+    private readonly IDialogService _dialogService = null;
 
-    public ListPageModel(ISaveDataService saveDataService,IOpenFolder openFolder)
+    private readonly INavigationService _navigationService = null;
+
+    public ListPageModel(ISaveDataService saveDataService,IOpenFolder openFolder,IDialogService dialogService,INavigationService navigationService)
     {
         _saveDataService = saveDataService;
         _openFolder = openFolder;
+        this._dialogService = dialogService;
+        this._navigationService = navigationService;
     }
 
 
@@ -78,7 +84,8 @@ public partial class ListPageModel
     public async void CopyContent(SaveItemModel model)
     {
        await Clipboard.Default.SetTextAsync(model.Content);
-       await Application.Current.MainPage.DisplayAlert("Information", "Success copy!", "Ok");
+       await this._dialogService.DisplayAlert("Information", "Success copy!", "Ok");
+       
 
 
     }
@@ -97,7 +104,7 @@ public partial class ListPageModel
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert("Warning", res.ErrorMsg, "Ok");
+                await this._dialogService.DisplayAlert("Warning", res.ErrorMsg, "Ok");
             }
             return;
         }
@@ -110,7 +117,7 @@ public partial class ListPageModel
           }
           else
           {
-              await Application.Current.MainPage.DisplayAlert("Warning", $"{model.Title} Open Error", "Ok");
+              await this._dialogService.DisplayAlert("Warning", $"{model.Title} Open Error", "Ok");
         }  
 #elif MACCATALYST
 
@@ -148,7 +155,7 @@ public partial class ListPageModel
        }
        else
        {
-           await Application.Current.MainPage.DisplayAlert("Warning", res.ErrorMsg, "Ok");
+           await this._dialogService.DisplayAlert("Warning", res.ErrorMsg, "Ok");
         }
        this.IsBusy = false;
     }
@@ -167,7 +174,10 @@ public partial class ListPageModel
     [ICommand]
     public async void Detail(SaveItemModel model)
     {
-       await Application.Current.MainPage.Navigation.PushAsync(new DetailPage(model.Content));
+ 
+        NavigationParameter parameter = new NavigationParameter();
+        parameter.Add("data", model.Content);
+        await this._navigationService.NavigationToAsync(nameof(DetailPage), parameter);
     }
 
     [ICommand]
@@ -182,7 +192,7 @@ public partial class ListPageModel
        }
        else
        {
-         await  App.Current.MainPage.DisplayAlert("Warning", list.ErrorMsg, "Ok");
+         await  this._dialogService.DisplayAlert("Warning", list.ErrorMsg, "Ok");
 
        }
        this.IsBusy = false;
