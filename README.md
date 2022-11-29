@@ -8,7 +8,7 @@ frc全称**fantasy remote copy**,是一款跨平台（当前支持Windows与 mac
 
 # 使用前提
 * 在用户使用环境中，如果您有两台电脑都在运行，都在身边，那边我便默认您当前电脑都在一个局域网中，如果您的设备都不在同一个局域网中，那么非常遗憾，您将无法使用frc。
-* 您的window系统最低要支持到Windows 10，因为frc的开发采用的是微软的[MAUI](https://learn.microsoft.com/zh-cn/dotnet/maui/what-is-maui?view=net-maui-7.0)框架，由于框架本身的限制最低windows，所以对于win7系统或者版本更低的用户将无法使用本软件。
+* 您的window系统最低要支持到Windows 10，因为frc的开发采用的是微软的[MAUI](https://learn.microsoft.com/zh-cn/dotnet/maui/what-is-maui?view=net-maui-7.0)框架，由于框架本身的限制最低windows 10，所以对于win7系统或者版本更低的用户将无法使用本软件。
 
 # frc工作原理
 frc的使用环境是局域网环境，所以在进入一个新的局域网环境中，要先进行一次全局扫描局域网ip，这样才能发现当前哪些局域网的设备是可用状态。
