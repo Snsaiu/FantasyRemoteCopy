@@ -40,16 +40,28 @@ frc的使用环境是局域网环境，所以在进入一个新的局域网环�
 ## 主界面介绍
 
 ![页面介绍](./readmeAssets/pagesolo.jpg)
-### 发送文本/文件
+## 发送文本/文件
 若要发送文件，选择要发送的设备，点击![share](./readmeAssets/share.jpg)按钮，会弹出发送类型对话框![sharetype](./readmeAssets/sharetype.jpg)。选择要发送的类型即可。
 
-### 历史记录
+## 历史记录
 
 在历史记录面板里，您可以浏览以往接收的内容，如图：
 ![历史](./readmeAssets/list.jpg)
 历史记录中包含两种类型列表项目，一种是文本![文本](./readmeAssets/a.jpg)
 一种是文件![文件](./readmeAssets/file.jpg)，对于这两种类型有不同的操作选项，如图：
 ![item](./readmeAssets/item.jpg)
+
+## 搜索当前可用设备
+更新当前可用设备
+
+![更新](./readmeAssets/update.jpg)
+
+假如您刷新多次也没有出现您的设备，请到设置中选择**全局刷新**
+![全局刷新](./readmeAssets/gl.jpg)
+
+*注意全局刷新会花费一些时间，请耐心等待*
+
+
 
 # 当前问题
 * 默认传送的文件最大不能超过1G
