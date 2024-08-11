@@ -20,7 +20,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             this._dialogService = dialogService;
 		}
 
-        [ICommand]
+        [RelayCommand]
         public async void Copy()
         {
             await Clipboard.Default.SetTextAsync(this.Content);

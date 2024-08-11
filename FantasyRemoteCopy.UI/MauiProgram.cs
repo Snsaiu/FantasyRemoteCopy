@@ -1,5 +1,4 @@
 ﻿using FantasyRemoteCopy.Core;
-using FantasyRemoteCopy.Core.Platforms;
 using FantasyRemoteCopy.Core.Impls;
 using FantasyRemoteCopy.Core.Bussiness;
 using FantasyRemoteCopy.UI.Views;
@@ -8,6 +7,7 @@ using CommunityToolkit.Maui;
 using FantasyRemoteCopy.UI.Views.Dialogs;
 using FantasyMvvm;
 using FantasyRemoteCopy.UI.ViewModels.DialogModels;
+using FantasyRemoteCopy.Core.Platforms;
 
 namespace FantasyRemoteCopy.UI;
 

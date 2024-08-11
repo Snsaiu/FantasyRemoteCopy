@@ -29,8 +29,8 @@ public partial class TextInputPageModel : FantasyPageModelBase, INavigationAware
     private Models.DiscoveredDeviceModel _discoveredDeviceModel;
 
 
-    [ICommand]
-    public async void SendData()
+    [RelayCommand]
+    private async Task SendData()
     {
         await this._sendDataBussiness.SendData(this._discoveredDeviceModel.Ip, this.Content, DataType.Text);
         await Task.Delay(1000);

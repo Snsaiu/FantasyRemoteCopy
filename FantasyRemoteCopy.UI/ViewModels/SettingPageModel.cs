@@ -21,9 +21,8 @@ namespace FantasyRemoteCopy.UI.ViewModels
         private readonly IGlobalScanLocalNetIp _globalScanLocalNetIp;
 
         [ObservableProperty]
-        [AlsoNotifyCanExecuteFor(nameof(LogoutCommand))]
-        [AlsoNotifyCanExecuteFor(nameof(GlobalSearchCommand))]
-        [AlsoNotifyChangeFor(nameof(IsNotBusy))]
+        [NotifyCanExecuteChangedFor(nameof(LogoutCommand))]
+        [NotifyCanExecuteChangedFor(nameof(GlobalSearchCommand))]
         private bool isBusy = false;
 
         public bool IsNotBusy
@@ -42,8 +41,8 @@ namespace FantasyRemoteCopy.UI.ViewModels
         }
 
 
-        [ICommand(CanExecute = nameof(IsNotBusy))]
-        public  void GlobalSearch()
+        [RelayCommand(CanExecute = nameof(IsNotBusy))]
+        private  void GlobalSearch()
         {
             this.IsBusy = true;
             Task.Run( async() =>
@@ -57,12 +56,12 @@ namespace FantasyRemoteCopy.UI.ViewModels
             });
         }
 
-        [ICommand(CanExecute =nameof(IsNotBusy))]
-        public async void Logout()
+        [RelayCommand(CanExecute =nameof(IsNotBusy))]
+        private async Task Logout()
         {
             await this.userService.ClearUser();
 
-            this._navigationService.NavigationToAsync(nameof(LoginPage), false, null);
+             await this._navigationService.NavigationToAsync(nameof(LoginPage), false, null);
             //var loginPage = App.Current.Services.GetService<LoginPage>();
             //await Application.Current.MainPage.Navigation.PushAsync(loginPage);
             //var removePage = App.Current.MainPage.Navigation.NavigationStack.First();

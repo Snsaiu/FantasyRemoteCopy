@@ -38,8 +38,8 @@ public partial class SendTypeDialogModel : FantasyDialogModelBase
       this.discoveredDeviceModel=parameter.Get<DiscoveredDeviceModel>("data");
     }
 
-    [ICommand]
-    public async void TextInput()
+    [RelayCommand]
+    private async Task TextInput()
     {
         NavigationParameter parameter = new NavigationParameter();
         parameter.Add("data", discoveredDeviceModel);
@@ -47,7 +47,9 @@ public partial class SendTypeDialogModel : FantasyDialogModelBase
         await this._navigationService.NavigationToAsync(nameof(TextInputPage), parameter);
     }
 
-    public async void FileInput()
+    [RelayCommand]
+
+    public async Task FileInput()
     {
         try
         {

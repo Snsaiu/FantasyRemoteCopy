@@ -28,11 +28,11 @@ namespace FantasyRemoteCopy.UI.ViewModels
         private bool isBusy=false;
 
         [ObservableProperty]
-        [AlsoNotifyCanExecuteFor(nameof(LoginCommand))]
+        [NotifyCanExecuteChangedFor(nameof(LoginCommand))]
         private string userName;
 
         [ObservableProperty]
-        [AlsoNotifyCanExecuteFor(nameof(LoginCommand))]
+        [NotifyCanExecuteChangedFor(nameof(LoginCommand))]
         private string deviceNickName;
 
         private readonly IUserService userService;
@@ -41,8 +41,8 @@ namespace FantasyRemoteCopy.UI.ViewModels
             get => !string.IsNullOrWhiteSpace(this.UserName)&&!string.IsNullOrWhiteSpace(this.DeviceNickName);
         }
 
-        [ICommand(CanExecute =nameof(CanLogin))]
-        public async void Login()
+        [RelayCommand(CanExecute =nameof(CanLogin))]
+        public async Task Login()
         {
             this.IsBusy = true;
             await this.userService.SaveUser(new Core.Models.UserInfo() { Name = this.UserName, DeviceNickName = this.DeviceNickName });
@@ -54,8 +54,8 @@ namespace FantasyRemoteCopy.UI.ViewModels
             //App.Current.MainPage.Navigation.RemovePage(removePage);
         }
 
-        [ICommand]
-        public async void Init()
+        [RelayCommand]
+        public async Task Init()
         {
            
 
@@ -65,8 +65,6 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                 this.UserName = userRes.Data.Name;
                 this.DeviceNickName = userRes.Data.DeviceNickName;
-                //await Task.Delay(TimeSpan.FromSeconds(2));
-
                 await this._navigationService.NavigationToAsync(nameof(HomePage), false, null);
             }
             this.IsBusy = false;

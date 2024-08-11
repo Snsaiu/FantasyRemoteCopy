@@ -80,19 +80,17 @@ public partial class ListPageModel:FantasyPageModelBase
     }
 
 
-    [ICommand]
-    public async void CopyContent(SaveItemModel model)
+    [RelayCommand]
+    private async Task CopyContent(SaveItemModel model)
     {
        await Clipboard.Default.SetTextAsync(model.Content);
        await this._dialogService.DisplayAlert("Information", "Success copy!", "Ok");
-       
-
-
+      
     }
 
 
-    [ICommand]
-    public async void OpenFile(SaveItemModel model)
+    [RelayCommand]
+    private async Task OpenFile(SaveItemModel model)
     {
         // 判断文件是否存在
         if (File.Exists(model.Content) == false)
@@ -136,8 +134,8 @@ public partial class ListPageModel:FantasyPageModelBase
     /// 删除命令
     /// </summary>
     /// <param name="model"></param>
-    [ICommand]
-    public async void Delete(SaveItemModel model)
+    [RelayCommand]
+    private async Task Delete(SaveItemModel model)
     {
         this.IsBusy = true;
         if (model.IsFile)
@@ -161,8 +159,8 @@ public partial class ListPageModel:FantasyPageModelBase
     }
 
 
-    [ICommand]
-    public async void OpenFolder(SaveItemModel model)
+    [RelayCommand]
+    public  void OpenFolder(SaveItemModel model)
     {
         var p= Directory.GetParent(model.Content).ToString();
        //var p=  Path.GetFullPath(model.Content);
@@ -171,8 +169,8 @@ public partial class ListPageModel:FantasyPageModelBase
     }
 
 
-    [ICommand]
-    public async void Detail(SaveItemModel model)
+    [RelayCommand]
+    private async Task Detail(SaveItemModel model)
     {
  
         NavigationParameter parameter = new NavigationParameter();
@@ -180,8 +178,8 @@ public partial class ListPageModel:FantasyPageModelBase
         await this._navigationService.NavigationToAsync(nameof(DetailPage), parameter);
     }
 
-    [ICommand]
-    public async void Init()
+    [RelayCommand]
+    public async Task Init()
     {
         this.IsBusy = true;
        var list= await  this._saveDataService.GetAllAsync();

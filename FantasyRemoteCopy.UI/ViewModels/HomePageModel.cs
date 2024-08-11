@@ -216,7 +216,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         private readonly ISaveDataService _dataService;
         private readonly IFileSaveLocation _fileSaveLocation;
 
-        [ICommand]
+        [RelayCommand]
         public async void Init()
         {
             this.IsBusy = true;
@@ -227,14 +227,14 @@ namespace FantasyRemoteCopy.UI.ViewModels
             this.deviceDiscover();
         }
 
-        [ICommand]
+        [RelayCommand]
         public  void Search()
         {
             this.deviceDiscover();
         }
 
 
-        [ICommand]
+        [RelayCommand]
         public async void GotoList()
         {
             this.NewMessageVisible = false;
@@ -245,7 +245,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         }
 
 
-        [ICommand]
+        [RelayCommand]
         public async void Share(DiscoveredDeviceModel model)
         {
             if(model.IsSendingData)
@@ -261,7 +261,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
            await this._dialogService.ShowPopUpDialogAsync(nameof(SendTypeDialog), parameter, null);
         }
 
-        [ICommand]
+        [RelayCommand]
         public async void GotoSettingPage()
         {
         

@@ -1,4 +1,5 @@
 ﻿using Foundation;
+using Foundation;
 
 namespace FantasyRemoteCopy.UI;
 
