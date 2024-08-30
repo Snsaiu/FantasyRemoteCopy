@@ -1,10 +1,10 @@
-using FantasyRemoteCopy.Core;
+using FantasyRemoteCopy.Core.Consts;
 using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.Core.Models;
 
 using Newtonsoft.Json;
+
 using System.Text;
-using FantasyRemoteCopy.Core.Consts;
 
 namespace FantasyRemoteCopy.Core.Bussiness;
 
@@ -26,7 +26,7 @@ public class ReceiveBussiness
     private readonly IUserService userService;
 
     public event DiscoverEnableIpDelegate DiscoverEnableIpEvent;
-   public event SendErrorDelegate SendErrorEvent;
+    public event SendErrorDelegate SendErrorEvent;
 
     public event ReceiveDataDelegate ReceiveDataEvent;
     public event ReceivingDataDelegate ReceivingDataEvent;
@@ -35,32 +35,32 @@ public class ReceiveBussiness
 
     public event ReceivingProcessDelegate ReceivingProcessEvent;
 
-    public ReceiveBussiness(IReceiveData receiveData,ISendData sendData,IUserService userService)
+    public ReceiveBussiness(IReceiveData receiveData, ISendData sendData, IUserService userService)
     {
         _receiveData = receiveData;
         _sendData = sendData;
         this.userService = userService;
-        this._receiveData.ReceiveInviteEvent += InviteHandle;
-        this._receiveData.ReceiveBuildConnectionEvent += BuildConnectionHandle;
-        this._receiveData.ReceiveDataEvent += (d) =>
+        _receiveData.ReceiveInviteEvent += InviteHandle;
+        _receiveData.ReceiveBuildConnectionEvent += BuildConnectionHandle;
+        _receiveData.ReceiveDataEvent += (d) =>
         {
-            this.ReceiveDataEvent?.Invoke(d);
+            ReceiveDataEvent?.Invoke(d);
         };
-        this._receiveData.ReceivingDataEvent += (ip) =>
+        _receiveData.ReceivingDataEvent += (ip) =>
         {
-            this.ReceivingDataEvent?.Invoke(ip);
+            ReceivingDataEvent?.Invoke(ip);
         };
-        this._receiveData.ReceivedFileFinishedEvent += (ip) =>
+        _receiveData.ReceivedFileFinishedEvent += (ip) =>
         {
-            this.ReceivedFileFinishedEvent?.Invoke(ip);
+            ReceivedFileFinishedEvent?.Invoke(ip);
         };
 
-        this._receiveData.ReceivingProcessEvent += (ip, process) =>
+        _receiveData.ReceivingProcessEvent += (ip, process) =>
         {
-            this.ReceivingProcessEvent?.Invoke(ip, process);
+            ReceivingProcessEvent?.Invoke(ip, process);
         };
-        this._receiveData.LiseningInvite();
-        this._receiveData.LiseningBuildConnection();
+        _receiveData.LiseningInvite();
+        _receiveData.LiseningBuildConnection();
 
 
     }
@@ -75,43 +75,43 @@ public class ReceiveBussiness
 
             await Task.Run(() =>
             {
-                 this._receiveData.LiseningData(data.TargetIp, dmm.Size);
-        });
+                _receiveData.LiseningData(data.TargetIp, dmm.Size);
+            });
 
-        data.Type= TransformType.BuildConnected;
+            data.Type = TransformType.BuildConnected;
             data.Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dmm));
 
-           await this._sendData.SendBuildConnectionAsync(data);
+            await _sendData.SendBuildConnectionAsync(data);
         }
-        else if(data.Type == TransformType.BuildConnected) 
+        else if (data.Type == TransformType.BuildConnected)
         {
 
             DataMetaModel dmm = JsonConvert.DeserializeObject<DataMetaModel>(Encoding.UTF8.GetString(data.Data));
             // 找到元数据
-            var findDmm= ConstParams.WillSendMetasQueue.FirstOrDefault(x => x.Guid == dmm.Guid);
-            if(findDmm!=null)
+            DataMetaModel findDmm = ConstParams.WillSendMetasQueue.FirstOrDefault(x => x.Guid == dmm.Guid);
+            if (findDmm != null)
             {
-                if(dmm.State==MetaState.Received)
+                if (dmm.State == MetaState.Received)
                 {
                     findDmm.State = MetaState.Sending;
-                    var detail = ConstParams.DataContents.FirstOrDefault(x => x.Guid == findDmm.Guid);
+                    DataContent detail = ConstParams.DataContents.FirstOrDefault(x => x.Guid == findDmm.Guid);
                     if (detail == null)
                     {
-                        this.SendErrorEvent?.Invoke("sending data error ! because data is none!");
+                        SendErrorEvent?.Invoke("sending data error ! because data is none!");
                         ConstParams.DataContents.Remove(detail);
                         ConstParams.WillSendMetasQueue.Remove(findDmm);
 
                         return;
                     }
 
-                    var userRes = await this.userService.GetCurrentUser();
+                    FantasyResultModel.ResultBase<UserInfo> userRes = await userService.GetCurrentUserAsync();
                     if (userRes.Ok == false)
                     {
                         throw new Exception(userRes.ErrorMsg);
                     }
 
 
-                 await this._sendData.SendDataAsync(findDmm,detail.Content,userRes.Data.DeviceNickName );
+                    await _sendData.SendDataAsync(findDmm, detail.Content, userRes.Data.DeviceNickName);
                 }
             }
 
@@ -124,13 +124,13 @@ public class ReceiveBussiness
     public void InviteHandle(TransformData data)
     {
 
-        var userData= this.userService.GetCurrentUser().GetAwaiter().GetResult();
+        FantasyResultModel.ResultBase<UserInfo> userData = userService.GetCurrentUserAsync().GetAwaiter().GetResult();
         if (userData.Ok == false)
         {
             return;
         }
 
-        var sourceData= JsonConvert.DeserializeObject<SendInviteModel>(Encoding.UTF8.GetString(data.Data));
+        SendInviteModel sourceData = JsonConvert.DeserializeObject<SendInviteModel>(Encoding.UTF8.GetString(data.Data));
 
         if (sourceData.MasterName != userData.Data.Name)
         {
@@ -142,28 +142,30 @@ public class ReceiveBussiness
         {
             data.Type = TransformType.ReceiveValidateAccountResult;
 
-            SendInviteModel sm = new SendInviteModel();
-            sm.MasterName = userData.Data.Name;
-            sm.DevicePlatform = DeviceInfo.Current.Platform.ToString();
-            sm.DeviceName = DeviceInfo.Current.Name;
-            sm.NickName = userData.Data.DeviceNickName;
-         
+            SendInviteModel sm = new SendInviteModel
+            {
+                MasterName = userData.Data.Name,
+                DevicePlatform = DeviceInfo.Current.Platform.ToString(),
+                DeviceName = DeviceInfo.Current.Name,
+                NickName = userData.Data.DeviceNickName
+            };
+
             string smStr = JsonConvert.SerializeObject(sm);
 
             data.Data = Encoding.UTF8.GetBytes(smStr);
-            
-            this._sendData.SendInviteAsync(data);
+
+            _sendData.SendInviteAsync(data);
         }
         else if (data.Type == TransformType.ReceiveValidateAccountResult)
         {
 
-            var sm= JsonConvert.DeserializeObject<SendInviteModel>(Encoding.UTF8.GetString(data.Data));
+            SendInviteModel sm = JsonConvert.DeserializeObject<SendInviteModel>(Encoding.UTF8.GetString(data.Data));
             sm.DeviceIP = data.TargetIp;
-            this.DiscoverEnableIpEvent?.Invoke(sm);
+            DiscoverEnableIpEvent?.Invoke(sm);
         }
-        
-        
-        
+
+
+
 
     }
 }

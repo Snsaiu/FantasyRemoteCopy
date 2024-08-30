@@ -1,79 +1,73 @@
-﻿using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Text;
-using System.Text.RegularExpressions;
-
-using FantasyRemoteCopy.Core;
-using FantasyRemoteCopy.Core.Enums;
-using FantasyRemoteCopy.Core.Impls;
-using FantasyRemoteCopy.Core.Models;
+﻿using FantasyRemoteCopy.Core;
 using FantasyRemoteCopy.Core.Bussiness;
+using FantasyRemoteCopy.Core.Models;
 
 using Newtonsoft.Json;
+
+using System.Text;
 
 namespace FantasyRemoteCopy.UI;
 
 public partial class MainPage : ContentPage
 {
-	private readonly SendDataBussiness _sendDataBussiness;
-	private readonly ReceiveBussiness _receiveBussiness;
+    private readonly SendDataBussiness _sendDataBussiness;
+    private readonly ReceiveBussiness _receiveBussiness;
     private readonly IUserService userService;
 
 
-	private List<SendInviteModel> sendInviteModels= new List<SendInviteModel>();
+    private List<SendInviteModel> sendInviteModels = [];
 
     public MainPage(SendDataBussiness sendDataBussiness,
-		ReceiveBussiness receiveBussiness,IUserService userService)
-	{
-		_sendDataBussiness = sendDataBussiness;
-		_receiveBussiness = receiveBussiness;
+        ReceiveBussiness receiveBussiness, IUserService userService)
+    {
+        _sendDataBussiness = sendDataBussiness;
+        _receiveBussiness = receiveBussiness;
         this.userService = userService;
-		
+
 
         InitializeComponent();
-		this.info.Text = "";
-		this.indicator.IsVisible = false;
-        this._receiveBussiness.DiscoverEnableIpEvent += (model) =>
+        info.Text = "";
+        indicator.IsVisible = false;
+        _receiveBussiness.DiscoverEnableIpEvent += (model) =>
         {
-            this.sendInviteModels.Add(model);
+            sendInviteModels.Add(model);
             Application.Current.Dispatcher.Dispatch(() =>
-			{
-				
-				this.info.Text += $"{model.DeviceIP} {model.DeviceName} {model.DevicePlatform.ToString()}" + "\n";
-			});
-		
+            {
+
+                info.Text += $"{model.DeviceIP} {model.DeviceName} {model.DevicePlatform}" + "\n";
+            });
+
         };
 
-		this._receiveBussiness.ReceiveDataEvent += (d) =>
-		{
-			var str= Encoding.UTF8.GetString(d.Data);
-			var dm= JsonConvert.DeserializeObject<DataMetaModel>(str);
-			
+        _receiveBussiness.ReceiveDataEvent += (d) =>
+        {
+            string str = Encoding.UTF8.GetString(d.Data);
+            DataMetaModel dm = JsonConvert.DeserializeObject<DataMetaModel>(str);
 
-		};
 
-	
+        };
+
+
     }
-   
 
-    private  void OnCounterClicked(object sender, EventArgs e)
+
+    private void OnCounterClicked(object sender, EventArgs e)
     {
-		this.sendInviteModels.Clear();
-		this.info.Text = "";
-		var userRes= this.userService.GetCurrentUser().GetAwaiter().GetResult();
-		if(userRes.Ok==false)
-		{
-			this.userService.SaveUser(new UserInfo { Name = "小明" });
-		}
-		this.indicator.IsVisible = true;
-		 Task.Run(async() =>
-		{
-            await this._sendDataBussiness.DeviceDiscover();
-		}).WaitAsync(TimeSpan.FromSeconds(10)).GetAwaiter().OnCompleted(() =>
-		{
-			this.indicator.IsVisible = false;
-		});
+        sendInviteModels.Clear();
+        info.Text = "";
+        FantasyResultModel.ResultBase<UserInfo> userRes = userService.GetCurrentUserAsync().GetAwaiter().GetResult();
+        if (userRes.Ok == false)
+        {
+            userService.SaveUserAsync(new UserInfo { Name = "小明" });
+        }
+        indicator.IsVisible = true;
+        Task.Run(async () =>
+       {
+           await _sendDataBussiness.DeviceDiscover();
+       }).WaitAsync(TimeSpan.FromSeconds(10)).GetAwaiter().OnCompleted(() =>
+       {
+           indicator.IsVisible = false;
+       });
 
     }
 
@@ -81,17 +75,17 @@ public partial class MainPage : ContentPage
     {
 
 
-		await this._sendDataBussiness.SendData(this.sendInviteModels.First().DeviceIP, "helloworld", DataType.Text);
+        await _sendDataBussiness.SendData(sendInviteModels.First().DeviceIP, "helloworld", DataType.Text);
 
     }
 
-    private async void GetUserEvent(object sender, EventArgs e)
+    private void GetUserEvent(object sender, EventArgs e)
     {
-	  // var res=  await this._userService.GetCurrentUser();
-	  // if (res.Ok)
-	  // {
-		 //  this.info.Text = "找到用户：" + res.Data.Name;
-	  // }
+        // var res=  await this._userService.GetCurrentUser();
+        // if (res.Ok)
+        // {
+        //  this.info.Text = "找到用户：" + res.Data.Name;
+        // }
     }
 }
 

@@ -19,6 +19,13 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios|AnyCPU'">
 	  <CreatePackage>false</CreatePackage>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Platforms\Tizen\**" />
+	  <EmbeddedResource Remove="Platforms\Tizen\**" />
+	  <MauiCss Remove="Platforms\Tizen\**" />
+	  <MauiXaml Remove="Platforms\Tizen\**" />
+	  <None Remove="Platforms\Tizen\**" />
+	</ItemGroup>
   <ItemGroup>
     <None Remove="FantasyResultModel" />
     <None Remove="Impls\" />
@@ -30,7 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Impls\" />
-    <Folder Include="Platforms\Tizen\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FantasyResultModel" Version="1.0.0" />

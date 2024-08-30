@@ -1,12 +1,13 @@
-using System.Text;
-using FantasyRemoteCopy.Core;
 using FantasyRemoteCopy.Core.Consts;
 using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.Core.Models;
+
 using FantasyResultModel;
 using FantasyResultModel.Impls;
 
 using Newtonsoft.Json;
+
+using System.Text;
 
 namespace FantasyRemoteCopy.Core.Bussiness;
 
@@ -36,19 +37,19 @@ public class SendDataBussiness
         _sendData = sendData;
         _userService = userService;
 
-        this._sendData.SendingDataEvent += (ip) =>
+        _sendData.SendingDataEvent += (ip) =>
         {
-            this.SendingDataEvent?.Invoke(ip);
+            SendingDataEvent?.Invoke(ip);
         };
-        this._sendData.SendFinishedEvent += (ip) =>
+        _sendData.SendFinishedEvent += (ip) =>
         {
-            this.SendFinishedEvent?.Invoke(ip);
+            SendFinishedEvent?.Invoke(ip);
         };
     }
 
-  public  event SendingDataDelegate SendingDataEvent;
+    public event SendingDataDelegate SendingDataEvent;
 
-   public event SendFinishedDelegate SendFinishedEvent;
+    public event SendFinishedDelegate SendFinishedEvent;
 
     /// <summary>
     /// 发送数据
@@ -59,8 +60,10 @@ public class SendDataBussiness
     /// <returns></returns>
     public async Task<ResultBase<bool>> SendData(string targetip, string content, DataType datatype)
     {
-        var tf = new TransformData ();
-        tf.DataGuid = Guid.NewGuid().ToString();
+        TransformData tf = new TransformData
+        {
+            DataGuid = Guid.NewGuid().ToString()
+        };
 
         await Task.Delay(1000);
 
@@ -68,95 +71,101 @@ public class SendDataBussiness
 
         if (datatype == DataType.Text)
         {
-          var bytes= Encoding.UTF8.GetBytes(content);
-          contentSize= bytes.Length;
+            byte[] bytes = Encoding.UTF8.GetBytes(content);
+            contentSize = bytes.Length;
         }
         else
         {
-          FileInfo f=new FileInfo(content);
-          contentSize = f.Length;
-            
+            FileInfo f = new FileInfo(content);
+            contentSize = f.Length;
+
         }
-       
+
 
 
         tf.TargetIp = targetip;
 
-        var userRes = await this._userService.GetCurrentUser();
+        ResultBase<UserInfo> userRes = await _userService.GetCurrentUserAsync();
         if (userRes.Ok == false)
             return new ErrorResultModel<bool>(userRes.ErrorMsg);
 
         tf.TargetDeviceNickName = userRes.Data.DeviceNickName;
 
-        DataMetaModel dm = new DataMetaModel { Guid = tf.DataGuid, Size = contentSize, State = MetaState.Receiving };
-        dm.DataType = datatype;
-        dm.TargetIp = tf.TargetIp;
+        DataMetaModel dm = new DataMetaModel
+        {
+            Guid = tf.DataGuid,
+            Size = contentSize,
+            State = MetaState.Receiving,
+            DataType = datatype,
+            TargetIp = tf.TargetIp
+        };
         dm.Guid = tf.DataGuid;
         if (datatype == DataType.File)
         {
             dm.SourcePosition = content;
         }
-        
-      
+
+
 
         tf.Type = TransformType.RequestBuildConnect;
         tf.Port = ConstParams.BuildTcpIp_Port;
 
         tf.Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dm));
-  
+
         ConstParams.WillSendMetasQueue.Add(dm);
 
         ConstParams.DataContents.Add(new DataContent { Guid = dm.Guid, Content = content });
-        await  this._sendData.SendRquestBuildConnectionDataAsync(tf);
+        await _sendData.SendRquestBuildConnectionDataAsync(tf);
         return new SuccessResultModel<bool>(true);
     }
-    
+
     /// <summary>
     /// 设备发现
     /// </summary>
     /// <returns></returns>
     public async Task<ResultBase<bool>> DeviceDiscover()
     {
-       var scanRes= await this._scanLocalNetIp.ScanLocalNetIpAsync();
-       if (scanRes.Ok == false)
-           return new ErrorResultModel<bool>(scanRes.ErrorMsg);
-      
-       var userRes= await this._userService.GetCurrentUser();
-       if (userRes.Ok == false)
-           return new ErrorResultModel<bool>(userRes.ErrorMsg);
+        ResultBase<List<string>> scanRes = await _scanLocalNetIp.ScanLocalNetIpAsync();
+        if (scanRes.Ok == false)
+            return new ErrorResultModel<bool>(scanRes.ErrorMsg);
 
-       
-  
-       foreach (string ip in scanRes.Data)
-       {
+        ResultBase<UserInfo> userRes = await _userService.GetCurrentUserAsync();
+        if (userRes.Ok == false)
+            return new ErrorResultModel<bool>(userRes.ErrorMsg);
 
+
+
+        foreach (string ip in scanRes.Data)
+        {
             try
             {
-                
-                SendInviteModel sm=new SendInviteModel();
-                sm.MasterName = userRes.Data.Name;
-                sm.DevicePlatform = DeviceInfo.Current.Platform.ToString();
-                sm.DeviceName = DeviceInfo.Current.Name;
-                sm.NickName = userRes.Data.DeviceNickName;
-                string smStr=JsonConvert.SerializeObject(sm);
+                SendInviteModel sm = new SendInviteModel
+                {
+                    MasterName = userRes.Data.Name,
+                    DevicePlatform = DeviceInfo.Current.Platform.ToString(),
+                    DeviceName = DeviceInfo.Current.Name,
+                    NickName = userRes.Data.DeviceNickName
+                };
+                string smStr = JsonConvert.SerializeObject(sm);
 
-                TransformData td = new TransformData();
-
-                td.Data = Encoding.UTF8.GetBytes(smStr);
-                td.Type = TransformType.ValidateAccount;
-                td.TargetIp = ip;
-                td.Port = ConstParams.INVITE_PORT;
-                await this._sendData.SendInviteAsync(td);
+                TransformData td = new TransformData
+                {
+                    Data = Encoding.UTF8.GetBytes(smStr),
+                    Type = TransformType.ValidateAccount,
+                    TargetIp = ip,
+                    Port = ConstParams.INVITE_PORT
+                };
+                await _sendData.SendInviteAsync(td);
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
 
-       }
+        }
 
-       return await Task.FromResult(new SuccessResultModel<bool>(true));
+        return await Task.FromResult(new SuccessResultModel<bool>(true));
 
     }
 }

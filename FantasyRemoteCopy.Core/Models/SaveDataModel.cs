@@ -7,16 +7,15 @@ namespace FantasyRemoteCopy.Core.Models;
 /// </summary>
 public class SaveDataModel
 {
-
     /// <summary>
     /// id
     /// </summary>
-    [PrimaryKey,AutoIncrement]
-    public int  Id { get; set; }
+    [PrimaryKey, AutoIncrement]
+    public int Id { get; set; }
 
     public DateTime Time { get; set; }
 
-    public SaveDataType  DataType { get; set; }
+    public SaveDataType DataType { get; set; }
 
     public string SourceDeviceNickName { get; set; }
 

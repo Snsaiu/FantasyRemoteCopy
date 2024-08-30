@@ -7,8 +7,6 @@ namespace FantasyRemoteCopy.Core.Models;
 /// </summary>
 public class UserInfo
 {
-
- 
     /// <summary>
     /// 用户名（唯一编号）
     /// </summary>

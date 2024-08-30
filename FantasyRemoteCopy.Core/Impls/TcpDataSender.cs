@@ -1,29 +1,27 @@
+using FantasyRemoteCopy.Core.Consts;
+using FantasyRemoteCopy.Core.Models;
+
+using FantasyResultModel;
+using FantasyResultModel.Impls;
+
+using Newtonsoft.Json;
+
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
-
-using FantasyRemoteCopy.Core.Consts;
-using FantasyRemoteCopy.Core.Models;
-using FantasyResultModel;
-using FantasyResultModel.Impls;
-using Newtonsoft.Json;
 
 namespace FantasyRemoteCopy.Core.Impls;
 
-public class TcpDataSender:ISendData
+public class TcpDataSender : ISendData
 {
-    
     public TcpDataSender()
     {
- 
-        
     }
 
 
-   public event SendingDataDelegate SendingDataEvent;
+    public event SendingDataDelegate SendingDataEvent;
 
-   public event SendFinishedDelegate SendFinishedEvent;
+    public event SendFinishedDelegate SendFinishedEvent;
 
 
     /// <summary>
@@ -36,7 +34,7 @@ public class TcpDataSender:ISendData
     /// <remarks >
     /// �� outTime ָ��Ϊ-1ʱ����һֱ�ȴ�ֱ����������Ҫ����
     /// </remarks>
-    private  int sendData(Socket socket, byte[] buffer, int outTime)
+    private int sendData(Socket socket, byte[] buffer, int outTime)
     {
         if (socket == null || socket.Connected == false)
         {
@@ -84,7 +82,7 @@ public class TcpDataSender:ISendData
                 }
             }
         }
-        catch (SocketException e)
+        catch (SocketException)
         {
 
             flag = -3;
@@ -102,7 +100,7 @@ public class TcpDataSender:ISendData
 
         string dataStr = JsonConvert.SerializeObject(data);
         byte[] byteData = Encoding.UTF8.GetBytes(dataStr);
-        var s = new ArraySegment<byte>(byteData);
+        ArraySegment<byte> s = new ArraySegment<byte>(byteData);
         int res = await udpClient.SendToAsync(s, SocketFlags.None, point);
         udpClient.Close();
         return null;
@@ -112,14 +110,14 @@ public class TcpDataSender:ISendData
     {
         Socket udpClient = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         IPAddress ipaddress = IPAddress.Parse(data.TargetIp);
-        EndPoint point = new IPEndPoint(ipaddress,int.Parse(data.Port));
+        EndPoint point = new IPEndPoint(ipaddress, int.Parse(data.Port));
 
-        udpClient.SetSocketOption(SocketOptionLevel.IP,SocketOptionName.PacketInformation,true);
+        udpClient.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.PacketInformation, true);
 
         string dataStr = JsonConvert.SerializeObject(data);
         byte[] byteData = Encoding.UTF8.GetBytes(dataStr);
-        var s = new ArraySegment<byte>(byteData);
-       int res=  await udpClient.SendToAsync(s, SocketFlags.None, point);
+        ArraySegment<byte> s = new ArraySegment<byte>(byteData);
+        int res = await udpClient.SendToAsync(s, SocketFlags.None, point);
         udpClient.Close();
         return null;
     }
@@ -134,77 +132,83 @@ public class TcpDataSender:ISendData
 
         string dataStr = JsonConvert.SerializeObject(data);
         byte[] byteData = Encoding.UTF8.GetBytes(dataStr);
-        var s = new ArraySegment<byte>(byteData);
+        ArraySegment<byte> s = new ArraySegment<byte>(byteData);
         int res = await udpClient.SendToAsync(s, SocketFlags.None, point);
         udpClient.Close();
         return null;
     }
 
-    public async Task<ResultBase<bool>> SendDataAsync(DataMetaModel data,string content,string deviceNickName)
+    public async Task<ResultBase<bool>> SendDataAsync(DataMetaModel data, string content, string deviceNickName)
     {
-        var tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        Socket tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         IPAddress ipaddress = IPAddress.Parse(data.TargetIp);
         EndPoint point = new IPEndPoint(ipaddress, int.Parse(ConstParams.TcpIp_Port));
-        this.SendingDataEvent?.Invoke(data.TargetIp);
+        SendingDataEvent?.Invoke(data.TargetIp);
         //only for text
-        if (data.DataType==DataType.Text)
+        if (data.DataType == DataType.Text)
         {
             tcpClient.Connect(point);
-            TransformData td = new TransformData();
-            td.TargetDeviceNickName= deviceNickName;
-            td.DataGuid = data.Guid ;
-            td.TargetIp = data.TargetIp;
-            td.Port = ConstParams.TcpIp_Port;
-           
-            td.Type = Enums.TransformType.SendingTxtData;
+            TransformData td = new TransformData
+            {
+                TargetDeviceNickName = deviceNickName,
+                DataGuid = data.Guid,
+                TargetIp = data.TargetIp,
+                Port = ConstParams.TcpIp_Port,
 
-            td.Data= Encoding.UTF8.GetBytes(content);
+                Type = Enums.TransformType.SendingTxtData,
 
-            ArraySegment<byte>b= Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(td));
+                Data = Encoding.UTF8.GetBytes(content)
+            };
+
+            ArraySegment<byte> b = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(td));
             byte[] contentsize = Encoding.UTF8.GetBytes(b.ToArray().Length.ToString());
             //tcpClient.Send(contentsize, 0, contentsize.Length, SocketFlags.None);
-            this.sendData(tcpClient, contentsize, 10);
+            sendData(tcpClient, contentsize, 10);
             await Task.Delay(1000);
-            this.sendData(tcpClient, b.ToArray(),10);
+            sendData(tcpClient, b.ToArray(), 10);
             // await tcpClient.SendAsync(b, SocketFlags.None);
-        
-           var dmm= ConstParams.WillSendMetasQueue.FirstOrDefault(x => x.Guid == data.Guid);
-            if(dmm!=null)
+
+            DataMetaModel dmm = ConstParams.WillSendMetasQueue.FirstOrDefault(x => x.Guid == data.Guid);
+            if (dmm != null)
             {
                 dmm.State = MetaState.Sended;
             }
-           
+
             tcpClient.Close();
-            this.SendFinishedEvent?.Invoke(data.TargetIp);
+            SendFinishedEvent?.Invoke(data.TargetIp);
 
         }
         else // for file type
         {
             tcpClient.Connect(point);
-        
-            TransformData td = new TransformData();
-            td.TargetDeviceNickName = deviceNickName;
-            td.DataGuid = data.Guid;
-            td.TargetIp = data.TargetIp;
-            td.Port = ConstParams.TcpIp_Port;
 
-            td.Type = Enums.TransformType.SendingFileData;
-            
+            TransformData td = new TransformData
+            {
+                TargetDeviceNickName = deviceNickName,
+                DataGuid = data.Guid,
+                TargetIp = data.TargetIp,
+                Port = ConstParams.TcpIp_Port,
+
+                Type = Enums.TransformType.SendingFileData
+            };
+
             //todo td.data is filename or file byte[]
 
-            FileDataModel fdm=new FileDataModel();
-            fdm.FileNameWithExtension = Path.GetFileName( content);
+            FileDataModel fdm = new FileDataModel
+            {
+                FileNameWithExtension = Path.GetFileName(content)
+            };
 
-            var dmm = ConstParams.WillSendMetasQueue.FirstOrDefault(x => x.Guid == data.Guid);
+            DataMetaModel dmm = ConstParams.WillSendMetasQueue.FirstOrDefault(x => x.Guid == data.Guid);
             if (dmm == null)
             {
                 return new ErrorResultModel<bool>("can not find file meta data! send error!");
             }
 
-            FileStream st = new FileStream(content, FileMode.Open,FileAccess.Read,FileShare.ReadWrite);
+            FileStream st = new FileStream(content, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             byte[] contentBytes = new byte[st.Length];
 
-            int readAsync = await st.ReadAsync(contentBytes,0,(int)st.Length);
+            int readAsync = await st.ReadAsync(contentBytes, 0, (int)st.Length);
 
             st.Close();
             fdm.ContentBytes = contentBytes.ToArray();
@@ -216,9 +220,9 @@ public class TcpDataSender:ISendData
             MemoryStream ms = new MemoryStream(b.ToArray());
             byte[] filechunk = new byte[1024];
             int numBytes;
-            byte[] contentsize=Encoding.UTF8.GetBytes(b.ToArray().Length.ToString());
-            tcpClient.Send(contentsize,0,contentsize.Length,SocketFlags.None);
-           await Task.Delay(1000);
+            byte[] contentsize = Encoding.UTF8.GetBytes(b.ToArray().Length.ToString());
+            tcpClient.Send(contentsize, 0, contentsize.Length, SocketFlags.None);
+            await Task.Delay(1000);
             try
             {
                 while ((numBytes = ms.Read(filechunk, 0, 1024)) > 0)
@@ -236,23 +240,23 @@ public class TcpDataSender:ISendData
                     //}
                 }
 
-               // tcpClient.Shutdown(SocketShutdown.Send);
+                // tcpClient.Shutdown(SocketShutdown.Send);
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
-                
+
             }
             finally
             {
-                 
-            tcpClient.Close();
+
+                tcpClient.Close();
             }
-            
-          
-            this.SendFinishedEvent?.Invoke(data.TargetIp);
+
+
+            SendFinishedEvent?.Invoke(data.TargetIp);
             dmm.State = MetaState.Sended;
-           
+
         }
         return new SuccessResultModel<bool>(true);
     }

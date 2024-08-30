@@ -1,49 +1,38 @@
 
-using FantasyResultModel;
-using FantasyRemoteCopy.Core;
 using FantasyRemoteCopy.Core.Models;
+
+using FantasyResultModel;
 using FantasyResultModel.Impls;
 
 namespace FantasyRemoteCopy.Core.Impls;
 
-public class DbUserService:DbBase,IUserService
+public class DbUserService : DbBase, IUserService
 {
-    
+
 
     public DbUserService()
     {
-        
-    }
-    
 
-    protected override async Task CreateTable()
+    }
+
+
+    protected override Task CreateTableAsync()
     {
-      await  this.connection.CreateTableAsync<UserInfo>();
+        return connection.CreateTableAsync<UserInfo>();
     }
 
-
-
-    public async Task<ResultBase<bool>> SaveUser(UserInfo user)
+    public async Task<ResultBase<bool>> SaveUserAsync(UserInfo user)
     {
-        int res = 0;
-        await Task.Run(async () =>
-        {
-           res= await this.connection.InsertAsync(user);
-        });
-        if (res > 0)
-        {
-            return new SuccessResultModel<bool>(true);
-        }
-        return new ErrorResultModel<bool>("插入用户失败");
-
+        int res = await connection.InsertAsync(user);
+        return res > 0 ? new SuccessResultModel<bool>(true) : new ErrorResultModel<bool>("插入用户失败");
     }
 
-    public Task<ResultBase<UserInfo>> GetCurrentUser()
+    public Task<ResultBase<UserInfo>> GetCurrentUserAsync()
     {
         throw new NotImplementedException();
     }
 
-    public Task<ResultBase<bool>> ClearUser()
+    public Task<ResultBase<bool>> ClearUserAsync()
     {
         throw new NotImplementedException();
     }
