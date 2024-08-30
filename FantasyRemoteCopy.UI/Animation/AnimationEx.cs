@@ -10,124 +10,122 @@ public static class AnimationEx
         Task.Run(() =>
         {
 
-          
 
-                Application.Current.Dispatcher.Dispatch(async () =>
+
+            Application.Current.Dispatcher.Dispatch(async () =>
+            {
+                switch (transformType)
                 {
-                    switch (transformType)
-                    {
-                        case TransformType.Rotate:
-                            await view.RotateTo(startValue, length: millisecond, easing);
-                            break;
-                        case TransformType.Scale:
-                            await view.ScaleTo(startValue, length: millisecond, easing);
-                            break;
-                        case TransformType.Fadein:
-                            await view.FadeTo(startValue, length: millisecond, easing);
-                            break;
-                        case TransformType.ReScale:
-                            await view.RelScaleTo(startValue, length: millisecond, easing);
-                            break;
-                        case TransformType.ReRotate:
-                            await view.RelRotateTo(startValue, length: millisecond, easing);
-                            break;
-                        default:
-                            break;
+                    case TransformType.Rotate:
+                        await view.RotateTo(startValue, length: millisecond, easing);
+                        break;
+                    case TransformType.Scale:
+                        await view.ScaleTo(startValue, length: millisecond, easing);
+                        break;
+                    case TransformType.Fadein:
+                        await view.FadeTo(startValue, length: millisecond, easing);
+                        break;
+                    case TransformType.ReScale:
+                        await view.RelScaleTo(startValue, length: millisecond, easing);
+                        break;
+                    case TransformType.ReRotate:
+                        await view.RelRotateTo(startValue, length: millisecond, easing);
+                        break;
+                    default:
+                        break;
 
-                    }
+                }
 
 
-                });
+            });
 
-                Thread.Sleep((int)millisecond);
+            Thread.Sleep((int)millisecond);
 
-                Application.Current.Dispatcher.Dispatch(async () =>
+            Application.Current.Dispatcher.Dispatch(async () =>
+            {
+
+                switch (transformType)
                 {
+                    case TransformType.Rotate:
+                        await view.RotateTo(endValue, length: millisecond, easing);
+                        break;
+                    case TransformType.Scale:
+                        await view.ScaleTo(endValue, length: millisecond, easing);
+                        break;
+                    case TransformType.Fadein:
+                        await view.FadeTo(endValue, length: millisecond, easing);
+                        break;
+                    case TransformType.ReScale:
+                        await view.RelScaleTo(endValue, length: millisecond, easing);
+                        break;
+                    case TransformType.ReRotate:
+                        await view.RelRotateTo(endValue, length: millisecond, easing);
+                        break;
+                    default:
+                        break;
 
-                    switch (transformType)
-                    {
-                        case TransformType.Rotate:
-                            await view.RotateTo(endValue, length: millisecond, easing);
-                            break;
-                        case TransformType.Scale:
-                            await view.ScaleTo(endValue, length: millisecond, easing);
-                            break;
-                        case TransformType.Fadein:
-                            await view.FadeTo(endValue, length: millisecond, easing);
-                            break;
-                        case TransformType.ReScale:
-                            await view.RelScaleTo(endValue, length: millisecond, easing);
-                            break;
-                        case TransformType.ReRotate:
-                            await view.RelRotateTo(endValue, length: millisecond, easing);
-                            break;
-                        default:
-                            break;
+                }
 
-                    }
+            });
+            Thread.Sleep((int)millisecond);
 
-                });
-                Thread.Sleep((int)millisecond);
-            
 
         });
     }
-    public static void LoopAnimation(this View  view, TransformType transformType, double startValue,double endValue, uint millisecond,Easing? easing)
+    public static void LoopAnimation(this View view, TransformType transformType, double startValue, double endValue, uint millisecond, Easing? easing)
     {
         Task.Run(() =>
         {
-
             while (true)
             {
 
-                Application.Current.Dispatcher.Dispatch(async () =>
+                Application.Current.Dispatcher.Dispatch(() =>
                 {
                     switch (transformType)
                     {
                         case TransformType.Rotate:
-                            await view.RotateTo(startValue, length: millisecond,easing);
+                            view.RotateTo(startValue, length: millisecond, easing);
                             break;
                         case TransformType.Scale:
-                            await view.ScaleTo(startValue, length: millisecond,easing);
+                            view.ScaleTo(startValue, length: millisecond, easing);
                             break;
                         case TransformType.Fadein:
-                            await view.FadeTo(startValue, length: millisecond, easing);
+                            view.FadeTo(startValue, length: millisecond, easing);
                             break;
                         case TransformType.ReScale:
-                            await view.RelScaleTo(startValue, length: millisecond, easing);
+                            view.RelScaleTo(startValue, length: millisecond, easing);
                             break;
                         case TransformType.ReRotate:
-                            await view.RelRotateTo(startValue, length: millisecond, easing);
+                            view.RelRotateTo(startValue, length: millisecond, easing);
                             break;
                         default:
                             break;
 
                     }
 
-                   
-                });
 
+                });
                 Thread.Sleep((int)millisecond);
 
-                Application.Current.Dispatcher.Dispatch(async () =>
+                Application.Current.Dispatcher.Dispatch(() =>
                 {
 
                     switch (transformType)
                     {
                         case TransformType.Rotate:
-                            await view.RotateTo(endValue, length: millisecond, easing);
+                            view.RotateTo(endValue, length: millisecond, easing);
                             break;
                         case TransformType.Scale:
-                            await view.ScaleTo(endValue, length: millisecond, easing);
+                            view.ScaleTo(endValue, length: millisecond, easing);
                             break;
                         case TransformType.Fadein:
-                            await view.FadeTo(endValue, length: millisecond, easing);
+                            view.FadeTo(endValue, length: millisecond, easing);
                             break;
                         case TransformType.ReScale:
-                            await view.RelScaleTo(endValue, length: millisecond, easing);
+                            view.RelScaleTo(endValue, length: millisecond, easing);
                             break;
                         case TransformType.ReRotate:
-                            await view.RelRotateTo(endValue, length: millisecond, easing);
+                            view.RelRotateTo(endValue, length: millisecond, easing);
                             break;
                         default:
                             break;
