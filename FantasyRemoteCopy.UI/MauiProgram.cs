@@ -28,10 +28,9 @@ public static class MauiProgram
             .UseMauiCommunityToolkit()
             .UseFantasyApplication()
             .UseGetProvider();
-#if WINDOWS
+        
         builder.Services.AddTransient<IOpenFolder, DefaultOpenFolder>();
 		builder.Services.AddTransient<IFileSaveLocation, AppDataFolderFileSaveLocation>();
-#endif
 
         builder.Services.AddTransient<IGetLocalIp, DefaultLocalIp>();
         builder.Services.AddTransient<IScanLocalNetIp, DefaultScanLocalNetIp>();
