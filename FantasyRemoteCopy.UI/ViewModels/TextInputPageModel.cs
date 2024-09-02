@@ -42,12 +42,12 @@ public partial class TextInputPageModel : FantasyPageModelBase, INavigationAware
 
     public void OnNavigatedFrom(string source, INavigationParameter parameter)
     {
-        this._discoveredDeviceModel = parameter.Get<Models.DiscoveredDeviceModel>("data");
-        this.Title += this._discoveredDeviceModel.NickName;
+       
     }
 
     public void OnNavigatedTo(string source, INavigationParameter parameter)
     {
-      
+        this._discoveredDeviceModel = parameter.Get<Models.DiscoveredDeviceModel>("data");
+        this.Title += this._discoveredDeviceModel.NickName;
     }
 }
