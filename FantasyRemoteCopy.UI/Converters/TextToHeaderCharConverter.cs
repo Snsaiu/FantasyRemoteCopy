@@ -11,9 +11,14 @@ namespace FantasyRemoteCopy.UI.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value == null) return "";
-            var c= value.ToString()[0];
-            return c.ToString().ToUpper();
+            if(value is string s)
+            {
+               return s.First().ToString().ToUpper();
+            }
+            else
+            {
+                return "";
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

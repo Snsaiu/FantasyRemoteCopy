@@ -15,21 +15,22 @@ public class ConfigUserService : IUserService
         return Task.FromResult<ResultBase<bool>>(new SuccessResultModel<bool>(true));
     }
 
-    public async Task<ResultBase<UserInfo>> GetCurrentUserAsync()
+    public  Task<ResultBase<UserInfo>> GetCurrentUserAsync()
     {
         string v = Preferences.Default.Get<string>("user", "");
         if (string.IsNullOrEmpty(v))
         {
-            return new ErrorResultModel<UserInfo>("未发现用户信息");
+            return Task.FromResult<ResultBase<UserInfo>>(new ErrorResultModel<UserInfo>( "未发现用户信息"));
         }
 
-        UserInfo user = JsonConvert.DeserializeObject<UserInfo>(v);
-        return new SuccessResultModel<UserInfo>(user);
+        var user = JsonConvert.DeserializeObject<UserInfo>(v);
+        
+        return  user is null ?   Task.FromResult<ResultBase<UserInfo>>(new ErrorResultModel<UserInfo>("序列化用户失败")) : Task.FromResult<ResultBase<UserInfo>>(new SuccessResultModel<UserInfo>(user));
     }
 
-    public async Task<ResultBase<bool>> ClearUserAsync()
+    public  Task<ResultBase<bool>> ClearUserAsync()
     {
         Preferences.Default.Clear();
-        return new SuccessResultModel<bool>(true);
+        return Task.FromResult<ResultBase<bool>>(new SuccessResultModel<bool>(true));
     }
 }

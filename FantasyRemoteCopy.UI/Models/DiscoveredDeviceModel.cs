@@ -11,8 +11,7 @@ namespace FantasyRemoteCopy.UI.Models
     /// <summary>
     /// 设备发现的模型
     /// </summary>
-    [ObservableObject]
-    public partial class DiscoveredDeviceModel
+    public partial class DiscoveredDeviceModel : ObservableObject
     {
 
         [ObservableProperty]

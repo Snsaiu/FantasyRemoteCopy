@@ -21,12 +21,10 @@ namespace FantasyRemoteCopy.UI.ViewModels
 		}
 
         [RelayCommand]
-        public async void Copy()
+        public async Task Copy()
         {
             await Clipboard.Default.SetTextAsync(this.Content);
             await this._dialogService.DisplayAlert("Information", "Success copy!", "Ok");
-            //  await this.DisplaySnackbar("Success copy!");
-            //Toast.Make("Success copy!").Show();
             await Application.Current.MainPage.Navigation.PopAsync();
         }
 

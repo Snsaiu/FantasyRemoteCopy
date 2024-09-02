@@ -2,8 +2,7 @@
 
 namespace FantasyRemoteCopy.UI.Models;
 
-[ObservableObject]
-public partial class SaveItemModel
+public partial class SaveItemModel : ObservableObject
 {
 
     [ObservableProperty]
