@@ -14,35 +14,22 @@ namespace FantasyRemoteCopy.Core.Impls;
 
 public class TcpDataSender : ISendData
 {
-    public TcpDataSender()
-    {
-    }
-
 
     public event SendingDataDelegate SendingDataEvent;
 
     public event SendFinishedDelegate SendFinishedEvent;
 
 
-    /// <summary>
-    /// ��Զ��������������
-    /// </summary>
-    /// <param name="socket">Ҫ�����������Ѿ����ӵ�Զ�������� Socket</param>
-    /// <param name="buffer">�����͵�����</param>
-    /// <param name="outTime">�������ݵĳ�ʱʱ�䣬����Ϊ��λ�����Ծ�ȷ��΢��</param>
-    /// <returns>0:�������ݳɹ���-1:��ʱ��-2:�������ݳ��ִ���-3:��������ʱ�����쳣</returns>
-    /// <remarks >
-    /// �� outTime ָ��Ϊ-1ʱ����һֱ�ȴ�ֱ����������Ҫ����
-    /// </remarks>
+
     private int sendData(Socket socket, byte[] buffer, int outTime)
     {
         if (socket == null || socket.Connected == false)
         {
-            throw new ArgumentException("����socket Ϊnull������δ���ӵ�Զ�̼����");
+            throw new ArgumentException();
         }
         if (buffer == null || buffer.Length == 0)
         {
-            throw new ArgumentException("����buffer Ϊnull ,���߳���Ϊ 0");
+            throw new ArgumentException();
         }
 
         int flag = 0;
@@ -54,29 +41,29 @@ public class TcpDataSender : ISendData
             while (true)
             {
                 if ((socket.Poll(outTime * 100, SelectMode.SelectWrite) == true))
-                {        // �ռ����㹻��Ĵ������ݺ�ʼ����
+                {
                     sndLen = socket.Send(buffer, sndLen, left, SocketFlags.None);
                     left -= sndLen;
                     if (left == 0)
-                    {                                        // �����Ѿ�ȫ������
+                    {
                         flag = 0;
                         break;
                     }
                     else
                     {
                         if (sndLen > 0)
-                        {                                    // ���ݲ����Ѿ�������
+                        {
                             continue;
                         }
                         else
-                        {                                                // �������ݷ�������
+                        {
                             flag = -2;
                             break;
                         }
                     }
                 }
                 else
-                {                                                        // ��ʱ�˳�
+                {
                     flag = -1;
                     break;
                 }
@@ -103,7 +90,7 @@ public class TcpDataSender : ISendData
         ArraySegment<byte> s = new ArraySegment<byte>(byteData);
         int res = await udpClient.SendToAsync(s, SocketFlags.None, point);
         udpClient.Close();
-        return null;
+        return new SuccessResultModel<bool>(res);
     }
 
     public async Task<ResultBase<bool>> SendInviteAsync(TransformData data)
@@ -119,7 +106,7 @@ public class TcpDataSender : ISendData
         ArraySegment<byte> s = new ArraySegment<byte>(byteData);
         int res = await udpClient.SendToAsync(s, SocketFlags.None, point);
         udpClient.Close();
-        return null;
+        return new SuccessResultModel<bool>(res);
     }
 
     public async Task<ResultBase<bool>> SendBuildConnectionAsync(TransformData data)
@@ -135,7 +122,7 @@ public class TcpDataSender : ISendData
         ArraySegment<byte> s = new ArraySegment<byte>(byteData);
         int res = await udpClient.SendToAsync(s, SocketFlags.None, point);
         udpClient.Close();
-        return null;
+        return new SuccessResultModel<bool>(res);
     }
 
     public async Task<ResultBase<bool>> SendDataAsync(DataMetaModel data, string content, string deviceNickName)
@@ -168,7 +155,7 @@ public class TcpDataSender : ISendData
             sendData(tcpClient, b.ToArray(), 10);
             // await tcpClient.SendAsync(b, SocketFlags.None);
 
-            DataMetaModel dmm = ConstParams.WillSendMetasQueue.FirstOrDefault(x => x.Guid == data.Guid);
+            DataMetaModel? dmm = ConstParams.WillSendMetasQueue.FirstOrDefault(x => x.Guid == data.Guid);
             if (dmm != null)
             {
                 dmm.State = MetaState.Sended;
@@ -199,7 +186,7 @@ public class TcpDataSender : ISendData
                 FileNameWithExtension = Path.GetFileName(content)
             };
 
-            DataMetaModel dmm = ConstParams.WillSendMetasQueue.FirstOrDefault(x => x.Guid == data.Guid);
+            DataMetaModel? dmm = ConstParams.WillSendMetasQueue.FirstOrDefault(x => x.Guid == data.Guid);
             if (dmm == null)
             {
                 return new ErrorResultModel<bool>("can not find file meta data! send error!");
@@ -231,16 +218,10 @@ public class TcpDataSender : ISendData
                     {
                         throw new Exception("Error in sending the file");
                     }
-                    //bytesSoFar += numBytes;
-                    //Byte progress = (byte)(bytesSoFar * 100 / totalBytes);
-                    //if (progress > lastStatus && progress != 100)
-                    //{
-                    //    Console.WriteLine("File sending progress:{0}", lastStatus);
-                    //    lastStatus = progress;
-                    //}
+
                 }
 
-                // tcpClient.Shutdown(SocketShutdown.Send);
+
             }
             catch (Exception)
             {

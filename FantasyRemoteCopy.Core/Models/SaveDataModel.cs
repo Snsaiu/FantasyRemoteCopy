@@ -17,11 +17,11 @@ public class SaveDataModel
 
     public SaveDataType DataType { get; set; }
 
-    public string SourceDeviceNickName { get; set; }
+    public string SourceDeviceNickName { get; set; } = string.Empty;
 
-    public string Guid { get; set; }
+    public string Guid { get; set; } = string.Empty;
 
-    public string Content { get; set; }
+    public string Content { get; set; } = string.Empty;
 
 
 }

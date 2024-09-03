@@ -1,16 +1,13 @@
 ﻿using FantasyResultModel;
 using FantasyResultModel.Impls;
 
-using Microsoft.Maui.Controls.PlatformConfiguration;
-using Microsoft.Maui.Media;
-
 using System.Net.NetworkInformation;
 
 using System.Text;
 
 namespace FantasyRemoteCopy.Core.Platforms;
 
-public class GlobalScanLocalNetIp:IGlobalScanLocalNetIp
+public class GlobalScanLocalNetIp : IGlobalScanLocalNetIp
 {
     private readonly IGetLocalIp _getLocalIp;
     public GlobalScanLocalNetIp(IGetLocalIp getLocalIp)
@@ -21,17 +18,17 @@ public class GlobalScanLocalNetIp:IGlobalScanLocalNetIp
     public async Task<ResultBase<bool>> GlobalSearch()
     {
 
-        var localIpResult = this._getLocalIp.GetLocalIp();
+        ResultBase<List<string>> localIpResult = _getLocalIp.GetLocalIp();
         if (localIpResult.Ok == false)
-            return await Task.FromResult(new ErrorResultModel<bool>(localIpResult.ErrorMsg));
-        List<Task> tasks = new List<Task>();
+            return await Task.FromResult(new ErrorResultModel<bool>(localIpResult.ErrorMsg ?? string.Empty));
+        List<Task> tasks = [];
         try
         {
             List<string> localIps = localIpResult.Data;
-            
-            foreach (var ip in localIps)
+
+            foreach (string ip in localIps)
             {
-               var t=  Task.Run(() =>
+                Task t = Task.Run(() =>
                 {
                     string ipDuan = ip.Remove(ip.LastIndexOf('.'));
                     //MessageBox.Show(ipDuan);
@@ -53,7 +50,7 @@ public class GlobalScanLocalNetIp:IGlobalScanLocalNetIp
 
 
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                         }
 
@@ -62,13 +59,13 @@ public class GlobalScanLocalNetIp:IGlobalScanLocalNetIp
 
 
                 });
-       
-               tasks.Add(t);
+
+                tasks.Add(t);
             }
 
             Task.WaitAll(tasks.ToArray());
 
-           
+
 
             return new SuccessResultModel<bool>(true);
 

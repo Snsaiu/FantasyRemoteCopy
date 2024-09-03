@@ -1,54 +1,51 @@
-﻿using System;
+﻿using FantasyResultModel;
+using FantasyResultModel.Impls;
+
 using System.Net;
 using System.Net.Sockets;
-using FantasyResultModel;
-using FantasyResultModel.Impls;
 
 
 namespace FantasyRemoteCopy.Core.Platforms
 {
-	public class DefaultLocalIp:IGetLocalIp
-	{
-		public DefaultLocalIp()
-		{
-		}
+    public class DefaultLocalIp : IGetLocalIp
+    {
+        public DefaultLocalIp()
+        {
+        }
 
-		public ResultBase<List<string>> GetLocalIp()
-		{
-			try
-			{
-				List<string> ips=new List<string>();
-				IPHostEntry host;
-				string localIP = "";
-				host = Dns.GetHostEntry(Dns.GetHostName());
+        public ResultBase<List<string>> GetLocalIp()
+        {
+            try
+            {
+                List<string> ips = [];
+                IPHostEntry host;
+                string? localIP = string.Empty;
+                host = Dns.GetHostEntry(Dns.GetHostName());
 
-				foreach (IPAddress ip in host.AddressList)
-				{
-					localIP = ip.ToString();
+                foreach (IPAddress ip in host.AddressList)
+                {
+                    localIP = ip.ToString();
 
-					string[] temp = localIP.Split('.');
+                    string[] temp = localIP.Split('.');
 
-					if (ip.AddressFamily == AddressFamily.InterNetwork && temp[0] == "192")
+                    if (ip.AddressFamily == AddressFamily.InterNetwork && temp[0] == "192")
                     {
                         ips.Add(localIP);
                     }
-					else
-					{
-						localIP = null;
-					}
-				}
+                    else
+                    {
+                        localIP = null;
+                    }
+                }
 
-				if (ips.Count==0)
-					return new ErrorResultModel<List<string>>("无法获得本机ip地址");
+                return ips.Count == 0 ? new ErrorResultModel<List<string>>("无法获得本机ip地址") : new SuccessResultModel<List<string>>(ips);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResultModel<List<string>>(e.Message);
+            }
 
-				return new SuccessResultModel<List<string>>(ips);
-			}
-			catch (Exception e)
-			{
-				return new ErrorResultModel<List<string>>(e.Message);
-			}
-			
-		}
-	}
+        }
+    }
 }
 

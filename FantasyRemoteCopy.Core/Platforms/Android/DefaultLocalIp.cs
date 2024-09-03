@@ -1,45 +1,49 @@
-﻿using System;
-using System.Net;
-using System.Net.Sockets;
-using Android.Content;
+﻿using Android.Content;
 using Android.Net.Wifi;
 using Android.Text.Format;
+
 using FantasyResultModel;
 using FantasyResultModel.Impls;
-using Application=Android.App;
+
+using Application = Android.App;
 
 
 namespace FantasyRemoteCopy.Core.Platforms
 {
-	public class DefaultLocalIp:IGetLocalIp
-	{
-		public DefaultLocalIp()
-		{
-		}
+    public class DefaultLocalIp : IGetLocalIp
+    {
+        public DefaultLocalIp()
+        {
+        }
 
-		public ResultBase<List<string>> GetLocalIp()
-		{
-			try
-			{
-				List<string> ips=new List<string>();
+        [Obsolete]
+        public ResultBase<List<string>> GetLocalIp()
+        {
+            try
+            {
+                List<string> ips = [];
 
                 Context context = Application.Application.Context; //Android.ApplicationContext;
-                WifiManager wm = (WifiManager)context.GetSystemService(Context.WifiService);
-                String ip = Formatter.FormatIpAddress(wm.ConnectionInfo.IpAddress);
+                if (context.GetSystemService(Context.WifiService) is not WifiManager wm)
+                {
+                    return new ErrorResultModel<List<string>>("获得wifi管理器失败");
+                }
+                if (wm.ConnectionInfo is null)
+                {
+                    return new ErrorResultModel<List<string>>("获得wifi信息失败");
+                }
+                string? ip = Formatter.FormatIpAddress(wm.ConnectionInfo.IpAddress);
 
 
 
-                if (ips.Count==0)
-					return new ErrorResultModel<List<string>>("无法获得本机ip地址");
+                return ips.Count == 0 ? new ErrorResultModel<List<string>>("无法获得本机ip地址") : new SuccessResultModel<List<string>>(ips);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResultModel<List<string>>(e.Message);
+            }
 
-				return new SuccessResultModel<List<string>>(ips);
-			}
-			catch (Exception e)
-			{
-				return new ErrorResultModel<List<string>>(e.Message);
-			}
-			
-		}
-	}
+        }
+    }
 }
 

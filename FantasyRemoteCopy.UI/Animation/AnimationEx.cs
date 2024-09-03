@@ -78,7 +78,6 @@ public static class AnimationEx
         {
             while (true)
             {
-
                 Application.Current.Dispatcher.Dispatch(() =>
                 {
                     switch (transformType)

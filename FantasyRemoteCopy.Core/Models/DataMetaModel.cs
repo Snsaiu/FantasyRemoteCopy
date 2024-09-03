@@ -5,7 +5,7 @@
 /// </summary>
 public class DataMetaModel
 {
-    public string Guid { get; set; }
+    public string Guid { get; set; } = string.Empty;
 
     public long Size { get; set; }
 
@@ -13,7 +13,7 @@ public class DataMetaModel
     /// <summary>
     /// 目标ip，该字段是要发送到哪台设备上，对于接收者无需关心
     /// </summary>
-    public string TargetIp { get; set; }
+    public string TargetIp { get; set; } = string.Empty;
 
     /// <summary>
     /// 传输的数据类型
@@ -23,17 +23,17 @@ public class DataMetaModel
     /// <summary>
     /// 文件名,包含后缀
     /// </summary>
-    public string FileNameWithExtension { get; set; }
+    public string FileNameWithExtension { get; set; } = string.Empty;
 
     /// <summary>
     /// 如果是文件，该字段记录文件的原始磁盘位置，接收者无需关心此字段
     /// </summary>
-    public string SourcePosition { get; set; }
+    public string SourcePosition { get; set; } = string.Empty;
 
     /// <summary>
     /// 是否发送完成，如果发送完成为true，否则为false
     /// </summary>
-    public MetaState State { get; set; } 
+    public MetaState State { get; set; }
 }
 
 
@@ -50,9 +50,9 @@ public enum DataType
 /// </summary>
 public enum MetaState
 {
-   Receiving,
-   Received,
-   Sending,
-   Sended,
+    Receiving,
+    Received,
+    Sending,
+    Sended,
 
 }

@@ -87,7 +87,7 @@ public class SendDataBussiness
 
         ResultBase<UserInfo> userRes = await _userService.GetCurrentUserAsync();
         if (userRes.Ok == false)
-            return new ErrorResultModel<bool>(userRes.ErrorMsg);
+            return new ErrorResultModel<bool>(userRes.ErrorMsg ?? string.Empty);
 
         tf.TargetDeviceNickName = userRes.Data.DeviceNickName;
 
@@ -127,11 +127,11 @@ public class SendDataBussiness
     {
         ResultBase<List<string>> scanRes = await _scanLocalNetIp.ScanLocalNetIpAsync();
         if (scanRes.Ok == false)
-            return new ErrorResultModel<bool>(scanRes.ErrorMsg);
+            return new ErrorResultModel<bool>(scanRes.ErrorMsg ?? string.Empty);
 
         ResultBase<UserInfo> userRes = await _userService.GetCurrentUserAsync();
         if (userRes.Ok == false)
-            return new ErrorResultModel<bool>(userRes.ErrorMsg);
+            return new ErrorResultModel<bool>(userRes.ErrorMsg ?? string.Empty);
 
 
 

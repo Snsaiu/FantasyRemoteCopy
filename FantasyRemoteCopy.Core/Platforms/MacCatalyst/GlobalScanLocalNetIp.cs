@@ -1,8 +1,5 @@
-﻿    using FantasyResultModel;
+﻿using FantasyResultModel;
 using FantasyResultModel.Impls;
-
-using Microsoft.Maui.Controls.PlatformConfiguration;
-using Microsoft.Maui.Media;
 
 using System.Net.NetworkInformation;
 
@@ -10,7 +7,7 @@ using System.Text;
 
 namespace FantasyRemoteCopy.Core.Platforms;
 
-public class GlobalScanLocalNetIp:IGlobalScanLocalNetIp
+public class GlobalScanLocalNetIp : IGlobalScanLocalNetIp
 {
     private readonly IGetLocalIp _getLocalIp;
     public GlobalScanLocalNetIp(IGetLocalIp getLocalIp)
@@ -21,20 +18,20 @@ public class GlobalScanLocalNetIp:IGlobalScanLocalNetIp
     public async Task<ResultBase<bool>> GlobalSearch()
     {
 
-        var localIpResult = this._getLocalIp.GetLocalIp();
+        ResultBase<List<string>> localIpResult = _getLocalIp.GetLocalIp();
         if (localIpResult.Ok == false)
-            return await Task.FromResult(new ErrorResultModel<bool>(localIpResult.ErrorMsg));
+            return await Task.FromResult(new ErrorResultModel<bool>(localIpResult.ErrorMsg ?? string.Empty));
 
         try
         {
             List<string> localIps = localIpResult.Data;
 
-            foreach (var ip in localIps)
+            foreach (string ip in localIps)
             {
                 string ipDuan = ip.Remove(ip.LastIndexOf('.'));
                 //MessageBox.Show(ipDuan);
                 //枚举网段计算机
-               
+
                 string data = "";
                 byte[] buffer = Encoding.ASCII.GetBytes(data);
 
@@ -50,9 +47,9 @@ public class GlobalScanLocalNetIp:IGlobalScanLocalNetIp
 
                             PingReply pingReply = myPing.Send(pingIP, 20, buffer);
 
-                           
+
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                         }
 
@@ -63,7 +60,7 @@ public class GlobalScanLocalNetIp:IGlobalScanLocalNetIp
                 });
             }
 
-           
+
 
             return new SuccessResultModel<bool>(true);
 

@@ -5,7 +5,7 @@ namespace FantasyRemoteCopy.Core.Models;
 /// </summary>
 public class InviteReturnModel
 {
-    public string Ip { get; set; }
+    public string Ip { get; set; } = string.Empty;
 
     public bool CanConnect { get; set; }
 }
