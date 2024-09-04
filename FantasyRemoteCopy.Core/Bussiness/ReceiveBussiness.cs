@@ -4,6 +4,7 @@ using FantasyRemoteCopy.Core.Models;
 
 using Newtonsoft.Json;
 
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace FantasyRemoteCopy.Core.Bussiness;
@@ -26,7 +27,7 @@ public class ReceiveBussiness
     private readonly ISendData _sendData;
     private readonly IUserService userService;
 
-    public ReceiveBussiness(IReceiveData receiveData, ISendData sendData, IUserService userService)
+    public ReceiveBussiness(IReceiveData receiveData, ISendData sendData, IUserService userService )
     {
         _receiveData = receiveData;
         _sendData = sendData;

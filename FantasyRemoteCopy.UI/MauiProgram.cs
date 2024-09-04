@@ -29,34 +29,29 @@ public static class MauiProgram
             .UseFantasyApplication()
             .UseGetProvider();
         
-        builder.Services.AddTransient<IOpenFolder, DefaultOpenFolder>();
-		builder.Services.AddTransient<IFileSaveLocation, AppDataFolderFileSaveLocation>();
+        builder.Services.AddSingleton<IOpenFolder, DefaultOpenFolder>();
+		builder.Services.AddSingleton<IFileSaveLocation, AppDataFolderFileSaveLocation>();
 
-        builder.Services.AddTransient<IGetLocalIp, DefaultLocalIp>();
-        builder.Services.AddTransient<IScanLocalNetIp, DefaultScanLocalNetIp>();
-        builder.Services.AddTransient<IGlobalScanLocalNetIp, GlobalScanLocalNetIp>();
+        builder.Services.AddSingleton<IGetLocalIp, DefaultLocalIp>();
+        builder.Services.AddSingleton<IScanLocalNetIp, DefaultScanLocalNetIp>();
+        builder.Services.AddSingleton<IGlobalScanLocalNetIp, GlobalScanLocalNetIp>();
 
         builder.Services.AddSingleton<IReceiveData, TcpReceiveData>();
         builder.Services.AddSingleton<ISendData, TcpDataSender>();
-        builder.Services.AddTransient<IUserService, ConfigUserService>();
-        builder.Services.AddTransient<ISaveDataService, DbSaveDataService>();
+        builder.Services.AddSingleton<IUserService, ConfigUserService>();
+        builder.Services.AddSingleton<ISaveDataService, DbSaveDataService>();
 
-        builder.Services.AddTransient<SendDataBussiness>();
+        builder.Services.AddSingleton<SendDataBussiness>();
         builder.Services.AddSingleton<ReceiveBussiness>();
 
         builder.UseRegisterPage<LoginPage, LoginPageModel>();
         builder.UseRegisterPage<HomePage, HomePageModel>();
         builder.UseRegisterPage<SettingPage, SettingPageModel>();
 
-
         builder.UseRegisterPage<TextInputPage, TextInputPageModel>();
 
         builder.UseRegisterPage<ListPage, ListPageModel>();
         builder.UseRegisterDialog<SendTypeDialog, SendTypeDialogModel>();
-
-
-
-
 
         return builder.Build();
     }

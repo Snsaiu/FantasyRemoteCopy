@@ -212,6 +212,8 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
         [ObservableProperty]
         private string deviceNickName;
+
+
         private readonly IUserService userService;
         private readonly SendDataBussiness sendDataBussiness;
         private readonly ReceiveBussiness receiveBussiness;

@@ -24,10 +24,9 @@ public class TcpReceiveData : IReceiveData
     /// </summary>
     /// <param name="ip"></param>
     /// <param name="byteCount"></param>
-    [Obsolete]
     public void LiseningData(string ip, long byteCount)
     {
-        TcpListener listener = new TcpListener(int.Parse(ConstParams.TcpIp_Port));
+        TcpListener listener = new TcpListener(IPAddress.Any,int.Parse(ConstParams.TcpIp_Port));
         listener.Start();
         Task.Run(() =>
         {
