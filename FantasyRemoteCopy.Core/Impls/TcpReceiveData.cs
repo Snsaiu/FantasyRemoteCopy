@@ -89,10 +89,17 @@ public class TcpReceiveData : IReceiveData
     public void LiseningInvite()
     {
         Socket udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-
         EndPoint endPoint = new IPEndPoint(IPAddress.Any, int.Parse(ConstParams.INVITE_PORT));
         udpSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.PacketInformation, true);
-        udpSocket.Bind(endPoint);
+        try
+        {
+            udpSocket.Bind(endPoint);
+        }
+        catch (SocketException)
+        {
+          return;
+        }
+        
         Task.Run(async () =>
         {
             SocketReceiveFromResult res;
@@ -112,6 +119,7 @@ public class TcpReceiveData : IReceiveData
                 // transformdata.TargetIp;
                 ReceiveInviteEvent?.Invoke(transformdata);
             }
+            udpSocket.Close();
         });
     }
 
@@ -119,10 +127,17 @@ public class TcpReceiveData : IReceiveData
     public void LiseningBuildConnection()
     {
         Socket udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-
         EndPoint endPoint = new IPEndPoint(IPAddress.Any, int.Parse(ConstParams.BuildTcpIp_Port));
         udpSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.PacketInformation, true);
-        udpSocket.Bind(endPoint);
+        try
+        {
+            udpSocket.Bind(endPoint);
+        }
+        catch 
+        {
+           return;
+        }
+       
 
         Task.Run(async () =>
         {
@@ -147,6 +162,7 @@ public class TcpReceiveData : IReceiveData
 
                 ReceiveBuildConnectionEvent?.Invoke(transformdata);
             }
+            udpSocket.Close();
         });
     }
 }

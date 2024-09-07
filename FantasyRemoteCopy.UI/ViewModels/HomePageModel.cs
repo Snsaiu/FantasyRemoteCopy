@@ -18,6 +18,7 @@ using Newtonsoft.Json;
 
 using System.Collections.ObjectModel;
 using System.Text;
+using FantasyMvvm.FantasyModels;
 
 namespace FantasyRemoteCopy.UI.ViewModels
 {
@@ -66,8 +67,6 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
 
             };
-
-
             this.receiveBussiness.ReceiveDataEvent += (d) =>
             {
                 string str = Encoding.UTF8.GetString(d.Data);
@@ -228,74 +227,63 @@ namespace FantasyRemoteCopy.UI.ViewModels
             UserName = userRes.Data.Name;
             DeviceNickName = userRes.Data.DeviceNickName;
             IsBusy = false;
-            deviceDiscover();
+            await DeviceDiscoverAsync();
         }
 
         [RelayCommand]
-        public void Search()
+        public Task Search()
         {
-            deviceDiscover();
+           return DeviceDiscoverAsync();
         }
 
 
         [RelayCommand]
-        public async Task GotoList()
+        public Task GotoList()
         {
             NewMessageVisible = false;
-
-            await _navigationService.NavigationToAsync(nameof(ListPage), null);
-
-
+            return _navigationService.NavigationToAsync(nameof(ListPage), null);
         }
 
 
         [RelayCommand]
-        public async Task Share(DiscoveredDeviceModel model)
+        public  Task Share(DiscoveredDeviceModel model)
         {
             if (model.IsSendingData)
-            {
-
-                await _dialogService.DisplayAlert("Warning", "Sorry, the file is being uploaded. Please try again after the upload is completed!", "Ok");
-                return;
-            }
-
+                return _dialogService.DisplayAlert("Warning", "Sorry, the file is being uploaded. Please try again after the upload is completed!", "Ok");
 
             NavigationParameter parameter = new NavigationParameter();
             parameter.Add("data", model);
-            await _dialogService.ShowPopUpDialogAsync(nameof(SendTypeDialog), parameter, null);
+            return _dialogService.ShowPopUpDialogAsync(nameof(SendTypeDialog), parameter, null);
         }
 
         [RelayCommand]
-        public async Task GotoSettingPage()
+        public  Task GotoSettingPage()
         {
-
-
-            await _navigationService.NavigationToAsync(nameof(SettingPage), null);
-
+            return _navigationService.NavigationToAsync(nameof(SettingPage), null);
         }
 
         /// <summary>
         /// 设备发现
         /// </summary>
-        private void deviceDiscover()
+        private async Task DeviceDiscoverAsync()
         {
-            DiscoveredDevices.Clear();
-            IsBusy = true;
-            Task.Run(async () =>
+            try
             {
+                DiscoveredDevices.Clear();
+                IsBusy = true;
+          
                 await sendDataBussiness.DeviceDiscover();
-            }).WaitAsync(TimeSpan.FromSeconds(10)).GetAwaiter().OnCompleted(async () =>
+            }
+            finally
             {
-                await Task.Delay(1000);
                 IsBusy = false;
-
-                if (DiscoveredDevices.Count == 0)
-                {
-
-                    await Application.Current.MainPage.DisplayAlert("warning", "No connectable devices found! ", "Ok");
-                }
-            });
+            }
+            if (DiscoveredDevices.Count == 0)
+            {
+                Application.Current.MainPage.DisplayAlert("warning", "No connectable devices found! ", "Ok");
+            }
+          
         }
-
+        
     }
 }

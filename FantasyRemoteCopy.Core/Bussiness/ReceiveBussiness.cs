@@ -9,17 +9,7 @@ using System.Text;
 
 namespace FantasyRemoteCopy.Core.Bussiness;
 
-public delegate void DiscoverEnableIpDelegate(SendInviteModel sendInviteModel);
 
-public delegate void SendErrorDelegate(string error);
-
-public delegate void ReceiveDataDelegate(TransformData data);
-
-public delegate void ReceivingDataDelegate(string ip);
-
-public delegate void ReceivedFileFinishedDelegate(string ip);
-
-public delegate void ReceivingProcessDelegate(string ip, double process);
 
 public class ReceiveBussiness
 {
@@ -27,6 +17,19 @@ public class ReceiveBussiness
     private readonly ISendData _sendData;
     private readonly IUserService userService;
 
+    
+    public delegate void DiscoverEnableIpDelegate(SendInviteModel sendInviteModel);
+
+    public delegate void SendErrorDelegate(string error);
+
+    public delegate void ReceiveDataDelegate(TransformData data);
+
+    public delegate void ReceivingDataDelegate(string ip);
+
+    public delegate void ReceivedFileFinishedDelegate(string ip);
+
+    public delegate void ReceivingProcessDelegate(string ip, double process);
+    
     public ReceiveBussiness(IReceiveData receiveData, ISendData sendData, IUserService userService )
     {
         _receiveData = receiveData;
@@ -37,7 +40,7 @@ public class ReceiveBussiness
         _receiveData.ReceiveDataEvent += d => { ReceiveDataEvent?.Invoke(d); };
         _receiveData.ReceivingDataEvent += ip => { ReceivingDataEvent?.Invoke(ip); };
         _receiveData.ReceivedFileFinishedEvent += ip => { ReceivedFileFinishedEvent?.Invoke(ip); };
-
+        
         _receiveData.ReceivingProcessEvent += (ip, process) => { ReceivingProcessEvent?.Invoke(ip, process); };
         _receiveData.LiseningInvite();
         _receiveData.LiseningBuildConnection();
@@ -76,7 +79,7 @@ public class ReceiveBussiness
             DataMetaModel? dmm = JsonConvert.DeserializeObject<DataMetaModel>(Encoding.UTF8.GetString(data.Data));
             if (dmm is null)
                 throw new NullReferenceException();
-            // ÕÒµ½ÔªÊý¾Ý
+            // ï¿½Òµï¿½Ôªï¿½ï¿½ï¿½ï¿½
             DataMetaModel? findDmm = ConstParams.WillSendMetasQueue.FirstOrDefault(x => x.Guid == dmm.Guid);
             if (findDmm != null)
                 if (dmm.State == MetaState.Received)
@@ -140,4 +143,5 @@ public class ReceiveBussiness
             DiscoverEnableIpEvent?.Invoke(sm);
         }
     }
+    
 }
