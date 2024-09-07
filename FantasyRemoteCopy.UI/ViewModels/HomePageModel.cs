@@ -23,7 +23,7 @@ using FantasyMvvm.FantasyModels;
 namespace FantasyRemoteCopy.UI.ViewModels
 {
 
-    public partial class HomePageModel : FantasyPageModelBase
+    public partial class HomePageModel : FantasyPageModelBase,IPageKeep
     {
         private readonly IDialogService _dialogService = null;
 
@@ -218,6 +218,8 @@ namespace FantasyRemoteCopy.UI.ViewModels
         private readonly ReceiveBussiness receiveBussiness;
         private readonly ISaveDataService _dataService;
         private readonly IFileSaveLocation _fileSaveLocation;
+
+        public bool Keep { get; set; } = true;
 
         [RelayCommand]
         public async Task Init()
