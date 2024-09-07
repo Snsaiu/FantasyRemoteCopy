@@ -106,7 +106,7 @@
 	  <MauiImage Include="Resources\Images\windows.png" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="FantasyMvvm" Version="1.0.1.10-preview" />
+	  <PackageReference Include="FantasyMvvm" Version="1.0.1.11-preview" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Update="Views\DetailPage.xaml.cs">

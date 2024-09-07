@@ -25,11 +25,11 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
     public partial class HomePageModel : FantasyPageModelBase,IPageKeep
     {
-        private readonly IDialogService _dialogService = null;
+        private readonly IDialogService _dialogService ;
 
-        private readonly IRegionManager _regionManager = null;
+        private readonly IRegionManager _regionManager ;
 
-        private readonly INavigationService _navigationService = null;
+        private readonly INavigationService _navigationService ;
 
         public HomePageModel(IUserService userService, SendDataBussiness sendDataBussiness, ReceiveBussiness receiveBussiness, ISaveDataService dataService, IFileSaveLocation fileSaveLocation, IDialogService dialogService, IRegionManager regionManager, INavigationService navigationService)
         {
@@ -87,7 +87,8 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 }
                 else
                 {
-                    FileDataModel sdm = JsonConvert.DeserializeObject<FileDataModel>(str);
+                    var sdm = JsonConvert.DeserializeObject<FileDataModel>(str)??throw new NullReferenceException();
+
                     string saveLocation = _fileSaveLocation.GetSaveLocation();
                     string fileFullName = Path.Combine(saveLocation, sdm.FileNameWithExtension);
                     if (File.Exists(fileFullName))
@@ -135,7 +136,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 IsDownLoadingVisible = true;
                 if (DiscoveredDevices != null)
                 {
-                    DiscoveredDeviceModel find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    var find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
                     if (find != null)
                     {
                         find.IsDownLoading = true;
@@ -147,7 +148,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                 if (DiscoveredDevices != null)
                 {
-                    DiscoveredDeviceModel find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    var find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
                     if (find != null)
                     {
                         find.IsDownLoading = false;
@@ -160,7 +161,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                 if (DiscoveredDevices != null)
                 {
-                    DiscoveredDeviceModel find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    var find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
                     if (find != null)
                     {
                         find.DownloadProcess = process;
@@ -172,7 +173,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                 if (DiscoveredDevices != null)
                 {
-                    DiscoveredDeviceModel find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    var find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
                     if (find != null)
                     {
                         find.IsSendingData = true;
@@ -184,7 +185,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
                 if (DiscoveredDevices != null)
                 {
-                    DiscoveredDeviceModel find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    var find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
                     if (find != null)
                     {
                         find.IsSendingData = false;
@@ -229,13 +230,13 @@ namespace FantasyRemoteCopy.UI.ViewModels
             UserName = userRes.Data.Name;
             DeviceNickName = userRes.Data.DeviceNickName;
             IsBusy = false;
-            await DeviceDiscoverAsync();
+            await DeviceDiscoverAsync(false);
         }
 
         [RelayCommand]
         public Task Search()
         {
-           return DeviceDiscoverAsync();
+           return DeviceDiscoverAsync(true);
         }
 
 
@@ -267,7 +268,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         /// <summary>
         /// 设备发现
         /// </summary>
-        private async Task DeviceDiscoverAsync()
+        private async Task DeviceDiscoverAsync(bool showWarning)
         {
             try
             {
@@ -280,9 +281,9 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                 IsBusy = false;
             }
-            if (DiscoveredDevices.Count == 0)
+            if (DiscoveredDevices.Count == 0 && showWarning)
             {
-                Application.Current.MainPage.DisplayAlert("warning", "No connectable devices found! ", "Ok");
+                Application.Current?.MainPage?.DisplayAlert("warning", "No connectable devices found! ", "Ok");
             }
           
         }

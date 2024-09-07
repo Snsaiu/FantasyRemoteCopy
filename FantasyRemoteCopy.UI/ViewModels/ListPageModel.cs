@@ -44,6 +44,7 @@ public partial class ListPageModel:FantasyPageModelBase
 
     private void rig(List<SaveDataModel> sources)
     {
+        this.Models.Clear();
         foreach (var item in sources)
         {
             SaveItemModel sm = new SaveItemModel();

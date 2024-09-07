@@ -45,15 +45,14 @@ public partial class SendTypeDialogModel : FantasyDialogModelBase
         parameter.Add("data", discoveredDeviceModel);
 
         await this._navigationService.NavigationToAsync(nameof(TextInputPage), parameter);
+
+        this.OnCloseEvent(new CloseResultModel { Success = false });
     }
 
     [RelayCommand]
 
     public async Task FileInput()
     {
-        try
-        {
-          
 
             var f = await FilePicker.PickAsync();
 
@@ -86,13 +85,5 @@ public partial class SendTypeDialogModel : FantasyDialogModelBase
 
             }
             this.OnCloseEvent(new CloseResultModel { Success = false });
-
-        }
-        catch (Exception exception)
-        {
-            Console.WriteLine(exception);
-            throw;
-        }
-
     }
 }

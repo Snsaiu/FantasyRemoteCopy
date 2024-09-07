@@ -47,7 +47,7 @@ public static class MauiProgram
         builder.UseRegisterPage<LoginPage, LoginPageModel>();
         builder.UseRegisterPage<HomePage, HomePageModel>();
         builder.UseRegisterPage<SettingPage, SettingPageModel>();
-
+        builder.UseRegisterPage<DetailPage, DetailPageModel>();
         builder.UseRegisterPage<TextInputPage, TextInputPageModel>();
 
         builder.UseRegisterPage<ListPage, ListPageModel>();

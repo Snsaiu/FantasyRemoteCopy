@@ -30,12 +30,12 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
         public void OnNavigatedFrom(string source, INavigationParameter parameter)
         {
-          this.Content=  parameter.Get<string>("data");
+         
         }
 
         public void OnNavigatedTo(string source, INavigationParameter parameter)
         {
-           
+            this.Content=  parameter.Get<string>("data");
         }
     }
 }
