@@ -12,7 +12,7 @@ namespace FantasyRemoteCopy.UI.ViewModels;
 
 public partial class TextInputPageModel : FantasyPageModelBase, INavigationAware
 {
-    private SendDataBussiness _sendDataBussiness;
+    private readonly SendDataBussiness _sendDataBussiness;
 
     private INavigationService _navigationService;
 

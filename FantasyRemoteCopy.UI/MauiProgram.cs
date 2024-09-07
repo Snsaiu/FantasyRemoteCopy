@@ -26,8 +26,8 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             })
             .UseMauiCommunityToolkit()
-            .UseFantasyApplication()
-            .UseGetProvider();
+            .UseFantasyApplication();
+            
         
         builder.Services.AddSingleton<IOpenFolder, DefaultOpenFolder>();
 		builder.Services.AddSingleton<IFileSaveLocation, AppDataFolderFileSaveLocation>();
@@ -53,7 +53,7 @@ public static class MauiProgram
         builder.UseRegisterPage<ListPage, ListPageModel>();
         builder.UseRegisterDialog<SendTypeDialog, SendTypeDialogModel>();
 
-        return builder.Build();
+        return builder.UseGetProvider().Build();
     }
 }
 

@@ -124,10 +124,6 @@ public partial class ListPageModel:FantasyPageModelBase
 #endif
 
             this.IsBusy = false;
-            
-       
-
-
     }
 
     /// <summary>

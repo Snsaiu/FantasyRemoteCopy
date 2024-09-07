@@ -11,24 +11,25 @@ using System.Text;
 
 namespace FantasyRemoteCopy.Core.Bussiness;
 
-/// <summary>
-/// 发送文件的委托
-/// </summary>
-/// <param name="ip"></param>
-public delegate void SendingDataDelegate(string ip);
 
-/// <summary>
-/// 发送完成的委托
-/// </summary>
-/// <param name="ip"></param>
-public delegate void SendFinishedDelegate(string ip);
 
 public class SendDataBussiness
 {
     private readonly IScanLocalNetIp _scanLocalNetIp;
     private readonly ISendData _sendData;
     private readonly IUserService _userService;
+    
+    /// <summary>
+    /// 发送文件的委托
+    /// </summary>
+    /// <param name="ip"></param>
+    public delegate void SendingDataDelegate(string ip);
 
+    /// <summary>
+    /// 发送完成的委托
+    /// </summary>
+    /// <param name="ip"></param>
+    public delegate void SendFinishedDelegate(string ip);
     public SendDataBussiness(IScanLocalNetIp scanLocalNetIp,
         ISendData sendData,
         IUserService userService)
@@ -80,9 +81,7 @@ public class SendDataBussiness
             contentSize = f.Length;
 
         }
-
-
-
+        
         tf.TargetIp = targetip;
 
         ResultBase<UserInfo> userRes = await _userService.GetCurrentUserAsync();
@@ -104,8 +103,6 @@ public class SendDataBussiness
         {
             dm.SourcePosition = content;
         }
-
-
 
         tf.Type = TransformType.RequestBuildConnect;
         tf.Port = ConstParams.BuildTcpIp_Port;
@@ -132,9 +129,7 @@ public class SendDataBussiness
         ResultBase<UserInfo> userRes = await _userService.GetCurrentUserAsync();
         if (userRes.Ok == false)
             return new ErrorResultModel<bool>(userRes.ErrorMsg ?? string.Empty);
-
-
-
+        
         foreach (string ip in scanRes.Data)
         {
             try
@@ -165,7 +160,7 @@ public class SendDataBussiness
 
         }
 
-        return await Task.FromResult(new SuccessResultModel<bool>(true));
+        return new SuccessResultModel<bool>(true);
 
     }
 }
