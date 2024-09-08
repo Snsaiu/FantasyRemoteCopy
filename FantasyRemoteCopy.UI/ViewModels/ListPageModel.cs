@@ -50,7 +50,7 @@ public partial class ListPageModel:FantasyPageModelBase
             SaveItemModel sm = new SaveItemModel();
             if (item.DataType == SaveDataType.Txt)
             {
-                if (item.Content.Length > 20)
+                if (item.Content.Replace(" ","").Length > 20)
                 {
                     sm.Title=item.Content.Replace(" ","").Replace("\n","").Substring(0,20)+"...";
                 }
