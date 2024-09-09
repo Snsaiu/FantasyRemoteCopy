@@ -12,6 +12,7 @@
 
 		<!-- Display name -->
 		<ApplicationTitle>FRC</ApplicationTitle>
+		<WindowsPackageType>None</WindowsPackageType>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.fantasyworld.FRC</ApplicationId>
