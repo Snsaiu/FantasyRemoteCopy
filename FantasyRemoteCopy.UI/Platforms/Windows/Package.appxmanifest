@@ -26,8 +26,8 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="同网拷贝"
-        Description="$placeholder$"
+         DisplayName="同网拷贝"
+        Description="局域网数据共享"
         Square150x150Logo="$placeholder$.png"
         Square44x44Logo="$placeholder$.png"
         BackgroundColor="transparent">
@@ -39,9 +39,14 @@
 
   <Capabilities>
     <rescap:Capability Name="runFullTrust" />
+    <Capability Name="allJoyn"/>
+    <Capability Name="internetClient"/>
+    <Capability Name="privateNetworkClientServer"/>
+    <Capability Name="internetClientServer"/>
   </Capabilities>
 
-  <mp:PhoneIdentity PhoneProductId="469cbfc0-28b2-4b33-a644-db11fec7ef1f"/>
+  <mp:PhoneIdentity PhoneProductId="4223f294-758a-4dba-b32e-b66ee5e0528a"/>
+
 
 </Package>
 
