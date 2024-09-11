@@ -6,7 +6,7 @@
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   IgnorableNamespaces="uap rescap mp">
 
-  <Identity Name="snsaiu.13305903A443B" Publisher="CN=9799F77B-B955-49C5-A9B1-F790D1261879" Version="1.1.0.0" />
+  <Identity Name="snsaiu.13305903A443B" Publisher="CN=9799F77B-B955-49C5-A9B1-F790D1261879" Version="1.1.4.0" />
 
   <Properties>
     <DisplayName>同网拷贝</DisplayName>
@@ -45,7 +45,7 @@
     <Capability Name="internetClientServer"/>
   </Capabilities>
 
-  <mp:PhoneIdentity PhoneProductId="4223f294-758a-4dba-b32e-b66ee5e0528a"/>
+  <mp:PhoneIdentity PhoneProductId="4223f294-758a-4dba-b32e-b66ee5e0528a" PhonePublisherId="BF660CEB-C854-4F86-A164-706F932E4EF3"/>
 
 
 </Package>
