@@ -1,11 +1,13 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
 using FantasyMvvm;
 using FantasyMvvm.FantasyModels;
 using FantasyMvvm.FantasyNavigation;
-using FantasyRemoteCopy.Core.Bussiness;
-using FantasyRemoteCopy.Core.Models;
+
+using DataType = FantasyRemoteCopy.UI.Models.DataType;
+using SendDataBussiness = FantasyRemoteCopy.UI.Bussiness.SendDataBussiness;
 
 namespace FantasyRemoteCopy.UI.ViewModels;
 
@@ -19,10 +21,10 @@ public partial class TextInputPageModel : FantasyPageModelBase, INavigationAware
     [ObservableProperty]
     private string content;
 
-    public TextInputPageModel(SendDataBussiness sendDataBussiness,INavigationService navigationService)
+    public TextInputPageModel(SendDataBussiness sendDataBussiness, INavigationService navigationService)
     {
-        this._navigationService = navigationService;
-        this._sendDataBussiness = sendDataBussiness;
+        _navigationService = navigationService;
+        _sendDataBussiness = sendDataBussiness;
 
     }
 
@@ -32,9 +34,9 @@ public partial class TextInputPageModel : FantasyPageModelBase, INavigationAware
     [RelayCommand]
     private async Task SendData()
     {
-        await this._sendDataBussiness.SendData(this._discoveredDeviceModel.Ip, this.Content, DataType.Text);
+        await _sendDataBussiness.SendData(_discoveredDeviceModel.Ip, Content, DataType.Text);
         await Task.Delay(1000);
-       await this._navigationService.NavigationToAsync(nameof(Views.HomePage), false, null);
+        await _navigationService.NavigationToAsync(nameof(Views.HomePage), false, null);
     }
 
     [ObservableProperty]
@@ -42,12 +44,12 @@ public partial class TextInputPageModel : FantasyPageModelBase, INavigationAware
 
     public void OnNavigatedFrom(string source, INavigationParameter parameter)
     {
-       
+
     }
 
     public void OnNavigatedTo(string source, INavigationParameter parameter)
     {
-        this._discoveredDeviceModel = parameter.Get<Models.DiscoveredDeviceModel>("data");
-        this.Title += this._discoveredDeviceModel.NickName;
+        _discoveredDeviceModel = parameter.Get<Models.DiscoveredDeviceModel>("data");
+        Title += _discoveredDeviceModel.NickName;
     }
 }

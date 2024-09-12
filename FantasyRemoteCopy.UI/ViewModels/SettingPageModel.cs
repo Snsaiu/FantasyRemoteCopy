@@ -5,7 +5,7 @@ using FantasyMvvm;
 using FantasyMvvm.FantasyDialogService;
 using FantasyMvvm.FantasyNavigation;
 
-using FantasyRemoteCopy.Core;
+using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Views;
 
 namespace FantasyRemoteCopy.UI.ViewModels

@@ -1,21 +1,23 @@
-﻿using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-using FantasyRemoteCopy.Core;
-using FantasyRemoteCopy.Core.Models;
-using FantasyRemoteCopy.UI.Models;
-
-using System.Collections.ObjectModel;
-using FantasyRemoteCopy.UI.Views;
 using FantasyMvvm;
 using FantasyMvvm.FantasyDialogService;
-using FantasyMvvm.FantasyNavigation;
 using FantasyMvvm.FantasyModels.Impls;
+using FantasyMvvm.FantasyNavigation;
+
+using FantasyRemoteCopy.UI.Interfaces;
+using FantasyRemoteCopy.UI.Models;
+using FantasyRemoteCopy.UI.Views;
+
+using System.Collections.ObjectModel;
+
+using SaveDataModel = FantasyRemoteCopy.UI.Models.SaveDataModel;
+using SaveDataType = FantasyRemoteCopy.UI.Models.SaveDataType;
 
 namespace FantasyRemoteCopy.UI.ViewModels;
 
-public partial class ListPageModel:FantasyPageModelBase
+public partial class ListPageModel : FantasyPageModelBase
 {
     private readonly ISaveDataService _saveDataService;
     private readonly IOpenFolder _openFolder;
@@ -23,41 +25,36 @@ public partial class ListPageModel:FantasyPageModelBase
 
 
     [ObservableProperty]
-    private ObservableCollection<SaveItemModel> models = new ObservableCollection<SaveItemModel>();
+    private ObservableCollection<SaveItemModel> models = [];
 
     [ObservableProperty]
     private bool isBusy = false;
 
 
-    private readonly IDialogService _dialogService = null;
+    private readonly IDialogService? _dialogService = null;
 
-    private readonly INavigationService _navigationService = null;
+    private readonly INavigationService? _navigationService = null;
 
-    public ListPageModel(ISaveDataService saveDataService,IOpenFolder openFolder,IDialogService dialogService,INavigationService navigationService)
+    public ListPageModel(ISaveDataService saveDataService, IOpenFolder openFolder, IDialogService dialogService, INavigationService navigationService)
     {
         _saveDataService = saveDataService;
         _openFolder = openFolder;
-        this._dialogService = dialogService;
-        this._navigationService = navigationService;
+        _dialogService = dialogService;
+        _navigationService = navigationService;
     }
 
 
     private void rig(List<SaveDataModel> sources)
     {
-        this.Models.Clear();
-        foreach (var item in sources)
+        Models.Clear();
+        foreach (SaveDataModel item in sources)
         {
             SaveItemModel sm = new SaveItemModel();
             if (item.DataType == SaveDataType.Txt)
             {
-                if (item.Content.Replace(" ","").Length > 20)
-                {
-                    sm.Title=item.Content.Replace(" ","").Replace("\n","").Substring(0,20)+"...";
-                }
-                else
-                {
-                    sm.Title = item.Content.Replace(" ", "").Replace("\n", "");
-                }
+                sm.Title = item.Content.Replace(" ", "").Length > 20
+                    ? item.Content.Replace(" ", "").Replace("\n", "")[..20] + "..."
+                    : item.Content.Replace(" ", "").Replace("\n", "");
                 sm.IsText = true;
                 sm.IsFile = false;
                 sm.Image = ImageSource.FromFile("texticon.png");
@@ -67,16 +64,16 @@ public partial class ListPageModel:FantasyPageModelBase
                 sm.IsText = false;
                 sm.IsFile = true;
 
-                sm.Title = Path.GetFileName( item.Content);
+                sm.Title = Path.GetFileName(item.Content);
                 sm.Image = ImageSource.FromFile("fileicon.png");
             }
 
             sm.Content = item.Content;
-            sm.Guid= item.Guid;
+            sm.Guid = item.Guid;
             sm.SourceDeviceName = item.SourceDeviceNickName;
-            sm.Time=item.Time.ToString("yyyy-MM-dd HH:mm:ss");
+            sm.Time = item.Time.ToString("yyyy-MM-dd HH:mm:ss");
 
-            this.Models.Add(sm);
+            Models.Add(sm);
         }
     }
 
@@ -84,9 +81,9 @@ public partial class ListPageModel:FantasyPageModelBase
     [RelayCommand]
     private async Task CopyContent(SaveItemModel model)
     {
-       await Clipboard.Default.SetTextAsync(model.Content);
-       await this._dialogService.DisplayAlert("Information", "Success copy!", "Ok");
-      
+        await Clipboard.Default.SetTextAsync(model.Content);
+        await _dialogService.DisplayAlert("Information", "Success copy!", "Ok");
+
     }
 
 
@@ -96,18 +93,18 @@ public partial class ListPageModel:FantasyPageModelBase
         // 判断文件是否存在
         if (File.Exists(model.Content) == false)
         {
-            var res = await this._saveDataService.DeleteDataAsync(model.Guid);
+            FantasyResultModel.ResultBase<bool> res = await _saveDataService.DeleteDataAsync(model.Guid);
             if (res.Ok)
             {
-                this.Models.Remove(model);
+                Models.Remove(model);
             }
             else
             {
-                await this._dialogService.DisplayAlert("Warning", res.ErrorMsg, "Ok");
+                await _dialogService.DisplayAlert("Warning", res.ErrorMsg, "Ok");
             }
             return;
         }
-        this.IsBusy = true;
+        IsBusy = true;
 
 #if WINDOWS
                 var openOk=  await Launcher.OpenAsync(model.Content);
@@ -121,10 +118,10 @@ public partial class ListPageModel:FantasyPageModelBase
 #elif MACCATALYST
 
         System.Diagnostics.Process.Start("open", model.Content);
-        
+
 #endif
 
-            this.IsBusy = false;
+        IsBusy = false;
     }
 
     /// <summary>
@@ -134,7 +131,7 @@ public partial class ListPageModel:FantasyPageModelBase
     [RelayCommand]
     private async Task Delete(SaveItemModel model)
     {
-        this.IsBusy = true;
+        IsBusy = true;
         if (model.IsFile)
         {
             if (File.Exists(model.Content))
@@ -142,54 +139,54 @@ public partial class ListPageModel:FantasyPageModelBase
                 File.Delete(model.Content);
             }
         }
-        
-       var res=  await this._saveDataService.DeleteDataAsync(model.Guid);
-       if (res.Ok)
-       {
-           this.Models.Remove(model);
-       }
-       else
-       {
-           await this._dialogService.DisplayAlert("Warning", res.ErrorMsg, "Ok");
+
+        FantasyResultModel.ResultBase<bool> res = await _saveDataService.DeleteDataAsync(model.Guid);
+        if (res.Ok)
+        {
+            Models.Remove(model);
         }
-       this.IsBusy = false;
+        else
+        {
+            await _dialogService.DisplayAlert("Warning", res.ErrorMsg, "Ok");
+        }
+        IsBusy = false;
     }
 
 
     [RelayCommand]
-    public  void OpenFolder(SaveItemModel model)
+    public void OpenFolder(SaveItemModel model)
     {
-        var p= Directory.GetParent(model.Content).ToString();
-       //var p=  Path.GetFullPath(model.Content);
+        string p = Directory.GetParent(model.Content).ToString();
+        //var p=  Path.GetFullPath(model.Content);
 
-       this._openFolder.OpenFolder(p);
+        _openFolder.OpenFolder(p);
     }
 
 
     [RelayCommand]
     private async Task Detail(SaveItemModel model)
     {
- 
+
         NavigationParameter parameter = new NavigationParameter();
         parameter.Add("data", model.Content);
-        await this._navigationService.NavigationToAsync(nameof(DetailPage), parameter);
+        await _navigationService.NavigationToAsync(nameof(DetailPage), parameter);
     }
 
     [RelayCommand]
     public async Task Init()
     {
-        this.IsBusy = true;
-       var list= await  this._saveDataService.GetAllAsync();
-       if (list.Ok)
-       {
-           list.Data.Reverse();
-           this.rig(list.Data);
-       }
-       else
-       {
-         await  this._dialogService.DisplayAlert("Warning", list.ErrorMsg, "Ok");
+        IsBusy = true;
+        FantasyResultModel.ResultBase<List<SaveDataModel>> list = await _saveDataService.GetAllAsync();
+        if (list.Ok)
+        {
+            list.Data.Reverse();
+            rig(list.Data);
+        }
+        else
+        {
+            await _dialogService.DisplayAlert("Warning", list.ErrorMsg, "Ok");
 
-       }
-       this.IsBusy = false;
+        }
+        IsBusy = false;
     }
 }

@@ -28,7 +28,7 @@
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 		<DefaultLanguage>zh-Hans</DefaultLanguage>
-		<PackageCertificateThumbprint>2A9615433A91AB015116070D995B46CAA76FAA86</PackageCertificateThumbprint>
+		<PackageCertificateThumbprint>B33CF8020B340466E797E195CC7182C7D18373EE</PackageCertificateThumbprint>
 		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
 		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
 		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
@@ -165,8 +165,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\FantasyRemoteCopy.Core\FantasyRemoteCopy.Core.csproj" />
+		<PackageReference Include="FantasyResultModel" Version="1.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="sqlite-net" Version="1.6.292" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.10-pre20240828193256" />
+		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.10-pre20240828193256" />
+		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.10-pre20240828193256" />
 	</ItemGroup>
+	
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.82" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />

@@ -1,7 +1,6 @@
-using FantasyRemoteCopy.Core;
-using FantasyRemoteCopy.Core.Bussiness;
-using FantasyRemoteCopy.Core.Models;
 using FantasyRemoteCopy.UI.Models;
+
+using SendDataBussiness = FantasyRemoteCopy.UI.Bussiness.SendDataBussiness;
 
 namespace FantasyRemoteCopy.UI.Views;
 
@@ -15,10 +14,10 @@ public partial class TextInputPage : ContentPage
 
     public void InitData(DiscoveredDeviceModel model)
     {
-        this.discoveredDeviceModel = model;
-        this.cp.Title = "To：" + this.discoveredDeviceModel.NickName;
+        discoveredDeviceModel = model;
+        cp.Title = "To：" + discoveredDeviceModel.NickName;
     }
-    
+
 
     public TextInputPage(SendDataBussiness sendData)
     {
@@ -34,13 +33,6 @@ public partial class TextInputPage : ContentPage
     /// <param name="e"></param>
     private void UnFocusedEvent(object sender, FocusEventArgs e)
     {
-        if (string.IsNullOrWhiteSpace(this.edit.Text))
-        {
-            this.sendBtn.IsEnabled=false;
-        }
-        else
-        {
-            this.sendBtn.IsEnabled=true;
-        }
+        sendBtn.IsEnabled = !string.IsNullOrWhiteSpace(edit.Text);
     }
 }

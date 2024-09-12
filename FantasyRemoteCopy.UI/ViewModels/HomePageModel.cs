@@ -7,9 +7,7 @@ using FantasyMvvm.FantasyModels.Impls;
 using FantasyMvvm.FantasyNavigation;
 using FantasyMvvm.FantasyRegionManager;
 
-using FantasyRemoteCopy.Core;
-using FantasyRemoteCopy.Core.Bussiness;
-using FantasyRemoteCopy.Core.Models;
+using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Models;
 using FantasyRemoteCopy.UI.Views;
 using FantasyRemoteCopy.UI.Views.Dialogs;
@@ -18,18 +16,24 @@ using Newtonsoft.Json;
 
 using System.Collections.ObjectModel;
 using System.Text;
-using FantasyMvvm.FantasyModels;
+
+using FileDataModel = FantasyRemoteCopy.UI.Models.FileDataModel;
+using ReceiveBussiness = FantasyRemoteCopy.UI.Bussiness.ReceiveBussiness;
+using SaveDataModel = FantasyRemoteCopy.UI.Models.SaveDataModel;
+using SaveDataType = FantasyRemoteCopy.UI.Models.SaveDataType;
+using SendDataBussiness = FantasyRemoteCopy.UI.Bussiness.SendDataBussiness;
+using UserInfo = FantasyRemoteCopy.UI.Models.UserInfo;
 
 namespace FantasyRemoteCopy.UI.ViewModels
 {
 
-    public partial class HomePageModel : FantasyPageModelBase,IPageKeep
+    public partial class HomePageModel : FantasyPageModelBase, IPageKeep
     {
-        private readonly IDialogService _dialogService ;
+        private readonly IDialogService _dialogService;
 
-        private readonly IRegionManager _regionManager ;
+        private readonly IRegionManager _regionManager;
 
-        private readonly INavigationService _navigationService ;
+        private readonly INavigationService _navigationService;
 
         public HomePageModel(IUserService userService, SendDataBussiness sendDataBussiness, ReceiveBussiness receiveBussiness, ISaveDataService dataService, IFileSaveLocation fileSaveLocation, IDialogService dialogService, IRegionManager regionManager, INavigationService navigationService)
         {
@@ -87,7 +91,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 }
                 else
                 {
-                    var sdm = JsonConvert.DeserializeObject<FileDataModel>(str)??throw new NullReferenceException();
+                    FileDataModel sdm = JsonConvert.DeserializeObject<FileDataModel>(str) ?? throw new NullReferenceException();
 
                     string saveLocation = _fileSaveLocation.GetSaveLocation();
                     string fileFullName = Path.Combine(saveLocation, sdm.FileNameWithExtension);
@@ -136,7 +140,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 IsDownLoadingVisible = true;
                 if (DiscoveredDevices != null)
                 {
-                    var find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    DiscoveredDeviceModel? find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
                     if (find != null)
                     {
                         find.IsDownLoading = true;
@@ -148,7 +152,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                 if (DiscoveredDevices != null)
                 {
-                    var find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    DiscoveredDeviceModel? find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
                     if (find != null)
                     {
                         find.IsDownLoading = false;
@@ -161,7 +165,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                 if (DiscoveredDevices != null)
                 {
-                    var find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    DiscoveredDeviceModel? find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
                     if (find != null)
                     {
                         find.DownloadProcess = process;
@@ -173,7 +177,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                 if (DiscoveredDevices != null)
                 {
-                    var find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    DiscoveredDeviceModel? find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
                     if (find != null)
                     {
                         find.IsSendingData = true;
@@ -185,7 +189,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
                 if (DiscoveredDevices != null)
                 {
-                    var find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
+                    DiscoveredDeviceModel? find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
                     if (find != null)
                     {
                         find.IsSendingData = false;
@@ -236,7 +240,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         [RelayCommand]
         public Task Search()
         {
-           return DeviceDiscoverAsync(true);
+            return DeviceDiscoverAsync(true);
         }
 
 
@@ -249,7 +253,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
 
         [RelayCommand]
-        public  Task Share(DiscoveredDeviceModel model)
+        public Task Share(DiscoveredDeviceModel model)
         {
             if (model.IsSendingData)
                 return _dialogService.DisplayAlert("Warning", "Sorry, the file is being uploaded. Please try again after the upload is completed!", "Ok");
@@ -260,7 +264,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         }
 
         [RelayCommand]
-        public  Task GotoSettingPage()
+        public Task GotoSettingPage()
         {
             return _navigationService.NavigationToAsync(nameof(SettingPage), null);
         }
@@ -274,7 +278,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                 DiscoveredDevices.Clear();
                 IsBusy = true;
-          
+
                 await sendDataBussiness.DeviceDiscover();
             }
             finally
@@ -285,8 +289,8 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                 Application.Current?.MainPage?.DisplayAlert("warning", "No connectable devices found! ", "Ok");
             }
-          
+
         }
-        
+
     }
 }

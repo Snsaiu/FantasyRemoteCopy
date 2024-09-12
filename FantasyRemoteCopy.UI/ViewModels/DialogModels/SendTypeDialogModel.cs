@@ -1,14 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
 using FantasyMvvm;
 using FantasyMvvm.FantasyDialogService;
 using FantasyMvvm.FantasyModels;
 using FantasyMvvm.FantasyModels.Impls;
 using FantasyMvvm.FantasyNavigation;
-using FantasyRemoteCopy.Core.Bussiness;
-using FantasyRemoteCopy.Core.Models;
+
 using FantasyRemoteCopy.UI.Models;
 using FantasyRemoteCopy.UI.Views;
+
+using DataType = FantasyRemoteCopy.UI.Models.DataType;
+using SendDataBussiness = FantasyRemoteCopy.UI.Bussiness.SendDataBussiness;
 
 namespace FantasyRemoteCopy.UI.ViewModels.DialogModels;
 
@@ -26,16 +29,16 @@ public partial class SendTypeDialogModel : FantasyDialogModelBase
     [ObservableProperty]
     private bool isBusy = false;
 
-    public SendTypeDialogModel(INavigationService navigationService, SendDataBussiness sendData,IDialogService dialogService)
+    public SendTypeDialogModel(INavigationService navigationService, SendDataBussiness sendData, IDialogService dialogService)
     {
-        this._dialogService = dialogService;
-        this._sendDataBussiness = sendData;
-        this._navigationService = navigationService;
+        _dialogService = dialogService;
+        _sendDataBussiness = sendData;
+        _navigationService = navigationService;
     }
 
     public override void OnParameter(INavigationParameter parameter)
     {
-      this.discoveredDeviceModel=parameter.Get<DiscoveredDeviceModel>("data");
+        discoveredDeviceModel = parameter.Get<DiscoveredDeviceModel>("data");
     }
 
     [RelayCommand]
@@ -44,9 +47,9 @@ public partial class SendTypeDialogModel : FantasyDialogModelBase
         NavigationParameter parameter = new NavigationParameter();
         parameter.Add("data", discoveredDeviceModel);
 
-        await this._navigationService.NavigationToAsync(nameof(TextInputPage), parameter);
+        await _navigationService.NavigationToAsync(nameof(TextInputPage), parameter);
 
-        this.OnCloseEvent(new CloseResultModel { Success = false });
+        OnCloseEvent(new CloseResultModel { Success = false });
     }
 
     [RelayCommand]
@@ -54,36 +57,36 @@ public partial class SendTypeDialogModel : FantasyDialogModelBase
     public async Task FileInput()
     {
 
-            var f = await FilePicker.PickAsync();
+        FileResult? f = await FilePicker.PickAsync();
 
-            if (f != null)
+        if (f != null)
+        {
+
+            FileInfo finfo = new FileInfo(f.FullPath);
+            if (finfo.Length > 1073741824)
             {
 
-                FileInfo finfo = new FileInfo(f.FullPath);
-                if (finfo.Length > 1073741824)
-                {
-                    
-                    await App.Current.MainPage.DisplayAlert("Warning", "File cannot be larger than 1G ！", "Ok");
-                    return;
-                }
-                this.IsBusy = true;
-                var res = await this._sendDataBussiness.SendData(this.discoveredDeviceModel.Ip, f.FullPath, DataType.File);
+                await App.Current.MainPage.DisplayAlert("Warning", "File cannot be larger than 1G ！", "Ok");
+                return;
+            }
+            IsBusy = true;
+            FantasyResultModel.ResultBase<bool> res = await _sendDataBussiness.SendData(discoveredDeviceModel.Ip, f.FullPath, DataType.File);
 
-                if (res != null)
-                {
-                    this.IsBusy = false;
+            if (res != null)
+            {
+                IsBusy = false;
 #if WINDOWS
                   await Application.Current.MainPage.DisplayAlert("Information", "Sended!", "Ok");
 #endif
 
 
-                    this.OnCloseEvent(new CloseResultModel { Success = true });
-
-                }
-
-
+                OnCloseEvent(new CloseResultModel { Success = true });
 
             }
-            this.OnCloseEvent(new CloseResultModel { Success = false });
+
+
+
+        }
+        OnCloseEvent(new CloseResultModel { Success = false });
     }
 }

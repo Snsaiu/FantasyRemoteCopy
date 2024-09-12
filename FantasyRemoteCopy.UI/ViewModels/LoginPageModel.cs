@@ -4,7 +4,8 @@ using CommunityToolkit.Mvvm.Input;
 using FantasyMvvm;
 using FantasyMvvm.FantasyNavigation;
 
-using FantasyRemoteCopy.Core;
+using FantasyRemoteCopy.UI.Interfaces;
+using FantasyRemoteCopy.UI.Models;
 using FantasyRemoteCopy.UI.Views;
 
 namespace FantasyRemoteCopy.UI.ViewModels
@@ -39,7 +40,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         public async Task Login()
         {
             IsBusy = true;
-            await userService.SaveUserAsync(new Core.Models.UserInfo() { Name = UserName, DeviceNickName = DeviceNickName });
+            await userService.SaveUserAsync(new UserInfo() { Name = UserName, DeviceNickName = DeviceNickName });
 
             await _navigationService.NavigationToAsync(nameof(HomePage), false, null);
             //var homepage = App.Current.Services.GetService<HomePage>();
@@ -54,7 +55,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
 
             IsBusy = true;
-            FantasyResultModel.ResultBase<Core.Models.UserInfo> userRes = await userService.GetCurrentUserAsync();
+            FantasyResultModel.ResultBase<UserInfo> userRes = await userService.GetCurrentUserAsync();
             if (userRes.Ok)
             {
                 UserName = userRes.Data.Name;

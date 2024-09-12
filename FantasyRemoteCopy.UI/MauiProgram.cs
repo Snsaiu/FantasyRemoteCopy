@@ -2,14 +2,14 @@
 
 using FantasyMvvm;
 
-using FantasyRemoteCopy.Core;
-using FantasyRemoteCopy.Core.Bussiness;
-using FantasyRemoteCopy.Core.Impls;
-using FantasyRemoteCopy.Core.Platforms;
+using FantasyRemoteCopy.UI.Bussiness;
+using FantasyRemoteCopy.UI.Interfaces;
+using FantasyRemoteCopy.UI.Interfaces.Impls;
 using FantasyRemoteCopy.UI.ViewModels;
 using FantasyRemoteCopy.UI.ViewModels.DialogModels;
 using FantasyRemoteCopy.UI.Views;
 using FantasyRemoteCopy.UI.Views.Dialogs;
+
 
 namespace FantasyRemoteCopy.UI;
 
@@ -27,10 +27,10 @@ public static class MauiProgram
             })
             .UseMauiCommunityToolkit()
             .UseFantasyApplication();
-            
-        
+
+
         builder.Services.AddSingleton<IOpenFolder, DefaultOpenFolder>();
-		builder.Services.AddSingleton<IFileSaveLocation, AppDataFolderFileSaveLocation>();
+        builder.Services.AddSingleton<IFileSaveLocation, AppDataFolderFileSaveLocation>();
 
         builder.Services.AddSingleton<IGetLocalIp, DefaultLocalIp>();
         builder.Services.AddSingleton<IScanLocalNetIp, DefaultScanLocalNetIp>();

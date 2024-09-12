@@ -29,9 +29,6 @@
     <None Remove="SQLitePCLRaw.provider.sqlite3" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Impls\" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="FantasyResultModel" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="sqlite-net" Version="1.6.292" />
