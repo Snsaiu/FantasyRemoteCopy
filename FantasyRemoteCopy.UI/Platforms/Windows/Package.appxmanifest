@@ -6,7 +6,7 @@
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   IgnorableNamespaces="uap rescap mp">
 
-  <Identity Name="snsaiu.13305903A443B" Publisher="CN=9799F77B-B955-49C5-A9B1-F790D1261879" Version="1.1.7.0" />
+  <Identity Name="snsaiu.13305903A443B" Publisher="CN=9799F77B-B955-49C5-A9B1-F790D1261879" Version="1.1.8.0" />
 
   <Properties>
     <DisplayName>同网拷贝</DisplayName>
@@ -38,14 +38,13 @@
   </Applications>
 
   <Capabilities>
-    <rescap:Capability Name="runFullTrust" />
     <Capability Name="allJoyn"/>
     <Capability Name="internetClient"/>
     <Capability Name="privateNetworkClientServer"/>
     <Capability Name="internetClientServer"/>
   </Capabilities>
 
-  <mp:PhoneIdentity PhoneProductId="4223f294-758a-4dba-b32e-b66ee5e0528a" PhonePublisherId="BF660CEB-C854-4F86-A164-706F932E4EF3"/>
+  <mp:PhoneIdentity PhoneProductId="efd14fe6-ed92-47c1-a84c-7abdbf5db7af" PhonePublisherId="BF660CEB-C854-4F86-A164-706F932E4EF3"/>
 
 
 </Package>
