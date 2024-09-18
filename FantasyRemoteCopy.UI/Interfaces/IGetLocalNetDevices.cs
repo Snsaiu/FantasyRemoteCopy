@@ -7,7 +7,7 @@ public interface IGetDevices
     IAsyncEnumerable<object> GetDevicesAsync(CancellationToken cancellationToken);
 }
 
-public interface IGetDevice<out T> : IGetDevices where T : ScanDevice
+public interface IGetDevices<out T> : IGetDevices where T : ScanDevice
 {
     new IAsyncEnumerable<T> GetDevicesAsync(CancellationToken cancellationToken);
 
@@ -16,5 +16,21 @@ public interface IGetDevice<out T> : IGetDevices where T : ScanDevice
         return GetDevicesAsync(cancellationToken);
     }
 
+}
+
+/// <summary>
+/// 获得本地局域网的设备
+/// </summary>
+public interface IGetLocalNetDevices : IGetDevices<ScanDevice>
+{
+    
+}
+
+/// <summary>
+/// 获得本地蓝牙设备
+/// </summary>
+public interface IGetBluetoothDevices : IGetDevices<ScanDevice>
+{
+    
 }
 
