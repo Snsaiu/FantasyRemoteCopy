@@ -1,14 +1,8 @@
 ﻿using FantasyRemoteCopy.UI.Interfaces;
-
+using FantasyRemoteCopy.UI.Interfaces.Impls;
 using FantasyResultModel;
 
 namespace FantasyRemoteCopy.UI
 {
-    public class DefaultScanLocalNetIp : IScanLocalNetIp
-    {
-        public Task<ResultBase<List<string>>> ScanLocalNetIpAsync()
-        {
-            throw new NotImplementedException();
-        }
-    }
+    public class DefaultScanLocalNetIp : AppleLocalIpScannerBase;
 }

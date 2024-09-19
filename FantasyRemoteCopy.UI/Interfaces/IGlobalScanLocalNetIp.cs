@@ -2,7 +2,7 @@
 
 namespace FantasyRemoteCopy.UI.Interfaces;
 
-public interface IGlobalScanLocalNetIp
-{
-    Task<ResultBase<bool>> GlobalSearch();
-}
+// public interface IGlobalScanLocalNetIp
+// {
+//     Task<ResultBase<bool>> GlobalSearch();
+// }

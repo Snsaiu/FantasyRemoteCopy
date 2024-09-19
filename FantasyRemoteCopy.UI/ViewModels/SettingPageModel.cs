@@ -14,7 +14,6 @@ namespace FantasyRemoteCopy.UI.ViewModels
     public partial class SettingPageModel : FantasyPageModelBase
     {
         private readonly IUserService userService;
-        private readonly IGlobalScanLocalNetIp _globalScanLocalNetIp;
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(LogoutCommand))]
@@ -25,28 +24,28 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
         private readonly INavigationService _navigationService;
         private readonly IDialogService _dialogService;
-        public SettingPageModel(IUserService userService, IGlobalScanLocalNetIp globalScanLocalNetIp, INavigationService navigationService, IDialogService dialogService)
+        public SettingPageModel(IUserService userService, INavigationService navigationService, IDialogService dialogService)
         {
             this.userService = userService;
             _dialogService = dialogService;
             _navigationService = navigationService;
-            _globalScanLocalNetIp = globalScanLocalNetIp;
+            
         }
 
 
         [RelayCommand(CanExecute = nameof(IsNotBusy))]
         private void GlobalSearch()
         {
-            IsBusy = true;
-            Task.Run(async () =>
-            {
-                await _globalScanLocalNetIp.GlobalSearch();
-
-            }).GetAwaiter().OnCompleted(() =>
-            {
-                IsBusy = false;
-                Application.Current.MainPage.DisplayAlert("Information", "Search Complete !", "Ok");
-            });
+            // IsBusy = true;
+            // Task.Run(async () =>
+            // {
+            //     await _globalScanLocalNetIp.GlobalSearch();
+            //
+            // }).GetAwaiter().OnCompleted(() =>
+            // {
+            //     IsBusy = false;
+            //     Application.Current.MainPage.DisplayAlert("Information", "Search Complete !", "Ok");
+            // });
         }
 
         [RelayCommand(CanExecute = nameof(IsNotBusy))]

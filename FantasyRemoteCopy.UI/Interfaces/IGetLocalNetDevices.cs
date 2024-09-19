@@ -23,7 +23,11 @@ public interface IGetDevices<out T> : IGetDevices where T : ScanDevice
 /// </summary>
 public interface IGetLocalNetDevices : IGetDevices<ScanDevice>
 {
-    
+   new IAsyncEnumerable<ScanDevice> GetDevicesAsync(CancellationToken cancellationToken);
+
+    IAsyncEnumerable<ScanDevice> IGetDevices<ScanDevice>.GetDevicesAsync(CancellationToken cancellationToken) =>
+        GetDevicesAsync(cancellationToken);
+
 }
 
 /// <summary>

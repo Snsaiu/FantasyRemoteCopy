@@ -33,8 +33,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IFileSaveLocation, AppDataFolderFileSaveLocation>();
 
         builder.Services.AddSingleton<IGetLocalIp, DefaultLocalIp>();
-        builder.Services.AddSingleton<IScanLocalNetIp, DefaultScanLocalNetIp>();
-        builder.Services.AddSingleton<IGlobalScanLocalNetIp, GlobalScanLocalNetIp>();
+        builder.Services.AddSingleton<IGetLocalNetDevices, DefaultScanLocalNetIp>();
 
         builder.Services.AddSingleton<IReceiveData, TcpReceiveData>();
         builder.Services.AddSingleton<ISendData, TcpDataSender>();

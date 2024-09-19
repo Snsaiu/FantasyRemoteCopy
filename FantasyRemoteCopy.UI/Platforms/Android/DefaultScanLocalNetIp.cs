@@ -1,23 +1,14 @@
 ﻿using FantasyRemoteCopy.UI.Interfaces;
-
+using FantasyRemoteCopy.UI.Models;
 using FantasyResultModel;
 
 namespace FantasyRemoteCopy.UI
 {
-    public class DefaultScanLocalNetIp : IScanLocalNetIp
+    public class DefaultScanLocalNetIp : IGetLocalNetDevices
     {
-        private readonly IGetLocalIp _getLocalIp;
-
-        public DefaultScanLocalNetIp(IGetLocalIp getLocalIp)
+        public IAsyncEnumerable<ScanDevice> GetDevicesAsync(CancellationToken cancellationToken)
         {
-            _getLocalIp = getLocalIp;
-        }
-
-
-        public Task<ResultBase<List<string>>>? ScanLocalNetIpAsync()
-        {
-            _getLocalIp.GetLocalIp();
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

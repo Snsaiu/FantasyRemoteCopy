@@ -5,48 +5,13 @@ using FantasyResultModel.Impls;
 
 using System.Net;
 using System.Net.Sockets;
+using FantasyRemoteCopy.UI.Interfaces.Impls;
 
 namespace FantasyRemoteCopy.UI
 {
-    public class DefaultLocalIp : IGetLocalIp
-    {
-        public DefaultLocalIp()
-        {
-        }
-
-        public ResultBase<List<string>> GetLocalIp()
-        {
-            try
-            {
-                List<string> ips = [];
-                IPHostEntry host;
-                string? localIP = string.Empty;
-                host = Dns.GetHostEntry(Dns.GetHostName());
-
-                foreach (IPAddress ip in host.AddressList)
-                {
-                    localIP = ip.ToString();
-
-                    string[] temp = localIP.Split('.');
-
-                    if (ip.AddressFamily == AddressFamily.InterNetwork && temp[0] == "192")
-                    {
-                        ips.Add(localIP);
-                    }
-                    else
-                    {
-                        localIP = null;
-                    }
-                }
-
-                return ips.Count == 0 ? new ErrorResultModel<List<string>>("无法获得本机ip地址") : new SuccessResultModel<List<string>>(ips);
-            }
-            catch (Exception e)
-            {
-                return new ErrorResultModel<List<string>>(e.Message);
-            }
-
-        }
-    }
+    /// <summary>
+    /// 获得本机ip
+    /// </summary>
+    public class DefaultLocalIp : AppleDeviceLocalIpBase;
 }
 
