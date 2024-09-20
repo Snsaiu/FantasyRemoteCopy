@@ -6,16 +6,16 @@ namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 /// <summary>
 /// 苹果设备获得本机ip
 /// </summary>
-public abstract class AppleDeviceLocalIpBase:IGetLocalIp
+public abstract class DefaultDeviceLocalIpBase : IGetLocalIp
 {
     public Task<string> GetLocalIpAsync()
     {
-        var host = Dns.GetHostEntry(Dns.GetHostName());
+        IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
 
         foreach (IPAddress ip in host.AddressList)
         {
-            var localIp = ip.ToString();
-                    
+            string localIp = ip.ToString();
+
             if (ip.AddressFamily == AddressFamily.InterNetwork && localIp.StartsWith("192.168"))
             {
                 return Task.FromResult<string>(localIp);
@@ -23,6 +23,6 @@ public abstract class AppleDeviceLocalIpBase:IGetLocalIp
         }
 
         throw new NullReferenceException("无法找到本机ip");
-                
+
     }
 }

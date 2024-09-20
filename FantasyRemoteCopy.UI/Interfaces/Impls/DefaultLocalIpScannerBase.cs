@@ -1,19 +1,21 @@
-using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.UI.Models;
+
+using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
+
 using Device = FantasyRemoteCopy.Core.Enums.Device;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
-public class AppleLocalIpScannerBase:IGetLocalNetDevices
+public class DefaultLocalIpScannerBase : IGetLocalNetDevices
 {
-    
+
     public async IAsyncEnumerable<ScanDevice> GetDevicesAsync([EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        var scanIps = await Task.Run(() =>
+        System.Collections.ObjectModel.ReadOnlyCollection<string> scanIps = await Task.Run(() =>
         {
-            var temp = new List<string>();
+            List<string> temp = [];
             System.Diagnostics.Process pProcess = new System.Diagnostics.Process();
             pProcess.StartInfo.FileName = "arp";
             pProcess.StartInfo.Arguments = "-a ";
@@ -38,8 +40,8 @@ public class AppleLocalIpScannerBase:IGetLocalNetDevices
         foreach (string item in scanIps)
         {
             if (item.StartsWith("192.168"))
-                yield return new ScanDevice(SystemType.MacOS,Device.Desktop, item,"name");
+                yield return new ScanDevice(SystemType.MacOS, Device.Desktop, item, "name");
         }
-        
+
     }
 }
