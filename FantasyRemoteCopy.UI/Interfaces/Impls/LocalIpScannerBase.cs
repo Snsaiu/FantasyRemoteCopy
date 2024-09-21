@@ -8,7 +8,7 @@ using Device = FantasyRemoteCopy.Core.Enums.Device;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
-public class DefaultLocalIpScannerBase : IGetLocalNetDevices
+public class LocalIpScannerBase : IGetLocalNetDevices
 {
 
     public async IAsyncEnumerable<ScanDevice> GetDevicesAsync([EnumeratorCancellation] CancellationToken cancellationToken)
@@ -28,7 +28,6 @@ public class DefaultLocalIpScannerBase : IGetLocalNetDevices
 
             foreach (Match m in Regex.Matches(cmdOutput, pattern, RegexOptions.IgnoreCase))
             {
-                //res.Add(m.Groups["ip"].Value);
                 temp.Add(m.Groups["ip"].Value);
             }
 
@@ -40,7 +39,7 @@ public class DefaultLocalIpScannerBase : IGetLocalNetDevices
         foreach (string item in scanIps)
         {
             if (item.StartsWith("192.168"))
-                yield return new ScanDevice(SystemType.MacOS, Device.Desktop, item, "name");
+                yield return new ScanDevice(SystemType.None, Device.None,item, null);
         }
 
     }

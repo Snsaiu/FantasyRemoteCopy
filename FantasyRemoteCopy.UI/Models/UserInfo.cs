@@ -5,7 +5,7 @@ namespace FantasyRemoteCopy.UI.Models;
 /// <summary>
 /// 用户信息
 /// </summary>
-public class UserInfo
+public class UserInfo:IName
 {
     /// <summary>
     /// 用户名（唯一编号）

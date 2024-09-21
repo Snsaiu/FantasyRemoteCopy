@@ -10,16 +10,23 @@ namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 /// <summary>
 /// 局域网设备邀请
 /// </summary>
-public abstract class LocalNetInviteDeviceBase : IInviteable<LocalNetInviteMessage>
+public abstract class LocalNetInviteDeviceBase : IInviteable<LocalNetInviteMessage>,IDisposable
 {
+
+    private readonly UdpClient _udpClient;
+    public LocalNetInviteDeviceBase()
+    {
+        _udpClient = new UdpClient(){EnableBroadcast = true};
+    }
     public async Task InviteAsync(LocalNetInviteMessage invite)
     {
-        var udpClient = new UdpClient();
-        udpClient.EnableBroadcast = true;
         var json = JsonConvert.SerializeObject(invite);
         var data = json.ToBytes();
         var endPoint = new IPEndPoint(IPAddress.Broadcast, ConstParams.INVITE_PORT);
-        await udpClient.SendAsync(data,data.Length, endPoint);
-        udpClient.Close();
+        await _udpClient.SendAsync(data,data.Length, endPoint);
+    }
+    public void Dispose()
+    {
+        _udpClient.Close();
     }
 }

@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 
 using System.Collections.ObjectModel;
 using System.Text;
+using FantasyRemoteCopy.UI.Interfaces.Impls;
 using UserInfo = FantasyRemoteCopy.UI.Models.UserInfo;
 
 namespace FantasyRemoteCopy.UI.ViewModels
@@ -24,15 +25,25 @@ namespace FantasyRemoteCopy.UI.ViewModels
     public partial class HomePageModel : FantasyPageModelBase, IPageKeep
     {
         private readonly IDialogService _dialogService;
+        private readonly LocalNetDeviceDiscoveryBase _localNetDeviceDiscoveryBase;
+        private readonly LocalNetInviteDeviceBase _localNetInviteDeviceBase;
+        private readonly DeviceLocalIpBase _deviceLocalIpBase;
+        private readonly LocalIpScannerBase _localIpScannerBase;
 
         private readonly IRegionManager _regionManager;
-
+       
         private readonly INavigationService _navigationService;
 
+        private LocalNetInviteMessage? _localNetInviteMessage = null;
+        
         public HomePageModel(IUserService userService, 
             ISaveDataService dataService,
             IFileSaveLocation fileSaveLocation, 
             IDialogService dialogService, 
+            LocalNetDeviceDiscoveryBase localNetDeviceDiscoveryBase,
+            LocalNetInviteDeviceBase localNetInviteDeviceBase,
+            DeviceLocalIpBase deviceLocalIpBase,
+            LocalIpScannerBase localIpScannerBase,
             IRegionManager regionManager,
             INavigationService navigationService)
         {
@@ -40,14 +51,15 @@ namespace FantasyRemoteCopy.UI.ViewModels
             _dataService = dataService;
             _fileSaveLocation = fileSaveLocation;
             _dialogService = dialogService;
-            
+            _localNetDeviceDiscoveryBase = localNetDeviceDiscoveryBase;
+            _localNetInviteDeviceBase = localNetInviteDeviceBase;
+            _deviceLocalIpBase = deviceLocalIpBase;
+            _localIpScannerBase = localIpScannerBase;
             _regionManager = regionManager;
-
             _navigationService = navigationService;
-
             DiscoveredDevices = [];
-
-      
+            
+            Task.Run(() => Task.FromResult( Init()));
         }
 
         [ObservableProperty]
@@ -74,14 +86,24 @@ namespace FantasyRemoteCopy.UI.ViewModels
         private readonly IFileSaveLocation _fileSaveLocation;
 
         public bool Keep { get; set; } = true;
-
-        [RelayCommand]
-        public async Task Init()
+        
+        private async Task Init()
         {
             IsBusy = true;
             FantasyResultModel.ResultBase<UserInfo> userRes = await userService.GetCurrentUserAsync();
             UserName = userRes.Data.Name;
             DeviceNickName = userRes.Data.DeviceNickName;
+
+            var localIp = await this._deviceLocalIpBase.GetLocalIpAsync();
+
+            _localNetInviteMessage = new LocalNetInviteMessage(UserName, localIp);
+
+            //设备发现 ，当有新的设备加入的时候产生回调
+            await this._localNetDeviceDiscoveryBase.DiscoverDevicesAsync(x =>
+            {
+
+            });
+            
             IsBusy = false;
             await DeviceDiscoverAsync(false);
         }
@@ -125,6 +147,16 @@ namespace FantasyRemoteCopy.UI.ViewModels
         {
             try
             {
+                var cancellationToken = new CancellationToken();
+                
+                var devices = this._localIpScannerBase.GetDevicesAsync(cancellationToken);
+
+                await foreach (var device in devices)
+                {
+                    await this._localNetInviteDeviceBase.InviteAsync(_localNetInviteMessage ??
+                                                                     throw new NullReferenceException());
+                }
+                
                 DiscoveredDevices.Clear();
                 IsBusy = true;
             }
@@ -132,6 +164,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                 IsBusy = false;
             }
+            
             if (DiscoveredDevices.Count == 0 && showWarning)
             {
                 Application.Current?.MainPage?.DisplayAlert("warning", "No connectable devices found! ", "Ok");

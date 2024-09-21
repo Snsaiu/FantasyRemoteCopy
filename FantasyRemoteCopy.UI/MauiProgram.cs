@@ -24,17 +24,16 @@ public static class MauiProgram
             })
             .UseMauiCommunityToolkit()
             .UseFantasyApplication();
-
-
+        
         builder.Services.AddSingleton<IOpenFolder, DefaultOpenFolder>();
         builder.Services.AddSingleton<IFileSaveLocation, AppDataFolderFileSaveLocation>();
 
         builder.Services.AddSingleton<LocalNetDeviceDiscoveryBase, LocalNetDeviceDiscovery>();
         builder.Services.AddSingleton<LocalNetInviteDeviceBase, LocalNetInviteDevice>();
+        builder.Services.AddSingleton<LocalIpScannerBase, DefaultScanLocalNetIp>();
         
-
-        builder.Services.AddSingleton<IGetLocalIp, DefaultLocalIp>();
-        builder.Services.AddSingleton<IGetLocalNetDevices, DefaultScanLocalNetIp>();
+         builder.Services.AddSingleton<DeviceLocalIpBase, DefaultLocalIp>();
+        // builder.Services.AddSingleton<IGetLocalNetDevices, DefaultScanLocalNetIp>();
 
         builder.Services.AddSingleton<IReceiveData, TcpReceiveData>();
         builder.Services.AddSingleton<ISendData, TcpDataSender>();

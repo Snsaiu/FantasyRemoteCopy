@@ -2,5 +2,5 @@
 
 public enum SystemType
 {
-    Windows, MacOS, IOS, Android, Linux
+    None,Windows, MacOS, IOS, Android, Linux
 }

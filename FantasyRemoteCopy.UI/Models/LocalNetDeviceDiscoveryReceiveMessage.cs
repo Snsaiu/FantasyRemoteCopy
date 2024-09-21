@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace FantasyRemoteCopy.UI.Models;
 
-public class LocalNetDeviceDiscoveryReceiveMessage :IDeviceName
+public class LocalNetDeviceDiscoveryReceiveMessage :IName
 {
     [JsonConstructor]
     public LocalNetDeviceDiscoveryReceiveMessage()

@@ -63,8 +63,6 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 await _navigationService.NavigationToAsync(nameof(HomePage), false, null);
             }
             IsBusy = false;
-
-
         }
     }
 }

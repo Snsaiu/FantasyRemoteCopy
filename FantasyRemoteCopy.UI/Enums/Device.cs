@@ -2,5 +2,5 @@
 
 public enum Device
 {
-    Mobile, Desktop
+    None, Mobile, Desktop
 }

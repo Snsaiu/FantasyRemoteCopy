@@ -10,17 +10,22 @@ namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 /// <summary>
 /// 设备发现
 /// </summary>
-public abstract class LocalNetDeviceDiscoveryBase : IDeviceDiscoveryable<LocalNetDeviceDiscoveryReceiveMessage>
+public abstract class LocalNetDeviceDiscoveryBase : IDeviceDiscoveryable<LocalNetDeviceDiscoveryReceiveMessage>,IDisposable
 {
+    private readonly UdpClient _udpClient;
+    public LocalNetDeviceDiscoveryBase()
+    {
+         _udpClient = new UdpClient(ConstParams.INVITE_PORT);
+    }
     public async Task DiscoverDevicesAsync(Action<LocalNetDeviceDiscoveryReceiveMessage> discoveryCallBack)
     {
-        var udpClient = new UdpClient(ConstParams.INVITE_PORT);
-        var endPoint = new IPEndPoint(IPAddress.Any, ConstParams.INVITE_PORT);
+        Stop = false;
+       //var endPoint = new IPEndPoint(IPAddress.Any, ConstParams.INVITE_PORT);
         while (true)
         {
             if(Stop)
                 return;
-            var receivedData = await udpClient.ReceiveAsync();
+            var receivedData = await _udpClient.ReceiveAsync();
             var message = Encoding.UTF8.GetString(receivedData.Buffer);
             var model = JsonConvert.DeserializeObject<LocalNetDeviceDiscoveryReceiveMessage>(message);
             if(model is null)
@@ -31,4 +36,8 @@ public abstract class LocalNetDeviceDiscoveryBase : IDeviceDiscoveryable<LocalNe
     }
 
     public bool Stop { get; set; }
+    public void Dispose()
+    {
+        _udpClient.Close();
+    }
 }

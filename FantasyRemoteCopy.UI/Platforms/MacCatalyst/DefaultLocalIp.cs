@@ -5,6 +5,6 @@ namespace FantasyRemoteCopy.UI
     /// <summary>
     /// 获得本机ip
     /// </summary>
-    public class DefaultLocalIp : DefaultDeviceLocalIpBase;
+    public class DefaultLocalIp : DeviceLocalIpBase;
 }
 
