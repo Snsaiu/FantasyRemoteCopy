@@ -99,10 +99,14 @@ namespace FantasyRemoteCopy.UI.ViewModels
             _localNetInviteMessage = new LocalNetInviteMessage(UserName, localIp);
 
             //设备发现 ，当有新的设备加入的时候产生回调
-            await this._localNetDeviceDiscoveryBase.DiscoverDevicesAsync(x =>
+            Task.Run(async () =>
             {
+                await this._localNetDeviceDiscoveryBase.DiscoverDevicesAsync(x =>
+                {
 
+                });
             });
+           
             
             IsBusy = false;
             await DeviceDiscoverAsync(false);

@@ -1,9 +1,22 @@
+using Newtonsoft.Json;
+
 namespace FantasyRemoteCopy.UI.Models;
 
-public class LocalNetInviteMessage(string name,string ip) : IName
+public class LocalNetInviteMessage : IName
 {
-    public string Ip { get; } = ip;
+    [JsonConstructor]
+    public LocalNetInviteMessage()
+    {
+        
+    }
+    public LocalNetInviteMessage(string name,string ip)
+    {
+        Ip = ip;
+        Name = name;
+    }
+
+    public string Ip { get; }
     
-    public string Name { get; } = name;
+    public string Name { get; }
 }
 
