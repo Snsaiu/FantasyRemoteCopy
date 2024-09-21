@@ -110,6 +110,8 @@
 	  <None Remove="Resources\Images\windows.png" />
 	  <None Remove="Resources\Splash\splash.png" />
 	  <None Remove="FantasyMvvm" />
+	  <None Include="Platforms\Windows\LocalNetDeviceDiscovery.cs" />
+	  <None Include="Platforms\Windows\LocalNetInviteDevice.cs" />
 	</ItemGroup>
 	<ItemGroup>
 	  <MauiImage Include="Resources\Images\android.png" />

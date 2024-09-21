@@ -29,6 +29,10 @@ public static class MauiProgram
         builder.Services.AddSingleton<IOpenFolder, DefaultOpenFolder>();
         builder.Services.AddSingleton<IFileSaveLocation, AppDataFolderFileSaveLocation>();
 
+        builder.Services.AddSingleton<LocalNetDeviceDiscoveryBase, LocalNetDeviceDiscovery>();
+        builder.Services.AddSingleton<LocalNetInviteDeviceBase, LocalNetInviteDevice>();
+        
+
         builder.Services.AddSingleton<IGetLocalIp, DefaultLocalIp>();
         builder.Services.AddSingleton<IGetLocalNetDevices, DefaultScanLocalNetIp>();
 
