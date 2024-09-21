@@ -1,13 +1,10 @@
 using FantasyRemoteCopy.UI.Models;
 
-using SendDataBussiness = FantasyRemoteCopy.UI.Bussiness.SendDataBussiness;
-
 namespace FantasyRemoteCopy.UI.Views;
 
 public partial class TextInputPage : ContentPage
 {
-    private readonly SendDataBussiness _sendData;
-
+   
     private DiscoveredDeviceModel discoveredDeviceModel;
 
 
@@ -19,9 +16,9 @@ public partial class TextInputPage : ContentPage
     }
 
 
-    public TextInputPage(SendDataBussiness sendData)
+    public TextInputPage()
     {
-        _sendData = sendData;
+       
         InitializeComponent();
     }
 

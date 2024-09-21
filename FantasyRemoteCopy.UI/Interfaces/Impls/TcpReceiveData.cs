@@ -90,7 +90,7 @@ public class TcpReceiveData : IReceiveData
     public void LiseningInvite()
     {
         Socket udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        EndPoint endPoint = new IPEndPoint(IPAddress.Any, int.Parse(ConstParams.INVITE_PORT));
+        EndPoint endPoint = new IPEndPoint(IPAddress.Any, ConstParams.INVITE_PORT);
         udpSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.PacketInformation, true);
         try
         {

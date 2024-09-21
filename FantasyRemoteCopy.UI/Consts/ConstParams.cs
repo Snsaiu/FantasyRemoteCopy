@@ -7,7 +7,7 @@ public static class ConstParams
     /// <summary>
     /// 设备发现端口号
     /// </summary>
-    public static readonly string INVITE_PORT = "5976";
+    public static readonly int INVITE_PORT = 5976;
 
     /// <summary>
     /// upd建立tcpip端口号

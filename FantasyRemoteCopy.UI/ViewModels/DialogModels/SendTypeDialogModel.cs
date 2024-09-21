@@ -11,7 +11,6 @@ using FantasyRemoteCopy.UI.Models;
 using FantasyRemoteCopy.UI.Views;
 
 using DataType = FantasyRemoteCopy.UI.Models.DataType;
-using SendDataBussiness = FantasyRemoteCopy.UI.Bussiness.SendDataBussiness;
 
 namespace FantasyRemoteCopy.UI.ViewModels.DialogModels;
 
@@ -21,18 +20,15 @@ public partial class SendTypeDialogModel : FantasyDialogModelBase
     private DiscoveredDeviceModel discoveredDeviceModel;
 
     private readonly INavigationService _navigationService;
-
-    private readonly SendDataBussiness _sendDataBussiness;
-
+    
     private readonly IDialogService _dialogService;
 
     [ObservableProperty]
     private bool isBusy = false;
 
-    public SendTypeDialogModel(INavigationService navigationService, SendDataBussiness sendData, IDialogService dialogService)
+    public SendTypeDialogModel(INavigationService navigationService, IDialogService dialogService)
     {
         _dialogService = dialogService;
-        _sendDataBussiness = sendData;
         _navigationService = navigationService;
     }
 
@@ -70,19 +66,17 @@ public partial class SendTypeDialogModel : FantasyDialogModelBase
                 return;
             }
             IsBusy = true;
-            FantasyResultModel.ResultBase<bool> res = await _sendDataBussiness.SendData(discoveredDeviceModel.Ip, f.FullPath, DataType.File);
-
-            if (res != null)
-            {
-                IsBusy = false;
-#if WINDOWS
-                  await Application.Current.MainPage.DisplayAlert("Information", "Sended!", "Ok");
-#endif
-
-
-                OnCloseEvent(new CloseResultModel { Success = true });
-
-            }
+//             if (res != null)
+//             {
+//                 IsBusy = false;
+// #if WINDOWS
+//                   await Application.Current.MainPage.DisplayAlert("Information", "Sended!", "Ok");
+// #endif
+//
+//
+//                 OnCloseEvent(new CloseResultModel { Success = true });
+//
+//             }
 
 
 

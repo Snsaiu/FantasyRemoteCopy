@@ -16,12 +16,6 @@ using Newtonsoft.Json;
 
 using System.Collections.ObjectModel;
 using System.Text;
-
-using FileDataModel = FantasyRemoteCopy.UI.Models.FileDataModel;
-using ReceiveBussiness = FantasyRemoteCopy.UI.Bussiness.ReceiveBussiness;
-using SaveDataModel = FantasyRemoteCopy.UI.Models.SaveDataModel;
-using SaveDataType = FantasyRemoteCopy.UI.Models.SaveDataType;
-using SendDataBussiness = FantasyRemoteCopy.UI.Bussiness.SendDataBussiness;
 using UserInfo = FantasyRemoteCopy.UI.Models.UserInfo;
 
 namespace FantasyRemoteCopy.UI.ViewModels
@@ -35,168 +29,25 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
         private readonly INavigationService _navigationService;
 
-        public HomePageModel(IUserService userService, SendDataBussiness sendDataBussiness, ReceiveBussiness receiveBussiness, ISaveDataService dataService, IFileSaveLocation fileSaveLocation, IDialogService dialogService, IRegionManager regionManager, INavigationService navigationService)
+        public HomePageModel(IUserService userService, 
+            ISaveDataService dataService,
+            IFileSaveLocation fileSaveLocation, 
+            IDialogService dialogService, 
+            IRegionManager regionManager,
+            INavigationService navigationService)
         {
             this.userService = userService;
-            this.sendDataBussiness = sendDataBussiness;
-            this.receiveBussiness = receiveBussiness;
             _dataService = dataService;
             _fileSaveLocation = fileSaveLocation;
             _dialogService = dialogService;
-
+            
             _regionManager = regionManager;
 
             _navigationService = navigationService;
 
             DiscoveredDevices = [];
 
-            //发现可用的设备回调
-            this.receiveBussiness.DiscoverEnableIpEvent += (model) =>
-            {
-                DiscoveredDeviceModel ddm = new DiscoveredDeviceModel
-                {
-                    DeviceType = model.DevicePlatform,
-                    DeviceName = model.DeviceName,
-                    NickName = model.NickName,
-                    Ip = model.DeviceIP
-                };
-
-                if (ddm.DeviceType == "WinUI")
-                    ddm.Img = ImageSource.FromFile("windows.png");
-                if (ddm.DeviceType == "MacCatalyst")
-                    ddm.Img = ImageSource.FromFile("mac.png");
-
-                DiscoveredDevices.Add(ddm);
-
-
-
-            };
-            this.receiveBussiness.ReceiveDataEvent += (d) =>
-            {
-                string str = Encoding.UTF8.GetString(d.Data);
-
-                if (d.Type == Core.Enums.TransformType.SendingTxtData)
-                {
-                    SaveDataModel sdm = new SaveDataModel
-                    {
-                        Content = str,
-                        DataType = SaveDataType.Txt,
-                        Guid = d.DataGuid,
-                        Time = DateTime.Now,
-                        SourceDeviceNickName = d.TargetDeviceNickName
-                    };
-                    _dataService.AddAsync(sdm);
-                    NewMessageVisible = true;
-                    IsDownLoadingVisible = false;
-                }
-                else
-                {
-                    FileDataModel sdm = JsonConvert.DeserializeObject<FileDataModel>(str) ?? throw new NullReferenceException();
-
-                    string saveLocation = _fileSaveLocation.GetSaveLocation();
-                    string fileFullName = Path.Combine(saveLocation, sdm.FileNameWithExtension);
-                    if (File.Exists(fileFullName))
-                    {
-                        string onlyFileName = Path.GetFileNameWithoutExtension(fileFullName);
-                        string extension = Path.GetExtension(fileFullName);
-                        string newFileName = onlyFileName + "_" + Guid.NewGuid().ToString().Substring(1, 4) + extension;
-                        fileFullName = Path.Combine(saveLocation, newFileName);
-                    }
-
-                    Task.Run(() =>
-                   {
-
-                       using (FileStream fs = new FileStream(fileFullName, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.ReadWrite))
-                       {
-                           fs.Write(sdm.ContentBytes, 0, sdm.ContentBytes.Length);
-                       }
-
-                   }).GetAwaiter().OnCompleted(() =>
-                   {
-
-                       SaveDataModel sdm = new SaveDataModel
-                       {
-                           Content = fileFullName,
-                           DataType = SaveDataType.File,
-                           Guid = d.DataGuid,
-                           Time = DateTime.Now,
-                           SourceDeviceNickName = d.TargetDeviceNickName
-                       };
-                       _dataService.AddAsync(sdm);
-
-                       NewMessageVisible = true;
-                       IsDownLoadingVisible = false;
-
-                   });
-
-                }
-
-
-
-            };
-
-            this.receiveBussiness.ReceivingDataEvent += (ip) =>
-            {
-                IsDownLoadingVisible = true;
-                if (DiscoveredDevices != null)
-                {
-                    DiscoveredDeviceModel? find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
-                    if (find != null)
-                    {
-                        find.IsDownLoading = true;
-                    }
-                }
-            };
-
-            this.receiveBussiness.ReceivedFileFinishedEvent += (ip) =>
-            {
-                if (DiscoveredDevices != null)
-                {
-                    DiscoveredDeviceModel? find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
-                    if (find != null)
-                    {
-                        find.IsDownLoading = false;
-                        find.DownloadProcess = 0;
-                    }
-                }
-            };
-
-            this.receiveBussiness.ReceivingProcessEvent += (ip, process) =>
-            {
-                if (DiscoveredDevices != null)
-                {
-                    DiscoveredDeviceModel? find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
-                    if (find != null)
-                    {
-                        find.DownloadProcess = process;
-                    }
-                }
-            };
-
-            this.sendDataBussiness.SendingDataEvent += (ip) =>
-            {
-                if (DiscoveredDevices != null)
-                {
-                    DiscoveredDeviceModel? find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
-                    if (find != null)
-                    {
-                        find.IsSendingData = true;
-                    }
-                }
-            };
-            this.sendDataBussiness.SendFinishedEvent += (ip) =>
-            {
-
-                if (DiscoveredDevices != null)
-                {
-                    DiscoveredDeviceModel? find = DiscoveredDevices.FirstOrDefault(x => x.Ip == ip);
-                    if (find != null)
-                    {
-                        find.IsSendingData = false;
-                    }
-                }
-            };
-
+      
         }
 
         [ObservableProperty]
@@ -219,8 +70,6 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
 
         private readonly IUserService userService;
-        private readonly SendDataBussiness sendDataBussiness;
-        private readonly ReceiveBussiness receiveBussiness;
         private readonly ISaveDataService _dataService;
         private readonly IFileSaveLocation _fileSaveLocation;
 
@@ -278,8 +127,6 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                 DiscoveredDevices.Clear();
                 IsBusy = true;
-
-                await sendDataBussiness.DeviceDiscover();
             }
             finally
             {

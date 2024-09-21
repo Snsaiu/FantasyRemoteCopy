@@ -1,15 +1,12 @@
 ﻿using CommunityToolkit.Maui;
 
 using FantasyMvvm;
-
-using FantasyRemoteCopy.UI.Bussiness;
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
 using FantasyRemoteCopy.UI.ViewModels;
 using FantasyRemoteCopy.UI.ViewModels.DialogModels;
 using FantasyRemoteCopy.UI.Views;
 using FantasyRemoteCopy.UI.Views.Dialogs;
-
 
 namespace FantasyRemoteCopy.UI;
 
@@ -39,9 +36,6 @@ public static class MauiProgram
         builder.Services.AddSingleton<ISendData, TcpDataSender>();
         builder.Services.AddSingleton<IUserService, ConfigUserService>();
         builder.Services.AddSingleton<ISaveDataService, DbSaveDataService>();
-
-        builder.Services.AddSingleton<SendDataBussiness>();
-        builder.Services.AddSingleton<ReceiveBussiness>();
 
         builder.UseRegisterPage<LoginPage, LoginPageModel>();
         builder.UseRegisterPage<HomePage, HomePageModel>();

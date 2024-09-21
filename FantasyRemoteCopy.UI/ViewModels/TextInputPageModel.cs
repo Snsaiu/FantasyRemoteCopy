@@ -7,25 +7,20 @@ using FantasyMvvm.FantasyModels;
 using FantasyMvvm.FantasyNavigation;
 
 using DataType = FantasyRemoteCopy.UI.Models.DataType;
-using SendDataBussiness = FantasyRemoteCopy.UI.Bussiness.SendDataBussiness;
 
 namespace FantasyRemoteCopy.UI.ViewModels;
 
 
 public partial class TextInputPageModel : FantasyPageModelBase, INavigationAware
 {
-    private readonly SendDataBussiness _sendDataBussiness;
-
     private INavigationService _navigationService;
 
     [ObservableProperty]
     private string content;
 
-    public TextInputPageModel(SendDataBussiness sendDataBussiness, INavigationService navigationService)
+    public TextInputPageModel(INavigationService navigationService)
     {
         _navigationService = navigationService;
-        _sendDataBussiness = sendDataBussiness;
-
     }
 
     private Models.DiscoveredDeviceModel _discoveredDeviceModel;
@@ -34,7 +29,6 @@ public partial class TextInputPageModel : FantasyPageModelBase, INavigationAware
     [RelayCommand]
     private async Task SendData()
     {
-        await _sendDataBussiness.SendData(_discoveredDeviceModel.Ip, Content, DataType.Text);
         await Task.Delay(1000);
         await _navigationService.NavigationToAsync(nameof(Views.HomePage), false, null);
     }
