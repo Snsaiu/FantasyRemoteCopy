@@ -114,7 +114,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             
             //设备发现 ，当有新的设备加入的时候产生回调
            this.StartDiscovery(localIp);
-           
+           this.StartJoin();
             
             IsBusy = false;
             await DeviceDiscoverAsync(false);
