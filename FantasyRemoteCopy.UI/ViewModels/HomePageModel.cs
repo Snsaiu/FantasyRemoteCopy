@@ -31,7 +31,11 @@ namespace FantasyRemoteCopy.UI.ViewModels
         private readonly LocalIpScannerBase _localIpScannerBase;
 
         private readonly IRegionManager _regionManager;
-       
+        private readonly LocalNetJoinRequestBase _localNetJoinRequestBase;
+        private readonly LocalNetJoinProcessBase _localNetJoinProcessBase;
+        private readonly ISystemType _systemType;
+        private readonly IDeviceType _deviceType;
+
         private readonly INavigationService _navigationService;
 
         private LocalNetInviteMessage? _localNetInviteMessage = null;
@@ -45,6 +49,10 @@ namespace FantasyRemoteCopy.UI.ViewModels
             DeviceLocalIpBase deviceLocalIpBase,
             LocalIpScannerBase localIpScannerBase,
             IRegionManager regionManager,
+            LocalNetJoinRequestBase localNetJoinRequestBase,
+            LocalNetJoinProcessBase localNetJoinProcessBase,
+            ISystemType systemType,
+            IDeviceType deviceType, 
             INavigationService navigationService)
         {
             this.userService = userService;
@@ -56,6 +64,10 @@ namespace FantasyRemoteCopy.UI.ViewModels
             _deviceLocalIpBase = deviceLocalIpBase;
             _localIpScannerBase = localIpScannerBase;
             _regionManager = regionManager;
+            _localNetJoinRequestBase = localNetJoinRequestBase;
+            _localNetJoinProcessBase = localNetJoinProcessBase;
+            _systemType = systemType;
+            _deviceType = deviceType;
             _navigationService = navigationService;
             DiscoveredDevices = [];
             
@@ -95,21 +107,47 @@ namespace FantasyRemoteCopy.UI.ViewModels
             DeviceNickName = userRes.Data.DeviceNickName;
 
             var localIp = await this._deviceLocalIpBase.GetLocalIpAsync();
-
+            
+           
             _localNetInviteMessage = new LocalNetInviteMessage(UserName, localIp);
 
+            
             //设备发现 ，当有新的设备加入的时候产生回调
-            Task.Run(async () =>
-            {
-                await this._localNetDeviceDiscoveryBase.DiscoverDevicesAsync(x =>
-                {
-
-                });
-            });
+           this.StartDiscovery(localIp);
            
             
             IsBusy = false;
             await DeviceDiscoverAsync(false);
+        }
+
+        private void StartDiscovery(string localIp)
+        {
+            var thread = new Thread(() =>
+            {
+                 this._localNetDeviceDiscoveryBase.ReceiveAsync(x =>
+                {
+                    var joinRequestModel = new JoinMessageModel(this._systemType.System,this._deviceType.Device, localIp,DeviceNickName,x.Ip);
+                    // 发送加入请求
+                    this._localNetJoinRequestBase.SendAsync(joinRequestModel);
+                });
+            })
+            {
+                IsBackground = true
+            };
+            thread.Start();
+        }
+
+        private void StartJoin()
+        {
+            var thread = new Thread(() =>
+            {
+                this._localNetJoinProcessBase.ReceiveAsync(x =>
+                {
+
+                });
+
+            }) { IsBackground = true };
+            thread.Start();
         }
 
         [RelayCommand]
@@ -157,7 +195,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
                 await foreach (var device in devices)
                 {
-                    await this._localNetInviteDeviceBase.InviteAsync(_localNetInviteMessage ??
+                    await this._localNetInviteDeviceBase.SendAsync(_localNetInviteMessage ??
                                                                      throw new NullReferenceException());
                 }
                 

@@ -31,8 +31,15 @@ public static class MauiProgram
         builder.Services.AddSingleton<LocalNetDeviceDiscoveryBase, LocalNetDeviceDiscovery>();
         builder.Services.AddSingleton<LocalNetInviteDeviceBase, LocalNetInviteDevice>();
         builder.Services.AddSingleton<LocalIpScannerBase, DefaultScanLocalNetIp>();
+        builder.Services.AddSingleton<LocalNetJoinRequestBase, LocalNetJoinRequest>();
         
          builder.Services.AddSingleton<DeviceLocalIpBase, DefaultLocalIp>();
+
+         builder.Services.AddSingleton<ISystemType, SystemTypeProvider>();
+         builder.Services.AddSingleton<IDeviceType, DeviceTypeProvider>();
+
+         builder.Services.AddSingleton<LocalNetJoinProcessBase, LocalNetJoinProcess>();
+         
         // builder.Services.AddSingleton<IGetLocalNetDevices, DefaultScanLocalNetIp>();
 
         builder.Services.AddSingleton<IReceiveData, TcpReceiveData>();
