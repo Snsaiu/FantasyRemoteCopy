@@ -197,6 +197,8 @@ namespace FantasyRemoteCopy.UI.ViewModels
         {
             try
             {
+                DiscoveredDevices.Clear();
+                
                 var cancellationToken = new CancellationToken();
                 
                 var devices = this._localIpScannerBase.GetDevicesAsync(cancellationToken);
@@ -206,8 +208,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
                     await this._localNetInviteDeviceBase.SendAsync(_localNetInviteMessage ??
                                                                      throw new NullReferenceException());
                 }
-                
-                DiscoveredDevices.Clear();
+             
                 IsBusy = true;
             }
             finally
@@ -215,10 +216,10 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 IsBusy = false;
             }
             
-            if (DiscoveredDevices.Count == 0 && showWarning)
-            {
-                Application.Current?.MainPage?.DisplayAlert("warning", "No connectable devices found! ", "Ok");
-            }
+            // if (DiscoveredDevices.Count == 0 && showWarning)
+            // {
+            //     Application.Current?.MainPage?.DisplayAlert("warning", "No connectable devices found! ", "Ok");
+            // }
 
         }
 

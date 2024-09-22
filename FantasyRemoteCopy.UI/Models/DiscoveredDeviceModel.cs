@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.UI.Interfaces;
+using Image = Microsoft.Maui.Controls.PlatformConfiguration.TizenSpecific.Image;
 
 namespace FantasyRemoteCopy.UI.Models
 {
@@ -42,10 +44,22 @@ namespace FantasyRemoteCopy.UI.Models
         
         public static implicit operator DiscoveredDeviceModel(JoinMessageModel model)
         {
+            var img = model.SystemType switch
+            {
+                SystemType.None => null,
+                SystemType.Windows => ImageSource.FromFile("windows.png"),
+                SystemType.MacOS => ImageSource.FromFile("mac.png"),
+                SystemType.IOS => null,
+                SystemType.Android => null,
+                SystemType.Linux => null,
+                _ => throw new ArgumentOutOfRangeException()
+            };
             return new DiscoveredDeviceModel()
             {
                 NickName = model.DeviceName,
-                Flag = model.Flag
+                Flag = model.Flag,
+                img = img,
+                deviceType = model.Device.ToString()
             };
         }
 
