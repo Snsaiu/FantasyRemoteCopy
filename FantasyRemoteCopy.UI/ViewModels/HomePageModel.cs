@@ -38,7 +38,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
         private readonly INavigationService _navigationService;
 
-        private LocalNetInviteMessage? _localNetInviteMessage = null;
+        private DeviceDiscoveryMessage? _localNetInviteMessage = null;
         
         public HomePageModel(IUserService userService, 
             ISaveDataService dataService,
@@ -109,7 +109,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             var localIp = await this._deviceLocalIpBase.GetLocalIpAsync();
             
            
-            _localNetInviteMessage = new LocalNetInviteMessage(UserName, localIp);
+            _localNetInviteMessage = new DeviceDiscoveryMessage(UserName, localIp);
 
             
             //设备发现 ，当有新的设备加入的时候产生回调
@@ -126,10 +126,10 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                  this._localNetDeviceDiscoveryBase.ReceiveAsync(x =>
                 {
-                    if(localIp==x.Ip)
+                    if(localIp==x.Flag)
                         return;
                     
-                    var joinRequestModel = new JoinMessageModel(this._systemType.System,this._deviceType.Device, localIp,DeviceNickName,x.Ip);
+                    var joinRequestModel = new JoinMessageModel(this._systemType.System,this._deviceType.Device, localIp,DeviceNickName,x.Flag);
                     // 发送加入请求
                     this._localNetJoinRequestBase.SendAsync(joinRequestModel);
                 });
@@ -146,7 +146,12 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                 this._localNetJoinProcessBase.ReceiveAsync(x =>
                 {
-
+                    if (discoveredDevices.Any(x=>x.Flag==x.Flag))
+                    {
+                        return;
+                    }
+                    discoveredDevices.Add(x);
+                    
                 });
 
             }) { IsBackground = true };

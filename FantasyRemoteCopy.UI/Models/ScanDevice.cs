@@ -1,5 +1,5 @@
 ﻿using FantasyRemoteCopy.Core.Enums;
-
+using FantasyRemoteCopy.UI.Interfaces;
 using Device = FantasyRemoteCopy.Core.Enums.Device;
 
 namespace FantasyRemoteCopy.UI.Models;
@@ -7,7 +7,7 @@ namespace FantasyRemoteCopy.UI.Models;
 /// <summary>
 /// 扫描到的设备
 /// </summary>
-public class ScanDevice(SystemType systemType, Device device, string flag, string? deviceName)
+public class ScanDevice(SystemType systemType, Device device, string flag, string? deviceName):IFlag
 {
     public SystemType SystemType { get; init; } = systemType;
     public Device Device { get; init; } = device;

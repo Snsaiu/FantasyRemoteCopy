@@ -1,4 +1,4 @@
-namespace FantasyRemoteCopy.UI.Models;
+namespace FantasyRemoteCopy.UI.Interfaces;
 
 public interface IName
 {

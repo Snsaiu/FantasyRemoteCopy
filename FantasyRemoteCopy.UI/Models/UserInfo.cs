@@ -1,5 +1,7 @@
 
 
+using FantasyRemoteCopy.UI.Interfaces;
+
 namespace FantasyRemoteCopy.UI.Models;
 
 /// <summary>
