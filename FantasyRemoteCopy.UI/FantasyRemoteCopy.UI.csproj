@@ -110,6 +110,10 @@
 	  <None Remove="Resources\Images\windows.png" />
 	  <None Remove="Resources\Splash\splash.png" />
 	  <None Remove="FantasyMvvm" />
+	  <None Include="Platforms\Windows\AppDataFolderFileSaveLocation.cs" />
+	  <None Include="Platforms\Windows\DefaultLocalIp.cs" />
+	  <None Include="Platforms\Windows\DefaultOpenFolder.cs" />
+	  <None Include="Platforms\Windows\DefaultScanLocalNetIp.cs" />
 	  <None Include="Platforms\Windows\DeviceTypeProvider.cs" />
 	  <None Include="Platforms\Windows\GlobalScan.cs" />
 	  <None Include="Platforms\Windows\LocalNetDeviceDiscovery.cs" />

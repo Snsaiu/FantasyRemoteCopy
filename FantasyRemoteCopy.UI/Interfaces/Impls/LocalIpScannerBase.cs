@@ -10,7 +10,8 @@ namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
 public class LocalIpScannerBase : IGetLocalNetDevices
 {
-
+    protected virtual string Pattern { get; }=@"(?<ip>([0-9]{1,3}\.?){4})\s*\) at ([0-9]|[a-z])";
+    
     public async IAsyncEnumerable<ScanDevice> GetDevicesAsync([EnumeratorCancellation] CancellationToken cancellationToken)
     {
         System.Collections.ObjectModel.ReadOnlyCollection<string> scanIps = await Task.Run(() =>
@@ -24,9 +25,8 @@ public class LocalIpScannerBase : IGetLocalNetDevices
             pProcess.StartInfo.CreateNoWindow = true;
             pProcess.Start();
             string cmdOutput = pProcess.StandardOutput.ReadToEnd();
-            string pattern = @"(?<ip>([0-9]{1,3}\.?){4})\s*\) at ([0-9]|[a-z])";
-
-            foreach (Match m in Regex.Matches(cmdOutput, pattern, RegexOptions.IgnoreCase))
+         
+            foreach (Match m in Regex.Matches(cmdOutput, Pattern, RegexOptions.IgnoreCase))
             {
                 temp.Add(m.Groups["ip"].Value);
             }
