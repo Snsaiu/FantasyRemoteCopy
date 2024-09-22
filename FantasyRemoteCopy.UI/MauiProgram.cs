@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Maui;
-
 using FantasyMvvm;
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
@@ -24,7 +23,7 @@ public static class MauiProgram
             })
             .UseMauiCommunityToolkit()
             .UseFantasyApplication();
-        
+
         builder.Services.AddSingleton<IOpenFolder, DefaultOpenFolder>();
         builder.Services.AddSingleton<IFileSaveLocation, AppDataFolderFileSaveLocation>();
 
@@ -32,14 +31,15 @@ public static class MauiProgram
         builder.Services.AddSingleton<LocalNetInviteDeviceBase, LocalNetInviteDevice>();
         builder.Services.AddSingleton<LocalIpScannerBase, DefaultScanLocalNetIp>();
         builder.Services.AddSingleton<LocalNetJoinRequestBase, LocalNetJoinRequest>();
-        
-         builder.Services.AddSingleton<DeviceLocalIpBase, DefaultLocalIp>();
 
-         builder.Services.AddSingleton<ISystemType, SystemTypeProvider>();
-         builder.Services.AddSingleton<IDeviceType, DeviceTypeProvider>();
+        builder.Services.AddSingleton<DeviceLocalIpBase, DefaultLocalIp>();
 
-         builder.Services.AddSingleton<LocalNetJoinProcessBase, LocalNetJoinProcess>();
-         
+        builder.Services.AddSingleton<ISystemType, SystemTypeProvider>();
+        builder.Services.AddSingleton<IDeviceType, DeviceTypeProvider>();
+
+        builder.Services.AddSingleton<LocalNetJoinProcessBase, LocalNetJoinProcess>();
+        builder.Services.AddSingleton<GlobalScanBase, GlobalScan>();
+
         // builder.Services.AddSingleton<IGetLocalNetDevices, DefaultScanLocalNetIp>();
 
         builder.Services.AddSingleton<IReceiveData, TcpReceiveData>();
@@ -59,4 +59,3 @@ public static class MauiProgram
         return builder.UseGetProvider().Build();
     }
 }
-

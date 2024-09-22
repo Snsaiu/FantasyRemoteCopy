@@ -6,6 +6,7 @@ using FantasyMvvm.FantasyDialogService;
 using FantasyMvvm.FantasyNavigation;
 
 using FantasyRemoteCopy.UI.Interfaces;
+using FantasyRemoteCopy.UI.Interfaces.Impls;
 using FantasyRemoteCopy.UI.Views;
 
 namespace FantasyRemoteCopy.UI.ViewModels
@@ -13,7 +14,8 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
     public partial class SettingPageModel : FantasyPageModelBase
     {
-        private readonly IUserService userService;
+        private readonly IUserService _userService;
+        private readonly DeviceLocalIpBase _getLocalIp;
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(LogoutCommand))]
@@ -24,18 +26,36 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
         private readonly INavigationService _navigationService;
         private readonly IDialogService _dialogService;
-        public SettingPageModel(IUserService userService, INavigationService navigationService, IDialogService dialogService)
+        private readonly GlobalScanBase _globalScan;
+
+        public SettingPageModel(IUserService userService,DeviceLocalIpBase getLocalIp, INavigationService navigationService, IDialogService dialogService,GlobalScanBase globalScan)
         {
-            this.userService = userService;
+            this._userService = userService;
+            _getLocalIp = getLocalIp;
             _dialogService = dialogService;
+            _globalScan = globalScan;
             _navigationService = navigationService;
             
         }
 
 
         [RelayCommand(CanExecute = nameof(IsNotBusy))]
-        private void GlobalSearch()
+        private async Task GlobalSearchAsync()
         {
+            try
+            {
+                IsBusy = true;
+                var ip = await this._getLocalIp.GetLocalIpAsync();
+                await this._globalScan.SendAsync(ip);
+            }
+            finally
+            {
+                IsBusy = false;
+                
+               await Application.Current.MainPage.DisplayAlert("Information", "Search Complete !", "Ok");
+            }
+      
+            
             // IsBusy = true;
             // Task.Run(async () =>
             // {
@@ -44,14 +64,14 @@ namespace FantasyRemoteCopy.UI.ViewModels
             // }).GetAwaiter().OnCompleted(() =>
             // {
             //     IsBusy = false;
-            //     Application.Current.MainPage.DisplayAlert("Information", "Search Complete !", "Ok");
+            //     
             // });
         }
 
         [RelayCommand(CanExecute = nameof(IsNotBusy))]
         private async Task Logout()
         {
-            await userService.ClearUserAsync();
+            await _userService.ClearUserAsync();
 
             await _navigationService.NavigationToAsync(nameof(LoginPage), false, null);
             //var loginPage = App.Current.Services.GetService<LoginPage>();

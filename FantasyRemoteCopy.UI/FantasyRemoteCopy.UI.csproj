@@ -111,6 +111,7 @@
 	  <None Remove="Resources\Splash\splash.png" />
 	  <None Remove="FantasyMvvm" />
 	  <None Include="Platforms\Windows\DeviceTypeProvider.cs" />
+	  <None Include="Platforms\Windows\GlobalScan.cs" />
 	  <None Include="Platforms\Windows\LocalNetDeviceDiscovery.cs" />
 	  <None Include="Platforms\Windows\LocalNetInviteDevice.cs" />
 	  <None Include="Platforms\Windows\LocalNetJoinProcess.cs" />
