@@ -126,6 +126,9 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                  this._localNetDeviceDiscoveryBase.ReceiveAsync(x =>
                 {
+                    if(localIp==x.Ip)
+                        return;
+                    
                     var joinRequestModel = new JoinMessageModel(this._systemType.System,this._deviceType.Device, localIp,DeviceNickName,x.Ip);
                     // 发送加入请求
                     this._localNetJoinRequestBase.SendAsync(joinRequestModel);
