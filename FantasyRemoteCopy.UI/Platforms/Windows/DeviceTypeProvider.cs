@@ -1,7 +1,9 @@
 using FantasyRemoteCopy.UI.Interfaces;
 
+using Device = FantasyRemoteCopy.Core.Enums.Device;
+
 namespace FantasyRemoteCopy.UI;
-public class DeviceTypeProvider:IDeviceType
+public class DeviceTypeProvider : IDeviceType
 {
-    public Device Device { get; }= Device.Desktop;
+    public Device Device { get; } = Device.Desktop;
 }

@@ -42,6 +42,7 @@
     <Capability Name="internetClient"/>
     <Capability Name="privateNetworkClientServer"/>
     <Capability Name="internetClientServer"/>
+	  <rescap:Capability Name="runFullTrust" />
   </Capabilities>
 
   <mp:PhoneIdentity PhoneProductId="efd14fe6-ed92-47c1-a84c-7abdbf5db7af" PhonePublisherId="BF660CEB-C854-4F86-A164-706F932E4EF3"/>

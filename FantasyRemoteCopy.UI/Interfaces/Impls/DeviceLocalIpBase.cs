@@ -1,4 +1,4 @@
-using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls;
@@ -10,15 +10,23 @@ public abstract class DeviceLocalIpBase : IGetLocalIp
 {
     public Task<string> GetLocalIpAsync()
     {
-        IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+        IEnumerable<NetworkInterface> networkInterfaces = NetworkInterface.GetAllNetworkInterfaces()
+            .Where(nic => nic.NetworkInterfaceType is NetworkInterfaceType.Wireless80211 or
+                          NetworkInterfaceType.Ethernet);
 
-        foreach (IPAddress ip in host.AddressList)
+        foreach (NetworkInterface? nic in networkInterfaces)
         {
-            var localIp = ip.ToString();
+            IPInterfaceProperties ipProps = nic.GetIPProperties();
+            UnicastIPAddressInformation? ipAddress = ipProps.UnicastAddresses
+                .FirstOrDefault(addr => addr.Address.AddressFamily == AddressFamily.InterNetwork);
 
-            if (ip.AddressFamily == AddressFamily.InterNetwork && localIp.StartsWith("192.168"))
+            if (ipAddress != null)
             {
-                return Task.FromResult<string>(localIp);
+                if (nic.OperationalStatus == OperationalStatus.Up)
+                {
+                    return Task.FromResult(ipAddress.Address.ToString());
+                }
+
             }
         }
 
