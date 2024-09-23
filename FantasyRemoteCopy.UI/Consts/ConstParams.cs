@@ -8,8 +8,10 @@ public static class ConstParams
     /// 设备发现端口号
     /// </summary>
     public static readonly int INVITE_PORT = 5976;
-    
+
     public static readonly int JOIN_PORT = 5977;
+
+    public static readonly int TCP_PORT = 5978;
 
     /// <summary>
     /// upd建立tcpip端口号

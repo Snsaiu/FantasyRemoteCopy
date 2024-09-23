@@ -9,14 +9,17 @@ public interface ISendeable
     /// <summary>
     /// 发送数据
     /// </summary>
-    /// <param name="message">数据/param>
+    /// <param name="message">数据</param>
     /// <returns></returns>
     Task SendAsync(object message);
 }
 
 public interface ISendeable<TMessage> : ISendeable
-{ 
+{
     Task SendAsync(TMessage message);
 
-    Task ISendeable.SendAsync(object message)=>this.SendAsync(message);
+    Task ISendeable.SendAsync(object message)
+    {
+        return SendAsync(message);
+    }
 }

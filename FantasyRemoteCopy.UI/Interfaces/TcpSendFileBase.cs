@@ -8,9 +8,8 @@ namespace FantasyRemoteCopy.UI.Interfaces;
 /// </summary>
 public abstract class TcpSendFileBase : TcpBase<SendFileModel>
 {
-    protected override async Task SendProcessAsync(TcpClient client, SendFileModel message, IProgress<double>? progress)
+    protected override async Task SendProcessAsync(NetworkStream stream, SendFileModel message, IProgress<double>? progress)
     {
-        NetworkStream stream = client.GetStream();
         FileInfo fileInfo = new FileInfo(message.FileFullPath);
         long totalBytes = fileInfo.Length;
         long bytesSent = 0;

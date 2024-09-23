@@ -1,15 +1,24 @@
+using System.Net.Sockets;
+using FantasyRemoteCopy.UI.Consts;
+
 namespace FantasyRemoteCopy.UI.Interfaces;
 
-public class TcpBase<T>:ISendeable<T>,IDisposable
+public abstract class TcpBase<T>:ISendableWithProgress<T>  where T:IFlag
 {
-    
-    public Task SendAsync(T message)
-    {
-        throw new NotImplementedException();
-    }
+    protected abstract Task SendProcessAsync(NetworkStream stream, T message, IProgress<double>? progress);
 
-    public void Dispose()
+    public async Task SendAsync(T message, IProgress<double>? progress)
     {
-        throw new NotImplementedException();
+        TcpClient client = new TcpClient();
+        try
+        {
+            await client.ConnectAsync(message.Flag, ConstParams.TCP_PORT);
+            var stream = client.GetStream();
+            await SendProcessAsync(stream,message, progress);
+        }
+        finally
+        {
+            client.Close();
+        }
     }
 }

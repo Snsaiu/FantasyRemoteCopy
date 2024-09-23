@@ -1,6 +1,10 @@
-﻿namespace FantasyRemoteCopy.UI.Models;
+﻿using FantasyRemoteCopy.UI.Interfaces;
 
-public class SendFileModel
+namespace FantasyRemoteCopy.UI.Models;
+
+public class SendFileModel(string flag, string fileFullPath) : IFlag
 {
-    
+    public string Flag { get; init; } = flag;
+
+    public string FileFullPath { get; init; } = fileFullPath;
 }

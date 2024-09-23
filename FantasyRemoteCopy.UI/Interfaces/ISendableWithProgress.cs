@@ -9,3 +9,10 @@ public interface ISendableWithProgress : ISendeable
 
     Task ISendeable.SendAsync(object message)=>SendAsync(message, null);
 }
+
+public interface ISendableWithProgress<T> : ISendableWithProgress
+{
+    Task SendAsync(T message, IProgress<double>? progress);
+
+    Task ISendableWithProgress.SendAsync(object message, IProgress<double>? progress)=>SendAsync(message, progress);
+}

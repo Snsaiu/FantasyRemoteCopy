@@ -2,5 +2,10 @@
 
 namespace FantasyRemoteCopy.UI
 {
-    public class DefaultScanLocalNetIp : LocalIpScannerBase;
+    public class DefaultScanLocalNetIp : LocalIpScannerBase
+    {
+        public DefaultScanLocalNetIp(DeviceLocalIpBase deviceLocalIpBase) : base(deviceLocalIpBase)
+        {
+        }
+    }
 }
