@@ -13,6 +13,14 @@ public static class ConstParams
 
     public static readonly int TCP_PORT = 5978;
 
+    public static string SaveFilePath()
+    {
+       var path =  Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FantasyRemoteCopy");
+       if (!Directory.Exists(path))
+           Directory.CreateDirectory(path);
+       return path;
+    }
+
     /// <summary>
     /// upd建立tcpip端口号
     /// </summary>

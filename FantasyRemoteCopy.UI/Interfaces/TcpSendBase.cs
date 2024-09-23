@@ -14,7 +14,7 @@ public abstract class TcpSendBase<T> : ISendableWithProgress<T> where T : IFlag
 
     protected virtual SendMetadataMessage GetMetaDataMessage(T message)
     {
-        return new SendMetadataMessage();
+        return new SendMetadataMessage(message.Flag);
     }
 
     protected async Task SendTextAsync(NetworkStream stream, string text)

@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using FantasyRemoteCopy.Core.Enums;
+using SQLite;
 
 namespace FantasyRemoteCopy.UI.Models;
 
@@ -15,7 +16,7 @@ public class SaveDataModel
 
     public DateTime Time { get; set; }
 
-    public SaveDataType DataType { get; set; }
+    public SendType DataType { get; set; }
 
     public string SourceDeviceNickName { get; set; } = string.Empty;
 

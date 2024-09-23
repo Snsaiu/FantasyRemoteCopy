@@ -11,7 +11,7 @@ using FantasyRemoteCopy.UI.Models;
 using FantasyRemoteCopy.UI.Views;
 
 using System.Collections.ObjectModel;
-
+using FantasyRemoteCopy.Core.Enums;
 using SaveDataModel = FantasyRemoteCopy.UI.Models.SaveDataModel;
 using SaveDataType = FantasyRemoteCopy.UI.Models.SaveDataType;
 
@@ -50,7 +50,7 @@ public partial class ListPageModel : FantasyPageModelBase
         foreach (SaveDataModel item in sources)
         {
             SaveItemModel sm = new SaveItemModel();
-            if (item.DataType == SaveDataType.Txt)
+            if (item.DataType == SendType.Text)
             {
                 sm.Title = item.Content.Replace(" ", "").Length > 20
                     ? item.Content.Replace(" ", "").Replace("\n", "")[..20] + "..."

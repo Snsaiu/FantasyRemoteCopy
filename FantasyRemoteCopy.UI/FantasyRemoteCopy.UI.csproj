@@ -121,6 +121,7 @@
 	  <None Include="Platforms\Windows\LocalNetJoinProcess.cs" />
 	  <None Include="Platforms\Windows\LocalNetJoinRequest.cs" />
 	  <None Include="Platforms\Windows\SystemTypeProvider.cs" />
+	  <None Include="Platforms\Windows\TcpLoopListenContent.cs" />
 	</ItemGroup>
 	<ItemGroup>
 	  <MauiImage Include="Resources\Images\android.png" />
