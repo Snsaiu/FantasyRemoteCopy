@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Maui;
+
 using FantasyMvvm;
+
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
 using FantasyRemoteCopy.UI.ViewModels;
@@ -40,6 +42,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<LocalNetJoinProcessBase, LocalNetJoinProcess>();
         builder.Services.AddSingleton<GlobalScanBase, GlobalScan>();
 
+        builder.Services.AddSingleton<TcpSendFileBase, TcpSendFile>();
+        builder.Services.AddSingleton<TcpSendTextBase, TcpSendText>();
+
         // builder.Services.AddSingleton<IGetLocalNetDevices, DefaultScanLocalNetIp>();
 
         builder.Services.AddSingleton<IReceiveData, TcpReceiveData>();
@@ -55,6 +60,7 @@ public static class MauiProgram
 
         builder.UseRegisterPage<ListPage, ListPageModel>();
         builder.UseRegisterDialog<SendTypeDialog, SendTypeDialogModel>();
+
 
         return builder.UseGetProvider().Build();
     }
