@@ -4,6 +4,7 @@ using FantasyMvvm;
 
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
+using FantasyRemoteCopy.UI.Platforms.Windows;
 using FantasyRemoteCopy.UI.ViewModels;
 using FantasyRemoteCopy.UI.ViewModels.DialogModels;
 using FantasyRemoteCopy.UI.Views;
@@ -47,8 +48,6 @@ public static class MauiProgram
 
         // builder.Services.AddSingleton<IGetLocalNetDevices, DefaultScanLocalNetIp>();
 
-        builder.Services.AddSingleton<IReceiveData, TcpReceiveData>();
-        builder.Services.AddSingleton<ISendData, TcpDataSender>();
         builder.Services.AddSingleton<IUserService, ConfigUserService>();
         builder.Services.AddSingleton<ISaveDataService, DbSaveDataService>();
 
