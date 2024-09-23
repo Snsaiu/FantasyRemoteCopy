@@ -1,5 +1,7 @@
-﻿using System.Net.Sockets;
+﻿using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.UI.Models;
+
+using System.Net.Sockets;
 
 namespace FantasyRemoteCopy.UI.Interfaces;
 
@@ -8,6 +10,11 @@ namespace FantasyRemoteCopy.UI.Interfaces;
 /// </summary>
 public abstract class TcpSendFileBase : TcpBase<SendFileModel>
 {
+    protected override SendType GetSendType()
+    {
+        return SendType.File;
+    }
+
     protected override async Task SendProcessAsync(NetworkStream stream, SendFileModel message, IProgress<double>? progress)
     {
         FileInfo fileInfo = new FileInfo(message.FileFullPath);

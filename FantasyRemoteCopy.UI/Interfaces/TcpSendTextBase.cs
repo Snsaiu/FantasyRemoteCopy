@@ -1,6 +1,8 @@
-﻿using System.Net.Sockets;
-using System.Text;
+﻿using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.UI.Models;
+
+using System.Net.Sockets;
+using System.Text;
 
 namespace FantasyRemoteCopy.UI.Interfaces;
 
@@ -9,6 +11,10 @@ namespace FantasyRemoteCopy.UI.Interfaces;
 /// </summary>
 public abstract class TcpSendTextBase : TcpBase<SendTextModel>
 {
+    protected override SendType GetSendType()
+    {
+        return SendType.Text;
+    }
     protected override async Task SendProcessAsync(NetworkStream stream, SendTextModel message, IProgress<double>? progress)
     {
         byte[] messageBytes = Encoding.UTF8.GetBytes(message.Text);
