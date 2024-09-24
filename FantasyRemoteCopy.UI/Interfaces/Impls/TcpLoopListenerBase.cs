@@ -25,9 +25,9 @@ public abstract class TcpLoopListenerBase<T, P, R> : IReceiveableWithProgress<T,
     }
 
 
-    protected async Task<string> ReceiveStringAsync(NetworkStream stream)
+    protected async Task<string> ReceiveStringAsync(NetworkStream stream,long length)
     {
-        byte[] buffer = new byte[8192];
+        byte[] buffer = new byte[length];
         int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
         return Encoding.UTF8.GetString(buffer, 0, bytesRead);
     }
@@ -39,7 +39,7 @@ public abstract class TcpLoopListenerBase<T, P, R> : IReceiveableWithProgress<T,
     {
         var stream = client.GetStream();
 
-        var metaString = await ReceiveStringAsync(stream);
+        var metaString = await ReceiveStringAsync(stream,80);
 
         var metaMessage = JsonConvert.DeserializeObject<SendMetadataMessage>(metaString);
         if (metaMessage is null)

@@ -277,7 +277,6 @@ namespace FantasyRemoteCopy.UI.ViewModels
                     await _localNetInviteDeviceBase.SendAsync(_localNetInviteMessage ??
                                                                      throw new NullReferenceException());
                 }
-                Test();
             }
             finally
             {
@@ -286,17 +285,6 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
         }
 
-        private void Test()
-        {
-            DiscoveredDeviceModel model = new DiscoveredDeviceModel
-            {
-                DeviceType = FantasyRemoteCopy.Core.Enums.Device.Desktop.ToString(),
-                DeviceName = "hh",
-                Flag = "192.168.1.1"
-            };
-
-            DiscoveredDevices.Add(model);
-        }
 
         public void OnNavigatedTo(string source, INavigationParameter parameter)
         {

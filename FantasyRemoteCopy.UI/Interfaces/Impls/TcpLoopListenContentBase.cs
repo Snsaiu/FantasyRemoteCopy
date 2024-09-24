@@ -15,7 +15,7 @@ public abstract class TcpLoopListenContentBase : TcpLoopListenerBase<TransformRe
 
         if (message.SendType == SendType.Text)
         {
-            string text = await ReceiveStringAsync(stream);
+            string text = await ReceiveStringAsync(stream,message.Size);
 
             TransformResultModel<string> result = new TransformResultModel<string>(message.Flag, SendType.Text, text);
 

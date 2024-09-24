@@ -17,7 +17,7 @@
         <ContentView>
             <ContentView.Content>
                 <OnPlatform x:TypeArguments="View">
-                    <On Platform="WinUI,MacCatalyst">
+                    <On Platform="WinUI">
                         <tb:TaskbarIcon
                             x:Name="TrayIcon"
                             IconSource="red.ico"
