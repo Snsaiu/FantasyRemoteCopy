@@ -13,7 +13,7 @@ public abstract class TcpSendFileBase : TcpSendBase<SendFileModel, ProgressValue
     {
         FileInfo fileInfo = new FileInfo(message.FileFullPath);
 
-        return new SendMetadataMessage(message.Flag, Path.GetFileName(message.FileFullPath), fileInfo.Length);
+        return new SendMetadataMessage(message.Flag, message.TargetFlag,Path.GetFileName(message.FileFullPath), fileInfo.Length);
     }
 
     protected override async Task SendProcessAsync(NetworkStream stream, SendFileModel message, IProgress<ProgressValueModel>? progress)
