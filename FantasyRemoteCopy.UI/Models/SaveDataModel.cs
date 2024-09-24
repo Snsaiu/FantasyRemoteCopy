@@ -1,4 +1,5 @@
 ﻿using FantasyRemoteCopy.Core.Enums;
+
 using SQLite;
 
 namespace FantasyRemoteCopy.UI.Models;
@@ -25,11 +26,4 @@ public class SaveDataModel
     public string Content { get; set; } = string.Empty;
 
 
-}
-
-public enum SaveDataType
-{
-    Txt,
-    File,
-    Image
 }

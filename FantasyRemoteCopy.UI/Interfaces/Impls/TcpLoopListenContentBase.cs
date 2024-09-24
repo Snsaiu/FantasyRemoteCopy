@@ -4,7 +4,7 @@ using FantasyRemoteCopy.UI.Models;
 
 using System.Net.Sockets;
 
-namespace FantasyRemoteCopy.UI.Interfaces;
+namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
 public abstract class TcpLoopListenContentBase : TcpLoopListenerBase<TransformResultModel<string>, ProgressValueModel, string>
 {

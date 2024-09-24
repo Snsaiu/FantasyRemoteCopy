@@ -1,8 +1,8 @@
-using FantasyRemoteCopy.UI.Interfaces;
+using FantasyRemoteCopy.UI.Interfaces.Impls;
 
 namespace FantasyRemoteCopy.UI;
 
-public class TcpLoopListenContent:TcpLoopListenContentBase
+public class TcpLoopListenContent : TcpLoopListenContentBase
 {
-    
+
 }

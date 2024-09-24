@@ -5,9 +5,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace FantasyRemoteCopy.UI.Interfaces;
+namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
-public abstract class TcpLoopListenerBase<T,P,R> : IReceiveableWithProgress<T,P> where T:TransformResultModel<R> where P:IProgressValue 
+public abstract class TcpLoopListenerBase<T, P, R> : IReceiveableWithProgress<T, P> where T : TransformResultModel<R> where P : IProgressValue
 {
     public bool Stop { get; set; }
 
@@ -19,7 +19,7 @@ public abstract class TcpLoopListenerBase<T,P,R> : IReceiveableWithProgress<T,P>
         while (true)
         {
             var client = await listener.AcceptTcpClientAsync();
-            
+
             _ = HandleClientAsync(client, receivedCallBack, progress); // 处理客户端连接
         }
     }

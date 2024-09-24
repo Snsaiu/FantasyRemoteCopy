@@ -6,24 +6,24 @@ public partial class SaveItemModel : ObservableObject
 {
 
     [ObservableProperty]
-    private string guid;
+    private string? guid;
 
     [ObservableProperty]
-    private ImageSource image;
-
-
-    [ObservableProperty]
-    private string title;
-
-    [ObservableProperty]
-    private string content;
-
-    [ObservableProperty]
-    private string sourceDeviceName;
+    private ImageSource? image;
 
 
     [ObservableProperty]
-    private string time;
+    private string? title;
+
+    [ObservableProperty]
+    private string? content;
+
+    [ObservableProperty]
+    private string? sourceDeviceName;
+
+
+    [ObservableProperty]
+    private string? time;
 
     [ObservableProperty]
     private bool isFile;

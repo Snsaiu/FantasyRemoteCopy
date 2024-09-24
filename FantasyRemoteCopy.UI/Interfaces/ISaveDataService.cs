@@ -1,6 +1,7 @@
-﻿using FantasyResultModel;
+﻿using FantasyRemoteCopy.UI.Models;
 
-using SaveDataModel = FantasyRemoteCopy.UI.Models.SaveDataModel;
+using FantasyResultModel;
+
 
 namespace FantasyRemoteCopy.UI.Interfaces;
 

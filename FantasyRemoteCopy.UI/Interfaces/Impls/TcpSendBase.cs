@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using System.Net.Sockets;
 using System.Text;
 
-namespace FantasyRemoteCopy.UI.Interfaces;
+namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
 public abstract class TcpSendBase<T, P> : ISendableWithProgress<T, P> where T : IFlag where P : IProgressValue
 {

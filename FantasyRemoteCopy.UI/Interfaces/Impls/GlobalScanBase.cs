@@ -1,7 +1,7 @@
 using System.Net.NetworkInformation;
 using System.Text;
 
-namespace FantasyRemoteCopy.UI.Interfaces;
+namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
 public class GlobalScanBase : ISendeable<string>
 {
@@ -9,7 +9,7 @@ public class GlobalScanBase : ISendeable<string>
     {
         string ipDuan = message.Remove(message.LastIndexOf('.'));
 
-        string data = String.Empty;
+        string data = string.Empty;
         byte[] buffer = Encoding.ASCII.GetBytes(data);
 
         await Task.Run(() =>

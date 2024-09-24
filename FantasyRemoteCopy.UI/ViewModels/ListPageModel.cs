@@ -6,14 +6,12 @@ using FantasyMvvm.FantasyDialogService;
 using FantasyMvvm.FantasyModels.Impls;
 using FantasyMvvm.FantasyNavigation;
 
+using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Models;
 using FantasyRemoteCopy.UI.Views;
 
 using System.Collections.ObjectModel;
-using FantasyRemoteCopy.Core.Enums;
-using SaveDataModel = FantasyRemoteCopy.UI.Models.SaveDataModel;
-using SaveDataType = FantasyRemoteCopy.UI.Models.SaveDataType;
 
 namespace FantasyRemoteCopy.UI.ViewModels;
 
