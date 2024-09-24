@@ -14,11 +14,19 @@
 
     <Grid RowDefinitions="100,*,auto">
 
-        <tb:TaskbarIcon
-            x:Name="TrayIcon"
-            IconSource="red.ico"
-            LeftClickCommand="{Binding ShowHideWindowCommand}"
-            NoLeftClickDelay="True" />
+        <ContentView>
+            <ContentView.Content>
+                <OnPlatform x:TypeArguments="View">
+                    <On Platform="WinUI,MacCatalyst">
+                        <tb:TaskbarIcon
+                            x:Name="TrayIcon"
+                            IconSource="red.ico"
+                            LeftClickCommand="{Binding ShowHideWindowCommand}"
+                            NoLeftClickDelay="True" />
+                    </On>
+                </OnPlatform>
+            </ContentView.Content>
+        </ContentView>
 
         <Image
             Grid.ColumnSpan="3"
