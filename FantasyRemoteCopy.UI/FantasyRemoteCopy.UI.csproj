@@ -108,6 +108,7 @@
 	  <None Remove="Resources\Images\text.png" />
 	  <None Remove="Resources\Images\texticon.png" />
 	  <None Remove="Resources\Images\windows.png" />
+	  <None Remove="Resources\Raw\red.ico" />
 	  <None Remove="Resources\Splash\splash.png" />
 	  <None Remove="FantasyMvvm" />
 	  <None Include="Platforms\Windows\AppDataFolderFileSaveLocation.cs" />
@@ -146,6 +147,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="FantasyMvvm" Version="1.0.1.11-preview" />
+	  <PackageReference Include="H.NotifyIcon.Maui" Version="2.1.3" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Update="Views\DetailPage.xaml.cs">
@@ -187,7 +189,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.90" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.90" />
 	</ItemGroup>
 </Project>

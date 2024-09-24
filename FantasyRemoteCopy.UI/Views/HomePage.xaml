@@ -5,12 +5,21 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:FantasyRemoteCopy.UI.Controls"
     xmlns:convters="clr-namespace:FantasyRemoteCopy.UI.Converters"
+    xmlns:tb="https://notifyicon.com/"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="cp"
     BackgroundColor="AliceBlue"
     NavigationPage.HasBackButton="False"
     NavigationPage.HasNavigationBar="False">
+
     <Grid RowDefinitions="100,*,auto">
+
+        <tb:TaskbarIcon
+            x:Name="TrayIcon"
+            IconSource="red.ico"
+            LeftClickCommand="{Binding ShowHideWindowCommand}"
+            NoLeftClickDelay="True" />
+
         <Image
             Grid.ColumnSpan="3"
             Aspect="AspectFill"
@@ -209,6 +218,8 @@
             WidthRequest="{OnPlatform Android=40}"
             Color="LightGray" />
     </Grid>
+
+
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior Command="{Binding InitCommand}" EventName="Loaded" />
     </ContentPage.Behaviors>

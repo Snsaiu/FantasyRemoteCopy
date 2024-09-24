@@ -14,6 +14,8 @@ using FantasyRemoteCopy.UI.Models;
 using FantasyRemoteCopy.UI.Views;
 using FantasyRemoteCopy.UI.Views.Dialogs;
 
+using H.NotifyIcon;
+
 using System.Collections.ObjectModel;
 
 using UserInfo = FantasyRemoteCopy.UI.Models.UserInfo;
@@ -100,6 +102,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         [ObservableProperty]
         private string deviceNickName;
 
+        private bool IsWindowVisible { get; set; } = true;
 
         private readonly IUserService userService;
         private readonly ISaveDataService _dataService;
@@ -107,6 +110,26 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
         public bool Keep { get; set; } = true;
 
+
+        [RelayCommand]
+        public void ShowHideWindow()
+        {
+            Window? window = Application.Current?.MainPage?.Window;
+            if (window == null)
+            {
+                return;
+            }
+
+            if (IsWindowVisible)
+            {
+                window.Hide();
+            }
+            else
+            {
+                window.Show();
+            }
+            IsWindowVisible = !IsWindowVisible;
+        }
         private async Task Init()
         {
             IsBusy = true;
