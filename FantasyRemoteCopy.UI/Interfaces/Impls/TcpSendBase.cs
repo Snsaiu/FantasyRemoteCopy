@@ -52,7 +52,7 @@ public abstract class TcpSendBase<T, P> : ISendableWithProgress<T, P> where T : 
         TcpClient client = new TcpClient();
         try
         {
-            await client.ConnectAsync(message.Flag, ConstParams.TCP_PORT);
+            await client.ConnectAsync(message.TargetFlag, ConstParams.TCP_PORT);
             NetworkStream stream = client.GetStream();
 
             await SendMetadataMessageAsync(stream, message);
