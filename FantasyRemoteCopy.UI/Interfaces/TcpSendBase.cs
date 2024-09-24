@@ -8,9 +8,9 @@ using System.Text;
 
 namespace FantasyRemoteCopy.UI.Interfaces;
 
-public abstract class TcpSendBase<T> : ISendableWithProgress<T> where T : IFlag
+public abstract class TcpSendBase<T, P> : ISendableWithProgress<T, P> where T : IFlag where P : IProgressValue
 {
-    protected abstract Task SendProcessAsync(NetworkStream stream, T message, IProgress<double>? progress);
+    protected abstract Task SendProcessAsync(NetworkStream stream, T message, IProgress<P>? progress);
 
     protected virtual SendMetadataMessage GetMetaDataMessage(T message)
     {
@@ -30,7 +30,7 @@ public abstract class TcpSendBase<T> : ISendableWithProgress<T> where T : IFlag
         return json is null ? throw new NullReferenceException() : SendTextAsync(stream, json);
     }
 
-    public async Task SendAsync(T message, IProgress<double>? progress)
+    public async Task SendAsync(T message, IProgress<P>? progress)
     {
         TcpClient client = new TcpClient();
         try

@@ -5,14 +5,20 @@
 /// </summary>
 public interface ISendableWithProgress : ISendeable
 {
-    Task SendAsync(object message, IProgress<double>? progress);
+    Task SendAsync(object message, IProgress<object>? progress);
 
-    Task ISendeable.SendAsync(object message)=>SendAsync(message, null);
+    Task ISendeable.SendAsync(object message)
+    {
+        return SendAsync(message, null);
+    }
 }
 
-public interface ISendableWithProgress<T> : ISendableWithProgress
+public interface ISendableWithProgress<T, P> : ISendableWithProgress where P : IProgressValue
 {
-    Task SendAsync(T message, IProgress<double>? progress);
+    Task SendAsync(T message, IProgress<P>? progress);
 
-    Task ISendableWithProgress.SendAsync(object message, IProgress<double>? progress)=>SendAsync(message, progress);
+    Task ISendableWithProgress.SendAsync(object message, IProgress<object>? progress)
+    {
+        return SendAsync(message, progress);
+    }
 }

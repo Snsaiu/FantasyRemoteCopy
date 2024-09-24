@@ -4,9 +4,10 @@ using CommunityToolkit.Mvvm.Input;
 
 using FantasyMvvm;
 using FantasyMvvm.FantasyModels;
+using FantasyMvvm.FantasyModels.Impls;
 using FantasyMvvm.FantasyNavigation;
 
-using DataType = FantasyRemoteCopy.UI.Models.DataType;
+using FantasyRemoteCopy.UI.Models;
 
 namespace FantasyRemoteCopy.UI.ViewModels;
 
@@ -27,10 +28,15 @@ public partial class TextInputPageModel : FantasyPageModelBase, INavigationAware
 
 
     [RelayCommand]
-    private async Task SendData()
+    private Task SendData()
     {
-        await Task.Delay(1000);
-        await _navigationService.NavigationToAsync(nameof(Views.HomePage), false, null);
+        if (string.IsNullOrEmpty(Content))
+            return _navigationService.NavigationToAsync(nameof(Views.HomePage), false, null);
+
+        SendTextModel model = new SendTextModel(_discoveredDeviceModel.Flag, Content);
+        NavigationParameter para = new NavigationParameter();
+        para.Add("data", model);
+        return _navigationService.NavigationToAsync(nameof(Views.HomePage), false, para);
     }
 
     [ObservableProperty]

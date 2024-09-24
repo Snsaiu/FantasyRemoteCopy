@@ -3,26 +3,25 @@ using CommunityToolkit.Mvvm.Input;
 
 using FantasyMvvm;
 using FantasyMvvm.FantasyDialogService;
+using FantasyMvvm.FantasyModels;
 using FantasyMvvm.FantasyModels.Impls;
 using FantasyMvvm.FantasyNavigation;
 using FantasyMvvm.FantasyRegionManager;
 
 using FantasyRemoteCopy.UI.Interfaces;
+using FantasyRemoteCopy.UI.Interfaces.Impls;
 using FantasyRemoteCopy.UI.Models;
 using FantasyRemoteCopy.UI.Views;
 using FantasyRemoteCopy.UI.Views.Dialogs;
 
-using Newtonsoft.Json;
-
 using System.Collections.ObjectModel;
-using System.Text;
-using FantasyRemoteCopy.UI.Interfaces.Impls;
+
 using UserInfo = FantasyRemoteCopy.UI.Models.UserInfo;
 
 namespace FantasyRemoteCopy.UI.ViewModels
 {
 
-    public partial class HomePageModel : FantasyPageModelBase, IPageKeep
+    public partial class HomePageModel : FantasyPageModelBase, IPageKeep, INavigationAware
     {
         private readonly IDialogService _dialogService;
         private readonly LocalNetDeviceDiscoveryBase _localNetDeviceDiscoveryBase;
@@ -34,17 +33,19 @@ namespace FantasyRemoteCopy.UI.ViewModels
         private readonly LocalNetJoinRequestBase _localNetJoinRequestBase;
         private readonly LocalNetJoinProcessBase _localNetJoinProcessBase;
         private readonly TcpLoopListenContentBase _tcpLoopListenContentBase;
+        private readonly TcpSendFileBase _tcpSendFileBase;
+        private readonly TcpSendTextBase _tcpSendTextBase;
         private readonly ISystemType _systemType;
         private readonly IDeviceType _deviceType;
 
         private readonly INavigationService _navigationService;
 
         private DeviceDiscoveryMessage? _localNetInviteMessage = null;
-        
-        public HomePageModel(IUserService userService, 
+
+        public HomePageModel(IUserService userService,
             ISaveDataService dataService,
-            IFileSaveLocation fileSaveLocation, 
-            IDialogService dialogService, 
+            IFileSaveLocation fileSaveLocation,
+            IDialogService dialogService,
             LocalNetDeviceDiscoveryBase localNetDeviceDiscoveryBase,
             LocalNetInviteDeviceBase localNetInviteDeviceBase,
             DeviceLocalIpBase deviceLocalIpBase,
@@ -53,8 +54,10 @@ namespace FantasyRemoteCopy.UI.ViewModels
             LocalNetJoinRequestBase localNetJoinRequestBase,
             LocalNetJoinProcessBase localNetJoinProcessBase,
             TcpLoopListenContentBase tcpLoopListenContentBase,
+            TcpSendFileBase tcpSendFileBase,
+            TcpSendTextBase tcpSendTextBase,
             ISystemType systemType,
-            IDeviceType deviceType, 
+            IDeviceType deviceType,
             INavigationService navigationService)
         {
             this.userService = userService;
@@ -69,12 +72,14 @@ namespace FantasyRemoteCopy.UI.ViewModels
             _localNetJoinRequestBase = localNetJoinRequestBase;
             _localNetJoinProcessBase = localNetJoinProcessBase;
             _tcpLoopListenContentBase = tcpLoopListenContentBase;
+            _tcpSendFileBase = tcpSendFileBase;
+            _tcpSendTextBase = tcpSendTextBase;
             _systemType = systemType;
             _deviceType = deviceType;
             _navigationService = navigationService;
             DiscoveredDevices = [];
-            
-            Task.Run(() => Task.FromResult( Init()));
+
+            Task.Run(() => Task.FromResult(Init()));
         }
 
         [ObservableProperty]
@@ -101,7 +106,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         private readonly IFileSaveLocation _fileSaveLocation;
 
         public bool Keep { get; set; } = true;
-        
+
         private async Task Init()
         {
             IsBusy = true;
@@ -109,32 +114,32 @@ namespace FantasyRemoteCopy.UI.ViewModels
             UserName = userRes.Data.Name;
             DeviceNickName = userRes.Data.DeviceNickName;
 
-            var localIp = await this._deviceLocalIpBase.GetLocalIpAsync();
-            
+            string localIp = await _deviceLocalIpBase.GetLocalIpAsync();
+
             _localNetInviteMessage = new DeviceDiscoveryMessage(UserName, localIp);
-            
+
             //设备发现 ，当有新的设备加入的时候产生回调
-           this.StartDiscovery(localIp);
-           this.StartJoin();
-           this.StartTcpListener();
-            
+            StartDiscovery(localIp);
+            StartJoin();
+            StartTcpListener();
+
             IsBusy = false;
             await DeviceDiscoverAsync(false);
         }
 
         private void StartDiscovery(string localIp)
         {
-            var thread = new Thread(() =>
+            Thread thread = new Thread(() =>
             {
-                 _ = this._localNetDeviceDiscoveryBase.ReceiveAsync(x =>
-                 {
-                     if(localIp==x.Flag)
-                         return;
-                    
-                     var joinRequestModel = new JoinMessageModel(this._systemType.System,this._deviceType.Device, localIp,DeviceNickName,x.Flag);
-                     // 发送加入请求
-                     this._localNetJoinRequestBase.SendAsync(joinRequestModel);
-                 });
+                _ = _localNetDeviceDiscoveryBase.ReceiveAsync(x =>
+                {
+                    if (localIp == x.Flag)
+                        return;
+
+                    JoinMessageModel joinRequestModel = new JoinMessageModel(_systemType.System, _deviceType.Device, localIp, DeviceNickName, x.Flag);
+                    // 发送加入请求
+                    _localNetJoinRequestBase.SendAsync(joinRequestModel);
+                });
             })
             {
                 IsBackground = true
@@ -144,34 +149,36 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
         private void StartJoin()
         {
-            var thread = new Thread(() =>
+            Thread thread = new Thread(() =>
             {
-                _ = this._localNetJoinProcessBase.ReceiveAsync(x =>
+                _ = _localNetJoinProcessBase.ReceiveAsync(x =>
                 {
-                    if (DiscoveredDevices.Any(y=>y.Flag==x.Flag))
+                    if (DiscoveredDevices.Any(y => y.Flag == x.Flag))
                     {
                         return;
                     }
 
                     DiscoveredDevices.Add(x);
-                    
+
                 });
 
-            }) { IsBackground = true };
+            })
+            { IsBackground = true };
             thread.Start();
         }
 
         private void StartTcpListener()
         {
-            var thread = new Thread(() =>
+            Thread thread = new Thread(() =>
             {
-                _ = this._tcpLoopListenContentBase.ReceiveAsync(result =>
+                _ = _tcpLoopListenContentBase.ReceiveAsync(result =>
                 {
-                    
 
-                },null);
 
-            }){ IsBackground = true };
+                }, null);
+
+            })
+            { IsBackground = true };
             thread.Start();
         }
 
@@ -214,25 +221,25 @@ namespace FantasyRemoteCopy.UI.ViewModels
         {
             try
             {
+                IsBusy = true;
                 DiscoveredDevices.Clear();
-                
-                var cancellationToken = new CancellationToken();
-                
-                var devices = this._localIpScannerBase.GetDevicesAsync(cancellationToken);
 
-                await foreach (var device in devices)
+                CancellationToken cancellationToken = new CancellationToken();
+
+                IAsyncEnumerable<ScanDevice> devices = _localIpScannerBase.GetDevicesAsync(cancellationToken);
+
+                await foreach (ScanDevice device in devices)
                 {
-                    await this._localNetInviteDeviceBase.SendAsync(_localNetInviteMessage ??
+                    await _localNetInviteDeviceBase.SendAsync(_localNetInviteMessage ??
                                                                      throw new NullReferenceException());
                 }
-             
-                IsBusy = true;
+                Test();
             }
             finally
             {
                 IsBusy = false;
             }
-            
+
             // if (DiscoveredDevices.Count == 0 && showWarning)
             // {
             //     Application.Current?.MainPage?.DisplayAlert("warning", "No connectable devices found! ", "Ok");
@@ -240,5 +247,50 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
         }
 
+        private void Test()
+        {
+            DiscoveredDeviceModel model = new DiscoveredDeviceModel
+            {
+                DeviceType = FantasyRemoteCopy.Core.Enums.Device.Desktop.ToString(),
+                DeviceName = "hh",
+                Flag = "192.168.1.1"
+            };
+
+            DiscoveredDevices.Add(model);
+        }
+
+        public void OnNavigatedTo(string source, INavigationParameter parameter)
+        {
+            if (parameter is null)
+                return;
+            object obj = parameter.Get("data");
+            switch (obj)
+            {
+                case SendTextModel text:
+                    Task.Run(() => _tcpSendTextBase.SendAsync(text, ReportProgress()));
+                    break;
+                case SendFileModel file:
+                    Task.Run(() => _tcpSendFileBase.SendAsync(file, ReportProgress()));
+                    break;
+            }
+        }
+
+
+        private IProgress<ProgressValueModel> ReportProgress()
+        {
+            Progress<ProgressValueModel> progress = new Progress<ProgressValueModel>(x =>
+            {
+                DiscoveredDeviceModel? flag = DiscoveredDevices.FirstOrDefault(y => y.Flag == x.Flag);
+                if (flag is null)
+                    return;
+                flag.DownloadProcess = x.Progress;
+            });
+            return progress;
+        }
+
+        public void OnNavigatedFrom(string source, INavigationParameter parameter)
+        {
+
+        }
     }
 }
