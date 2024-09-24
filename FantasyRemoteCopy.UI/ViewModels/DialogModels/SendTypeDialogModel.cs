@@ -59,7 +59,7 @@ public partial class SendTypeDialogModel : FantasyDialogModelBase
         {
             var ip = await this._deviceLocalIp.GetLocalIpAsync();
             
-            SendFileModel sendfileModel = new SendFileModel(ip, f.FullPath);
+            SendFileModel sendfileModel = new SendFileModel(ip,discoveredDeviceModel.Flag, f.FullPath);
             OnCloseEvent(new CloseResultModel { Success = true, Data = sendfileModel });
         }
         else

@@ -301,7 +301,16 @@ namespace FantasyRemoteCopy.UI.ViewModels
         {
             Progress<ProgressValueModel> progress = new Progress<ProgressValueModel>(x =>
             {
-                DiscoveredDeviceModel? flag = DiscoveredDevices.FirstOrDefault(y => y.Flag == x.Flag);
+                DiscoveredDeviceModel? flag;
+                if (isSendModel)
+                {
+                    flag  = DiscoveredDevices.FirstOrDefault(y => y.Flag == x.Flag);
+                }
+                else
+                {
+                    flag  = DiscoveredDevices.FirstOrDefault(y => y.Flag == x.TargetFlag);
+                }
+                   
                 if (flag is null)
                     return;
                 if (isSendModel)

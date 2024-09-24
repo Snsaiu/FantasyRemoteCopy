@@ -35,7 +35,7 @@ public abstract class TcpSendFileBase : TcpSendBase<SendFileModel, ProgressValue
             // 计算并显示上传进度
             double p = (double)bytesSent / totalBytes * 100;
 
-            progress?.Report(new ProgressValueModel(message.Flag, p));
+            progress?.Report(new ProgressValueModel(message.Flag, message.TargetFlag,p));
 
             // Console.WriteLine($"上传进度: {progress:F2}%");
         }

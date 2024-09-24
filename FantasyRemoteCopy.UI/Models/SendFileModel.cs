@@ -2,11 +2,13 @@
 
 namespace FantasyRemoteCopy.UI.Models;
 
-public class SendFileModel(string flag, string fileFullPath) : IFlag,ISize
+public class SendFileModel(string flag,string targetFlag, string fileFullPath) : IFlag,ISize,ITargetFlag
 {
     public string Flag { get; init; } = flag;
 
     public string FileFullPath { get; init; } = fileFullPath;
+    
+    public string TargetFlag { get; init; }= targetFlag;
 
     public long Size
     {
@@ -20,4 +22,6 @@ public class SendFileModel(string flag, string fileFullPath) : IFlag,ISize
             return fileInfo.Length;
         }
     }
+
+ 
 }

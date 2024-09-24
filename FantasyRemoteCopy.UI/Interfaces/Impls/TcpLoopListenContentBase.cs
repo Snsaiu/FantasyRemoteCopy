@@ -37,7 +37,7 @@ public abstract class TcpLoopListenContentBase : TcpLoopListenerBase<TransformRe
 
                 // 计算并显示下载进度
                 double p = (double)receivedBytes / fileSize * 100;
-                ProgressValueModel pModel = new ProgressValueModel(message.Flag, p);
+                ProgressValueModel pModel = new ProgressValueModel(message.Flag, message.TargetFlag,p);
                 progress?.Report(pModel);
             }
 

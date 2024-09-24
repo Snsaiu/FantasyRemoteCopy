@@ -4,30 +4,33 @@ using Newtonsoft.Json;
 
 namespace FantasyRemoteCopy.UI.Models;
 
-public class SendMetadataMessage : IName, ISendType,IFlag,ISize
+public class SendMetadataMessage : IName, ISendType,IFlag,ISize,ITargetFlag
 {
-    public SendMetadataMessage(string flag, string name, long size)
+    public SendMetadataMessage(string flag,string targetFlag, string name, long size)
     {
         SendType = SendType.File;
         Name = name;
         Size = size;
         Flag = flag;
+        TargetFlag= targetFlag;
     }
 
-    public SendMetadataMessage(string flag,long size)
+    public SendMetadataMessage(string flag,string targetFlag,long size)
     {
         SendType = SendType.Text;
         Flag = flag;
         Size = size;
+        TargetFlag= targetFlag;
     }
 
     [JsonConstructor]
-    public SendMetadataMessage(string name, string flag, SendType sendType, long size)
+    public SendMetadataMessage(string name, string flag,string targetFlag, SendType sendType, long size)
     {
         SendType = sendType;
         Name = name;
         Flag = flag;
         Size = size;
+        TargetFlag= targetFlag;
     }
 
     public string Name { get; init; } = string.Empty;
@@ -35,4 +38,5 @@ public class SendMetadataMessage : IName, ISendType,IFlag,ISize
     public long Size { get; init; }
     public SendType SendType { get; init; }
     public string Flag { get; init; }
+    public string TargetFlag { get; init; }
 }

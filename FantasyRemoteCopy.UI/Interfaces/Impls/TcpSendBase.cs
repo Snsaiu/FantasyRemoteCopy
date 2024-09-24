@@ -8,13 +8,13 @@ using System.Text;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
-public abstract class TcpSendBase<T, P> : ISendableWithProgress<T, P> where T : IFlag,ISize where P : IProgressValue
+public abstract class TcpSendBase<T, P> : ISendableWithProgress<T, P> where T : IFlag,ISize,ITargetFlag where P : IProgressValue
 {
     protected abstract Task SendProcessAsync(NetworkStream stream, T message, IProgress<P>? progress);
 
     protected virtual SendMetadataMessage GetMetaDataMessage(T message)
     {
-        return new SendMetadataMessage(message.Flag,message.Size);
+        return new SendMetadataMessage(message.Flag,message.TargetFlag,message.Size);
     }
 
     protected async Task SendTextAsync(NetworkStream stream, string text,int? size=null)

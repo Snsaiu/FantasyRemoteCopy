@@ -33,7 +33,7 @@ public partial class TextInputPageModel : FantasyPageModelBase, INavigationAware
 
         var ip = await this._localIpBase.GetLocalIpAsync();
 
-        SendTextModel model = new SendTextModel(ip, Content);
+        SendTextModel model = new SendTextModel(ip, _discoveredDeviceModel.Flag,Content);
         NavigationParameter para = new NavigationParameter();
         para.Add("data", model);
         await _navigationService.NavigationToAsync(nameof(Views.HomePage), false, para);
