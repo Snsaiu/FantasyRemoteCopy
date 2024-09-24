@@ -10,8 +10,6 @@ using FantasyMvvm.FantasyNavigation;
 using FantasyRemoteCopy.UI.Models;
 using FantasyRemoteCopy.UI.Views;
 
-using DataType = FantasyRemoteCopy.UI.Models.DataType;
-
 namespace FantasyRemoteCopy.UI.ViewModels.DialogModels;
 
 public partial class SendTypeDialogModel : FantasyDialogModelBase
@@ -20,7 +18,7 @@ public partial class SendTypeDialogModel : FantasyDialogModelBase
     private DiscoveredDeviceModel discoveredDeviceModel;
 
     private readonly INavigationService _navigationService;
-    
+
     private readonly IDialogService _dialogService;
 
     [ObservableProperty]
@@ -57,30 +55,13 @@ public partial class SendTypeDialogModel : FantasyDialogModelBase
 
         if (f != null)
         {
-
-            FileInfo finfo = new FileInfo(f.FullPath);
-            if (finfo.Length > 1073741824)
-            {
-
-                await App.Current.MainPage.DisplayAlert("Warning", "File cannot be larger than 1G ！", "Ok");
-                return;
-            }
-            IsBusy = true;
-//             if (res != null)
-//             {
-//                 IsBusy = false;
-// #if WINDOWS
-//                   await Application.Current.MainPage.DisplayAlert("Information", "Sended!", "Ok");
-// #endif
-//
-//
-//                 OnCloseEvent(new CloseResultModel { Success = true });
-//
-//             }
-
-
-
+            SendFileModel sendfileModel = new SendFileModel(discoveredDeviceModel.Flag, f.FullPath);
+            OnCloseEvent(new CloseResultModel { Success = true, Data = sendfileModel });
         }
-        OnCloseEvent(new CloseResultModel { Success = false });
+        else
+        {
+            OnCloseEvent(new CloseResultModel { Success = false });
+        }
+
     }
 }

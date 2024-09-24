@@ -205,7 +205,15 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
             NavigationParameter parameter = new NavigationParameter();
             parameter.Add("data", model);
-            return _dialogService.ShowPopUpDialogAsync(nameof(SendTypeDialog), parameter, null);
+            return _dialogService.ShowPopUpDialogAsync(nameof(SendTypeDialog), parameter, x =>
+            {
+                if (!x.Success)
+                    return;
+                if (x.Data is SendFileModel fileModel)
+                {
+                    Task.Run(() => _tcpSendFileBase.SendAsync(fileModel, ReportProgress()));
+                }
+            });
         }
 
         [RelayCommand]
@@ -240,11 +248,6 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 IsBusy = false;
             }
 
-            // if (DiscoveredDevices.Count == 0 && showWarning)
-            // {
-            //     Application.Current?.MainPage?.DisplayAlert("warning", "No connectable devices found! ", "Ok");
-            // }
-
         }
 
         private void Test()
@@ -264,15 +267,9 @@ namespace FantasyRemoteCopy.UI.ViewModels
             if (parameter is null)
                 return;
             object obj = parameter.Get("data");
-            switch (obj)
-            {
-                case SendTextModel text:
-                    Task.Run(() => _tcpSendTextBase.SendAsync(text, ReportProgress()));
-                    break;
-                case SendFileModel file:
-                    Task.Run(() => _tcpSendFileBase.SendAsync(file, ReportProgress()));
-                    break;
-            }
+            if (obj is SendTextModel text)
+                Task.Run(() => _tcpSendTextBase.SendAsync(text, ReportProgress()));
+
         }
 
 
