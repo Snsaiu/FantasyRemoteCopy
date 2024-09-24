@@ -11,17 +11,17 @@ namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
 public class LocalIpScannerBase : IGetLocalNetDevices
 {
-    private readonly DeviceLocalIpBase _deviceLocalIpBase;
+    protected readonly DeviceLocalIpBase DeviceLocalIpBase;
     protected virtual string Pattern { get; } = @"(?<ip>([0-9]{1,3}\.?){4})\s*\) at ([0-9]|[a-z])";
 
     public LocalIpScannerBase(DeviceLocalIpBase deviceLocalIpBase)
     {
-        _deviceLocalIpBase = deviceLocalIpBase;
+        DeviceLocalIpBase = deviceLocalIpBase;
     }
 
-    public async IAsyncEnumerable<ScanDevice> GetDevicesAsync([EnumeratorCancellation] CancellationToken cancellationToken)
+    public virtual async IAsyncEnumerable<ScanDevice> GetDevicesAsync([EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        string localIp = await _deviceLocalIpBase.GetLocalIpAsync();
+        string localIp = await DeviceLocalIpBase.GetLocalIpAsync();
 
         List<string> list = localIp.Split(".").ToList()[0..2];
         string ipStart = string.Join(".", list);

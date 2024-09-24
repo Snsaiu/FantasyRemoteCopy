@@ -4,7 +4,10 @@ using FantasyMvvm;
 
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
+#if WINDOWS
 using FantasyRemoteCopy.UI.Platforms.Windows;
+#endif
+
 using FantasyRemoteCopy.UI.ViewModels;
 using FantasyRemoteCopy.UI.ViewModels.DialogModels;
 using FantasyRemoteCopy.UI.Views;

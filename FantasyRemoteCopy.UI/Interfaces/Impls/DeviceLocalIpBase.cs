@@ -8,7 +8,7 @@ namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 /// </summary>
 public abstract class DeviceLocalIpBase : IGetLocalIp
 {
-    public Task<string> GetLocalIpAsync()
+    public virtual Task<string> GetLocalIpAsync()
     {
         IEnumerable<NetworkInterface> networkInterfaces = NetworkInterface.GetAllNetworkInterfaces()
             .Where(nic => nic.NetworkInterfaceType is NetworkInterfaceType.Wireless80211 or

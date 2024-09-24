@@ -1,103 +1,215 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FantasyRemoteCopy.UI.Views.HomePage"
-             NavigationPage.HasBackButton="False"
-             NavigationPage.HasNavigationBar="False"
-             BackgroundColor="AliceBlue"
-           x:Name="cp"
-                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:convters="clr-namespace:FantasyRemoteCopy.UI.Converters"
-             xmlns:controls="clr-namespace:FantasyRemoteCopy.UI.Controls">
+<ContentPage
+    x:Class="FantasyRemoteCopy.UI.Views.HomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:FantasyRemoteCopy.UI.Controls"
+    xmlns:convters="clr-namespace:FantasyRemoteCopy.UI.Converters"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="cp"
+    BackgroundColor="AliceBlue"
+    NavigationPage.HasBackButton="False"
+    NavigationPage.HasNavigationBar="False">
     <Grid RowDefinitions="100,*,auto">
-        <Image   Aspect="AspectFill" Grid.ColumnSpan="3" Source="header.png" IsOpaque="true" Opacity="0.6"></Image>
-        <Grid Padding="5" ColumnDefinitions="auto,*,auto" >
-           
-            <!--图片-->
+        <Image
+            Grid.ColumnSpan="3"
+            Aspect="AspectFill"
+            IsOpaque="true"
+            Opacity="0.6"
+            Source="header.png" />
+        <Grid Padding="5" ColumnDefinitions="auto,*,auto">
+
+            <!--  图片  -->
             <Grid>
-               
-                <Border HeightRequest="80" Stroke="transparent" WidthRequest="80" BackgroundColor="OrangeRed">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="50" />
-                </Border.StrokeShape>
-            </Border>
-            <Label Text="{Binding UserName,Converter={convters:TextToHeaderCharConverter}}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="60"></Label>
+
+                <Border
+                    BackgroundColor="OrangeRed"
+                    HeightRequest="80"
+                    Stroke="transparent"
+                    WidthRequest="80">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="50" />
+                    </Border.StrokeShape>
+                </Border>
+                <Label
+                    FontSize="60"
+                    HorizontalOptions="Center"
+                    Text="{Binding UserName, Converter={convters:TextToHeaderCharConverter}}"
+                    TextColor="White"
+                    VerticalOptions="Center" />
             </Grid>
-            
-            <!--用户名和设备昵称-->
+
+            <!--  用户名和设备昵称  -->
             <VerticalStackLayout Grid.Column="1">
-            <Label TextColor="Black" Text="{Binding UserName}"  VerticalOptions="Center" Margin="10,20,0,0" FontSize="25"></Label>
-            <Label TextColor="Black" Text="{Binding DeviceNickName,StringFormat='Nick Name of Device:{0}'}" FontSize="{OnPlatform MacCatalyst=15,WinUI=10}" Margin="10,0,0,0"></Label>
+                <Label
+                    Margin="10,20,0,0"
+                    FontSize="25"
+                    Text="{Binding UserName}"
+                    TextColor="Black"
+                    VerticalOptions="Center" />
+                <Label
+                    Margin="10,0,0,0"
+                    FontSize="{OnPlatform MacCatalyst=15,
+                                          WinUI=10}"
+                    Text="{Binding DeviceNickName, StringFormat='Nick Name of Device:{0}'}"
+                    TextColor="Black" />
             </VerticalStackLayout>
 
             <Grid Grid.Column="2">
                 <HorizontalStackLayout>
                     <Grid>
-                        <Ellipse Fill="Red" IsVisible="{Binding IsDownLoadingVisible}" WidthRequest="8" HeightRequest="8" x:Name="downloadEllipseFill" VerticalOptions="Center" />
-                        <Ellipse Fill="Transparent" IsVisible="{Binding IsDownLoadingVisible}" Stroke="red" WidthRequest="10" HeightRequest="10" x:Name="downloadEllipse" VerticalOptions="Center" />
+                        <Ellipse
+                            x:Name="downloadEllipseFill"
+                            Fill="Red"
+                            HeightRequest="8"
+                            IsVisible="{Binding IsDownLoadingVisible}"
+                            VerticalOptions="Center"
+                            WidthRequest="8" />
+                        <Ellipse
+                            x:Name="downloadEllipse"
+                            Fill="Transparent"
+                            HeightRequest="10"
+                            IsVisible="{Binding IsDownLoadingVisible}"
+                            Stroke="red"
+                            VerticalOptions="Center"
+                            WidthRequest="10" />
                     </Grid>
-                 
-                    <AbsoluteLayout VerticalOptions="Center" Margin="5,0">
-                        <ImageButton  Source="list.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Command="{Binding GotoListCommand}"></ImageButton>
-                        <Ellipse IsVisible="{Binding NewMessageVisible}" AbsoluteLayout.LayoutFlags="XProportional" AbsoluteLayout.LayoutBounds="1,0" Fill="red" WidthRequest="10" HeightRequest="10" HorizontalOptions="End"></Ellipse>
+
+                    <AbsoluteLayout Margin="5,0" VerticalOptions="Center">
+                        <ImageButton
+                            BackgroundColor="Transparent"
+                            Command="{Binding GotoListCommand}"
+                            HeightRequest="30"
+                            Source="list.png"
+                            WidthRequest="30" />
+                        <Ellipse
+                            AbsoluteLayout.LayoutBounds="1,0"
+                            AbsoluteLayout.LayoutFlags="XProportional"
+                            Fill="red"
+                            HeightRequest="10"
+                            HorizontalOptions="End"
+                            IsVisible="{Binding NewMessageVisible}"
+                            WidthRequest="10" />
                     </AbsoluteLayout>
-                    
-                    <ImageButton WidthRequest="50" Command="{Binding GotoSettingPageCommand}" BackgroundColor="Transparent" Source="setting.png" HeightRequest="50"></ImageButton>
+
+                    <ImageButton
+                        BackgroundColor="Transparent"
+                        Command="{Binding GotoSettingPageCommand}"
+                        HeightRequest="50"
+                        Source="setting.png"
+                        WidthRequest="50" />
                 </HorizontalStackLayout>
-               
+
             </Grid>
         </Grid>
 
-        <!--列表-->
+        <!--  列表  -->
         <CollectionView Grid.Row="1" ItemsSource="{Binding DiscoveredDevices}">
             <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical"
-                                   ItemSpacing="2" />
+                <LinearItemsLayout ItemSpacing="2" Orientation="Vertical" />
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Padding="5"   ColumnDefinitions="auto,*,auto" BackgroundColor="White" >
-                        <Image HeightRequest="{OnPlatform WinUI=70,MacCatalyst=50}" WidthRequest="{OnPlatform WinUI=70,MacCatalyst=50}" Source="{Binding Img}"/>
-                        <Grid Grid.Column="1" Margin="10,0,5,0" RowDefinitions="*,auto,auto">
+                    <Grid
+                        Padding="5"
+                        BackgroundColor="White"
+                        ColumnDefinitions="auto,*,auto">
+                        <Image
+                            HeightRequest="{OnPlatform WinUI=70,
+                                                       MacCatalyst=50}"
+                            Source="{Binding Img}"
+                            WidthRequest="{OnPlatform WinUI=70,
+                                                      MacCatalyst=50}" />
+                        <Grid
+                            Grid.Column="1"
+                            Margin="10,0,5,0"
+                            RowDefinitions="*,auto,auto">
 
                             <Grid.Resources>
                                 <Style TargetType="Label">
-                                    <Setter Property="TextColor" Value="Black"/>
+                                    <Setter Property="TextColor" Value="Black" />
                                 </Style>
 
                             </Grid.Resources>
-                            <Label Margin="0,2,0,2" Text="{Binding NickName,StringFormat='Nick Name：{0}'}" Grid.Row="0" FontAttributes="Bold"></Label>
-                            <Label Margin="0,1" Text="{Binding DeviceType,StringFormat='Device Type：{0}'}" Grid.Row="1" FontSize="10"></Label>
+                            <Label
+                                Grid.Row="0"
+                                Margin="0,2,0,2"
+                                FontAttributes="Bold"
+                                Text="{Binding NickName, StringFormat='Nick Name：{0}'}" />
+                            <Label
+                                Grid.Row="1"
+                                Margin="0,1"
+                                FontSize="10"
+                                Text="{Binding DeviceType, StringFormat='Device Type：{0}'}" />
                             <!-- <Label Margin="0,1" Text="{Binding DeviceName,StringFormat='Device Name：{0}'}" Grid.Row="2"  FontSize="10"></Label> -->
-                            <Label Margin="0,1" Text="{Binding Ip,StringFormat='Ip：{0}'}" Grid.Row="2"  FontSize="10"></Label>
+                            <Label
+                                Grid.Row="2"
+                                Margin="0,1"
+                                FontSize="10"
+                                Text="{Binding Ip, StringFormat='Ip：{0}'}" />
                         </Grid>
-                        <Grid ColumnDefinitions="auto,10,10,auto" Grid.Column="2">
-                            <Grid Grid.Column="0"  ColumnDefinitions="auto,auto" IsVisible="{Binding IsDownLoading}">
-                                <ProgressBar WidthRequest="80" ProgressColor="OrangeRed" Progress="{Binding DownloadProcess}"></ProgressBar>
-                                <Label TextColor="Gray" Text="{Binding DownloadProcess ,StringFormat='{0:P0}'}" VerticalTextAlignment="Center" Grid.Column="1"  VerticalOptions="Center" FontSize="12"></Label>
+                        <Grid Grid.Column="2" ColumnDefinitions="auto,10,10,auto">
+                            <Grid
+                                Grid.Column="0"
+                                ColumnDefinitions="auto,auto"
+                                IsVisible="{Binding IsDownLoading}">
+                                <ProgressBar
+                                    Progress="{Binding DownloadProcess}"
+                                    ProgressColor="OrangeRed"
+                                    WidthRequest="80" />
+                                <Label
+                                    Grid.Column="1"
+                                    FontSize="12"
+                                    Text="{Binding DownloadProcess, StringFormat='{0:P0}'}"
+                                    TextColor="Gray"
+                                    VerticalOptions="Center"
+                                    VerticalTextAlignment="Center" />
                             </Grid>
-                            <controls:BlinCircle Color="blue" Grid.Column="1" IsVisible="{Binding IsSendingData}"></controls:BlinCircle>
-                            <controls:BlinCircle  Color="red" Grid.Column="2" IsVisible="{Binding IsDownLoading}"></controls:BlinCircle>
-                            <ImageButton Command="{Binding BindingContext.ShareCommand ,Source={x:Reference cp}}" CommandParameter="{Binding .}"  WidthRequest="50" Grid.Column="3" HeightRequest="50" Source="share.png"></ImageButton>
+                            <controls:BlinCircle
+                                Grid.Column="1"
+                                IsVisible="{Binding IsSendingData}"
+                                Color="blue" />
+                            <controls:BlinCircle
+                                Grid.Column="2"
+                                IsVisible="{Binding IsDownLoading}"
+                                Color="red" />
+                            <ImageButton
+                                Grid.Column="3"
+                                Command="{Binding BindingContext.ShareCommand, Source={x:Reference cp}}"
+                                CommandParameter="{Binding .}"
+                                HeightRequest="50"
+                                Source="share.png"
+                                WidthRequest="50" />
                         </Grid>
-              
+
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        
-        <!--搜索按钮-->
 
-     
-            <ImageButton Grid.Row="2" x:Name="searchBtn" Clicked="SearchClickEvent" Command="{Binding SearchCommand}"  BackgroundColor="Transparent" Source="search.png" HeightRequest="80" HorizontalOptions="End" Margin="0,0,16,10" WidthRequest="80">
-
-            </ImageButton>
-   
+        <!--  搜索按钮  -->
 
 
-        <ActivityIndicator IsRunning="True" Color="LightGray" IsVisible="{Binding IsBusy}" Grid.Row="1"/>
+        <ImageButton
+            x:Name="searchBtn"
+            Grid.Row="2"
+            Margin="0,0,16,10"
+            BackgroundColor="Transparent"
+            Clicked="SearchClickEvent"
+            Command="{Binding SearchCommand}"
+            HeightRequest="80"
+            HorizontalOptions="End"
+            Source="search.png"
+            WidthRequest="80" />
+        <ActivityIndicator
+            Grid.Row="1"
+            HeightRequest="{OnPlatform Android=40}"
+            IsRunning="True"
+            IsVisible="{Binding IsBusy}"
+            WidthRequest="{OnPlatform Android=40}"
+            Color="LightGray" />
     </Grid>
     <ContentPage.Behaviors>
-        <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding InitCommand}"/>
+        <toolkit:EventToCommandBehavior Command="{Binding InitCommand}" EventName="Loaded" />
     </ContentPage.Behaviors>
 </ContentPage>
