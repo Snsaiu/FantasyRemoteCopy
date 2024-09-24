@@ -35,7 +35,7 @@ public abstract class TcpLoopListenerBase<T, P, R> : IReceiveableWithProgress<T,
 
     private  async Task<string> ReceiveMetadataStringAsync(NetworkStream stream)
     {
-        byte[] buffer = new byte[80];
+        byte[] buffer = new byte[200];
         int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
 
         // 2. 读取前 4 字节的原始长度信息

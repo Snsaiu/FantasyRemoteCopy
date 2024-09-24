@@ -32,7 +32,7 @@ public abstract class TcpSendBase<T, P> : ISendableWithProgress<T, P> where T : 
         byte[] lengthBytes = BitConverter.GetBytes(originalLength);
 
         // 3. 创建一个 80 字节的数组，先拷贝长度信息，再拷贝原始数据
-        byte[] buffer = new byte[80];
+        byte[] buffer = new byte[200];
         Array.Copy(lengthBytes, buffer, lengthBytes.Length); // 将长度信息放到前 4 字节
         Array.Copy(originalData, 0, buffer, 4, originalData.Length); // 从第 5 字节开始放原始数据
 
