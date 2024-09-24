@@ -1,11 +1,12 @@
-using System.Net.Sockets;
 using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.UI.Consts;
 using FantasyRemoteCopy.UI.Models;
 
+using System.Net.Sockets;
+
 namespace FantasyRemoteCopy.UI.Interfaces;
 
-public abstract class TcpLoopListenContentBase : TcpLoopListenerBase<TransformResultModel<string>,ProgressValueModel,string>
+public abstract class TcpLoopListenContentBase : TcpLoopListenerBase<TransformResultModel<string>, ProgressValueModel, string>
 {
     protected override async Task HandleReceiveAsync(NetworkStream stream, SendMetadataMessage message,
         Action<TransformResultModel<string>> receivedCallBack,
@@ -14,17 +15,17 @@ public abstract class TcpLoopListenContentBase : TcpLoopListenerBase<TransformRe
 
         if (message.SendType == SendType.Text)
         {
-            var text = await this.ReceiveStringAsync(stream);
-            
-            var result = new TransformResultModel<string>(message.Flag, text);
-            
+            string text = await ReceiveStringAsync(stream);
+
+            TransformResultModel<string> result = new TransformResultModel<string>(message.Flag, SendType.Text, text);
+
             receivedCallBack?.Invoke(result);
         }
         else
         {
             byte[] buffer = new byte[8192]; // 8KB 缓冲区
-            var fileSize = message.Size;
-            var saveFullPath = Path.Combine(ConstParams.SaveFilePath(), message.Name);
+            long fileSize = message.Size;
+            string saveFullPath = Path.Combine(ConstParams.SaveFilePath(), message.Name);
             long receivedBytes = 0;
 
             await using FileStream fs = new FileStream(saveFullPath, FileMode.Create, FileAccess.Write);
@@ -35,12 +36,12 @@ public abstract class TcpLoopListenContentBase : TcpLoopListenerBase<TransformRe
                 receivedBytes += bytesRead;
 
                 // 计算并显示下载进度
-                var p = (double)receivedBytes / fileSize * 100;
-                var pModel = new ProgressValueModel(message.Flag, p);
+                double p = (double)receivedBytes / fileSize * 100;
+                ProgressValueModel pModel = new ProgressValueModel(message.Flag, p);
                 progress?.Report(pModel);
             }
 
-            var result = new TransformResultModel<string>(message.Flag, saveFullPath);
+            TransformResultModel<string> result = new TransformResultModel<string>(message.Flag, SendType.File, saveFullPath);
             receivedCallBack?.Invoke(result);
         }
     }

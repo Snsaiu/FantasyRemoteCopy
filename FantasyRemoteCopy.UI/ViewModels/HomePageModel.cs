@@ -171,15 +171,28 @@ namespace FantasyRemoteCopy.UI.ViewModels
         {
             Thread thread = new Thread(() =>
             {
-                _ = _tcpLoopListenContentBase.ReceiveAsync(result =>
-                {
-
-
-                }, null);
-
+                _ = _tcpLoopListenContentBase.ReceiveAsync(SaveDataToLocalDB, ReportProgress(false));
             })
             { IsBackground = true };
             thread.Start();
+        }
+
+        private void SaveDataToLocalDB(TransformResultModel<string> data)
+        {
+            SaveDataModel saveDataModel = new SaveDataModel
+            {
+                DataType = data.SendType,
+                Content = data.Result,
+                Time = DateTime.Now
+            };
+
+            DiscoveredDeviceModel? model = DiscoveredDevices.FirstOrDefault(x => x.Flag == data.Flag);
+            if (model is null)
+                throw new NullReferenceException();
+            model.IsDownLoading = false;
+            saveDataModel.SourceDeviceNickName = model.NickName;
+            saveDataModel.Guid = Guid.NewGuid().ToString();
+            _dataService.AddAsync(saveDataModel);
         }
 
         [RelayCommand]
@@ -211,7 +224,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
                     return;
                 if (x.Data is SendFileModel fileModel)
                 {
-                    Task.Run(() => _tcpSendFileBase.SendAsync(fileModel, ReportProgress()));
+                    Task.Run(() => _tcpSendFileBase.SendAsync(fileModel, ReportProgress(true)));
                 }
             });
         }
@@ -268,19 +281,30 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 return;
             object obj = parameter.Get("data");
             if (obj is SendTextModel text)
-                Task.Run(() => _tcpSendTextBase.SendAsync(text, ReportProgress()));
+                Task.Run(() => _tcpSendTextBase.SendAsync(text, ReportProgress(true)));
 
         }
 
 
-        private IProgress<ProgressValueModel> ReportProgress()
+        private IProgress<ProgressValueModel> ReportProgress(bool isSendModel)
         {
             Progress<ProgressValueModel> progress = new Progress<ProgressValueModel>(x =>
             {
                 DiscoveredDeviceModel? flag = DiscoveredDevices.FirstOrDefault(y => y.Flag == x.Flag);
                 if (flag is null)
                     return;
-                flag.DownloadProcess = x.Progress;
+                if (isSendModel)
+                {
+                    flag.IsSendingData = true;
+                    flag.IsDownLoading = false;
+                }
+                else
+                {
+                    flag.IsSendingData = false;
+                    flag.IsDownLoading = true;
+                    flag.DownloadProcess = x.Progress;
+                }
+
             });
             return progress;
         }
