@@ -6,7 +6,7 @@ using FantasyMvvm.FantasyDialogService;
 using FantasyMvvm.FantasyModels;
 using FantasyMvvm.FantasyModels.Impls;
 using FantasyMvvm.FantasyNavigation;
-
+using FantasyRemoteCopy.UI.Interfaces.Impls;
 using FantasyRemoteCopy.UI.Models;
 using FantasyRemoteCopy.UI.Views;
 
@@ -20,13 +20,15 @@ public partial class SendTypeDialogModel : FantasyDialogModelBase
     private readonly INavigationService _navigationService;
 
     private readonly IDialogService _dialogService;
+    private readonly DeviceLocalIpBase _deviceLocalIp;
 
     [ObservableProperty]
     private bool isBusy = false;
 
-    public SendTypeDialogModel(INavigationService navigationService, IDialogService dialogService)
+    public SendTypeDialogModel(INavigationService navigationService, IDialogService dialogService,DeviceLocalIpBase deviceLocalIp)
     {
         _dialogService = dialogService;
+        _deviceLocalIp = deviceLocalIp;
         _navigationService = navigationService;
     }
 
@@ -55,7 +57,9 @@ public partial class SendTypeDialogModel : FantasyDialogModelBase
 
         if (f != null)
         {
-            SendFileModel sendfileModel = new SendFileModel(discoveredDeviceModel.Flag, f.FullPath);
+            var ip = await this._deviceLocalIp.GetLocalIpAsync();
+            
+            SendFileModel sendfileModel = new SendFileModel(ip, f.FullPath);
             OnCloseEvent(new CloseResultModel { Success = true, Data = sendfileModel });
         }
         else

@@ -1,5 +1,6 @@
 ﻿using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.UI.Interfaces;
+using Newtonsoft.Json;
 
 namespace FantasyRemoteCopy.UI.Models;
 
@@ -16,6 +17,15 @@ public class SendMetadataMessage : IName, ISendType,IFlag,ISize
     public SendMetadataMessage(string flag,long size)
     {
         SendType = SendType.Text;
+        Flag = flag;
+        Size = size;
+    }
+
+    [JsonConstructor]
+    public SendMetadataMessage(string name, string flag, SendType sendType, long size)
+    {
+        SendType = sendType;
+        Name = name;
         Flag = flag;
         Size = size;
     }
