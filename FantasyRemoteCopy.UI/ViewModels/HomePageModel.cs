@@ -213,6 +213,8 @@ namespace FantasyRemoteCopy.UI.ViewModels
             if (model is null)
                 throw new NullReferenceException();
             model.IsDownLoading = false;
+            NewMessageVisible = true;
+            IsDownLoadingVisible = false;
             saveDataModel.SourceDeviceNickName = model.NickName;
             saveDataModel.Guid = Guid.NewGuid().ToString();
             _dataService.AddAsync(saveDataModel);
@@ -304,11 +306,11 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 DiscoveredDeviceModel? flag;
                 if (isSendModel)
                 {
-                    flag  = DiscoveredDevices.FirstOrDefault(y => y.Flag == x.Flag);
+                    flag  = DiscoveredDevices.FirstOrDefault(y => y.Flag == x.TargetFlag);
                 }
                 else
                 {
-                    flag  = DiscoveredDevices.FirstOrDefault(y => y.Flag == x.TargetFlag);
+                    flag  = DiscoveredDevices.FirstOrDefault(y => y.Flag == x.Flag);
                 }
                    
                 if (flag is null)
@@ -322,7 +324,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 {
                     flag.IsSendingData = false;
                     flag.IsDownLoading = true;
-                    flag.DownloadProcess = x.Progress;
+                    flag.DownloadProcess = x.Progress*10;
                 }
 
             });
