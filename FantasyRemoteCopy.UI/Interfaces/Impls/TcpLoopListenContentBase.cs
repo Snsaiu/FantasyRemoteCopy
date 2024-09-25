@@ -10,12 +10,12 @@ public abstract class TcpLoopListenContentBase : TcpLoopListenerBase<TransformRe
 {
     protected override async Task HandleReceiveAsync(NetworkStream stream, SendMetadataMessage message,
         Action<TransformResultModel<string>> receivedCallBack,
-        IProgress<ProgressValueModel>? progress)
+        IProgress<ProgressValueModel>? progress, CancellationToken cancellationToken)
     {
 
         if (message.SendType == SendType.Text)
         {
-            string text = await ReceiveStringAsync(stream,message.Size);
+            string text = await ReceiveStringAsync(stream, message.Size);
 
             TransformResultModel<string> result = new TransformResultModel<string>(message.Flag, SendType.Text, text);
 
@@ -37,7 +37,7 @@ public abstract class TcpLoopListenContentBase : TcpLoopListenerBase<TransformRe
 
                 // 计算并显示下载进度
                 double p = (double)receivedBytes / fileSize * 100;
-                ProgressValueModel pModel = new ProgressValueModel(message.Flag, message.TargetFlag,p);
+                ProgressValueModel pModel = new ProgressValueModel(message.Flag, message.TargetFlag, p);
                 progress?.Report(pModel);
             }
 

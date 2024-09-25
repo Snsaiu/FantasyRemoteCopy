@@ -28,14 +28,14 @@ namespace FantasyRemoteCopy.UI.ViewModels
         private readonly IDialogService _dialogService;
         private readonly GlobalScanBase _globalScan;
 
-        public SettingPageModel(IUserService userService,DeviceLocalIpBase getLocalIp, INavigationService navigationService, IDialogService dialogService,GlobalScanBase globalScan)
+        public SettingPageModel(IUserService userService, DeviceLocalIpBase getLocalIp, INavigationService navigationService, IDialogService dialogService, GlobalScanBase globalScan)
         {
-            this._userService = userService;
+            _userService = userService;
             _getLocalIp = getLocalIp;
             _dialogService = dialogService;
             _globalScan = globalScan;
             _navigationService = navigationService;
-            
+
         }
 
 
@@ -45,17 +45,17 @@ namespace FantasyRemoteCopy.UI.ViewModels
             try
             {
                 IsBusy = true;
-                var ip = await this._getLocalIp.GetLocalIpAsync();
-                await this._globalScan.SendAsync(ip);
+                string ip = await _getLocalIp.GetLocalIpAsync();
+                await _globalScan.SendAsync(ip, default);
             }
             finally
             {
                 IsBusy = false;
-                
-               await Application.Current.MainPage.DisplayAlert("Information", "Search Complete !", "Ok");
+
+                await Application.Current.MainPage.DisplayAlert("Information", "Search Complete !", "Ok");
             }
-      
-            
+
+
             // IsBusy = true;
             // Task.Run(async () =>
             // {

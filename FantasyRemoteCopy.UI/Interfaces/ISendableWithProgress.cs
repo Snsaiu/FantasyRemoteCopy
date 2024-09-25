@@ -5,20 +5,20 @@
 /// </summary>
 public interface ISendableWithProgress : ISendeable
 {
-    Task SendAsync(object message, IProgress<object>? progress);
+    Task SendAsync(object message, IProgress<object>? progress, CancellationToken cancellationToken);
 
-    Task ISendeable.SendAsync(object message)
+    Task ISendeable.SendAsync(object message, CancellationToken cancellationToken)
     {
-        return SendAsync(message, null);
+        return SendAsync(message, null, cancellationToken);
     }
 }
 
 public interface ISendableWithProgress<T, P> : ISendableWithProgress where P : IProgressValue
 {
-    Task SendAsync(T message, IProgress<P>? progress);
+    Task SendAsync(T message, IProgress<P>? progress, CancellationToken cancellationToken);
 
-    Task ISendableWithProgress.SendAsync(object message, IProgress<object>? progress)
+    Task ISendableWithProgress.SendAsync(object message, IProgress<object>? progress, CancellationToken cancellationToken)
     {
-        return SendAsync(message, progress);
+        return SendAsync(message, progress, cancellationToken);
     }
 }

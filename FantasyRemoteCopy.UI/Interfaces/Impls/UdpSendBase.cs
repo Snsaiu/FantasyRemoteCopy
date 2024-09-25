@@ -9,7 +9,7 @@ namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 public abstract class UdpSendBase<T> : UdpBase, ISendeable<T>, IDisposable
 {
     protected abstract IPEndPoint SetTarget(T message);
-    public Task SendAsync(T message)
+    public Task SendAsync(T message, CancellationToken cancellationToken)
     {
         UdpClient ??= CreateUdpClient();
 

@@ -1,36 +1,30 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.UI.Interfaces;
-using Image = Microsoft.Maui.Controls.PlatformConfiguration.TizenSpecific.Image;
 
 namespace FantasyRemoteCopy.UI.Models
 {
     /// <summary>
     /// 设备发现的模型
     /// </summary>
-    public partial class DiscoveredDeviceModel : ObservableObject,IFlag
+    public partial class DiscoveredDeviceModel : ObservableObject, IFlag
     {
 
         [ObservableProperty]
-        private string deviceType;
+        private string? deviceType;
 
         [ObservableProperty]
-        private string nickName;
+        private string? nickName;
 
         [ObservableProperty]
-        private string flag;
+        private string? flag;
 
         [ObservableProperty]
-        private ImageSource img;
+        private ImageSource? img;
 
         [ObservableProperty]
-        private string deviceName;
+        private string? deviceName;
 
         [ObservableProperty]
         private bool isDownLoading = false;
@@ -40,11 +34,13 @@ namespace FantasyRemoteCopy.UI.Models
 
         [ObservableProperty]
         private double downloadProcess = 0;
-        
-        
+
+        public CancellationTokenSource CancellationTokenSource { get; set; } = new CancellationTokenSource();
+
+
         public static implicit operator DiscoveredDeviceModel(JoinMessageModel model)
         {
-            var img = model.SystemType switch
+            ImageSource? img = model.SystemType switch
             {
                 SystemType.None => null,
                 SystemType.Windows => ImageSource.FromFile("windows.png"),
@@ -58,8 +54,8 @@ namespace FantasyRemoteCopy.UI.Models
             {
                 NickName = model.DeviceName,
                 Flag = model.Flag,
-                img = img,
-                deviceType = model.Device.ToString()
+                Img = img,
+                DeviceType = model.Device.ToString()
             };
         }
 

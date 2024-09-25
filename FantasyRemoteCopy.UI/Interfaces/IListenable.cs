@@ -2,15 +2,14 @@ namespace FantasyRemoteCopy.UI.Interfaces;
 
 public interface IListenable
 {
-    bool Stop { get; set; }
-    Task ReceiveAsync(Action<object> receivedCallBack);
+    Task ReceiveAsync(Action<object> receivedCallBack, CancellationToken cancellationToken);
 }
 
 public interface IListenable<T> : IListenable
 {
-    Task ReceiveAsync(Action<T> receivedCallBack);
+    Task ReceiveAsync(Action<T> receivedCallBack, CancellationToken cancellationToken);
 
-    Task IListenable.ReceiveAsync(Action<object> receivedCallBack)
+    Task IListenable.ReceiveAsync(Action<object> receivedCallBack, CancellationToken cancellationToken)
     {
         if (receivedCallBack is Action<T> action)
             receivedCallBack(action);

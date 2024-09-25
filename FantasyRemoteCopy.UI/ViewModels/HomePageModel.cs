@@ -22,7 +22,6 @@ using UserInfo = FantasyRemoteCopy.UI.Models.UserInfo;
 
 namespace FantasyRemoteCopy.UI.ViewModels
 {
-
     public partial class HomePageModel : FantasyPageModelBase, IPageKeep, INavigationAware
     {
         private readonly IDialogService _dialogService;
@@ -43,6 +42,8 @@ namespace FantasyRemoteCopy.UI.ViewModels
         private readonly INavigationService _navigationService;
 
         private DeviceDiscoveryMessage? _localNetInviteMessage = null;
+
+        private CancellationTokenSource _cancelDownloadTokenSource = new CancellationTokenSource();
 
         public HomePageModel(IUserService userService,
             ISaveDataService dataService,
@@ -161,8 +162,8 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
                     JoinMessageModel joinRequestModel = new JoinMessageModel(_systemType.System, _deviceType.Device, localIp, DeviceNickName, x.Flag);
                     // 发送加入请求
-                    _localNetJoinRequestBase.SendAsync(joinRequestModel);
-                });
+                    _localNetJoinRequestBase.SendAsync(joinRequestModel, default);
+                }, default);
             })
             {
                 IsBackground = true
@@ -183,7 +184,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
                     DiscoveredDevices.Add(x);
 
-                });
+                }, default);
 
             })
             { IsBackground = true };
@@ -194,7 +195,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         {
             Thread thread = new Thread(() =>
             {
-                _ = _tcpLoopListenContentBase.ReceiveAsync(SaveDataToLocalDB, ReportProgress(false));
+                _ = _tcpLoopListenContentBase.ReceiveAsync(SaveDataToLocalDB, ReportProgress(false), _cancelDownloadTokenSource.Token);
             })
             { IsBackground = true };
             thread.Start();
@@ -215,7 +216,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             model.IsDownLoading = false;
             NewMessageVisible = true;
             IsDownLoadingVisible = false;
-            saveDataModel.SourceDeviceNickName = model.NickName;
+            saveDataModel.SourceDeviceNickName = model.NickName ?? string.Empty;
             saveDataModel.Guid = Guid.NewGuid().ToString();
             _dataService.AddAsync(saveDataModel);
         }
@@ -249,7 +250,22 @@ namespace FantasyRemoteCopy.UI.ViewModels
                     return;
                 if (x.Data is SendFileModel fileModel)
                 {
-                    Task.Run(() => _tcpSendFileBase.SendAsync(fileModel, ReportProgress(true)));
+                    Task.Run(async () =>
+                    {
+                        DiscoveredDeviceModel? device = DiscoveredDevices.FirstOrDefault(y => y.Flag == fileModel.TargetFlag);
+                        if (device is null)
+                            throw new NullReferenceException();
+                        try
+                        {
+                            device.IsSendingData = true;
+                            await _tcpSendFileBase.SendAsync(fileModel, ReportProgress(true), device.CancellationTokenSource.Token);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            device.IsSendingData = false;
+                        }
+
+                    });
                 }
             });
         }
@@ -270,14 +286,12 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 IsBusy = true;
                 DiscoveredDevices.Clear();
 
-                CancellationToken cancellationToken = new CancellationToken();
-
-                IAsyncEnumerable<ScanDevice> devices = _localIpScannerBase.GetDevicesAsync(cancellationToken);
+                IAsyncEnumerable<ScanDevice> devices = _localIpScannerBase.GetDevicesAsync(default);
 
                 await foreach (ScanDevice device in devices)
                 {
                     await _localNetInviteDeviceBase.SendAsync(_localNetInviteMessage ??
-                                                                     throw new NullReferenceException());
+                                                                     throw new NullReferenceException(), default);
                 }
             }
             finally
@@ -294,8 +308,25 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 return;
             object obj = parameter.Get("data");
             if (obj is SendTextModel text)
-                Task.Run(() => _tcpSendTextBase.SendAsync(text, ReportProgress(true)));
+            {
+                DiscoveredDeviceModel? device = DiscoveredDevices.FirstOrDefault(x => x.Flag == text.TargetFlag);
+                if (device is null)
+                    throw new NullReferenceException();
 
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        device.IsSendingData = true;
+                        await _tcpSendTextBase.SendAsync(text, ReportProgress(true), device.CancellationTokenSource.Token);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        device.IsSendingData = false;
+                    }
+
+                });
+            }
         }
 
 
@@ -303,16 +334,9 @@ namespace FantasyRemoteCopy.UI.ViewModels
         {
             Progress<ProgressValueModel> progress = new Progress<ProgressValueModel>(x =>
             {
-                DiscoveredDeviceModel? flag;
-                if (isSendModel)
-                {
-                    flag  = DiscoveredDevices.FirstOrDefault(y => y.Flag == x.TargetFlag);
-                }
-                else
-                {
-                    flag  = DiscoveredDevices.FirstOrDefault(y => y.Flag == x.Flag);
-                }
-                   
+                DiscoveredDeviceModel? flag = isSendModel
+                    ? DiscoveredDevices.FirstOrDefault(y => y.Flag == x.TargetFlag)
+                    : DiscoveredDevices.FirstOrDefault(y => y.Flag == x.Flag);
                 if (flag is null)
                     return;
                 if (isSendModel)
@@ -324,7 +348,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 {
                     flag.IsSendingData = false;
                     flag.IsDownLoading = true;
-                    flag.DownloadProcess = x.Progress*10;
+                    flag.DownloadProcess = x.Progress * 10;
                 }
 
             });

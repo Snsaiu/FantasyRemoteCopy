@@ -13,10 +13,10 @@ public abstract class TcpSendFileBase : TcpSendBase<SendFileModel, ProgressValue
     {
         FileInfo fileInfo = new FileInfo(message.FileFullPath);
 
-        return new SendMetadataMessage(message.Flag, message.TargetFlag,Path.GetFileName(message.FileFullPath), fileInfo.Length);
+        return new SendMetadataMessage(message.Flag, message.TargetFlag, Path.GetFileName(message.FileFullPath), fileInfo.Length);
     }
 
-    protected override async Task SendProcessAsync(NetworkStream stream, SendFileModel message, IProgress<ProgressValueModel>? progress)
+    protected override async Task SendProcessAsync(NetworkStream stream, SendFileModel message, IProgress<ProgressValueModel>? progress, CancellationToken cancellationToken)
     {
         FileInfo fileInfo = new FileInfo(message.FileFullPath);
 
@@ -29,13 +29,13 @@ public abstract class TcpSendFileBase : TcpSendBase<SendFileModel, ProgressValue
         await using FileStream fs = new FileStream(message.FileFullPath, FileMode.Open, FileAccess.Read);
         while ((bytesRead = await fs.ReadAsync(buffer, 0, buffer.Length)) > 0)
         {
-            await stream.WriteAsync(buffer.AsMemory(0, bytesRead));
+            await stream.WriteAsync(buffer.AsMemory(0, bytesRead), cancellationToken);
             bytesSent += bytesRead;
 
             // 计算并显示上传进度
             double p = (double)bytesSent / totalBytes * 100;
 
-            progress?.Report(new ProgressValueModel(message.Flag, message.TargetFlag,p));
+            progress?.Report(new ProgressValueModel(message.Flag, message.TargetFlag, p));
 
             // Console.WriteLine($"上传进度: {progress:F2}%");
         }

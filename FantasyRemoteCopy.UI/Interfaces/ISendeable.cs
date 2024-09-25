@@ -10,16 +10,17 @@ public interface ISendeable
     /// 发送数据
     /// </summary>
     /// <param name="message">数据</param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task SendAsync(object message);
+    Task SendAsync(object message, CancellationToken cancellationToken);
 }
 
 public interface ISendeable<TMessage> : ISendeable
 {
-    Task SendAsync(TMessage message);
+    Task SendAsync(TMessage message, CancellationToken cancellationToken);
 
-    Task ISendeable.SendAsync(object message)
+    Task ISendeable.SendAsync(object message, CancellationToken cancellationToken)
     {
-        return SendAsync(message);
+        return SendAsync(message, cancellationToken);
     }
 }

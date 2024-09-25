@@ -9,8 +9,8 @@ namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 /// </summary>
 public abstract class TcpSendTextBase : TcpSendBase<SendTextModel, ProgressValueModel>
 {
-    protected override Task SendProcessAsync(NetworkStream stream, SendTextModel message, IProgress<ProgressValueModel>? progress)
+    protected override Task SendProcessAsync(NetworkStream stream, SendTextModel message, IProgress<ProgressValueModel>? progress, CancellationToken cancellationToken)
     {
-        return SendTextAsync(stream, message.Text);
+        return SendTextAsync(stream, message.Text, cancellationToken);
     }
 }

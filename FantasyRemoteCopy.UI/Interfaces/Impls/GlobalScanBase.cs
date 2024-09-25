@@ -5,7 +5,7 @@ namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
 public class GlobalScanBase : ISendeable<string>
 {
-    public async Task SendAsync(string message)
+    public async Task SendAsync(string message, CancellationToken cancellationToken)
     {
         string ipDuan = message.Remove(message.LastIndexOf('.'));
 
@@ -20,9 +20,13 @@ public class GlobalScanBase : ISendeable<string>
 
                 try
                 {
+                    if (cancellationToken.IsCancellationRequested)
+                        return;
+
                     Ping myPing = new Ping();
 
-                    PingReply pingReply = myPing.Send(pingIP, 20, buffer);
+                    myPing.SendAsync(pingIP, 20, buffer, cancellationToken);
+
                 }
                 finally
                 {
