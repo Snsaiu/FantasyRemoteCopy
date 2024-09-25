@@ -213,7 +213,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             DiscoveredDeviceModel? model = DiscoveredDevices.FirstOrDefault(x => x.Flag == data.Flag);
             if (model is null)
                 throw new NullReferenceException();
-            model.IsDownLoading = false;
+            model.WorkState = WorkState.None;
             NewMessageVisible = true;
             IsDownLoadingVisible = false;
             saveDataModel.SourceDeviceNickName = model.NickName ?? string.Empty;
@@ -239,7 +239,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         [RelayCommand]
         public Task Share(DiscoveredDeviceModel model)
         {
-            if (model.IsSendingData)
+            if (model.WorkState == WorkState.Sending)
                 return _dialogService.DisplayAlert("Warning", "Sorry, the file is being uploaded. Please try again after the upload is completed!", "Ok");
 
             NavigationParameter parameter = new NavigationParameter();
@@ -257,12 +257,12 @@ namespace FantasyRemoteCopy.UI.ViewModels
                             throw new NullReferenceException();
                         try
                         {
-                            device.IsSendingData = true;
+                            device.WorkState = WorkState.Sending;
                             await _tcpSendFileBase.SendAsync(fileModel, ReportProgress(true), device.CancellationTokenSource.Token);
                         }
                         catch (OperationCanceledException)
                         {
-                            device.IsSendingData = false;
+                            device.WorkState = WorkState.None;
                         }
 
                     });
@@ -317,12 +317,12 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 {
                     try
                     {
-                        device.IsSendingData = true;
+                        device.WorkState = WorkState.Sending;
                         await _tcpSendTextBase.SendAsync(text, ReportProgress(true), device.CancellationTokenSource.Token);
                     }
                     catch (OperationCanceledException)
                     {
-                        device.IsSendingData = false;
+                        device.WorkState = WorkState.None;
                     }
 
                 });
@@ -341,14 +341,12 @@ namespace FantasyRemoteCopy.UI.ViewModels
                     return;
                 if (isSendModel)
                 {
-                    flag.IsSendingData = true;
-                    flag.IsDownLoading = false;
+                    flag.WorkState = WorkState.Sending;
                 }
                 else
                 {
-                    flag.IsSendingData = false;
-                    flag.IsDownLoading = true;
-                    flag.DownloadProcess = x.Progress * 10;
+                    flag.WorkState = WorkState.Downloading;
+                    flag.Progress = x.Progress * 10;
                 }
 
             });

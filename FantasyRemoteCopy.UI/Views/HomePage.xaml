@@ -4,7 +4,8 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:FantasyRemoteCopy.UI.Controls"
-    xmlns:convters="clr-namespace:FantasyRemoteCopy.UI.Converters"
+    xmlns:converters="clr-namespace:FantasyRemoteCopy.UI.Converters"
+    xmlns:models="using:FantasyRemoteCopy.UI.Models"
     xmlns:tb="https://notifyicon.com/"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="cp"
@@ -51,7 +52,7 @@
                 <Label
                     FontSize="60"
                     HorizontalOptions="Center"
-                    Text="{Binding UserName, Converter={convters:TextToHeaderCharConverter}}"
+                    Text="{Binding UserName, Converter={converters:TextToHeaderCharConverter}}"
                     TextColor="White"
                     VerticalOptions="Center" />
             </Grid>
@@ -182,19 +183,67 @@
                                     VerticalOptions="Center"
                                     VerticalTextAlignment="Center" />
                             </Grid>
-                            <controls:BlinCircle
-                                Grid.Column="1"
-                                IsVisible="{Binding IsSendingData}"
-                                Color="blue" />
-                            <controls:BlinCircle
-                                Grid.Column="2"
-                                IsVisible="{Binding IsDownLoading}"
-                                Color="red" />
+                            <controls:BlinCircle Grid.Column="1" Color="blue">
+                                <controls:BlinCircle.Style>
+                                    <Style TargetType="controls:BlinCircle">
+                                        <Setter Property="IsVisible" Value="False" />
+                                        <Style.Triggers>
+                                            <DataTrigger
+                                                Binding="{Binding WorkState}"
+                                                TargetType="controls:BlinCircle"
+                                                Value="{x:Static models:WorkState.None}">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                            <DataTrigger
+                                                Binding="{Binding WorkState}"
+                                                TargetType="controls:BlinCircle"
+                                                Value="{x:Static models:WorkState.Downloading}">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                            <DataTrigger
+                                                Binding="{Binding WorkState}"
+                                                TargetType="controls:BlinCircle"
+                                                Value="{x:Static models:WorkState.Sending}">
+                                                <Setter Property="IsVisible" Value="True" />
+                                            </DataTrigger>
+
+                                        </Style.Triggers>
+                                    </Style>
+                                </controls:BlinCircle.Style>
+                            </controls:BlinCircle>
+                            <controls:BlinCircle Grid.Column="2" Color="red">
+                                <controls:BlinCircle.Style>
+                                    <Style TargetType="controls:BlinCircle">
+                                        <Setter Property="IsVisible" Value="False" />
+                                        <Style.Triggers>
+                                            <DataTrigger
+                                                Binding="{Binding WorkState}"
+                                                TargetType="controls:BlinCircle"
+                                                Value="{x:Static models:WorkState.None}">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                            <DataTrigger
+                                                Binding="{Binding WorkState}"
+                                                TargetType="controls:BlinCircle"
+                                                Value="{x:Static models:WorkState.Sending}">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                            <DataTrigger
+                                                Binding="{Binding WorkState}"
+                                                TargetType="controls:BlinCircle"
+                                                Value="{x:Static models:WorkState.Downloading}">
+                                                <Setter Property="IsVisible" Value="True" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </controls:BlinCircle.Style>
+                            </controls:BlinCircle>
                             <ImageButton
                                 Grid.Column="3"
                                 Command="{Binding BindingContext.ShareCommand, Source={x:Reference cp}}"
                                 CommandParameter="{Binding .}"
                                 HeightRequest="50"
+                                IsEnabled="{Binding WorkState, Converter={converters:WorkStateToBooleanConverter}}"
                                 Source="share.png"
                                 WidthRequest="50" />
                         </Grid>

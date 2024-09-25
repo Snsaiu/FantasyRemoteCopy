@@ -5,6 +5,14 @@ using FantasyRemoteCopy.UI.Interfaces;
 
 namespace FantasyRemoteCopy.UI.Models
 {
+
+    public enum WorkState
+    {
+        None,
+        Sending,
+        Downloading,
+    }
+
     /// <summary>
     /// 设备发现的模型
     /// </summary>
@@ -26,14 +34,13 @@ namespace FantasyRemoteCopy.UI.Models
         [ObservableProperty]
         private string? deviceName;
 
-        [ObservableProperty]
-        private bool isDownLoading = false;
 
         [ObservableProperty]
-        private bool isSendingData = false;
+        private WorkState workState;
 
         [ObservableProperty]
-        private double downloadProcess = 0;
+        private double progress;
+
 
         public CancellationTokenSource CancellationTokenSource { get; set; } = new CancellationTokenSource();
 
