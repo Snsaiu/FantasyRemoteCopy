@@ -133,10 +133,10 @@
                         BackgroundColor="White"
                         ColumnDefinitions="auto,*,auto">
                         <Image
-                            HeightRequest="{OnPlatform WinUI=70,
+                            HeightRequest="{OnPlatform WinUI=50,
                                                        MacCatalyst=50}"
                             Source="{Binding Img}"
-                            WidthRequest="{OnPlatform WinUI=70,
+                            WidthRequest="{OnPlatform WinUI=50,
                                                       MacCatalyst=50}" />
                         <Grid
                             Grid.Column="1"
@@ -171,7 +171,7 @@
                                 <ProgressBar
                                     Progress="{Binding Progress}"
                                     ProgressColor="OrangeRed"
-                                    WidthRequest="80" />
+                                    WidthRequest="50" />
                                 <Label
                                     Grid.Column="1"
                                     FontSize="12"

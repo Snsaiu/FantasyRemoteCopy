@@ -341,16 +341,29 @@ namespace FantasyRemoteCopy.UI.ViewModels
                     return;
                 if (isSendModel)
                 {
-                    flag.WorkState = WorkState.Sending;
+
                     if (x.Progress >= 1)
                     {
                         flag.WorkState = WorkState.None;
                         flag.Progress = 0;
                     }
+                    else
+                    {
+                        flag.WorkState = WorkState.Sending;
+                    }
                 }
                 else
                 {
-                    flag.WorkState = WorkState.Downloading;
+                    if (x.Progress >= 1)
+                    {
+                        flag.WorkState = WorkState.None;
+                        flag.Progress = 0;
+                    }
+                    else
+                    {
+                        flag.WorkState = WorkState.Downloading;
+                    }
+
 
                 }
                 flag.Progress = x.Progress;
