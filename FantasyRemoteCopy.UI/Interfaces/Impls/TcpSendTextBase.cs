@@ -1,6 +1,7 @@
 ﻿using FantasyRemoteCopy.UI.Models;
 
 using System.Net.Sockets;
+using System.Text;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
@@ -9,8 +10,11 @@ namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 /// </summary>
 public abstract class TcpSendTextBase : TcpSendBase<SendTextModel, ProgressValueModel>
 {
-    protected override Task SendProcessAsync(NetworkStream stream, SendTextModel message, IProgress<ProgressValueModel>? progress, CancellationToken cancellationToken)
+    protected override async Task SendProcessAsync(NetworkStream stream, SendTextModel message, IProgress<ProgressValueModel>? progress, CancellationToken cancellationToken)
     {
-        return SendTextAsync(stream, message.Text, cancellationToken);
+        byte[] messageBytes = Encoding.UTF8.GetBytes(message.Text);
+        await stream.WriteAsync(messageBytes, 0, (int)message.Size, cancellationToken);
+        progress?.Report(new ProgressValueModel(message.Flag, message.TargetFlag, 100));
     }
+
 }

@@ -342,12 +342,15 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 if (isSendModel)
                 {
                     flag.WorkState = WorkState.Sending;
+                    if (x.Progress >= 100)
+                        flag.WorkState = WorkState.None;
                 }
                 else
                 {
                     flag.WorkState = WorkState.Downloading;
-                    flag.Progress = x.Progress * 10;
+
                 }
+                flag.Progress = x.Progress;
 
             });
             return progress;

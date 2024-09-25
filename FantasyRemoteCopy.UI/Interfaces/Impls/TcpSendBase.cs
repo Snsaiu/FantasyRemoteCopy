@@ -17,10 +17,10 @@ public abstract class TcpSendBase<T, P> : ISendableWithProgress<T, P> where T : 
         return new SendMetadataMessage(message.Flag, message.TargetFlag, message.Size);
     }
 
-    protected Task SendTextAsync(NetworkStream stream, string text, CancellationToken cancellationToken, int? size = null)
+    protected async Task SendTextAsync(NetworkStream stream, string text, CancellationToken cancellationToken, int? size = null)
     {
         byte[] messageBytes = Encoding.UTF8.GetBytes(text);
-        return stream.WriteAsync(messageBytes, 0, size ?? messageBytes.Length, cancellationToken);
+        await stream.WriteAsync(messageBytes, 0, size ?? messageBytes.Length, cancellationToken);
     }
 
     private Task SendMetadataTextAsync(NetworkStream stream, string text, CancellationToken cancellationToken)
