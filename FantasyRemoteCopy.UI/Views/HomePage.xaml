@@ -175,10 +175,23 @@
                                 <Label
                                     Grid.Column="1"
                                     FontSize="12"
-                                    Text="{Binding Progress, StringFormat='{0:P0}'}"
+                                    Text="{Binding Progress, StringFormat='{0:P1}'}"
                                     TextColor="Gray"
                                     VerticalOptions="Center"
                                     VerticalTextAlignment="Center" />
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="IsVisible" Value="True" />
+                                        <Style.Triggers>
+                                            <DataTrigger
+                                                Binding="{Binding WorkState}"
+                                                TargetType="Grid"
+                                                Value="{x:Static models:WorkState.None}">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
                             </Grid>
                             <controls:BlinCircle Grid.Column="1" Color="blue">
                                 <controls:BlinCircle.Style>
