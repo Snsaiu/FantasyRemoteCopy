@@ -13,7 +13,15 @@ public static class ConstParams
 
     public static string SaveFilePath()
     {
-        string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FantasyRemoteCopy");
+        string path = string.Empty;
+
+
+#if WINDOWS
+      
+        path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "FantasyRemoteCopy");
+#else
+        path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FantasyRemoteCopy");
+#endif
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
         return path;
