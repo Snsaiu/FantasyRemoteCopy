@@ -146,7 +146,7 @@
 	  <MauiImage Include="Resources\Images\windows.png" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="FantasyMvvm" Version="1.0.1.11-preview" />
+	  <PackageReference Include="FantasyMvvm" Version="1.0.1.12-preview" />
 	  <PackageReference Include="H.NotifyIcon.Maui" Version="2.1.3" />
 	</ItemGroup>
 	<ItemGroup>
