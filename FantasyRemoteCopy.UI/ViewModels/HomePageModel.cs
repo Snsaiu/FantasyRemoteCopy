@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using FantasyMvvm;
@@ -8,6 +9,7 @@ using FantasyMvvm.FantasyModels.Impls;
 using FantasyMvvm.FantasyNavigation;
 using FantasyMvvm.FantasyRegionManager;
 
+using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
 using FantasyRemoteCopy.UI.Models;
@@ -38,6 +40,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         private readonly TcpSendTextBase _tcpSendTextBase;
         private readonly ISystemType _systemType;
         private readonly IDeviceType _deviceType;
+        private readonly IPopupService _popupService;
 
         private readonly INavigationService _navigationService;
 
@@ -61,6 +64,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             TcpSendTextBase tcpSendTextBase,
             ISystemType systemType,
             IDeviceType deviceType,
+            IPopupService popupService,
             INavigationService navigationService)
         {
             this.userService = userService;
@@ -79,6 +83,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             _tcpSendTextBase = tcpSendTextBase;
             _systemType = systemType;
             _deviceType = deviceType;
+            _popupService = popupService;
             _navigationService = navigationService;
             DiscoveredDevices = [];
 
@@ -266,6 +271,14 @@ namespace FantasyRemoteCopy.UI.ViewModels
                         }
 
                     });
+                }
+                else if (x.Data is SendType and SendType.Text)
+                {
+                    _navigationService.NavigationToAsync(nameof(TextInputPage), parameter);
+                }
+                else
+                {
+                    throw new NotImplementedException();
                 }
             });
         }

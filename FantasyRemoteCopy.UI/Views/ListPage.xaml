@@ -1,56 +1,92 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:behaviors="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="FantasyRemoteCopy.UI.Views.ListPage"
-             x:Name="cp"
-             BackgroundColor="AliceBlue"
-           
-             Title="History">
+<ContentPage
+    x:Class="FantasyRemoteCopy.UI.Views.ListPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="cp"
+    Title="History"
+    BackgroundColor="AliceBlue">
     <Grid>
-
-    
-            <CollectionView ItemsSource="{Binding Models}">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical"
-                                       ItemSpacing="2" />
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid ColumnDefinitions="auto,*,auto" BackgroundColor="White">
-                            <Image Source="{Binding Image }" WidthRequest="60" HeightRequest="60"></Image>
-                            <Grid Margin="5,0,0,0" HeightRequest="55" RowDefinitions="*,auto,auto" Grid.Column="1">
-                                <Label  TextColor="Black" MaxLines="1" FontSize="12" Text="{Binding Title}"></Label>
-                                <Label FontSize="10" TextColor="Gray" Text="{Binding SourceDeviceName,StringFormat='Source：{0}'}" Grid.Row="1"></Label>
-                                <Label FontSize="10" TextColor="Gray" Text="{Binding Time}" Grid.Row="2"></Label>
-                            </Grid>
-                            <Grid Grid.Column="2" ColumnDefinitions="auto,auto,auto,auto,auto">
-                                <Grid.Resources>
-                                    <Style TargetType="ImageButton">
-                                        <Setter Property="HeightRequest" Value="30"/>
-                                        <Setter Property="WidthRequest" Value="30"/>
-                                        <Setter Property="BackgroundColor" Value="Transparent"/>
-                                        <Setter Property="Margin" Value="5,0"/>
-                                    </Style>
-                                </Grid.Resources>
-                                <ImageButton Command="{Binding BindingContext.CopyContentCommand,Source={Reference cp}}" CommandParameter="{Binding .}" Source="copy.png" IsVisible="{Binding IsText}">
-                                  
-                                </ImageButton>
-                                <ImageButton Grid.Column="1" Source="detail.png" Command="{Binding BindingContext.DetailCommand, Source={x:Reference cp}}" CommandParameter="{Binding .}"  IsVisible="{Binding IsText}"></ImageButton>
-                            <ImageButton Grid.Column="2" Source="openfile.png" Command="{Binding BindingContext.OpenFileCommand,Source={x:Reference cp}}" CommandParameter="{Binding .}" IsVisible="{Binding IsFile}"></ImageButton>
-                            <ImageButton Grid.Column="3" Command="{Binding BindingContext.OpenFolderCommand,Source={x:Reference cp}}" CommandParameter="{Binding .}" Source="openfolder.png"  IsVisible="{Binding IsFile}"></ImageButton>
-                                <ImageButton Grid.Column="4" Source="delete.png" Command="{Binding BindingContext.DeleteCommand ,Source={x:Reference cp}}" CommandParameter="{Binding .}"  ></ImageButton>
-                            </Grid>
-
-
-
+        <CollectionView ItemsSource="{Binding Models}">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="2" Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid BackgroundColor="White" ColumnDefinitions="auto,*,auto">
+                        <Image
+                            HeightRequest="60"
+                            Source="{Binding Image}"
+                            WidthRequest="60" />
+                        <Grid
+                            Grid.Column="1"
+                            Margin="5,0,0,0"
+                            HeightRequest="55"
+                            RowDefinitions="*,auto,auto">
+                            <Label
+                                FontSize="12"
+                                MaxLines="1"
+                                Text="{Binding Title}"
+                                TextColor="Black" />
+                            <Label
+                                Grid.Row="1"
+                                FontSize="10"
+                                Text="{Binding SourceDeviceName, StringFormat='Source：{0}'}"
+                                TextColor="Gray" />
+                            <Label
+                                Grid.Row="2"
+                                FontSize="10"
+                                Text="{Binding Time}"
+                                TextColor="Gray" />
                         </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-     
+                        <Grid Grid.Column="2" ColumnDefinitions="auto,auto,auto,auto,auto">
+                            <Grid.Resources>
+                                <Style TargetType="ImageButton">
+                                    <Setter Property="HeightRequest" Value="30" />
+                                    <Setter Property="WidthRequest" Value="30" />
+                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                    <Setter Property="Margin" Value="5,0" />
+                                </Style>
+                            </Grid.Resources>
+                            <ImageButton
+                                Command="{Binding BindingContext.CopyContentCommand, Source={Reference cp}}"
+                                CommandParameter="{Binding .}"
+                                IsVisible="{Binding IsText}"
+                                Source="copy.png" />
+                            <ImageButton
+                                Grid.Column="1"
+                                Command="{Binding BindingContext.DetailCommand, Source={x:Reference cp}}"
+                                CommandParameter="{Binding .}"
+                                IsVisible="{Binding IsText}"
+                                Source="detail.png" />
+                            <ImageButton
+                                Grid.Column="2"
+                                Command="{Binding BindingContext.OpenFileCommand, Source={x:Reference cp}}"
+                                CommandParameter="{Binding .}"
+                                IsVisible="{Binding IsFile}"
+                                Source="openfile.png" />
+                            <ImageButton
+                                Grid.Column="3"
+                                Command="{Binding BindingContext.OpenFolderCommand, Source={x:Reference cp}}"
+                                CommandParameter="{Binding .}"
+                                IsVisible="{Binding IsFile}"
+                                Source="openfolder.png" />
+                            <ImageButton
+                                Grid.Column="4"
+                                Command="{Binding BindingContext.DeleteCommand, Source={x:Reference cp}}"
+                                CommandParameter="{Binding .}"
+                                Source="delete.png" />
+                        </Grid>
+
+
+
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
     <ContentPage.Behaviors>
-        <behaviors:EventToCommandBehavior EventName="Loaded" Command="{Binding InitCommand}"/>
+        <behaviors:EventToCommandBehavior Command="{Binding InitCommand}" EventName="Loaded" />
     </ContentPage.Behaviors>
 </ContentPage>
