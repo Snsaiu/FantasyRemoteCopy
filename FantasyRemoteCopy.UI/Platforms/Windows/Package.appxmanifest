@@ -6,7 +6,7 @@
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   IgnorableNamespaces="uap rescap mp">
 
-  <Identity Name="snsaiu.13305903A443B" Publisher="CN=9799F77B-B955-49C5-A9B1-F790D1261879" Version="1.1.10.0" />
+  <Identity Name="snsaiu.9548105B412D" Publisher="CN=9799F77B-B955-49C5-A9B1-F790D1261879" Version="1.1.11.0" />
 
   <Properties>
     <DisplayName>隔空传输</DisplayName>
