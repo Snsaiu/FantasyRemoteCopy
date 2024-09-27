@@ -18,20 +18,13 @@ public class GlobalScanBase : ISendeable<string>
             {
                 string pingIP = ipDuan + "." + i.ToString();
 
-                try
-                {
-                    if (cancellationToken.IsCancellationRequested)
-                        return;
 
-                    Ping myPing = new Ping();
+                cancellationToken.ThrowIfCancellationRequested();
 
-                    myPing.SendAsync(pingIP, 20, buffer, cancellationToken);
+                Ping myPing = new Ping();
 
-                }
-                finally
-                {
+                myPing.SendAsync(pingIP, 20, cancellationToken);
 
-                }
             }
         });
 
