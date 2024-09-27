@@ -6,10 +6,10 @@
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   IgnorableNamespaces="uap rescap mp">
 
-  <Identity Name="snsaiu.13305903A443B" Publisher="CN=9799F77B-B955-49C5-A9B1-F790D1261879" Version="1.1.8.0" />
+  <Identity Name="snsaiu.13305903A443B" Publisher="CN=9799F77B-B955-49C5-A9B1-F790D1261879" Version="1.1.10.0" />
 
   <Properties>
-    <DisplayName>同网拷贝</DisplayName>
+    <DisplayName>隔空传输</DisplayName>
     <PublisherDisplayName>snsaiu</PublisherDisplayName>
     <Logo>$placeholder$.png</Logo>
   </Properties>
@@ -26,7 +26,7 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-         DisplayName="同网拷贝"
+         DisplayName="隔空传输"
         Description="局域网数据共享"
         Square150x150Logo="$placeholder$.png"
         Square44x44Logo="$placeholder$.png"
