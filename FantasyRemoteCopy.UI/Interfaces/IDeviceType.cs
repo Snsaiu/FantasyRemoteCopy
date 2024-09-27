@@ -1,4 +1,4 @@
-using Device = FantasyRemoteCopy.Core.Enums.Device;
+using Device = FantasyRemoteCopy.UI.Enums.Device;
 
 namespace FantasyRemoteCopy.UI.Interfaces;
 

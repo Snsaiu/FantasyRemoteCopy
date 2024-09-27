@@ -2,7 +2,7 @@ using FantasyRemoteCopy.UI.Interfaces.Impls;
 
 namespace FantasyRemoteCopy.UI;
 
-public class TcpLoopListenContent : TcpLoopListenContentBase
+public sealed class TcpLoopListenContent : TcpLoopListenContentBase
 {
 
 }

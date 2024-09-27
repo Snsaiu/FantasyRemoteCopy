@@ -2,7 +2,7 @@
 
 namespace FantasyRemoteCopy.UI;
 
-public class AppDataFolderFileSaveLocation : IFileSaveLocation
+public sealed class AppDataFolderFileSaveLocation : IFileSaveLocation
 {
     public string GetSaveLocation()
     {

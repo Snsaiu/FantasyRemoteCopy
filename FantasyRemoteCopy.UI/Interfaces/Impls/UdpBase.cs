@@ -6,10 +6,7 @@ public abstract class UdpBase : IDisposable
 {
     protected UdpClient? UdpClient;
 
-    protected virtual UdpClient CreateUdpClient()
-    {
-        return new UdpClient();
-    }
+    protected virtual UdpClient CreateUdpClient() => new();
 
     public void Dispose()
     {

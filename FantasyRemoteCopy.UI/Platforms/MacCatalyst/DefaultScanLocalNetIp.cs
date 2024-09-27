@@ -2,9 +2,4 @@ using FantasyRemoteCopy.UI.Interfaces.Impls;
 
 namespace FantasyRemoteCopy.UI;
 
-public class DefaultScanLocalNetIp : LocalIpScannerBase
-{
-    public DefaultScanLocalNetIp(DeviceLocalIpBase deviceLocalIpBase) : base(deviceLocalIpBase)
-    {
-    }
-}
+public sealed class DefaultScanLocalNetIp(DeviceLocalIpBase deviceLocalIpBase) : LocalIpScannerBase(deviceLocalIpBase);

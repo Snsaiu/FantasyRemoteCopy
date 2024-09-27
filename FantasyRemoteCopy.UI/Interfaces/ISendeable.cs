@@ -15,7 +15,7 @@ public interface ISendeable
     Task SendAsync(object message, CancellationToken cancellationToken);
 }
 
-public interface ISendeable<TMessage> : ISendeable
+public interface ISendeable<in TMessage> : ISendeable
 {
     Task SendAsync(TMessage message, CancellationToken cancellationToken);
 

@@ -1,5 +1,4 @@
-﻿using System;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FantasyMvvm;
 using FantasyMvvm.FantasyDialogService;
@@ -7,30 +6,21 @@ using FantasyMvvm.FantasyModels;
 
 namespace FantasyRemoteCopy.UI.ViewModels
 {
-	public partial class DetailPageModel:FantasyPageModelBase,INavigationAware
-	{
-
+	public partial class DetailPageModel(IDialogService dialogService) : FantasyPageModelBase, INavigationAware
+    {
         [ObservableProperty]
-        private string content;
-
-        private readonly IDialogService _dialogService = null;
-
-		public DetailPageModel(IDialogService dialogService)
-		{
-            this._dialogService = dialogService;
-		}
+        private string content=string.Empty;
 
         [RelayCommand]
         public async Task Copy()
         {
             await Clipboard.Default.SetTextAsync(this.Content);
-            await this._dialogService.DisplayAlert("Information", "Success copy!", "Ok");
-            await Application.Current.MainPage.Navigation.PopAsync();
+            await dialogService.DisplayAlert("Information", "Success copy!", "Ok");
+            await Application.Current!.MainPage!.Navigation.PopAsync();
         }
 
         public void OnNavigatedFrom(string source, INavigationParameter parameter)
         {
-         
         }
 
         public void OnNavigatedTo(string source, INavigationParameter parameter)
@@ -39,4 +29,3 @@ namespace FantasyRemoteCopy.UI.ViewModels
         }
     }
 }
-

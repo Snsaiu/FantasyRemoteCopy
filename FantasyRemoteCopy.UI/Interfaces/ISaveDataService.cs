@@ -14,6 +14,4 @@ public interface ISaveDataService
     Task<ResultBase<bool>> ClearAsync();
 
     Task<ResultBase<SaveDataModel>> AddAsync(SaveDataModel model);
-
-
 }

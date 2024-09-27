@@ -3,32 +3,19 @@ using CommunityToolkit.Mvvm.Input;
 
 using FantasyMvvm;
 using FantasyMvvm.FantasyModels;
-using FantasyMvvm.FantasyNavigation;
-
-using FantasyRemoteCopy.Core.Enums;
+using FantasyRemoteCopy.UI.Enums;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
 using FantasyRemoteCopy.UI.Models;
 
 namespace FantasyRemoteCopy.UI.ViewModels.DialogModels;
 
-public partial class SendTypeDialogModel : FantasyDialogModelBase
+public partial class SendTypeDialogModel(DeviceLocalIpBase deviceLocalIp) : FantasyDialogModelBase
 {
-    public override event OnCloseDelegate OnCloseEvent;
-    private DiscoveredDeviceModel discoveredDeviceModel;
-
-    private readonly INavigationService _navigationService;
-
-
-    private readonly DeviceLocalIpBase _deviceLocalIp;
+    public override event OnCloseDelegate? OnCloseEvent;
+    private DiscoveredDeviceModel? discoveredDeviceModel;
 
     [ObservableProperty]
-    private bool isBusy = false;
-
-    public SendTypeDialogModel(DeviceLocalIpBase deviceLocalIp)
-    {
-
-        _deviceLocalIp = deviceLocalIp;
-    }
+    private bool isBusy;
 
     public override void OnParameter(INavigationParameter parameter)
     {
@@ -38,27 +25,26 @@ public partial class SendTypeDialogModel : FantasyDialogModelBase
     [RelayCommand]
     private Task TextInput()
     {
-        OnCloseEvent(new CloseResultModel { Success = true, Data = SendType.Text });
+        OnCloseEvent?.Invoke(new CloseResultModel { Success = true, Data = SendType.Text });
         return Task.CompletedTask;
     }
 
     [RelayCommand]
-
     public async Task FileInput()
     {
-
-        FileResult? f = await FilePicker.PickAsync();
+        var f = await FilePicker.PickAsync();
 
         if (f != null)
         {
-            string ip = await _deviceLocalIp.GetLocalIpAsync();
-
-            SendFileModel sendfileModel = new SendFileModel(ip, discoveredDeviceModel.Flag, f.FullPath);
-            OnCloseEvent(new CloseResultModel { Success = true, Data = sendfileModel });
+            var ip = await deviceLocalIp.GetLocalIpAsync();
+            if (discoveredDeviceModel is null)
+                throw new NullReferenceException();
+            var sendfileModel = new SendFileModel(ip, discoveredDeviceModel.Flag??throw new NullReferenceException(), f.FullPath);
+            OnCloseEvent?.Invoke(new CloseResultModel { Success = true, Data = sendfileModel });
         }
         else
         {
-            OnCloseEvent(new CloseResultModel { Success = false });
+            OnCloseEvent?.Invoke(new CloseResultModel { Success = false });
         }
 
     }

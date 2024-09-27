@@ -6,38 +6,15 @@ using FantasyMvvm.FantasyModels.Impls;
 using FantasyMvvm.FantasyNavigation;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
 using FantasyRemoteCopy.UI.Models;
+using FantasyRemoteCopy.UI.Views;
 
 namespace FantasyRemoteCopy.UI.ViewModels;
 
-public partial class TextInputPageModel : FantasyPageModelBase, INavigationAware
+public partial class TextInputPageModel(INavigationService navigationService, DeviceLocalIpBase localIpBase)
+    : FantasyPageModelBase, INavigationAware
 {
-    private INavigationService _navigationService;
-    private readonly DeviceLocalIpBase _localIpBase;
-
-    [ObservableProperty] private string content;
-
-    public TextInputPageModel(INavigationService navigationService, DeviceLocalIpBase localIpBase)
-    {
-        _navigationService = navigationService;
-        _localIpBase = localIpBase;
-    }
-
-    private Models.DiscoveredDeviceModel _discoveredDeviceModel;
-
-
-    [RelayCommand]
-    private async Task SendData()
-    {
-        if (string.IsNullOrEmpty(Content))
-            await _navigationService.NavigationToAsync(nameof(Views.HomePage), false, null);
-
-        var ip = await this._localIpBase.GetLocalIpAsync();
-
-        SendTextModel model = new SendTextModel(ip, _discoveredDeviceModel.Flag,Content);
-        NavigationParameter para = new NavigationParameter();
-        para.Add("data", model);
-        await _navigationService.NavigationToAsync(nameof(Views.HomePage), false, para);
-    }
+    private DiscoveredDeviceModel? _discoveredDeviceModel;
+    [ObservableProperty] private string content = string.Empty;
 
     [ObservableProperty] private string title = "To: ";
 
@@ -47,7 +24,22 @@ public partial class TextInputPageModel : FantasyPageModelBase, INavigationAware
 
     public void OnNavigatedTo(string source, INavigationParameter parameter)
     {
-        _discoveredDeviceModel = parameter.Get<Models.DiscoveredDeviceModel>("data");
+        _discoveredDeviceModel = parameter.Get<DiscoveredDeviceModel>("data");
         Title += _discoveredDeviceModel.NickName;
+    }
+
+
+    [RelayCommand]
+    private async Task SendData()
+    {
+        if (string.IsNullOrEmpty(Content))
+            await navigationService.NavigationToAsync(nameof(HomePage), false);
+
+        var ip = await localIpBase.GetLocalIpAsync();
+
+        var model = new SendTextModel(ip, _discoveredDeviceModel?.Flag ?? throw new NullReferenceException(), Content);
+        var para = new NavigationParameter();
+        para.Add("data", model);
+        await navigationService.NavigationToAsync(nameof(HomePage), false, para);
     }
 }

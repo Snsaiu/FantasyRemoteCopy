@@ -5,13 +5,12 @@ using FantasyMvvm;
 using FantasyMvvm.FantasyDialogService;
 using FantasyMvvm.FantasyModels.Impls;
 using FantasyMvvm.FantasyNavigation;
-
-using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Models;
 using FantasyRemoteCopy.UI.Views;
 
 using System.Collections.ObjectModel;
+using FantasyRemoteCopy.UI.Enums;
 
 namespace FantasyRemoteCopy.UI.ViewModels;
 
@@ -20,18 +19,15 @@ public partial class ListPageModel : FantasyPageModelBase
     private readonly ISaveDataService _saveDataService;
     private readonly IOpenFolder _openFolder;
 
-
-
     [ObservableProperty]
     private ObservableCollection<SaveItemModel> models = [];
 
     [ObservableProperty]
-    private bool isBusy = false;
+    private bool isBusy;
 
+    private readonly IDialogService _dialogService ;
 
-    private readonly IDialogService? _dialogService = null;
-
-    private readonly INavigationService? _navigationService = null;
+    private readonly INavigationService _navigationService ;
 
     public ListPageModel(ISaveDataService saveDataService, IOpenFolder openFolder, IDialogService dialogService, INavigationService navigationService)
     {
@@ -91,7 +87,7 @@ public partial class ListPageModel : FantasyPageModelBase
         // 判断文件是否存在
         if (File.Exists(model.Content) == false)
         {
-            FantasyResultModel.ResultBase<bool> res = await _saveDataService.DeleteDataAsync(model.Guid);
+            var res = await _saveDataService.DeleteDataAsync(model.Guid??throw new NullReferenceException());
             if (res.Ok)
             {
                 Models.Remove(model);
@@ -112,7 +108,7 @@ public partial class ListPageModel : FantasyPageModelBase
           else
           {
               await this._dialogService.DisplayAlert("Warning", $"{model.Title} Open Error", "Ok");
-        }  
+        }
 #elif MACCATALYST
 
         System.Diagnostics.Process.Start("open", model.Content);
@@ -138,7 +134,7 @@ public partial class ListPageModel : FantasyPageModelBase
             }
         }
 
-        FantasyResultModel.ResultBase<bool> res = await _saveDataService.DeleteDataAsync(model.Guid);
+        var res = await _saveDataService.DeleteDataAsync(model.Guid);
         if (res.Ok)
         {
             Models.Remove(model);
@@ -152,20 +148,26 @@ public partial class ListPageModel : FantasyPageModelBase
 
 
     [RelayCommand]
-    public void OpenFolder(SaveItemModel model)
+    public Task OpenFolder(SaveItemModel model)
     {
-        string p = Directory.GetParent(model.Content).ToString();
-        //var p=  Path.GetFullPath(model.Content);
+        if (string.IsNullOrEmpty(model.Content))
+        {
+           return this._dialogService.DisplayAlert("警告", "文件路径不存在", "确定");
+        }
+
+        var p = Directory.GetParent(model.Content)?.ToString();
+        if (string.IsNullOrEmpty(p))
+            return this._dialogService.DisplayAlert("警告", "文件夹父路径不存在", "确定");
 
         _openFolder.OpenFolder(p);
+        return Task.CompletedTask;
     }
 
 
     [RelayCommand]
     private async Task Detail(SaveItemModel model)
     {
-
-        NavigationParameter parameter = new NavigationParameter();
+        var parameter = new NavigationParameter();
         parameter.Add("data", model.Content);
         await _navigationService.NavigationToAsync(nameof(DetailPage), parameter);
     }
@@ -173,18 +175,23 @@ public partial class ListPageModel : FantasyPageModelBase
     [RelayCommand]
     public async Task Init()
     {
-        IsBusy = true;
-        FantasyResultModel.ResultBase<List<SaveDataModel>> list = await _saveDataService.GetAllAsync();
-        if (list.Ok)
+        try
         {
-            list.Data.Reverse();
-            rig(list.Data);
+            IsBusy = true;
+            var list = await _saveDataService.GetAllAsync();
+            if (list.Ok)
+            {
+                list.Data.Reverse();
+                rig(list.Data);
+            }
+            else
+            {
+                await _dialogService.DisplayAlert("Warning", list.ErrorMsg, "Ok");
+            }
         }
-        else
+        finally
         {
-            await _dialogService.DisplayAlert("Warning", list.ErrorMsg, "Ok");
-
+             IsBusy = false;
         }
-        IsBusy = false;
     }
 }

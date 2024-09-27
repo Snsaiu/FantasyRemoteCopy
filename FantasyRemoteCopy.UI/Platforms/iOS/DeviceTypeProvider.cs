@@ -1,9 +1,9 @@
 using FantasyRemoteCopy.UI.Interfaces;
-using Device = FantasyRemoteCopy.Core.Enums.Device;
+using Device = FantasyRemoteCopy.UI.Enums.Device;
 
 namespace FantasyRemoteCopy.UI;
 
-public class DeviceTypeProvider:IDeviceType
+public sealed class DeviceTypeProvider:IDeviceType
 {
     public Device Device { get; } = Device.Mobile;
 }

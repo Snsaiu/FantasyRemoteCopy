@@ -12,15 +12,11 @@ namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 public abstract class TcpLoopListenerBase<T, P, R> : IReceiveableWithProgress<T, P>
     where T : TransformResultModel<R> where P : IProgressValue
 {
-
-    protected virtual Task OnCancelReceiveAsync()
-    {
-        return Task.CompletedTask;
-    }
+    protected virtual Task OnCancelReceiveAsync() => Task.CompletedTask;
 
     public async Task ReceiveAsync(Action<T> receivedCallBack, IProgress<P>? progress, CancellationToken cancellationToken)
     {
-        TcpListener listener = new TcpListener(IPAddress.Any, ConstParams.TCP_PORT);
+        using TcpListener listener = new TcpListener(IPAddress.Any, ConstParams.TCP_PORT);
         listener.Start();
 
         while (true)
@@ -28,10 +24,8 @@ public abstract class TcpLoopListenerBase<T, P, R> : IReceiveableWithProgress<T,
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                TcpClient client = await listener.AcceptTcpClientAsync(cancellationToken);
-
+                var client = await listener.AcceptTcpClientAsync(cancellationToken);
                 _ = HandleClientAsync(client, receivedCallBack, progress, cancellationToken); // 处理客户端连接
-
             }
             catch (OperationCanceledException)
             {
@@ -39,7 +33,6 @@ public abstract class TcpLoopListenerBase<T, P, R> : IReceiveableWithProgress<T,
             }
         }
     }
-
 
     protected async Task<string> ReceiveStringAsync(NetworkStream stream, long length)
     {
@@ -50,8 +43,8 @@ public abstract class TcpLoopListenerBase<T, P, R> : IReceiveableWithProgress<T,
 
     private async Task<string> ReceiveMetadataStringAsync(NetworkStream stream, CancellationToken cancellationToken)
     {
-        byte[] buffer = new byte[200];
-        int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken);
+        var buffer = new byte[200];
+         _ = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken);
 
         // 2. 读取前 4 字节的原始长度信息
         int originalLength = BitConverter.ToInt32(buffer, 0);
@@ -68,16 +61,13 @@ public abstract class TcpLoopListenerBase<T, P, R> : IReceiveableWithProgress<T,
 
     private async Task HandleClientAsync(TcpClient client, Action<T> receivedCallBack, IProgress<P>? progress, CancellationToken cancellationToken)
     {
-        NetworkStream stream = client.GetStream();
-
-        string metaString = await ReceiveMetadataStringAsync(stream, cancellationToken);
-
-        SendMetadataMessage? metaMessage = JsonConvert.DeserializeObject<SendMetadataMessage>(metaString);
+        var stream = client.GetStream();
+        var metaString = await ReceiveMetadataStringAsync(stream, cancellationToken);
+        var metaMessage = JsonConvert.DeserializeObject<SendMetadataMessage>(metaString);
         if (metaMessage is null)
         {
             throw new NullReferenceException();
         }
-
         await HandleReceiveAsync(stream, metaMessage, receivedCallBack, progress, cancellationToken);
     }
 

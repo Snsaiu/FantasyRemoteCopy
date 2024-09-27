@@ -14,8 +14,9 @@ public abstract class DbBase
         if (!Directory.Exists(FileSystem.AppDataDirectory))
             Directory.CreateDirectory(FileSystem.AppDataDirectory);
 
-
         connection = new SQLiteAsyncConnection(dbPath);
+
+        // ReSharper disable once VirtualMemberCallInConstructor
         CreateTableAsync().WaitTask(null, x => throw x);
 
     }

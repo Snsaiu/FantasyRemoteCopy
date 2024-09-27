@@ -1,8 +1,8 @@
 ﻿using FantasyRemoteCopy.UI.Interfaces.Impls;
 
-namespace FantasyRemoteCopy.UI.Platforms.Windows;
+namespace FantasyRemoteCopy.UI;
 
-public class TcpSendText : TcpSendTextBase
+public sealed class TcpSendText : TcpSendTextBase
 {
 
 }

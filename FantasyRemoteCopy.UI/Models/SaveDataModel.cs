@@ -1,5 +1,4 @@
-﻿using FantasyRemoteCopy.Core.Enums;
-
+﻿using FantasyRemoteCopy.UI.Enums;
 using SQLite;
 
 namespace FantasyRemoteCopy.UI.Models;

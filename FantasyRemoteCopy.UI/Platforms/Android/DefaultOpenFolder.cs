@@ -2,10 +2,7 @@
 
 namespace FantasyRemoteCopy.UI;
 
-public class DefaultOpenFolder : IOpenFolder
+public sealed class DefaultOpenFolder : IOpenFolder
 {
-    public void OpenFolder(string path)
-    {
-        throw new NotImplementedException();
-    }
+    public void OpenFolder(string path) => throw new NotImplementedException();
 }

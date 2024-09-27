@@ -2,7 +2,7 @@ using FantasyRemoteCopy.UI.Interfaces.Impls;
 
 namespace FantasyRemoteCopy.UI;
 
-public class GlobalScan:GlobalScanBase
+public sealed class GlobalScan:GlobalScanBase
 {
-    
+
 }

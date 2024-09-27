@@ -6,29 +6,24 @@ using System.Runtime.CompilerServices;
 
 namespace FantasyRemoteCopy.UI
 {
-    public class DefaultScanLocalNetIp : LocalIpScannerBase
+    public sealed class DefaultScanLocalNetIp(DeviceLocalIpBase deviceLocalIpBase)
+        : LocalIpScannerBase(deviceLocalIpBase)
     {
-        public DefaultScanLocalNetIp(DeviceLocalIpBase deviceLocalIpBase) : base(deviceLocalIpBase)
-        {
-        }
-
         public override async IAsyncEnumerable<ScanDevice> GetDevicesAsync([EnumeratorCancellation] CancellationToken cancellationToken)
         {
-            string localIp = await DeviceLocalIpBase.GetLocalIpAsync();
-            string[] localSplits = localIp.Split(".")[0..3];
-            string baseIP = string.Join(".", localSplits);
-            for (int i = 1; i < 255; i++)
+            var localIp = await DeviceLocalIpBase.GetLocalIpAsync();
+            var localSplits = localIp.Split(".")[0..3];
+            var baseIP = string.Join(".", localSplits);
+            for (var i = 1; i < 255; i++)
             {
-                string ip = $"{baseIP}.{i}";
-                Ping ping = new Ping();
-                PingReply reply = ping.Send(ip, 100);
-
+                var ip = $"{baseIP}.{i}";
+                var ping = new Ping();
+                var reply = ping.Send(ip, 100);
                 if (reply.Status == IPStatus.Success)
                 {
                     yield return new ScanDevice(ip);
                 }
             }
-
         }
     }
 }

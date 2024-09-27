@@ -7,8 +7,5 @@ namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
 public class LocalNetJoinProcessBase : UdpLoopIListenBase<JoinMessageModel>
 {
-    protected override UdpClient CreateUdpClient()
-    {
-        return new UdpClient(ConstParams.JOIN_PORT);
-    }
+    protected override UdpClient CreateUdpClient() => new(ConstParams.JOIN_PORT);
 }

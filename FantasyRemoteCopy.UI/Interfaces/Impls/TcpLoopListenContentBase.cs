@@ -1,8 +1,8 @@
-using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.UI.Consts;
 using FantasyRemoteCopy.UI.Models;
 
 using System.Net.Sockets;
+using FantasyRemoteCopy.UI.Enums;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
@@ -15,11 +15,9 @@ public abstract class TcpLoopListenContentBase : TcpLoopListenerBase<TransformRe
 
         if (message.SendType == SendType.Text)
         {
-            string text = await ReceiveStringAsync(stream, message.Size);
-
-            TransformResultModel<string> result = new TransformResultModel<string>(message.Flag, SendType.Text, text);
-
-            receivedCallBack?.Invoke(result);
+            var text = await ReceiveStringAsync(stream, message.Size);
+            var result = new TransformResultModel<string>(message.Flag, SendType.Text, text);
+            receivedCallBack.Invoke(result);
         }
         else
         {
@@ -28,21 +26,21 @@ public abstract class TcpLoopListenContentBase : TcpLoopListenerBase<TransformRe
             string saveFullPath = Path.Combine(ConstParams.SaveFilePath(), message.Name);
             long receivedBytes = 0;
 
-            await using FileStream fs = new FileStream(saveFullPath, FileMode.Create, FileAccess.Write);
+            await using var fs = new FileStream(saveFullPath, FileMode.Create, FileAccess.Write);
             int bytesRead;
-            while ((bytesRead = await stream.ReadAsync(buffer)) > 0)
+            while ((bytesRead = await stream.ReadAsync(buffer,cancellationToken)) > 0)
             {
-                await fs.WriteAsync(buffer, 0, bytesRead);
+                await fs.WriteAsync(buffer, 0, bytesRead,cancellationToken);
                 receivedBytes += bytesRead;
 
                 // 计算并显示下载进度
                 double p = (double)receivedBytes / fileSize;
-                ProgressValueModel pModel = new ProgressValueModel(message.Flag, message.TargetFlag, p);
+                var pModel = new ProgressValueModel(message.Flag, message.TargetFlag, p);
                 progress?.Report(pModel);
             }
 
-            TransformResultModel<string> result = new TransformResultModel<string>(message.Flag, SendType.File, saveFullPath);
-            receivedCallBack?.Invoke(result);
+            var result = new TransformResultModel<string>(message.Flag, SendType.File, saveFullPath);
+            receivedCallBack.Invoke(result);
         }
     }
 }

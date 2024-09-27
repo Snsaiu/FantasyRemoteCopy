@@ -11,7 +11,7 @@ namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 public abstract class LocalNetInviteDeviceBase : UdpSendBase<DeviceDiscoveryMessage>
 {
     protected override UdpClient CreateUdpClient()=>new UdpClient(){EnableBroadcast = true};
-  
-    protected override IPEndPoint SetTarget(DeviceDiscoveryMessage invite)=>new IPEndPoint(IPAddress.Broadcast, ConstParams.INVITE_PORT);
-    
+
+    protected override IPEndPoint SetTarget(DeviceDiscoveryMessage invite)=>new IPEndPoint(IPAddress.Parse(invite.TargetFlag), ConstParams.INVITE_PORT);
+
 }

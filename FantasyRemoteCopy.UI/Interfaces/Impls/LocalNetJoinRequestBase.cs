@@ -10,8 +10,5 @@ namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
 public abstract class LocalNetJoinRequestBase:UdpSendBase<JoinMessageModel>
 {
-    protected override IPEndPoint SetTarget(JoinMessageModel message)
-    {
-        return new IPEndPoint(IPAddress.Parse(message.SendTarget), ConstParams.JOIN_PORT);
-    }
+    protected override IPEndPoint SetTarget(JoinMessageModel message) => new(IPAddress.Parse(message.SendTarget), ConstParams.JOIN_PORT);
 }

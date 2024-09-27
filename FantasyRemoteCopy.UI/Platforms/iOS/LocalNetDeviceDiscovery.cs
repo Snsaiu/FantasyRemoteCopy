@@ -2,7 +2,7 @@ using FantasyRemoteCopy.UI.Interfaces.Impls;
 
 namespace FantasyRemoteCopy.UI;
 
-public class LocalNetDeviceDiscovery:LocalNetDeviceDiscoveryBase
+public sealed class LocalNetDeviceDiscovery:LocalNetDeviceDiscoveryBase
 {
-    
+
 }

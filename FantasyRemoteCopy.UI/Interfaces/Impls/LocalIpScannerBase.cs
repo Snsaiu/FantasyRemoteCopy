@@ -1,42 +1,36 @@
-using FantasyRemoteCopy.Core.Enums;
 using FantasyRemoteCopy.UI.Models;
 
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-
-using Device = FantasyRemoteCopy.Core.Enums.Device;
+using FantasyRemoteCopy.UI.Enums;
+using Device = FantasyRemoteCopy.UI.Enums.Device;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
-public class LocalIpScannerBase : IGetLocalNetDevices
+public class LocalIpScannerBase(DeviceLocalIpBase deviceLocalIpBase) : IGetLocalNetDevices
 {
-    protected readonly DeviceLocalIpBase DeviceLocalIpBase;
+    protected readonly DeviceLocalIpBase DeviceLocalIpBase = deviceLocalIpBase;
     protected virtual string Pattern { get; } = @"(?<ip>([0-9]{1,3}\.?){4})\s*\) at ([0-9]|[a-z])";
-
-    public LocalIpScannerBase(DeviceLocalIpBase deviceLocalIpBase)
-    {
-        DeviceLocalIpBase = deviceLocalIpBase;
-    }
 
     public virtual async IAsyncEnumerable<ScanDevice> GetDevicesAsync([EnumeratorCancellation] CancellationToken cancellationToken)
     {
         string localIp = await DeviceLocalIpBase.GetLocalIpAsync();
 
-        List<string> list = localIp.Split(".").ToList()[0..2];
+        var list = localIp.Split(".").ToList()[0..2];
         string ipStart = string.Join(".", list);
 
-        System.Collections.ObjectModel.ReadOnlyCollection<string> scanIps = await Task.Run(() =>
+        var scanIps = await Task.Run(() =>
         {
             List<string> temp = [];
-            System.Diagnostics.Process pProcess = new System.Diagnostics.Process();
+            var pProcess = new System.Diagnostics.Process();
             pProcess.StartInfo.FileName = "arp";
             pProcess.StartInfo.Arguments = "-a ";
             pProcess.StartInfo.UseShellExecute = false;
             pProcess.StartInfo.RedirectStandardOutput = true;
             pProcess.StartInfo.CreateNoWindow = true;
             pProcess.Start();
-            string cmdOutput = pProcess.StandardOutput.ReadToEnd();
+            var cmdOutput = pProcess.StandardOutput.ReadToEnd();
 
             foreach (Match m in Regex.Matches(cmdOutput, Pattern, RegexOptions.IgnoreCase))
             {

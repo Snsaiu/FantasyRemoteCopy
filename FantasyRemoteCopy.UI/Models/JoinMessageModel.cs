@@ -1,6 +1,5 @@
-﻿using FantasyRemoteCopy.Core.Enums;
-
-using Device = FantasyRemoteCopy.Core.Enums.Device;
+﻿using FantasyRemoteCopy.UI.Enums;
+using Device = FantasyRemoteCopy.UI.Enums.Device;
 
 namespace FantasyRemoteCopy.UI.Models;
 

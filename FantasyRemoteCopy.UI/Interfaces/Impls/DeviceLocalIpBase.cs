@@ -10,23 +10,21 @@ public abstract class DeviceLocalIpBase : IGetLocalIp
 {
     public virtual Task<string> GetLocalIpAsync()
     {
-        IEnumerable<NetworkInterface> networkInterfaces = NetworkInterface.GetAllNetworkInterfaces()
+        var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces()
             .Where(nic => nic.NetworkInterfaceType is NetworkInterfaceType.Wireless80211 or
                           NetworkInterfaceType.Ethernet);
 
-        foreach (NetworkInterface? nic in networkInterfaces)
+        foreach (var nic in networkInterfaces)
         {
-            IPInterfaceProperties ipProps = nic.GetIPProperties();
-            UnicastIPAddressInformation? ipAddress = ipProps.UnicastAddresses
+            var ipProps = nic.GetIPProperties();
+            var ipAddress = ipProps.UnicastAddresses
                 .FirstOrDefault(addr => addr.Address.AddressFamily == AddressFamily.InterNetwork);
 
-            if (ipAddress != null)
-            {
-                if (nic.OperationalStatus == OperationalStatus.Up)
-                {
-                    return Task.FromResult(ipAddress.Address.ToString());
-                }
+            if (ipAddress == null) continue;
 
+            if (nic.OperationalStatus == OperationalStatus.Up)
+            {
+                return Task.FromResult(ipAddress.Address.ToString());
             }
         }
 

@@ -13,7 +13,7 @@ public interface ISendableWithProgress : ISendeable
     }
 }
 
-public interface ISendableWithProgress<T, P> : ISendableWithProgress where P : IProgressValue
+public interface ISendableWithProgress<in T, out P> : ISendableWithProgress where P : IProgressValue
 {
     Task SendAsync(T message, IProgress<P>? progress, CancellationToken cancellationToken);
 

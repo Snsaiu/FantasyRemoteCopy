@@ -1,5 +1,4 @@
 using System.Net.NetworkInformation;
-using System.Text;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
@@ -7,26 +6,19 @@ public class GlobalScanBase : ISendeable<string>
 {
     public async Task SendAsync(string message, CancellationToken cancellationToken)
     {
-        string ipDuan = message.Remove(message.LastIndexOf('.'));
-
-        string data = string.Empty;
-        byte[] buffer = Encoding.ASCII.GetBytes(data);
+        var ipSplits = message.Remove(message.LastIndexOf('.'));
 
         await Task.Run(() =>
         {
-            for (int i = 1; i < 255; i++)
+            for (var i = 1; i < 255; i++)
             {
-                string pingIP = ipDuan + "." + i.ToString();
-
-
+                var pingIp = ipSplits + "." + i.ToString();
                 cancellationToken.ThrowIfCancellationRequested();
-
-                Ping myPing = new Ping();
-
-                myPing.SendAsync(pingIP, 20, cancellationToken);
+                using var myPing = new Ping();
+                myPing.SendAsync(pingIp, 20, cancellationToken);
 
             }
-        });
+        }, cancellationToken);
 
     }
 }

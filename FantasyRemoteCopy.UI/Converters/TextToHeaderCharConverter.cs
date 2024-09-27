@@ -7,23 +7,8 @@ using System.Threading.Tasks;
 
 namespace FantasyRemoteCopy.UI.Converters
 {
-    public class TextToHeaderCharConverter : IValueConverter
+    public class TextToHeaderCharConverter : ValueConverterBase
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if(value is string s)
-            {
-               return s.First().ToString().ToUpper();
-            }
-            else
-            {
-                return "";
-            }
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+        public override object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value is string s ? s.First().ToString().ToUpper() : "";
     }
 }

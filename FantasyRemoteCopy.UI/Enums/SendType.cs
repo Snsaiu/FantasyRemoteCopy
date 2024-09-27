@@ -1,4 +1,4 @@
-﻿namespace FantasyRemoteCopy.Core.Enums;
+﻿namespace FantasyRemoteCopy.UI.Enums;
 
 /// <summary>
 /// 发送类型

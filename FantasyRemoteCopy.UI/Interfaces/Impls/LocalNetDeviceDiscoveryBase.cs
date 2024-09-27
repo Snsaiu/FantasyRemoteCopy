@@ -10,8 +10,5 @@ namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 /// </summary>
 public abstract class LocalNetDeviceDiscoveryBase : UdpLoopIListenBase<DeviceDiscoveryMessage>
 {
-    protected override UdpClient CreateUdpClient()
-    {
-        return new UdpClient(ConstParams.INVITE_PORT);
-    }
+    protected override UdpClient CreateUdpClient() => new(ConstParams.INVITE_PORT);
 }

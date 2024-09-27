@@ -1,5 +1,4 @@
-﻿using FantasyResultModel;
-
+﻿
 namespace FantasyRemoteCopy.UI.Interfaces
 {
     /// <summary>
@@ -9,6 +8,5 @@ namespace FantasyRemoteCopy.UI.Interfaces
     {
         Task<string> GetLocalIpAsync();
     }
-    
-}
 
+}

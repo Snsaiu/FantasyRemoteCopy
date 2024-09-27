@@ -16,7 +16,7 @@ public static class SocketExtensions
     {
         try
         {
-            TcpListener listener = new TcpListener(IPAddress.Any, port);
+            var listener = new TcpListener(IPAddress.Any, port);
             listener.Start();
             listener.Stop();
             return false;

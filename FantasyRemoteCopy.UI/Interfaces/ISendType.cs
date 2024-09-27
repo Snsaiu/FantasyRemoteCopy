@@ -1,4 +1,4 @@
-﻿using FantasyRemoteCopy.Core.Enums;
+﻿using FantasyRemoteCopy.UI.Enums;
 
 namespace FantasyRemoteCopy.UI.Interfaces;
 

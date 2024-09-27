@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-
-using FantasyRemoteCopy.Core.Enums;
+using FantasyRemoteCopy.UI.Enums;
 using FantasyRemoteCopy.UI.Interfaces;
 
 namespace FantasyRemoteCopy.UI.Models

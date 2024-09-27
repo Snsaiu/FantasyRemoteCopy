@@ -6,7 +6,7 @@ public partial class SaveItemModel : ObservableObject
 {
 
     [ObservableProperty]
-    private string? guid;
+    private string guid=String.Empty;
 
     [ObservableProperty]
     private ImageSource? image;
