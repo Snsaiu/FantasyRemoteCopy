@@ -104,6 +104,45 @@
         </value>
     </resheader>
     <data name="SelectLanguage" xml:space="preserve">
-		<value>言語を選択</value>
-	</data>
+        <value>言語を選択</value>
+    </data>
+    <data name="Copy" xml:space="preserve">
+        <value>コピー</value>
+    </data>
+    <data name="DeviceType" xml:space="preserve">
+        <value>デバイスタイプ</value>
+    </data>
+    <data name="File" xml:space="preserve">
+        <value>ファイル</value>
+    </data>
+    <data name="GlobalRefresh" xml:space="preserve">
+        <value>グローバルリフレッシュ</value>
+    </data>
+    <data name="History" xml:space="preserve">
+        <value>履歴</value>
+    </data>
+    <data name="InputYourDeviceName" xml:space="preserve">
+        <value>デバイス名を入力してください</value>
+    </data>
+    <data name="InputYourLoginName" xml:space="preserve">
+        <value>ログイン名を入力してください</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>ログイン</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>ログアウト</value>
+    </data>
+    <data name="NickOfName" xml:space="preserve">
+        <value>ニックネーム：</value>
+    </data>
+    <data name="NoDeviceHasBeenFoundPleaseTryToClickTheGlobalRefreshTakesALongTime" xml:space="preserve">
+        <value>デバイスが見つかりませんでした。『グローバルリフレッシュ』をクリックしてください。時間がかかります。</value>
+    </data>
+    <data name="Setting" xml:space="preserve">
+        <value>設定</value>
+    </data>
+    <data name="Text" xml:space="preserve">
+        <value>テキスト</value>
+    </data>
 </root>

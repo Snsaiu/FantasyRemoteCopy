@@ -1,29 +1,30 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <ContentPage
     x:Class="FantasyRemoteCopy.UI.Views.SettingPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:extension="clr-namespace:FantasyRemoteCopy.UI.Extensions"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    Title="Setting">
+    Title="{extension:Translate Setting}">
     <Grid RowDefinitions="*,auto">
 
         <VerticalStackLayout>
             <Border HeightRequest="50" Stroke="Transparent">
                 <Grid ColumnDefinitions="*,auto">
                     <VerticalStackLayout VerticalOptions="Center">
-                        <Label Margin="5,0" Text="Global Refresh" />
+                        <Label Margin="5,0" Text="{extension:Translate GlobalRefresh}" />
                         <Label
                             Margin="5,0"
                             FontSize="10"
                             MaxLines="2"
-                            Text="No device has been found. Please try to click. The global refresh takes a long time!"
+                            Text="{extension:Translate NoDeviceHasBeenFoundPleaseTryToClickTheGlobalRefreshTakesALongTime}"
                             TextColor="Grey" />
                     </VerticalStackLayout>
                     <Button
                         Grid.Column="1"
                         Command="{Binding GlobalSearchCommand}"
-                        Text="Global Refresh" />
+                        Text="{extension:Translate GlobalRefresh}" />
                 </Grid>
             </Border>
 
@@ -39,7 +40,7 @@
             Grid.Row="1"
             BackgroundColor="Red"
             Command="{Binding LogoutCommand}"
-            Text="LOGOUT"
+            Text="{extension:Translate Logout}"
             TextColor="White"
             VerticalOptions="EndAndExpand" />
         <ActivityIndicator IsRunning="True" IsVisible="{Binding IsBusy}" />

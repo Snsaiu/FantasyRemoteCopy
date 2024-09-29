@@ -1,36 +1,41 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <views:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       Size="300,200"
-       xmlns:views="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-       x:Class="FantasyRemoteCopy.UI.Views.Dialogs.SendTypeDialog">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Size="300,200"
+             xmlns:extension="clr-namespace:FantasyRemoteCopy.UI.Extensions"
+             xmlns:views="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="FantasyRemoteCopy.UI.Views.Dialogs.SendTypeDialog">
 
 
-    <Grid RowDefinitions="auto,*" >
+    <Grid RowDefinitions="auto,*">
         <Grid BackgroundColor="AliceBlue" HorizontalOptions="FillAndExpand">
-            <Label x:Name="toLabel" VerticalOptions="Center" FontAttributes="Bold" VerticalTextAlignment="Center" Margin="10,15" TextColor="Black" HorizontalOptions="Start"></Label>
+            <Label x:Name="toLabel" VerticalOptions="Center" FontAttributes="Bold" VerticalTextAlignment="Center"
+                   Margin="10,15" TextColor="Black" HorizontalOptions="Start" />
         </Grid>
         <Grid ColumnDefinitions="*,*" Grid.Row="1" RowDefinitions="*,auto" BackgroundColor="White" Padding="10">
 
             <Grid RowDefinitions="auto,auto">
                 <Grid.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding TextInputCommand}"/>
+                    <TapGestureRecognizer Command="{Binding TextInputCommand}" />
                 </Grid.GestureRecognizers>
-                <Image Source="text.png" HeightRequest="50" WidthRequest="50"></Image>
-                <Label Text="TEXT" TextColor="Black" HorizontalTextAlignment="Center" Grid.Row="1"/>
+                <Image Source="text.png" HeightRequest="50" WidthRequest="50" />
+                <Label Text="{extension:Translate Text}" TextColor="Black" HorizontalTextAlignment="Center"
+                       Grid.Row="1" />
             </Grid>
 
             <Grid Grid.Column="1" RowDefinitions="auto,auto">
                 <Grid.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding FileInputCommand}"/>
+                    <TapGestureRecognizer Command="{Binding FileInputCommand}" />
                 </Grid.GestureRecognizers>
-                <Image Source="file.png" HeightRequest="50" WidthRequest="50"></Image>
-                <Label Text="FILE" TextColor="Black" HorizontalTextAlignment="Center" Grid.Row="1"/>
+                <Image Source="file.png" HeightRequest="50" WidthRequest="50" />
+                <Label Text="{extension:Translate File}" TextColor="Black" HorizontalTextAlignment="Center"
+                       Grid.Row="1" />
             </Grid>
 
-   
+
         </Grid>
-        <ActivityIndicator IsRunning="True"  IsVisible="{Binding IsBusy}"></ActivityIndicator>
+        <ActivityIndicator IsRunning="True" IsVisible="{Binding IsBusy}" />
     </Grid>
 
 </views:Popup>

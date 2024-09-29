@@ -61,11 +61,92 @@ namespace FantasyRemoteCopy.UI.Resources.Languages {
         }
         
         /// <summary>
+        ///   查找类似 Copy 的本地化字符串。
+        /// </summary>
+        internal static string Copy {
+            get {
+                return ResourceManager.GetString("Copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Device type 的本地化字符串。
+        /// </summary>
+        internal static string DeviceType {
+            get {
+                return ResourceManager.GetString("DeviceType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 File 的本地化字符串。
+        /// </summary>
+        internal static string File {
+            get {
+                return ResourceManager.GetString("File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Global refresh 的本地化字符串。
+        /// </summary>
+        internal static string GlobalRefresh {
+            get {
+                return ResourceManager.GetString("GlobalRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 hello world!!!!! 的本地化字符串。
         /// </summary>
         internal static string HelloWorld {
             get {
                 return ResourceManager.GetString("HelloWorld", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 History 的本地化字符串。
+        /// </summary>
+        internal static string History {
+            get {
+                return ResourceManager.GetString("History", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Input your device name 的本地化字符串。
+        /// </summary>
+        internal static string InputYourDeviceName {
+            get {
+                return ResourceManager.GetString("InputYourDeviceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Input your login name 的本地化字符串。
+        /// </summary>
+        internal static string InputYourLoginName {
+            get {
+                return ResourceManager.GetString("InputYourLoginName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Login 的本地化字符串。
+        /// </summary>
+        internal static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Logout 的本地化字符串。
+        /// </summary>
+        internal static string Logout {
+            get {
+                return ResourceManager.GetString("Logout", resourceCulture);
             }
         }
         
@@ -79,11 +160,38 @@ namespace FantasyRemoteCopy.UI.Resources.Languages {
         }
         
         /// <summary>
+        ///   查找类似 No device has been found. Please try to click the &apos;Global refresh&apos; .Takes a long Time 的本地化字符串。
+        /// </summary>
+        internal static string NoDeviceHasBeenFoundPleaseTryToClickTheGlobalRefreshTakesALongTime {
+            get {
+                return ResourceManager.GetString("NoDeviceHasBeenFoundPleaseTryToClickTheGlobalRefreshTakesALongTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Select language 的本地化字符串。
         /// </summary>
         internal static string SelectLanguage {
             get {
                 return ResourceManager.GetString("SelectLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Setting 的本地化字符串。
+        /// </summary>
+        internal static string Setting {
+            get {
+                return ResourceManager.GetString("Setting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Text 的本地化字符串。
+        /// </summary>
+        internal static string Text {
+            get {
+                return ResourceManager.GetString("Text", resourceCulture);
             }
         }
     }

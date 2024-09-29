@@ -98,4 +98,46 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="Copy" xml:space="preserve">
+		<value>Copier</value>
+	</data>
+	<data name="DeviceType" xml:space="preserve">
+		<value>Type d'appareil</value>
+	</data>
+	<data name="File" xml:space="preserve">
+		<value>Fichier</value>
+	</data>
+	<data name="GlobalRefresh" xml:space="preserve">
+		<value>Actualisation globale</value>
+	</data>
+	<data name="History" xml:space="preserve">
+		<value>Historique</value>
+	</data>
+	<data name="InputYourDeviceName" xml:space="preserve">
+		<value>Entrez le nom de votre appareil</value>
+	</data>
+	<data name="InputYourLoginName" xml:space="preserve">
+		<value>Entrez votre nom d'utilisateur</value>
+	</data>
+	<data name="Login" xml:space="preserve">
+		<value>Connexion</value>
+	</data>
+	<data name="Logout" xml:space="preserve">
+		<value>Déconnexion</value>
+	</data>
+	<data name="NickOfName" xml:space="preserve">
+		<value>Surnom:</value>
+	</data>
+	<data name="NoDeviceHasBeenFoundPleaseTryToClickTheGlobalRefreshTakesALongTime" xml:space="preserve">
+		<value>Aucun appareil trouvé. Veuillez essayer de cliquer sur 'Actualisation globale'. Cela prend du temps.</value>
+	</data>
+	<data name="SelectLanguage" xml:space="preserve">
+		<value>Sélectionner la langue</value>
+	</data>
+	<data name="Setting" xml:space="preserve">
+		<value>Paramètres</value>
+	</data>
+	<data name="Text" xml:space="preserve">
+		<value>Texte</value>
+	</data>
 </root>

@@ -18,4 +18,43 @@
     <data name="SelectLanguage" xml:space="preserve">
         <value>选择语言</value>
     </data>
+    <data name="Text" xml:space="preserve">
+        <value>文本</value>
+    </data>
+    <data name="File" xml:space="preserve">
+        <value>文件</value>
+    </data>
+    <data name="Copy" xml:space="preserve">
+        <value>复制</value>
+    </data>
+    <data name="DeviceType" xml:space="preserve">
+        <value>设备类型</value>
+    </data>
+    <data name="GlobalRefresh" xml:space="preserve">
+        <value>全局刷新</value>
+    </data>
+    <data name="History" xml:space="preserve">
+        <value>历史</value>
+    </data>
+    <data name="InputYourDeviceName" xml:space="preserve">
+        <value>输入您的设备名称</value>
+    </data>
+    <data name="InputYourLoginName" xml:space="preserve">
+        <value>输入您的登录名</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>登录</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>登出</value>
+    </data>
+    <data name="NickOfName" xml:space="preserve">
+        <value>昵称：</value>
+    </data>
+    <data name="NoDeviceHasBeenFoundPleaseTryToClickTheGlobalRefreshTakesALongTime" xml:space="preserve">
+        <value>未找到设备。请尝试点击“全局刷新”。需要一些时间。</value>
+    </data>
+    <data name="Setting" xml:space="preserve">
+        <value>设置</value>
+    </data>
 </root>

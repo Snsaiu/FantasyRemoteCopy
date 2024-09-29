@@ -59,7 +59,8 @@
             : and then encoded with base64 encoding.
     -->
 
-    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root"
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
+                id="root"
                 xmlns="">
         <xsd:element name="root" msdata:IsDataSet="true">
             <xsd:complexType>
@@ -109,4 +110,43 @@
     <data name="NickOfName" xml:space="preserve">
 		<value>Nick of name:</value>
 	</data>
+    <data name="Text" xml:space="preserve">
+        <value>Text</value>
+    </data>
+    <data name="File" xml:space="preserve">
+        <value>File</value>
+    </data>
+    <data name="Copy" xml:space="preserve">
+        <value>Copy</value>
+    </data>
+    <data name="DeviceType" xml:space="preserve">
+        <value>Device type</value>
+    </data>
+    <data name="GlobalRefresh" xml:space="preserve">
+        <value>Global refresh</value>
+    </data>
+    <data name="HelloWorld" xml:space="preserve">
+        <value>hello world!!!!!</value>
+    </data>
+    <data name="History" xml:space="preserve">
+        <value>History</value>
+    </data>
+    <data name="InputYourDeviceName" xml:space="preserve">
+        <value>Input your device name</value>
+    </data>
+    <data name="InputYourLoginName" xml:space="preserve">
+        <value>Input your login name</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>Login</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>Logout</value>
+    </data>
+    <data name="NoDeviceHasBeenFoundPleaseTryToClickTheGlobalRefreshTakesALongTime" xml:space="preserve">
+        <value>No device has been found. Please try to click the 'Global refresh' .Takes a long Time</value>
+    </data>
+    <data name="Setting" xml:space="preserve">
+        <value>Setting</value>
+    </data>
 </root>
