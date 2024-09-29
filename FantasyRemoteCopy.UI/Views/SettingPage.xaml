@@ -30,7 +30,7 @@
             </Border>
 
             <Picker
-                Title="{Binding LocalizationResource[SelectLanguage], Mode=OneWay}"
+                Title="{OnPlatform MacCatalyst={x:Null}, WinUI={extension:Translate SelectLanguage}}"
                 Margin="5"
                 ItemDisplayBinding="{Binding Key}"
                 ItemsSource="{Binding Languages}"

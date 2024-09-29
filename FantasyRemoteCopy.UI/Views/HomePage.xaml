@@ -70,6 +70,7 @@
                 <StackLayout Orientation="Horizontal">
                     <Label
                         Margin="10,0,0,0"
+                        TextColor="Black"
                         FontSize="{OnPlatform MacCatalyst=15,
                                               WinUI=10}"
                         Text="{extension:Translate NickOfName}" />

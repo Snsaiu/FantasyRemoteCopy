@@ -30,8 +30,17 @@
 	<true/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-    <string>lyft</string>  
-    <string>fb</string>
-</array>
+		<string>lyft</string>
+		<string>fb</string>
+	</array>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en-us</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en-us</string>
+		<string>ja-jp</string>
+		<string>ko-kr</string>
+		<string>zh_hans</string>
+	</array>
 </dict>
 </plist>
