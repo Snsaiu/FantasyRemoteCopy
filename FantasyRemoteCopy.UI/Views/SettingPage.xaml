@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 
 <ContentPage
     x:Class="FantasyRemoteCopy.UI.Views.SettingPage"
@@ -23,6 +23,7 @@
                     </VerticalStackLayout>
                     <Button
                         Grid.Column="1"
+                        Margin="0,0,5,0"
                         Command="{Binding GlobalSearchCommand}"
                         Text="{extension:Translate GlobalRefresh}" />
                 </Grid>
@@ -30,6 +31,7 @@
 
             <Picker
                 Title="{Binding LocalizationResource[SelectLanguage], Mode=OneWay}"
+                Margin="5"
                 ItemDisplayBinding="{Binding Key}"
                 ItemsSource="{Binding Languages}"
                 SelectedItem="{Binding SelectedLanguage}" />
