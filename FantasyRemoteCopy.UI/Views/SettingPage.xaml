@@ -1,25 +1,50 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FantasyRemoteCopy.UI.Views.SettingPage"
-             Title="Setting">
+
+<ContentPage
+    x:Class="FantasyRemoteCopy.UI.Views.SettingPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="Setting">
     <Grid RowDefinitions="*,auto">
 
         <VerticalStackLayout>
-
-            <Border Stroke="Transparent" HeightRequest="50">
+            <Border HeightRequest="50" Stroke="Transparent">
                 <Grid ColumnDefinitions="*,auto">
-                    <VerticalStackLayout VerticalOptions="Center" >
-                        <Label Margin="5,0" Text="Global Refresh"></Label>
-                        <Label Margin="5,0"  TextColor="Grey" MaxLines="2" Text="No device has been found. Please try to click. The global refresh takes a long time!" FontSize="10"></Label>
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label Margin="5,0" Text="Global Refresh" />
+                        <Label
+                            Margin="5,0"
+                            FontSize="10"
+                            MaxLines="2"
+                            Text="No device has been found. Please try to click. The global refresh takes a long time!"
+                            TextColor="Grey" />
                     </VerticalStackLayout>
-                    <Button Grid.Column="1" Text="Global Refresh" Command="{Binding GlobalSearchCommand}"></Button>
+                    <Button
+                        Grid.Column="1"
+                        Command="{Binding GlobalSearchCommand}"
+                        Text="Global Refresh" />
                 </Grid>
             </Border>
 
+            <Picker
+                Title="{Binding LocalizationResource[SelectLanguage], Mode=OneWay}"
+                ItemDisplayBinding="{Binding Key}"
+                ItemsSource="{Binding Languages}"
+                SelectedItem="{Binding SelectedLanguage}" />
+
         </VerticalStackLayout>
 
-        <Button  Grid.Row="1" Text="LOGOUT" BackgroundColor="Red" TextColor="White" Command="{Binding LogoutCommand}"  VerticalOptions="EndAndExpand"></Button>
-        <ActivityIndicator IsRunning="True" IsVisible="{Binding IsBusy}"/>
+        <Button
+            Grid.Row="1"
+            BackgroundColor="Red"
+            Command="{Binding LogoutCommand}"
+            Text="LOGOUT"
+            TextColor="White"
+            VerticalOptions="EndAndExpand" />
+        <ActivityIndicator IsRunning="True" IsVisible="{Binding IsBusy}" />
     </Grid>
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior Command="{Binding InitCommand}" EventName="Loaded" />
+    </ContentPage.Behaviors>
 </ContentPage>

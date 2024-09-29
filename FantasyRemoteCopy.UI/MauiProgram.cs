@@ -1,10 +1,7 @@
 ﻿using CommunityToolkit.Maui;
-
 using FantasyMvvm;
-
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
-
 using FantasyRemoteCopy.UI.ViewModels;
 using FantasyRemoteCopy.UI.ViewModels.DialogModels;
 using FantasyRemoteCopy.UI.Views;
@@ -16,7 +13,7 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
-        MauiAppBuilder builder = MauiApp.CreateBuilder();
+        var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
             .ConfigureFonts(fonts =>
@@ -52,6 +49,7 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<IUserService, ConfigUserService>();
         builder.Services.AddSingleton<ISaveDataService, DbSaveDataService>();
+        builder.Services.AddSingleton<ILanguageService, ConfigLanguageService>();
 
         builder.UseRegisterPage<LoginPage, LoginPageModel>();
         builder.UseRegisterPage<HomePage, HomePageModel>();
@@ -61,7 +59,6 @@ public static class MauiProgram
 
         builder.UseRegisterPage<ListPage, ListPageModel>();
         builder.UseRegisterDialog<SendTypeDialog, SendTypeDialogModel>();
-
 
         return builder.UseGetProvider().Build();
     }

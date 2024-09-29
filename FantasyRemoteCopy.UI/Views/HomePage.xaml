@@ -65,12 +65,19 @@
                     Text="{Binding UserName}"
                     TextColor="Black"
                     VerticalOptions="Center" />
-                <Label
-                    Margin="10,0,0,0"
-                    FontSize="{OnPlatform MacCatalyst=15,
-                                          WinUI=10}"
-                    Text="{Binding DeviceNickName, StringFormat='Nick Name of Device:{0}'}"
-                    TextColor="Black" />
+                <StackLayout Orientation="Horizontal">
+                    <Label
+                        Margin="10,0,0,0"
+                        FontSize="{OnPlatform MacCatalyst=15,
+                                              WinUI=10}"
+                        Text="{Binding LocalizationResource[NickOfName], Mode=OneWay}" />
+                    <Label
+                        FontSize="{OnPlatform MacCatalyst=15,
+                                              WinUI=10}"
+                        Text="{Binding DeviceNickName}"
+                        TextColor="Black" />
+                </StackLayout>
+
             </VerticalStackLayout>
 
             <Grid Grid.Column="2">

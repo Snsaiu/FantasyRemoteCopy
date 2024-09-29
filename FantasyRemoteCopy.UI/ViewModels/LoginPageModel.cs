@@ -1,22 +1,26 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using FantasyMvvm;
+
 using FantasyMvvm.FantasyNavigation;
+
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Models;
+using FantasyRemoteCopy.UI.ViewModels.Base;
 using FantasyRemoteCopy.UI.Views;
 
 namespace FantasyRemoteCopy.UI.ViewModels;
 
 public partial class LoginPageModel(IUserService userService, INavigationService navigationService)
-    : FantasyPageModelBase
+    : ViewModelBase
 {
-    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(LoginCommand))]
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(LoginCommand))]
     private string deviceNickName = string.Empty;
 
     [ObservableProperty] private bool isBusy;
 
-    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(LoginCommand))]
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(LoginCommand))]
     private string userName = string.Empty;
 
     public bool CanLogin => !string.IsNullOrWhiteSpace(UserName) && !string.IsNullOrWhiteSpace(DeviceNickName);
@@ -33,7 +37,7 @@ public partial class LoginPageModel(IUserService userService, INavigationService
     public async Task Init()
     {
         IsBusy = true;
-        var userRes = await userService.GetCurrentUserAsync();
+        FantasyResultModel.ResultBase<UserInfo> userRes = await userService.GetCurrentUserAsync();
         if (userRes.Ok)
         {
             UserName = userRes.Data.Name;

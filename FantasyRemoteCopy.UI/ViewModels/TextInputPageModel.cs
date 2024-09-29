@@ -1,17 +1,20 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
 using FantasyMvvm;
 using FantasyMvvm.FantasyModels;
 using FantasyMvvm.FantasyModels.Impls;
 using FantasyMvvm.FantasyNavigation;
+
 using FantasyRemoteCopy.UI.Interfaces.Impls;
 using FantasyRemoteCopy.UI.Models;
+using FantasyRemoteCopy.UI.ViewModels.Base;
 using FantasyRemoteCopy.UI.Views;
 
 namespace FantasyRemoteCopy.UI.ViewModels;
 
 public partial class TextInputPageModel(INavigationService navigationService, DeviceLocalIpBase localIpBase)
-    : FantasyPageModelBase, INavigationAware
+    : ViewModelBase, INavigationAware
 {
     private DiscoveredDeviceModel? _discoveredDeviceModel;
     [ObservableProperty] private string content = string.Empty;
@@ -35,10 +38,10 @@ public partial class TextInputPageModel(INavigationService navigationService, De
         if (string.IsNullOrEmpty(Content))
             await navigationService.NavigationToAsync(nameof(HomePage), false);
 
-        var ip = await localIpBase.GetLocalIpAsync();
+        string ip = await localIpBase.GetLocalIpAsync();
 
-        var model = new SendTextModel(ip, _discoveredDeviceModel?.Flag ?? throw new NullReferenceException(), Content);
-        var para = new NavigationParameter();
+        SendTextModel model = new SendTextModel(ip, _discoveredDeviceModel?.Flag ?? throw new NullReferenceException(), Content);
+        NavigationParameter para = new NavigationParameter();
         para.Add("data", model);
         await navigationService.NavigationToAsync(nameof(HomePage), false, para);
     }

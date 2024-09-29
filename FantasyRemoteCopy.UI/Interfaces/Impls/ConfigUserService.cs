@@ -30,7 +30,7 @@ public class ConfigUserService : IUserService
 
     public Task<ResultBase<bool>> ClearUserAsync()
     {
-        Preferences.Default.Clear();
+        Preferences.Default.Set<string>("user", string.Empty);
         return Task.FromResult<ResultBase<bool>>(new SuccessResultModel<bool>(true));
     }
 }

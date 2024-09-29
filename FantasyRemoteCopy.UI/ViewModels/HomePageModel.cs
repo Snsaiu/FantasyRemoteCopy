@@ -1,22 +1,27 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
 using FantasyMvvm;
 using FantasyMvvm.FantasyDialogService;
 using FantasyMvvm.FantasyModels;
 using FantasyMvvm.FantasyModels.Impls;
 using FantasyMvvm.FantasyNavigation;
+
+using FantasyRemoteCopy.UI.Enums;
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
 using FantasyRemoteCopy.UI.Models;
+using FantasyRemoteCopy.UI.ViewModels.Base;
 using FantasyRemoteCopy.UI.Views;
 using FantasyRemoteCopy.UI.Views.Dialogs;
+
 using H.NotifyIcon;
+
 using System.Collections.ObjectModel;
-using FantasyRemoteCopy.UI.Enums;
 
 namespace FantasyRemoteCopy.UI.ViewModels
 {
-    public partial class HomePageModel : FantasyPageModelBase, IPageKeep, INavigationAware
+    public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
     {
         #region Fields
 
@@ -48,7 +53,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
         [ObservableProperty] private bool isBusy;
 
-        [ObservableProperty] private string userName=string.Empty;
+        [ObservableProperty] private string userName = string.Empty;
 
         [ObservableProperty] private ObservableCollection<DiscoveredDeviceModel> discoveredDevices;
 
@@ -98,7 +103,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         [RelayCommand]
         public void ShowHideWindow()
         {
-            var window = Application.Current?.MainPage?.Window;
+            Window? window = Application.Current?.MainPage?.Window;
             if (window == null)
             {
                 return;
@@ -121,10 +126,10 @@ namespace FantasyRemoteCopy.UI.ViewModels
             try
             {
                 IsBusy = true;
-                var userRes = await userService.GetCurrentUserAsync();
+                FantasyResultModel.ResultBase<UserInfo> userRes = await userService.GetCurrentUserAsync();
                 UserName = userRes.Data.Name;
                 DeviceNickName = userRes.Data.DeviceNickName;
-                var localIp = await _deviceLocalIpBase.GetLocalIpAsync();
+                string localIp = await _deviceLocalIpBase.GetLocalIpAsync();
                 //设备发现 ，当有新的设备加入的时候产生回调
                 StartDiscovery(localIp);
                 StartJoin();
@@ -172,7 +177,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
                         DiscoveredDevices.Add(x);
                     }, default);
                 })
-                { IsBackground = true };
+            { IsBackground = true };
             thread.Start();
         }
 
@@ -183,7 +188,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
                     _ = _tcpLoopListenContentBase.ReceiveAsync(SaveDataToLocalDB, ReportProgress(false),
                         _cancelDownloadTokenSource.Token);
                 })
-                { IsBackground = true };
+            { IsBackground = true };
             thread.Start();
         }
 
@@ -208,8 +213,10 @@ namespace FantasyRemoteCopy.UI.ViewModels
         }
 
         [RelayCommand]
-        public Task Search() => DeviceDiscoverAsync();
-
+        public Task Search()
+        {
+            return DeviceDiscoverAsync();
+        }
 
         [RelayCommand]
         public Task GotoList()
@@ -278,12 +285,12 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                 IsBusy = true;
                 DiscoveredDevices.Clear();
-                var localIp = await _deviceLocalIpBase.GetLocalIpAsync();
+                string localIp = await _deviceLocalIpBase.GetLocalIpAsync();
                 IAsyncEnumerable<ScanDevice> devices = _localIpScannerBase.GetDevicesAsync(default);
 
-                await foreach (var device in devices)
+                await foreach (ScanDevice device in devices)
                 {
-                    await _localNetInviteDeviceBase.SendAsync(new DeviceDiscoveryMessage(UserName,localIp,device.Flag) ??
+                    await _localNetInviteDeviceBase.SendAsync(new DeviceDiscoveryMessage(UserName, localIp, device.Flag) ??
                                                               throw new NullReferenceException(), default);
                 }
             }
@@ -297,10 +304,10 @@ namespace FantasyRemoteCopy.UI.ViewModels
         {
             if (parameter is null)
                 return;
-            var obj = parameter.Get("data");
+            object obj = parameter.Get("data");
             if (obj is not SendTextModel text) return;
 
-            var device = DiscoveredDevices.FirstOrDefault(x => x.Flag == text.TargetFlag);
+            DiscoveredDeviceModel? device = DiscoveredDevices.FirstOrDefault(x => x.Flag == text.TargetFlag);
             if (device is null)
                 throw new NullReferenceException();
 

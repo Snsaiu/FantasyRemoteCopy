@@ -3,13 +3,15 @@ using CommunityToolkit.Mvvm.Input;
 
 using FantasyMvvm;
 using FantasyMvvm.FantasyModels;
+
 using FantasyRemoteCopy.UI.Enums;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
 using FantasyRemoteCopy.UI.Models;
+using FantasyRemoteCopy.UI.ViewModels.Base;
 
 namespace FantasyRemoteCopy.UI.ViewModels.DialogModels;
 
-public partial class SendTypeDialogModel(DeviceLocalIpBase deviceLocalIp) : FantasyDialogModelBase
+public partial class SendTypeDialogModel(DeviceLocalIpBase deviceLocalIp) : DialogModelBase
 {
     public override event OnCloseDelegate? OnCloseEvent;
     private DiscoveredDeviceModel? discoveredDeviceModel;
@@ -32,14 +34,14 @@ public partial class SendTypeDialogModel(DeviceLocalIpBase deviceLocalIp) : Fant
     [RelayCommand]
     public async Task FileInput()
     {
-        var f = await FilePicker.PickAsync();
+        FileResult? f = await FilePicker.PickAsync();
 
         if (f != null)
         {
-            var ip = await deviceLocalIp.GetLocalIpAsync();
+            string ip = await deviceLocalIp.GetLocalIpAsync();
             if (discoveredDeviceModel is null)
                 throw new NullReferenceException();
-            var sendfileModel = new SendFileModel(ip, discoveredDeviceModel.Flag??throw new NullReferenceException(), f.FullPath);
+            SendFileModel sendfileModel = new SendFileModel(ip, discoveredDeviceModel.Flag ?? throw new NullReferenceException(), f.FullPath);
             OnCloseEvent?.Invoke(new CloseResultModel { Success = true, Data = sendfileModel });
         }
         else

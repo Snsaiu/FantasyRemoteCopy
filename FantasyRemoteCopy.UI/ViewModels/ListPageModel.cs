@@ -1,20 +1,21 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-using FantasyMvvm;
 using FantasyMvvm.FantasyDialogService;
 using FantasyMvvm.FantasyModels.Impls;
 using FantasyMvvm.FantasyNavigation;
+
+using FantasyRemoteCopy.UI.Enums;
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Models;
+using FantasyRemoteCopy.UI.ViewModels.Base;
 using FantasyRemoteCopy.UI.Views;
 
 using System.Collections.ObjectModel;
-using FantasyRemoteCopy.UI.Enums;
 
 namespace FantasyRemoteCopy.UI.ViewModels;
 
-public partial class ListPageModel : FantasyPageModelBase
+public partial class ListPageModel : ViewModelBase
 {
     private readonly ISaveDataService _saveDataService;
     private readonly IOpenFolder _openFolder;
@@ -25,9 +26,9 @@ public partial class ListPageModel : FantasyPageModelBase
     [ObservableProperty]
     private bool isBusy;
 
-    private readonly IDialogService _dialogService ;
+    private readonly IDialogService _dialogService;
 
-    private readonly INavigationService _navigationService ;
+    private readonly INavigationService _navigationService;
 
     public ListPageModel(ISaveDataService saveDataService, IOpenFolder openFolder, IDialogService dialogService, INavigationService navigationService)
     {
@@ -87,7 +88,7 @@ public partial class ListPageModel : FantasyPageModelBase
         // 判断文件是否存在
         if (File.Exists(model.Content) == false)
         {
-            var res = await _saveDataService.DeleteDataAsync(model.Guid??throw new NullReferenceException());
+            FantasyResultModel.ResultBase<bool> res = await _saveDataService.DeleteDataAsync(model.Guid ?? throw new NullReferenceException());
             if (res.Ok)
             {
                 Models.Remove(model);
@@ -134,7 +135,7 @@ public partial class ListPageModel : FantasyPageModelBase
             }
         }
 
-        var res = await _saveDataService.DeleteDataAsync(model.Guid);
+        FantasyResultModel.ResultBase<bool> res = await _saveDataService.DeleteDataAsync(model.Guid);
         if (res.Ok)
         {
             Models.Remove(model);
@@ -152,12 +153,12 @@ public partial class ListPageModel : FantasyPageModelBase
     {
         if (string.IsNullOrEmpty(model.Content))
         {
-           return this._dialogService.DisplayAlert("警告", "文件路径不存在", "确定");
+            return _dialogService.DisplayAlert("警告", "文件路径不存在", "确定");
         }
 
-        var p = Directory.GetParent(model.Content)?.ToString();
+        string? p = Directory.GetParent(model.Content)?.ToString();
         if (string.IsNullOrEmpty(p))
-            return this._dialogService.DisplayAlert("警告", "文件夹父路径不存在", "确定");
+            return _dialogService.DisplayAlert("警告", "文件夹父路径不存在", "确定");
 
         _openFolder.OpenFolder(p);
         return Task.CompletedTask;
@@ -167,7 +168,7 @@ public partial class ListPageModel : FantasyPageModelBase
     [RelayCommand]
     private async Task Detail(SaveItemModel model)
     {
-        var parameter = new NavigationParameter();
+        NavigationParameter parameter = new NavigationParameter();
         parameter.Add("data", model.Content);
         await _navigationService.NavigationToAsync(nameof(DetailPage), parameter);
     }
@@ -178,7 +179,7 @@ public partial class ListPageModel : FantasyPageModelBase
         try
         {
             IsBusy = true;
-            var list = await _saveDataService.GetAllAsync();
+            FantasyResultModel.ResultBase<List<SaveDataModel>> list = await _saveDataService.GetAllAsync();
             if (list.Ok)
             {
                 list.Data.Reverse();
@@ -191,7 +192,7 @@ public partial class ListPageModel : FantasyPageModelBase
         }
         finally
         {
-             IsBusy = false;
+            IsBusy = false;
         }
     }
 }
