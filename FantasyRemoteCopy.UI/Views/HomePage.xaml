@@ -7,7 +7,7 @@
     xmlns:controls="clr-namespace:FantasyRemoteCopy.UI.Controls"
     xmlns:converters="clr-namespace:FantasyRemoteCopy.UI.Converters"
     xmlns:models="using:FantasyRemoteCopy.UI.Models"
-    xmlns:tb="https://notifyicon.com/"
+   
     xmlns:extension="clr-namespace:FantasyRemoteCopy.UI.Extensions"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="cp"
@@ -17,19 +17,19 @@
 
     <Grid RowDefinitions="100,*,auto">
 
-        <ContentView>
-            <ContentView.Content>
-                <OnPlatform x:TypeArguments="View">
-                    <On Platform="WinUI">
-                        <tb:TaskbarIcon
-                            x:Name="TrayIcon"
-                            IconSource="red.ico"
-                            LeftClickCommand="{Binding ShowHideWindowCommand}"
-                            NoLeftClickDelay="True" />
-                    </On>
-                </OnPlatform>
-            </ContentView.Content>
-        </ContentView>
+        <!-- <ContentView> -->
+        <!--     <ContentView.Content> -->
+        <!--         <OnPlatform x:TypeArguments="View"> -->
+        <!--             <On Platform="WinUI"> -->
+        <!--                 <tb:TaskbarIcon -->
+        <!--                     x:Name="TrayIcon" -->
+        <!--                     IconSource="red.ico" -->
+        <!--                     LeftClickCommand="{Binding ShowHideWindowCommand}" -->
+        <!--                     NoLeftClickDelay="True" /> -->
+        <!--             </On> -->
+        <!--         </OnPlatform> -->
+        <!--     </ContentView.Content> -->
+        <!-- </ContentView> -->
 
         <Image
             Grid.ColumnSpan="3"
@@ -290,7 +290,6 @@
             Grid.Row="2"
             Margin="0,0,16,10"
             BackgroundColor="Transparent"
-            Clicked="SearchClickEvent"
             Command="{Binding SearchCommand}"
             HeightRequest="80"
             HorizontalOptions="End"
