@@ -144,8 +144,9 @@
                         ColumnDefinitions="auto,*,auto">
                         <Image
                             HeightRequest="{OnPlatform WinUI=50,
+                                                        Android=20,
                                                        MacCatalyst=50}"
-                            Source="{Binding Img}"
+                            Source="{Binding SystemType,Converter={converters:SystemTypeToImageSourceConverter}}"
                             WidthRequest="{OnPlatform WinUI=50,
                                                       MacCatalyst=50}" />
                         <Grid
@@ -168,14 +169,10 @@
 
                             <StackLayout Grid.Row="1"
                                          Margin="0,1" Orientation="Horizontal">
-                                <Label Text="{extension:Translate DeviceType}" />
+                                <Label FontAttributes="Bold" Text="{extension:Translate DeviceType}" />
                                 <Label
-                                    Margin="0,1"
-                                    FontSize="10"
+                                    Margin="5,0,0,0"
                                     Text="{Binding DeviceType}" />
-                                <Label
-                                    FontSize="10"
-                                    Text="{Binding DeviceType, StringFormat='Device Type：{0}'}" />
                             </StackLayout>
 
                             <!-- <Label Margin="0,1" Text="{Binding DeviceName,StringFormat='Device Name：{0}'}" Grid.Row="2"  FontSize="10"></Label> -->

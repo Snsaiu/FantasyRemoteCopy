@@ -6,6 +6,7 @@ using FantasyRemoteCopy.UI.ViewModels;
 using FantasyRemoteCopy.UI.ViewModels.DialogModels;
 using FantasyRemoteCopy.UI.Views;
 using FantasyRemoteCopy.UI.Views.Dialogs;
+using Microsoft.Extensions.Logging;
 
 namespace FantasyRemoteCopy.UI;
 
@@ -23,6 +24,10 @@ public static class MauiProgram
             })
             .UseMauiCommunityToolkit()
             .UseFantasyApplication();
+
+#if DEBUG
+        
+#endif
 
         builder.Services.AddSingleton<IOpenFolder, DefaultOpenFolder>();
         builder.Services.AddSingleton<IFileSaveLocation, AppDataFolderFileSaveLocation>();

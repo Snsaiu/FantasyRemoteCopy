@@ -28,10 +28,10 @@ namespace FantasyRemoteCopy.UI.Models
         private string? flag;
 
         [ObservableProperty]
-        private ImageSource? img;
-
-        [ObservableProperty]
         private string? deviceName;
+        
+        [ObservableProperty]
+        private SystemType systemType;
 
 
         [ObservableProperty]
@@ -46,21 +46,12 @@ namespace FantasyRemoteCopy.UI.Models
 
         public static implicit operator DiscoveredDeviceModel(JoinMessageModel model)
         {
-            ImageSource? img = model.SystemType switch
-            {
-                SystemType.None => null,
-                SystemType.Windows => ImageSource.FromFile("windows.png"),
-                SystemType.MacOS => ImageSource.FromFile("mac.png"),
-                SystemType.IOS => null,
-                SystemType.Android => null,
-                SystemType.Linux => null,
-                _ => throw new ArgumentOutOfRangeException()
-            };
+          
             return new DiscoveredDeviceModel()
             {
                 NickName = model.DeviceName,
                 Flag = model.Flag,
-                Img = img,
+                SystemType = model.SystemType,
                 DeviceType = model.Device.ToString()
             };
         }

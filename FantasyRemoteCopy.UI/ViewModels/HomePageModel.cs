@@ -18,6 +18,7 @@ using FantasyRemoteCopy.UI.Views.Dialogs;
 using H.NotifyIcon;
 
 using System.Collections.ObjectModel;
+using Microsoft.Extensions.Logging;
 
 namespace FantasyRemoteCopy.UI.ViewModels
 {
@@ -39,6 +40,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         private readonly TcpSendFileBase _tcpSendFileBase;
         private readonly TcpSendTextBase _tcpSendTextBase;
         private readonly ISystemType _systemType;
+        private readonly ILogger<HomePageModel> logger;
         private readonly IDeviceType _deviceType;
         private readonly INavigationService _navigationService;
         private readonly CancellationTokenSource _cancelDownloadTokenSource = new CancellationTokenSource();
@@ -74,6 +76,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             TcpSendFileBase tcpSendFileBase,
             TcpSendTextBase tcpSendTextBase,
             ISystemType systemType,
+            ILogger<HomePageModel> logger,
             IDeviceType deviceType,
             INavigationService navigationService)
         {
@@ -90,6 +93,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             _tcpSendFileBase = tcpSendFileBase;
             _tcpSendTextBase = tcpSendTextBase;
             _systemType = systemType;
+            this.logger = logger;
             _deviceType = deviceType;
             _navigationService = navigationService;
             DiscoveredDevices = [];
@@ -285,13 +289,18 @@ namespace FantasyRemoteCopy.UI.ViewModels
             {
                 IsBusy = true;
                 DiscoveredDevices.Clear();
-                string localIp = await _deviceLocalIpBase.GetLocalIpAsync();
+                var localIp = await _deviceLocalIpBase.GetLocalIpAsync();
+                logger.LogInformation("发现本地ip:{0}",localIp);
+              
                 IAsyncEnumerable<ScanDevice> devices = _localIpScannerBase.GetDevicesAsync(default);
 
                 await foreach (ScanDevice device in devices)
                 {
+                    logger.LogInformation("通过设备发现扫描到的ip:{0}",device.Flag);
+                    
                     await _localNetInviteDeviceBase.SendAsync(new DeviceDiscoveryMessage(UserName, localIp, device.Flag) ??
                                                               throw new NullReferenceException(), default);
+                    
                 }
             }
             finally
