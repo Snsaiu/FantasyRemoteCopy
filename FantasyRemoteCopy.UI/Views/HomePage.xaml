@@ -294,10 +294,10 @@
             WidthRequest="80" />
         <ActivityIndicator
             Grid.Row="1"
-            HeightRequest="{OnPlatform Android=40}"
+            HeightRequest="{OnPlatform Android=60}"
             IsRunning="True"
             IsVisible="{Binding IsBusy}"
-            WidthRequest="{OnPlatform Android=40}"
+            WidthRequest="{OnPlatform Android=60}"
             Color="LightGray" />
     </Grid>
 

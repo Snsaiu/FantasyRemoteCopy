@@ -19,6 +19,8 @@ using H.NotifyIcon;
 
 using System.Collections.ObjectModel;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace FantasyRemoteCopy.UI.ViewModels
 {
@@ -97,7 +99,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             _deviceType = deviceType;
             _navigationService = navigationService;
             DiscoveredDevices = [];
-            Task.Run(() => Task.FromResult(Init()));
+            Task.Run(() => Task.FromResult(SetReceive()));
         }
 
 
@@ -125,14 +127,20 @@ namespace FantasyRemoteCopy.UI.ViewModels
             isWindowVisible = !isWindowVisible;
         }
 
-        private async Task Init()
+        [RelayCommand]
+        public async Task Init()
+        {
+            FantasyResultModel.ResultBase<UserInfo> userRes = await userService.GetCurrentUserAsync();
+            UserName = userRes.Data.Name;
+            DeviceNickName = userRes.Data.DeviceNickName;
+        }
+
+        private async Task SetReceive()
         {
             try
             {
                 IsBusy = true;
-                FantasyResultModel.ResultBase<UserInfo> userRes = await userService.GetCurrentUserAsync();
-                UserName = userRes.Data.Name;
-                DeviceNickName = userRes.Data.DeviceNickName;
+              
                 string localIp = await _deviceLocalIpBase.GetLocalIpAsync();
                 //设备发现 ，当有新的设备加入的时候产生回调
                 StartDiscovery(localIp);
@@ -154,9 +162,12 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 {
                     if (localIp == x.Flag)
                         return;
-
-                    JoinMessageModel joinRequestModel = new JoinMessageModel(_systemType.System, _deviceType.Device,
-                        localIp, DeviceNickName, x.Flag);
+                    
+                    if(x.Name!=UserName)
+                        return;
+                    
+                    var joinRequestModel = new JoinMessageModel(_systemType.System, _deviceType.Device,
+                        localIp, DeviceNickName, x.Flag,x.Name);
                     // 发送加入请求
                     _localNetJoinRequestBase.SendAsync(joinRequestModel, default);
                 }, default);
@@ -169,14 +180,19 @@ namespace FantasyRemoteCopy.UI.ViewModels
 
         private void StartJoin()
         {
-            Thread thread = new Thread(() =>
+            var thread = new Thread(() =>
                 {
                     _ = _localNetJoinProcessBase.ReceiveAsync(x =>
                     {
+                        logger.LogInformation("接收到要加入的设备{0}",JsonConvert.SerializeObject(x));
+                        if(x.Name!=UserName)
+                            return;
+                        
                         if (DiscoveredDevices.Any(y => y.Flag == x.Flag))
                         {
                             return;
                         }
+                        logger.LogInformation("加入设备{0}",JsonConvert.SerializeObject(x));
 
                         DiscoveredDevices.Add(x);
                     }, default);
@@ -292,7 +308,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
                 var localIp = await _deviceLocalIpBase.GetLocalIpAsync();
                 logger.LogInformation("发现本地ip:{0}",localIp);
               
-                IAsyncEnumerable<ScanDevice> devices = _localIpScannerBase.GetDevicesAsync(default);
+                var devices = _localIpScannerBase.GetDevicesAsync(default);
 
                 await foreach (ScanDevice device in devices)
                 {

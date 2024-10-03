@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
-public abstract class UdpLoopIListenBase<T> : UdpBase, IListenable<T> where T : IFlag
+public abstract class UdpLoopIListenBase<T> : UdpBase, IListenable<T> where T : IFlag,IName
 {
     private readonly DeviceLocalIpBase localIpBase;
 

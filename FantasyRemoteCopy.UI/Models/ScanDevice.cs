@@ -19,6 +19,7 @@ public class ScanDevice : IFlag
         Device = device;
         Flag = flag;
         DeviceName = deviceName;
+      
     }
     public ScanDevice(string flag)
     {
@@ -30,5 +31,5 @@ public class ScanDevice : IFlag
     public string Flag { get; init; }
 
     public string? DeviceName { get; init; }
-
+    
 }

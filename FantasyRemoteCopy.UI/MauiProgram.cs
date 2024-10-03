@@ -26,7 +26,7 @@ public static class MauiProgram
             .UseFantasyApplication();
 
 #if DEBUG
-        
+        builder.Logging.AddDebug();
 #endif
 
         builder.Services.AddSingleton<IOpenFolder, DefaultOpenFolder>();
