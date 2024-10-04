@@ -194,7 +194,11 @@ namespace FantasyRemoteCopy.UI.ViewModels
                         }
                         logger.LogInformation("加入设备{0}",JsonConvert.SerializeObject(x));
 
-                        DiscoveredDevices.Add(x);
+                        Application.Current.Dispatcher.Dispatch(() =>
+                        {
+                            DiscoveredDevices.Add(x);
+                        });
+                      
                     }, default);
                 })
             { IsBackground = true };

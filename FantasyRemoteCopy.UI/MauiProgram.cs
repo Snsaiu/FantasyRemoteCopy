@@ -30,12 +30,13 @@ public static class MauiProgram
 #endif
 
         builder.Services.AddSingleton<IOpenFolder, DefaultOpenFolder>();
-        builder.Services.AddSingleton<IFileSaveLocation, AppDataFolderFileSaveLocation>();
+        builder.Services.AddSingleton<IFileSavePath, FileSavePath>();
 
         builder.Services.AddSingleton<LocalNetDeviceDiscoveryBase, LocalNetDeviceDiscovery>();
         builder.Services.AddSingleton<LocalNetInviteDeviceBase, LocalNetInviteDevice>();
         builder.Services.AddSingleton<LocalIpScannerBase, DefaultScanLocalNetIp>();
         builder.Services.AddSingleton<LocalNetJoinRequestBase, LocalNetJoinRequest>();
+        builder.Services.AddSingleton<FileSavePathBase, FileSavePath>();
 
         builder.Services.AddSingleton<DeviceLocalIpBase, DefaultLocalIp>();
 

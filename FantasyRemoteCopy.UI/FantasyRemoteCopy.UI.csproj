@@ -111,7 +111,7 @@
 	  <None Remove="Resources\Raw\red.ico" />
 	  <None Remove="Resources\Splash\splash.png" />
 	  <None Remove="FantasyMvvm" />
-	  <None Include="Platforms\Windows\AppDataFolderFileSaveLocation.cs" />
+	  <None Include="Platforms\Windows\FileSavePath.cs" />
 	  <None Include="Platforms\Windows\DefaultLocalIp.cs" />
 	  <None Include="Platforms\Windows\DefaultOpenFolder.cs" />
 	  <None Include="Platforms\Windows\DefaultScanLocalNetIp.cs" />
@@ -185,6 +185,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="FantasyResultModel" Version="1.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0-rc.1.24431.7" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="sqlite-net" Version="1.6.292" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
