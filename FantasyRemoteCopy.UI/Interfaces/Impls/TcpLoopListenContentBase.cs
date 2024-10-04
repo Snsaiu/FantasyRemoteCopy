@@ -6,8 +6,11 @@ using FantasyRemoteCopy.UI.Enums;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
-public abstract class TcpLoopListenContentBase : TcpLoopListenerBase<TransformResultModel<string>, ProgressValueModel, string>
+public abstract class TcpLoopListenContentBase(FileSavePathBase fileSavePathBase)
+    : TcpLoopListenerBase<TransformResultModel<string>, ProgressValueModel, string>
 {
+    protected readonly FileSavePathBase FileSavePathBase = fileSavePathBase;
+
     protected override async Task HandleReceiveAsync(NetworkStream stream, SendMetadataMessage message,
         Action<TransformResultModel<string>> receivedCallBack,
         IProgress<ProgressValueModel>? progress, CancellationToken cancellationToken)
@@ -26,7 +29,7 @@ public abstract class TcpLoopListenContentBase : TcpLoopListenerBase<TransformRe
             string saveFullPath = Path.Combine(ConstParams.SaveFilePath(), message.Name);
             long receivedBytes = 0;
 
-            await using var fs = new FileStream(saveFullPath, FileMode.Create, FileAccess.Write);
+            await using var fs = new FileStream(FileSavePathBase.SaveLocation, FileMode.Create, FileAccess.Write);
             int bytesRead;
             while ((bytesRead = await stream.ReadAsync(buffer,cancellationToken)) > 0)
             {
