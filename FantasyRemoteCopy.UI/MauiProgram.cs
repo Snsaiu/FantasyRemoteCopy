@@ -43,6 +43,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<ISystemType, SystemTypeProvider>();
         builder.Services.AddSingleton<IDeviceType, DeviceTypeProvider>();
 
+        builder.Services.AddSingleton<IOpenFileable, OpenFileProvider>();
+        
         builder.Services.AddSingleton<LocalNetJoinProcessBase, LocalNetJoinProcess>();
         builder.Services.AddSingleton<GlobalScanBase, GlobalScan>();
 

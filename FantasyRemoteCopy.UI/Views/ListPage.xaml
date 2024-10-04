@@ -68,12 +68,21 @@
                                 CommandParameter="{Binding .}"
                                 IsVisible="{Binding IsFile}"
                                 Source="openfile.png" />
-                            <ImageButton
-                                Grid.Column="3"
-                                Command="{Binding BindingContext.OpenFolderCommand, Source={x:Reference cp}}"
-                                CommandParameter="{Binding .}"
-                                IsVisible="{Binding IsFile}"
-                                Source="openfolder.png" />
+
+                            <ContentView Grid.Column="3">
+                                <ContentView.Content>
+                                    <OnPlatform x:TypeArguments="View">
+                                        <On Platform="WinUI,MacCatalyst">
+                                            <ImageButton
+                                                Command="{Binding BindingContext.OpenFolderCommand, Source={x:Reference cp}}"
+                                                CommandParameter="{Binding .}"
+                                                IsVisible="{Binding IsFile}"
+                                                Source="openfolder.png" />
+                                        </On>
+                                    </OnPlatform>
+                                </ContentView.Content>
+                            </ContentView>
+
                             <ImageButton
                                 Grid.Column="4"
                                 Command="{Binding BindingContext.DeleteCommand, Source={x:Reference cp}}"

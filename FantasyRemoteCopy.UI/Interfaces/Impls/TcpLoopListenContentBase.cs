@@ -26,10 +26,10 @@ public abstract class TcpLoopListenContentBase(FileSavePathBase fileSavePathBase
         {
             byte[] buffer = new byte[8192]; // 8KB 缓冲区
             long fileSize = message.Size;
-            string saveFullPath = Path.Combine(ConstParams.SaveFilePath(), message.Name);
+            string saveFullPath = Path.Combine(FileSavePathBase.SaveLocation, message.Name);
             long receivedBytes = 0;
 
-            await using var fs = new FileStream(FileSavePathBase.SaveLocation, FileMode.Create, FileAccess.Write);
+            await using var fs = new FileStream(saveFullPath, FileMode.Create, FileAccess.Write);
             int bytesRead;
             while ((bytesRead = await stream.ReadAsync(buffer,cancellationToken)) > 0)
             {

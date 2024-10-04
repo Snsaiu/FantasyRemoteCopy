@@ -29,13 +29,15 @@ public partial class ListPageModel : ViewModelBase
     private readonly IDialogService _dialogService;
 
     private readonly INavigationService _navigationService;
+    private readonly IOpenFileable openFileable;
 
-    public ListPageModel(ISaveDataService saveDataService, IOpenFolder openFolder, IDialogService dialogService, INavigationService navigationService)
+    public ListPageModel(ISaveDataService saveDataService, IOpenFolder openFolder, IDialogService dialogService, INavigationService navigationService,IOpenFileable openFileable)
     {
         _saveDataService = saveDataService;
         _openFolder = openFolder;
         _dialogService = dialogService;
         _navigationService = navigationService;
+        this.openFileable = openFileable;
     }
 
 
@@ -85,6 +87,10 @@ public partial class ListPageModel : ViewModelBase
     [RelayCommand]
     private async Task OpenFile(SaveItemModel model)
     {
+        if (string.IsNullOrEmpty(model.Content))
+        {
+            throw new NullReferenceException();
+        }
         // 判断文件是否存在
         if (File.Exists(model.Content) == false)
         {
@@ -97,26 +103,10 @@ public partial class ListPageModel : ViewModelBase
             {
                 await _dialogService.DisplayAlert("Warning", res.ErrorMsg, "Ok");
             }
-            return;
         }
-        IsBusy = true;
-
-#if WINDOWS
-                var openOk=  await Launcher.OpenAsync(model.Content);
-          if (openOk)
-          {
-          }
-          else
-          {
-              await this._dialogService.DisplayAlert("Warning", $"{model.Title} Open Error", "Ok");
-        }
-#elif MACCATALYST
-
-        System.Diagnostics.Process.Start("open", model.Content);
-
-#endif
-
-        IsBusy = false;
+        
+        openFileable.OpenFile(model.Content);
+        
     }
 
     /// <summary>
