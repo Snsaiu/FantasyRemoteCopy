@@ -3,13 +3,24 @@ using FantasyRemoteCopy.UI.Interfaces.Impls;
 
 namespace FantasyRemoteCopy.UI;
 
-public sealed class FileSavePath : FileSavePathBase
+public sealed class FileSavePath : FileSavePathBase,IChangePathable
 {
-    // public string GetSaveLocation()
-    // {
-    //     var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FRCData");
-    //     if (Directory.Exists(path) == false)
-    //         Directory.CreateDirectory(path);
-    //     return path;
-    // }
+    private readonly ISavePathService savePathService;
+
+    public FileSavePath(ISavePathService savePathService)
+    {
+        this.savePathService=savePathService;
+    }
+    public override string SaveLocation
+    {
+        get
+        {
+            var path = savePathService.GetPath();
+            if (string.IsNullOrEmpty(path))
+                return base.SaveLocation;
+            return path;
+        }
+    }
+
+    void IChangePathable.ChangedPath(string path) => savePathService.SavePath(path);
 }
