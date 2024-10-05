@@ -140,4 +140,10 @@
 	<data name="Text" xml:space="preserve">
 		<value>텍스트</value>
 	</data>
+	<data name="SavePath" xml:space="preserve">
+		<value>저장 경로</value>
+	</data>
+	<data name="ModifyPath" xml:space="preserve">
+		<value>경로 수정</value>
+	</data>
 </root>

@@ -145,4 +145,10 @@
     <data name="Text" xml:space="preserve">
         <value>テキスト</value>
     </data>
+    <data name="SavePath" xml:space="preserve">
+        <value>保存パス </value>
+    </data>
+    <data name="ModifyPath" xml:space="preserve">
+        <value>パスを変更する</value>
+    </data>
 </root>

@@ -125,9 +125,6 @@
     <data name="GlobalRefresh" xml:space="preserve">
         <value>Global refresh</value>
     </data>
-    <data name="HelloWorld" xml:space="preserve">
-        <value>hello world!!!!!</value>
-    </data>
     <data name="History" xml:space="preserve">
         <value>History</value>
     </data>
@@ -148,5 +145,11 @@
     </data>
     <data name="Setting" xml:space="preserve">
         <value>Setting</value>
+    </data>
+    <data name="SavePath" xml:space="preserve">
+        <value>Save Path</value>
+    </data>
+    <data name="ModifyPath" xml:space="preserve">
+        <value>Modify Path</value>
     </data>
 </root>
