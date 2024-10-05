@@ -10,7 +10,7 @@ namespace FantasyRemoteCopy.UI.Interfaces.Impls
 {
     public class SavePathService : ISavePathService
     {
-        public string? GetPath() => Preferences.Default.Get<string>("savepath", string.Empty);
+        public string? GetPath() => Preferences.Default.Get<string>("savePath", string.Empty);
 
         public void SavePath(string path) => Preferences.Default.Set<string>("savePath", path);
     }
