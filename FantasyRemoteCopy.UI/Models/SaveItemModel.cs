@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using FantasyRemoteCopy.UI.Enums;
 
 namespace FantasyRemoteCopy.UI.Models;
 
@@ -7,11 +8,7 @@ public partial class SaveItemModel : ObservableObject
 
     [ObservableProperty]
     private string guid=String.Empty;
-
-    [ObservableProperty]
-    private ImageSource? image;
-
-
+    
     [ObservableProperty]
     private string? title;
 
@@ -24,11 +21,8 @@ public partial class SaveItemModel : ObservableObject
 
     [ObservableProperty]
     private string? time;
-
+    
     [ObservableProperty]
-    private bool isFile;
-
-    [ObservableProperty]
-    private bool isText;
+    private SendType sendType;
 
 }

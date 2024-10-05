@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Storage;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using FantasyMvvm.FantasyDialogService;
@@ -18,6 +19,7 @@ public partial class SettingPageModel : ViewModelBase
     private readonly IDialogService _dialogService;
     private readonly DeviceLocalIpBase _getLocalIp;
     private readonly GlobalScanBase _globalScan;
+    private readonly FileSavePathBase fileSavePath;
     private readonly ILanguageService _languageService;
     private readonly INavigationService _navigationService;
 
@@ -38,6 +40,7 @@ public partial class SettingPageModel : ViewModelBase
         INavigationService navigationService,
         IDialogService dialogService,
         GlobalScanBase globalScan,
+        FileSavePathBase fileSavePath,
         ILanguageService languageService)
     {
         _userService = userService;
@@ -45,11 +48,19 @@ public partial class SettingPageModel : ViewModelBase
         _navigationService = navigationService;
         _dialogService = dialogService;
         _globalScan = globalScan;
+        this.fileSavePath=fileSavePath;
         _languageService = languageService;
+
         InitLanguages();
     }
 
     public bool IsNotBusy => !IsBusy;
+
+    [ObservableProperty]
+    private string savePath;
+
+    [ObservableProperty]
+    private bool showChangedFolder;
 
     private void InitLanguages()
     {
@@ -83,6 +94,21 @@ public partial class SettingPageModel : ViewModelBase
         await _navigationService.NavigationToAsync(nameof(LoginPage), false);
     }
 
+
+    [RelayCommand]
+    private async Task ChangedSavePathAsync()
+    {
+        var result = await FolderPicker.Default.PickAsync();
+        if (result is not { IsSuccessful:true,Folder.Path :var path})
+        {
+            return;
+        }
+        ((IChangePathable)fileSavePath).ChangedPath(path);
+        SavePath= path;
+
+    }
+
+
     [RelayCommand]
     private void Init()
     {
@@ -90,6 +116,10 @@ public partial class SettingPageModel : ViewModelBase
         SelectedLanguage = string.IsNullOrEmpty(language)
             ? Languages.First()
             : Languages.First(x => x.Value == language);
+
+       SavePath = fileSavePath.SaveLocation;
+
+        ShowChangedFolder = fileSavePath is IChangePathable;
     }
 
     partial void OnSelectedLanguageChanged(KeyValuePair<string, string>? oldValue, KeyValuePair<string, string>? newValue)

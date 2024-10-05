@@ -7,6 +7,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:behaviors="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="cp"
+    xmlns:converter="clr-namespace:FantasyRemoteCopy.UI.Converters"
     Title="{extension:Translate History}"
     BackgroundColor="AliceBlue">
     <Grid>
@@ -19,7 +20,7 @@
                     <Grid BackgroundColor="White" ColumnDefinitions="auto,*,auto">
                         <Image
                             HeightRequest="60"
-                            Source="{Binding Image}"
+                            Source="{Binding SendType,Converter={converter:SendTypeToImageSourceConverter}}"
                             WidthRequest="60" />
                         <Grid
                             Grid.Column="1"
@@ -42,41 +43,39 @@
                                 Text="{Binding Time}"
                                 TextColor="Gray" />
                         </Grid>
-                        <Grid Grid.Column="2" ColumnDefinitions="auto,auto,auto,auto,auto">
-                            <Grid.Resources>
+                        <StackLayout Orientation="Horizontal" Grid.Column="2" >
+                            <StackLayout.Resources>
                                 <Style TargetType="ImageButton">
                                     <Setter Property="HeightRequest" Value="30" />
                                     <Setter Property="WidthRequest" Value="30" />
                                     <Setter Property="BackgroundColor" Value="Transparent" />
                                     <Setter Property="Margin" Value="5,0" />
                                 </Style>
-                            </Grid.Resources>
+                            </StackLayout.Resources>
                             <ImageButton
                                 Command="{Binding BindingContext.CopyContentCommand, Source={Reference cp}}"
                                 CommandParameter="{Binding .}"
-                                IsVisible="{Binding IsText}"
+                                IsVisible="{Binding SendType,Converter={converter:SendTypeTextToVisibleConverter}}"
                                 Source="copy.png" />
                             <ImageButton
-                                Grid.Column="1"
                                 Command="{Binding BindingContext.DetailCommand, Source={x:Reference cp}}"
                                 CommandParameter="{Binding .}"
-                                IsVisible="{Binding IsText}"
+                                IsVisible="{Binding SendType,Converter={converter:SendTypeTextToVisibleConverter}}"
                                 Source="detail.png" />
                             <ImageButton
-                                Grid.Column="2"
                                 Command="{Binding BindingContext.OpenFileCommand, Source={x:Reference cp}}"
                                 CommandParameter="{Binding .}"
-                                IsVisible="{Binding IsFile}"
+                                IsVisible="{Binding SendType,Converter={converter:SendTypeFileToVisibleConverter}}"
                                 Source="openfile.png" />
 
-                            <ContentView Grid.Column="3">
+                            <ContentView  Margin="5,0" IsVisible="{Binding SendType,Converter={converter:SendTypeFileToVisibleConverter}}" >
                                 <ContentView.Content>
                                     <OnPlatform x:TypeArguments="View">
                                         <On Platform="WinUI,MacCatalyst">
                                             <ImageButton
+                                                Margin="0"
                                                 Command="{Binding BindingContext.OpenFolderCommand, Source={x:Reference cp}}"
                                                 CommandParameter="{Binding .}"
-                                                IsVisible="{Binding IsFile}"
                                                 Source="openfolder.png" />
                                         </On>
                                     </OnPlatform>
@@ -84,11 +83,10 @@
                             </ContentView>
 
                             <ImageButton
-                                Grid.Column="4"
                                 Command="{Binding BindingContext.DeleteCommand, Source={x:Reference cp}}"
                                 CommandParameter="{Binding .}"
                                 Source="delete.png" />
-                        </Grid>
+                        </StackLayout>
 
 
                     </Grid>

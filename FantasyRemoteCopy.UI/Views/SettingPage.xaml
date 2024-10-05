@@ -36,6 +36,14 @@
                 ItemsSource="{Binding Languages}"
                 SelectedItem="{Binding SelectedLanguage}" />
 
+            <StackLayout Margin="5" IsVisible="{Binding ShowChangedFolder}">
+                <Label Text="{extension:Translate SavePath}"></Label>
+                <Grid ColumnDefinitions="4*,auto">
+                    <Label Text="{Binding SavePath}"/>
+                    <Button Command="{Binding ChangedSavePathCommand}" Text="{extension:Translate ModifyPath}" Grid.Column="1"></Button>
+                </Grid>
+            </StackLayout>
+
         </VerticalStackLayout>
 
         <Button

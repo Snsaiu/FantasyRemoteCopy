@@ -3,13 +3,4 @@ using FantasyRemoteCopy.UI.Interfaces.Impls;
 
 namespace FantasyRemoteCopy.UI;
 
-public sealed class FileSavePath : FileSavePathBase
-{
-    // public string GetSaveLocation()
-    // {
-    //     var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "FRCData");
-    //     if (Directory.Exists(path) == false)
-    //         Directory.CreateDirectory(path);
-    //     return path;
-    // }
-}
+public sealed class FileSavePath(ISavePathService savePathService) : DeskTopFileSavePathBase(savePathService);

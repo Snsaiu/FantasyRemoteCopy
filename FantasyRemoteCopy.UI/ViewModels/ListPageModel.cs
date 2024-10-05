@@ -47,24 +47,20 @@ public partial class ListPageModel : ViewModelBase
         foreach (SaveDataModel item in sources)
         {
             SaveItemModel sm = new SaveItemModel();
+           
             if (item.DataType == SendType.Text)
             {
                 sm.Title = item.Content.Replace(" ", "").Length > 20
                     ? item.Content.Replace(" ", "").Replace("\n", "")[..20] + "..."
                     : item.Content.Replace(" ", "").Replace("\n", "");
-                sm.IsText = true;
-                sm.IsFile = false;
-                sm.Image = ImageSource.FromFile("texticon.png");
+                //   sm.Image = ImageSource.FromFile("texticon.png");
             }
             else
             {
-                sm.IsText = false;
-                sm.IsFile = true;
-
                 sm.Title = Path.GetFileName(item.Content);
-                sm.Image = ImageSource.FromFile("fileicon.png");
+             //   sm.Image = ImageSource.FromFile("fileicon.png");
             }
-
+            sm.SendType = item.DataType;
             sm.Content = item.Content;
             sm.Guid = item.Guid;
             sm.SourceDeviceName = item.SourceDeviceNickName;
@@ -117,7 +113,7 @@ public partial class ListPageModel : ViewModelBase
     private async Task Delete(SaveItemModel model)
     {
         IsBusy = true;
-        if (model.IsFile)
+        if (model.SendType==SendType.File)
         {
             if (File.Exists(model.Content))
             {

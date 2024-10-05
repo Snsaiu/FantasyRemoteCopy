@@ -37,6 +37,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<LocalIpScannerBase, DefaultScanLocalNetIp>();
         builder.Services.AddSingleton<LocalNetJoinRequestBase, LocalNetJoinRequest>();
         builder.Services.AddSingleton<FileSavePathBase, FileSavePath>();
+        builder.Services.AddSingleton<ISavePathService,SavePathService>();
+      
 
         builder.Services.AddSingleton<DeviceLocalIpBase, DefaultLocalIp>();
 

@@ -123,9 +123,6 @@
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
-    <data name="HelloWorld" xml:space="preserve">
-    <value>hello world!!!!!</value>
-  </data>
     <data name="NickOfName" xml:space="preserve">
     <value>Nick of name:</value>
   </data>
@@ -167,5 +164,11 @@
     </data>
     <data name="Logout" xml:space="preserve">
         <value>Logout</value>
+    </data>
+    <data name="SavePath" xml:space="preserve">
+        <value>Save Path</value>
+    </data>
+    <data name="ModifyPath" xml:space="preserve">
+        <value>Modify Path</value>
     </data>
 </root>
