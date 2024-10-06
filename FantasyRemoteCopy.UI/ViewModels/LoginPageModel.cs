@@ -37,6 +37,7 @@ public partial class LoginPageModel(IUserService userService, INavigationService
     public async Task Init()
     {
         IsBusy = true;
+        await Task.Yield();
         FantasyResultModel.ResultBase<UserInfo> userRes = await userService.GetCurrentUserAsync();
         if (userRes.Ok)
         {
@@ -46,5 +47,6 @@ public partial class LoginPageModel(IUserService userService, INavigationService
         }
 
         IsBusy = false;
+        await Task.Yield();
     }
 }

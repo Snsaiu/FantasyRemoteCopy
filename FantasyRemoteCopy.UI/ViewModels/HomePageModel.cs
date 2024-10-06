@@ -237,10 +237,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
         }
 
         [RelayCommand]
-        public Task Search()
-        {
-            return DeviceDiscoverAsync();
-        }
+        public Task Search() => DeviceDiscoverAsync();
 
         [RelayCommand]
         public Task GotoList()
@@ -308,6 +305,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             try
             {
                 IsBusy = true;
+                await Task.Yield();
                 DiscoveredDevices.Clear();
                 var localIp = await _deviceLocalIpBase.GetLocalIpAsync();
                 logger.LogInformation("发现本地ip:{0}",localIp);
@@ -326,6 +324,7 @@ namespace FantasyRemoteCopy.UI.ViewModels
             finally
             {
                 IsBusy = false;
+                await Task.Yield();
             }
         }
 
