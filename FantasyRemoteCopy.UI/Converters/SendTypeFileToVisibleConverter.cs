@@ -9,6 +9,6 @@ public sealed class SendTypeFileToVisibleConverter:ValueConverterBase
     {
         if (value is not SendType sendType)
             return Binding.DoNothing;
-        return sendType == SendType.File ? Visibility.Visible : Visibility.Collapsed;
+        return sendType == SendType.File ? true : false;
     }
 }

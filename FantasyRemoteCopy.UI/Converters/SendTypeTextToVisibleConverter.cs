@@ -9,6 +9,6 @@ public sealed class SendTypeTextToVisibleConverter : ValueConverterBase
     {
         if (value is not SendType sendType)
             return Binding.DoNothing;
-        return sendType == SendType.Text ? Visibility.Visible : Visibility.Collapsed;
+        return sendType == SendType.Text ? true : false;
     }
 }
