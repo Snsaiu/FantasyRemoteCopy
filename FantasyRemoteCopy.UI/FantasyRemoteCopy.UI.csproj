@@ -71,6 +71,14 @@
 	  <ApplicationIdGuid>0347C7E3-B40F-49E9-80BD-86A000664AE2</ApplicationIdGuid>
 	</PropertyGroup>
 
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+	  <AndroidKeyStore>true</AndroidKeyStore>
+	  <AndroidSigningKeyStore>key0.keystore</AndroidSigningKeyStore>
+	  <AndroidSigningStorePass>flj19950606</AndroidSigningStorePass>
+	  <AndroidSigningKeyAlias>key1</AndroidSigningKeyAlias>
+	  <AndroidSigningKeyPass>flj19950606</AndroidSigningKeyPass>
+	</PropertyGroup>
+
 
 	<ItemGroup>
 		<!-- App Icon -->
