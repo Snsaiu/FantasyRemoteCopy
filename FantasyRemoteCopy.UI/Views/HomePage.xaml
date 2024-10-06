@@ -295,7 +295,7 @@
         <ActivityIndicator
             Grid.Row="1"
             HeightRequest="{OnPlatform Android=60}"
-            IsRunning="True"
+            IsRunning="{Binding IsBusy}"
             IsVisible="{Binding IsBusy}"
             WidthRequest="{OnPlatform Android=60}"
             Color="LightGray" />
