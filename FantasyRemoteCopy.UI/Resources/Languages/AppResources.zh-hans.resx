@@ -57,4 +57,10 @@
     <data name="Setting" xml:space="preserve">
         <value>设置</value>
     </data>
+    <data name="SavePath" xml:space="preserve">
+        <value>保存路径</value>
+    </data>
+    <data name="ModifyPath" xml:space="preserve">
+        <value>修改路径</value>
+    </data>
 </root>

@@ -3,7 +3,7 @@ using FantasyRemoteCopy.UI.Enums;
 
 namespace FantasyRemoteCopy.UI.Converters;
 
-public class SystemTypeToImageSourceConverter:ValueConverterBase
+public sealed class SystemTypeToImageSourceConverter:ValueConverterBase
 {
     public override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
