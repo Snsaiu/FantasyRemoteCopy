@@ -193,12 +193,8 @@ namespace FantasyRemoteCopy.UI.ViewModels
                             return;
                         }
                         logger.LogInformation("加入设备{0}",JsonConvert.SerializeObject(x));
-
-                        Application.Current.Dispatcher.Dispatch(() =>
-                        {
                             DiscoveredDevices.Add(x);
-                        });
-                      
+                            
                     }, default);
                 })
             { IsBackground = true };
@@ -381,7 +377,8 @@ namespace FantasyRemoteCopy.UI.ViewModels
                     if (x.Progress >= 1)
                     {
                         flag.WorkState = WorkState.None;
-                        flag.Progress = 0;
+                        flag.Progress = 0; 
+                       
                     }
                     else
                     {

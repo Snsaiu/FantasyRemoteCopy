@@ -17,7 +17,7 @@
             <Button WidthRequest="200" Text="{extension:Translate Login}" Command="{Binding LoginCommand}" />
         </VerticalStackLayout>
 
-        <ActivityIndicator IsRunning="True" IsVisible="{Binding IsBusy}" />
+        <ActivityIndicator HeightRequest="{OnPlatform Android=60}" WidthRequest="{OnPlatform Android=60}" IsRunning="True" IsVisible="{Binding IsBusy}" />
     </Grid>
 
     <ContentPage.Behaviors>
