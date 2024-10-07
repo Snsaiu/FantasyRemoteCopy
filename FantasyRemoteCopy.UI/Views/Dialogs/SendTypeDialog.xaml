@@ -13,7 +13,7 @@
             <Label x:Name="toLabel" VerticalOptions="Center" FontAttributes="Bold" VerticalTextAlignment="Center"
                    Margin="10,15" TextColor="Black" HorizontalOptions="Start" />
         </Grid>
-        <Grid ColumnDefinitions="*,*" Grid.Row="1" RowDefinitions="*,auto" BackgroundColor="White" Padding="10">
+        <Grid ColumnDefinitions="*,*,*" Grid.Row="1" RowDefinitions="*,auto" BackgroundColor="White" Padding="10">
 
             <Grid RowDefinitions="auto,auto">
                 <Grid.GestureRecognizers>
@@ -31,6 +31,14 @@
                 <Image Source="file.png" HeightRequest="50" WidthRequest="50" />
                 <Label Text="{extension:Translate File}" TextColor="Black" HorizontalTextAlignment="Center"
                        Grid.Row="1" />
+            </Grid>
+            
+            <Grid Grid.Column="2" RowDefinitions="auto,auto">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding FolderInputCommand}"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
+                <Image Source="folder.png" HeightRequest="50" WidthRequest="50"></Image>
+                <Label Text="{extension:Translate Folder}" TextColor="Black" HorizontalTextAlignment="Center"></Label>
             </Grid>
 
 

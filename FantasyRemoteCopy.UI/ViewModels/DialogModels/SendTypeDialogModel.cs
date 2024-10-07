@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Storage;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using FantasyMvvm;
@@ -32,7 +33,7 @@ public partial class SendTypeDialogModel(DeviceLocalIpBase deviceLocalIp) : Dial
     }
 
     [RelayCommand]
-    public async Task FileInput()
+    public async Task FileInputAsync()
     {
         FileResult? f = await FilePicker.PickAsync();
 
@@ -49,5 +50,20 @@ public partial class SendTypeDialogModel(DeviceLocalIpBase deviceLocalIp) : Dial
             OnCloseEvent?.Invoke(new CloseResultModel { Success = false });
         }
 
+    }
+
+    [RelayCommand]
+    public async Task FolderInputAsync()
+    {
+        var f = await FolderPicker.PickAsync(default);
+        if(!f.IsSuccessful)
+            OnCloseEvent?.Invoke(new CloseResultModel { Success = false });
+        var ip = await deviceLocalIp.GetLocalIpAsync();
+        if (discoveredDeviceModel is null)
+            throw new NullReferenceException();
+        var sendFolderModel = new SendFolderModel(ip, discoveredDeviceModel.Flag ?? throw new NullReferenceException(),
+            f.Folder?.Path?? throw new NullReferenceException());
+        OnCloseEvent?.Invoke(new CloseResultModel { Success = true, Data = sendFolderModel });
+        
     }
 }
