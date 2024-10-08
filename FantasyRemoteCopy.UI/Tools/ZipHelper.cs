@@ -11,4 +11,11 @@ public static class ZipHelper
         // 创建新的ZIP文件
         ZipFile.CreateFromDirectory(folderPath, zipFilePath, CompressionLevel.Fastest, true);
     }
+
+    /// <summary>
+    /// 解压zip文件到指定文件夹
+    /// </summary>
+    /// <param name="zipFilePath">zip文件</param>
+    /// <param name="directoryPath">解压路径</param>
+    public static void ExtractToDirectory(string zipFilePath, string directoryPath) => ZipFile.ExtractToDirectory(zipFilePath, directoryPath);
 }

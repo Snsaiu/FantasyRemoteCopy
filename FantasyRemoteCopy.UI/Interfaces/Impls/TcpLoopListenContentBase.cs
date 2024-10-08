@@ -1,6 +1,7 @@
 using System.Net.Sockets;
 using FantasyRemoteCopy.UI.Enums;
 using FantasyRemoteCopy.UI.Models;
+using FantasyRemoteCopy.UI.Tools;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
@@ -42,7 +43,8 @@ public abstract class TcpLoopListenContentBase(FileSavePathBase fileSavePathBase
             //如果是需要解压的，那么要先解压，在删除
             if (message.IsCompress)
             {
-                //todo :
+                ZipHelper.ExtractToDirectory(saveFullPath, FileSavePathBase.SaveLocation);
+                File.Delete(saveFullPath);
             }
 
             var result = new TransformResultModel<string>(message.Flag, SendType.File, saveFullPath);
