@@ -16,6 +16,7 @@ public sealed class SendTypeToImageSourceConverter:ValueConverterBase
         {
             SendType.Text => ImageSource.FromFile("texticon.png"),
             SendType.File => ImageSource.FromFile("fileicon.png"),
+            SendType.Folder=>ImageSource.FromFile("folder.png"),
             _ => throw new ArgumentOutOfRangeException()
         };
     }

@@ -68,7 +68,7 @@
                                 IsVisible="{Binding SendType,Converter={converter:SendTypeFileToVisibleConverter}}"
                                 Source="openfile.png" />
 
-                            <ContentView  Margin="5,0" IsVisible="{Binding SendType,Converter={converter:SendTypeFileToVisibleConverter}}" >
+                            <ContentView  Margin="5,0" IsVisible="{Binding SendType,Converter={converter:SendTypeFileOrFolderToVisibleConverter}}" >
                                 <ContentView.Content>
                                     <OnPlatform x:TypeArguments="View">
                                         <On Platform="WinUI,MacCatalyst">
