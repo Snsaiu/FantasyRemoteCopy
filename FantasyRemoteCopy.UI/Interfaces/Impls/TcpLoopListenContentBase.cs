@@ -1,8 +1,6 @@
-using FantasyRemoteCopy.UI.Consts;
-using FantasyRemoteCopy.UI.Models;
-
 using System.Net.Sockets;
 using FantasyRemoteCopy.UI.Enums;
+using FantasyRemoteCopy.UI.Models;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
@@ -15,7 +13,6 @@ public abstract class TcpLoopListenContentBase(FileSavePathBase fileSavePathBase
         Action<TransformResultModel<string>> receivedCallBack,
         IProgress<ProgressValueModel>? progress, CancellationToken cancellationToken)
     {
-
         if (message.SendType == SendType.Text)
         {
             var text = await ReceiveStringAsync(stream, message.Size);
@@ -24,22 +21,28 @@ public abstract class TcpLoopListenContentBase(FileSavePathBase fileSavePathBase
         }
         else
         {
-            byte[] buffer = new byte[8192]; // 8KB 缓冲区
-            long fileSize = message.Size;
-            string saveFullPath = Path.Combine(FileSavePathBase.SaveLocation, message.Name);
+            var buffer = new byte[8192]; // 8KB 缓冲区
+            var fileSize = message.Size;
+            var saveFullPath = Path.Combine(FileSavePathBase.SaveLocation, message.Name);
             long receivedBytes = 0;
 
             await using var fs = new FileStream(saveFullPath, FileMode.Create, FileAccess.Write);
             int bytesRead;
-            while ((bytesRead = await stream.ReadAsync(buffer,cancellationToken)) > 0)
+            while ((bytesRead = await stream.ReadAsync(buffer, cancellationToken)) > 0)
             {
-                await fs.WriteAsync(buffer, 0, bytesRead,cancellationToken);
+                await fs.WriteAsync(buffer, 0, bytesRead, cancellationToken);
                 receivedBytes += bytesRead;
 
                 // 计算并显示下载进度
-                double p = (double)receivedBytes / fileSize;
+                var p = (double)receivedBytes / fileSize;
                 var pModel = new ProgressValueModel(message.Flag, message.TargetFlag, p);
                 progress?.Report(pModel);
+            }
+
+            //如果是需要解压的，那么要先解压，在删除
+            if (message.IsCompress)
+            {
+                //todo :
             }
 
             var result = new TransformResultModel<string>(message.Flag, SendType.File, saveFullPath);

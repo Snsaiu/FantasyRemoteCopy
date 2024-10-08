@@ -1,12 +1,13 @@
 ﻿namespace FantasyRemoteCopy.UI.Models;
 
 /// <summary>
-/// 针对发送的类型是文件类型
+///     针对发送的类型是文件类型
 /// </summary>
 /// <param name="flag"></param>
 /// <param name="targetFlag"></param>
 /// <param name="fileFullPath"></param>
-public class SendFileModel(string flag,string targetFlag, string fileFullPath) : SendModelBase(flag, targetFlag,fileFullPath)
+public class SendFileModel(string flag, string targetFlag, string fileFullPath)
+    : SendModelBase(flag, targetFlag, fileFullPath)
 {
     public override long Size
     {
@@ -19,6 +20,5 @@ public class SendFileModel(string flag,string targetFlag, string fileFullPath) :
             FileInfo fileInfo = new(FileFullPath);
             return fileInfo.Length;
         }
-        protected set => throw new NotImplementedException();
     }
 }
