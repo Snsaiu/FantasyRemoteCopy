@@ -15,8 +15,13 @@ public class SendCompressFileModel : SendFileModel, ICompress
     {
         if (!Directory.Exists(FileFullPath))
             throw new DirectoryNotFoundException();
-        var compressPath = Path.Combine(fileFullPath, Guid.NewGuid() + ".zip");
-        ZipHelper.CreateZipFromFolder(fileFullPath, compressPath);
+        var zipName =Path.GetFileName(fileFullPath)+ ".zip";
+        var compressPath = Path.Combine( FileSystem.CacheDirectory,zipName );
+
+            ZipHelper.CreateZipFromFolder(fileFullPath, compressPath);
+            FileFullPath= compressPath;
+  
+       
         FileFullPath = compressPath;
     }
 }

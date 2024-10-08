@@ -43,12 +43,22 @@ public abstract class TcpLoopListenContentBase(FileSavePathBase fileSavePathBase
             //如果是需要解压的，那么要先解压，在删除
             if (message.IsCompress)
             {
+                fs?.Close();
+                fs?.Dispose();
+
                 ZipHelper.ExtractToDirectory(saveFullPath, FileSavePathBase.SaveLocation);
                 File.Delete(saveFullPath);
-            }
 
-            var result = new TransformResultModel<string>(message.Flag, SendType.File, saveFullPath);
-            receivedCallBack.Invoke(result);
+                var fileName = Path.GetFileNameWithoutExtension(saveFullPath);
+                var result = new TransformResultModel<string>(message.Flag, SendType.Folder, fileName);
+                receivedCallBack.Invoke(result);
+            }
+            else
+            {
+                var result = new TransformResultModel<string>(message.Flag, SendType.File, saveFullPath);
+                receivedCallBack.Invoke(result);
+            }
+  
         }
     }
 }
