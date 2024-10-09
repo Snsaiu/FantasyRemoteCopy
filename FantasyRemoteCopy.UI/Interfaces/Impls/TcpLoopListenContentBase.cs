@@ -24,7 +24,11 @@ public abstract class TcpLoopListenContentBase(FileSavePathBase fileSavePathBase
         {
             var buffer = new byte[8192]; // 8KB 缓冲区
             var fileSize = message.Size;
-            var saveFullPath = Path.Combine(FileSavePathBase.SaveLocation, message.Name);
+            var guidFolder = Guid.NewGuid().ToString("N");
+            
+            Directory.CreateDirectory(Path.Combine( FileSavePathBase.SaveLocation,guidFolder));
+            
+            var saveFullPath = Path.Combine(FileSavePathBase.SaveLocation,guidFolder, message.Name);
             long receivedBytes = 0;
 
             await using var fs = new FileStream(saveFullPath, FileMode.Create, FileAccess.Write);
@@ -46,10 +50,10 @@ public abstract class TcpLoopListenContentBase(FileSavePathBase fileSavePathBase
                 fs?.Close();
                 fs?.Dispose();
 
-                ZipHelper.ExtractToDirectory(saveFullPath, FileSavePathBase.SaveLocation);
+                ZipHelper.ExtractToDirectory(saveFullPath, Path.Combine( FileSavePathBase.SaveLocation,guidFolder));
                 File.Delete(saveFullPath);
 
-                var fileName = Path.Combine(FileSavePathBase.SaveLocation, Path.GetFileNameWithoutExtension(saveFullPath));
+                var fileName = Path.Combine(FileSavePathBase.SaveLocation,guidFolder, Path.GetFileNameWithoutExtension(saveFullPath));
                 var result = new TransformResultModel<string>(message.Flag, SendType.Folder, fileName);
                 receivedCallBack.Invoke(result);
             }
