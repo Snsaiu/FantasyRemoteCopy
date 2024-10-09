@@ -1,9 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Storage;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
 using FantasyMvvm;
 using FantasyMvvm.FantasyModels;
-
 using FantasyRemoteCopy.UI.Enums;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
 using FantasyRemoteCopy.UI.Models;
@@ -16,8 +15,7 @@ public partial class SendTypeDialogModel(DeviceLocalIpBase deviceLocalIp) : Dial
     public override event OnCloseDelegate? OnCloseEvent;
     private DiscoveredDeviceModel? discoveredDeviceModel;
 
-    [ObservableProperty]
-    private bool isBusy;
+    [ObservableProperty] private bool isBusy;
 
     public override void OnParameter(INavigationParameter parameter)
     {
@@ -32,22 +30,53 @@ public partial class SendTypeDialogModel(DeviceLocalIpBase deviceLocalIp) : Dial
     }
 
     [RelayCommand]
-    public async Task FileInput()
+    public async Task FileInputAsync()
     {
-        FileResult? f = await FilePicker.PickAsync();
-
-        if (f != null)
+        var fileResults = await FilePicker.PickMultipleAsync();
+        
+        if (fileResults.Any())
         {
             string ip = await deviceLocalIp.GetLocalIpAsync();
             if (discoveredDeviceModel is null)
                 throw new NullReferenceException();
-            SendFileModel sendfileModel = new SendFileModel(ip, discoveredDeviceModel.Flag ?? throw new NullReferenceException(), f.FullPath);
-            OnCloseEvent?.Invoke(new CloseResultModel { Success = true, Data = sendfileModel });
+            
+            if (fileResults.Count() == 1)
+            {
+                var fileModel = new SendFileModel(ip, discoveredDeviceModel.Flag ?? throw new NullReferenceException(),
+                    fileResults.First().FullPath);
+            
+                OnCloseEvent?.Invoke(new CloseResultModel { Success = true, Data = fileModel });
+            }
+            else
+            {
+                var fileList = fileResults.Select(item => new SendFileModel(ip, discoveredDeviceModel.Flag ?? throw new NullReferenceException(), item.FullPath)).ToList();
+            
+                OnCloseEvent?.Invoke(new CloseResultModel { Success = true, Data = fileList });
+            }
+
+        
         }
         else
         {
             OnCloseEvent?.Invoke(new CloseResultModel { Success = false });
         }
+    }
 
+    [RelayCommand]
+    public async Task FolderInputAsync()
+    {
+        var f = await FolderPicker.PickAsync(default);
+        if (!f.IsSuccessful)
+        {
+            OnCloseEvent?.Invoke(new CloseResultModel { Success = false });
+            return;
+        }
+        
+        var ip = await deviceLocalIp.GetLocalIpAsync();
+        if (discoveredDeviceModel is null)
+            throw new NullReferenceException();
+        var sendFolderModel = new SendFolderModel(ip, discoveredDeviceModel.Flag ?? throw new NullReferenceException(),
+            f.Folder?.Path ?? throw new NullReferenceException());
+        OnCloseEvent?.Invoke(new CloseResultModel { Success = true, Data = sendFolderModel });
     }
 }

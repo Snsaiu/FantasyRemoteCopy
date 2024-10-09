@@ -142,7 +142,8 @@ public partial class ListPageModel : ViewModelBase
             return _dialogService.DisplayAlert("警告", "文件路径不存在", "确定");
         }
 
-        string? p = Directory.GetParent(model.Content)?.ToString();
+        
+        var p = model.SendType==SendType.File ? Directory.GetParent(model.Content)?.ToString() : model.Content;
         if (string.IsNullOrEmpty(p))
             return _dialogService.DisplayAlert("警告", "文件夹父路径不存在", "确定");
 

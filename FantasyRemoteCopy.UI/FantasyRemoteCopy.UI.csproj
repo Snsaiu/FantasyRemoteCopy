@@ -103,6 +103,7 @@
 	  <None Remove="Resources\Images\detail.png" />
 	  <None Remove="Resources\Images\file.png" />
 	  <None Remove="Resources\Images\fileicon.png" />
+	  <None Remove="Resources\Images\folder.png" />
 	  <None Remove="Resources\Images\header.png" />
 	  <None Remove="Resources\Images\ipad.png" />
 	  <None Remove="Resources\Images\iphone.png" />
@@ -153,6 +154,8 @@
 	  <MauiImage Include="Resources\Images\text.png" />
 	  <MauiImage Include="Resources\Images\texticon.png" />
 	  <MauiImage Include="Resources\Images\windows.png" />
+	  <None Remove="Resources\Images\foldericon.png" />
+	  <MauiImage Include="Resources\Images\foldericon.png" />
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="FantasyMvvm" Version="1.0.1.12-preview" />
@@ -206,6 +209,10 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.90" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.90" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\Images\folder.png" />
 	</ItemGroup>
 
 	<ItemGroup>

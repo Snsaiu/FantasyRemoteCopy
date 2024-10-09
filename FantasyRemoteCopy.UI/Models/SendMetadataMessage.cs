@@ -4,39 +4,44 @@ using Newtonsoft.Json;
 
 namespace FantasyRemoteCopy.UI.Models;
 
-public class SendMetadataMessage : IName, ISendType,IFlag,ISize,ITargetFlag
+public class SendMetadataMessage : IName, ISendType, IFlag, ISize, ITargetFlag, ICompressable
 {
-    public SendMetadataMessage(string flag,string targetFlag, string name, long size)
+    public SendMetadataMessage(string flag, string targetFlag, string name, long size, bool isCompress)
     {
         SendType = SendType.File;
         Name = name;
         Size = size;
         Flag = flag;
-        TargetFlag= targetFlag;
+        TargetFlag = targetFlag;
+        IsCompress = isCompress;
     }
 
-    public SendMetadataMessage(string flag,string targetFlag,long size)
+    public SendMetadataMessage(string flag, string targetFlag, long size)
     {
         SendType = SendType.Text;
         Flag = flag;
         Size = size;
-        TargetFlag= targetFlag;
+        TargetFlag = targetFlag;
     }
 
     [JsonConstructor]
-    public SendMetadataMessage(string name, string flag,string targetFlag, SendType sendType, long size)
+    public SendMetadataMessage(string name, string flag, string targetFlag, SendType sendType, long size,
+        bool isCompress)
     {
         SendType = sendType;
         Name = name;
         Flag = flag;
         Size = size;
-        TargetFlag= targetFlag;
+        TargetFlag = targetFlag;
+        IsCompress = isCompress;
     }
 
-    public string Name { get; init; } = string.Empty;
+    public bool IsCompress { get; }
+    public string Flag { get; }
 
-    public long Size { get; init; }
-    public SendType SendType { get; init; }
-    public string Flag { get; init; }
-    public string TargetFlag { get; init; }
+    public string Name { get; } = string.Empty;
+    public SendType SendType { get; }
+
+    public long Size { get; }
+    public string TargetFlag { get; }
 }

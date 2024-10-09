@@ -6,5 +6,6 @@
 public enum SendType
 {
     Text,
-    File
+    File,
+    Folder,
 }

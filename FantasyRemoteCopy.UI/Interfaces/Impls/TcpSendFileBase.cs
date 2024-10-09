@@ -1,21 +1,23 @@
-﻿using FantasyRemoteCopy.UI.Models;
-
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
+using FantasyRemoteCopy.UI.Models;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
 /// <summary>
-/// tcp 发送文件基类
+///     tcp 发送文件基类
 /// </summary>
 public abstract class TcpSendFileBase : TcpSendBase<SendFileModel, ProgressValueModel>
 {
     protected override SendMetadataMessage GetMetaDataMessage(SendFileModel message)
     {
         var fileInfo = new FileInfo(message.FileFullPath);
-        return new SendMetadataMessage(message.Flag, message.TargetFlag, Path.GetFileName(message.FileFullPath), fileInfo.Length);
+        var isCompress = message is ICompress;
+        return new SendMetadataMessage(message.Flag, message.TargetFlag, Path.GetFileName(message.FileFullPath),
+            fileInfo.Length, isCompress);
     }
 
-    protected override async Task SendProcessAsync(NetworkStream stream, SendFileModel message, IProgress<ProgressValueModel>? progress, CancellationToken cancellationToken)
+    protected override async Task SendProcessAsync(NetworkStream stream, SendFileModel message,
+        IProgress<ProgressValueModel>? progress, CancellationToken cancellationToken)
     {
         var fileInfo = new FileInfo(message.FileFullPath);
 
@@ -34,5 +36,8 @@ public abstract class TcpSendFileBase : TcpSendBase<SendFileModel, ProgressValue
             var p = (double)bytesSent / totalBytes;
             progress?.Report(new ProgressValueModel(message.Flag, message.TargetFlag, p));
         }
+
+        // 如果是压缩包，当上传结束后要删除
+        if (message is ICompress) File.Delete(message.FileFullPath);
     }
 }
