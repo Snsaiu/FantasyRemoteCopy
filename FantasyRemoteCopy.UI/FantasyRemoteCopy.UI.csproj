@@ -154,6 +154,8 @@
 	  <MauiImage Include="Resources\Images\text.png" />
 	  <MauiImage Include="Resources\Images\texticon.png" />
 	  <MauiImage Include="Resources\Images\windows.png" />
+	  <None Remove="Resources\Images\foldericon.png" />
+	  <MauiImage Include="Resources\Images\foldericon.png" />
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="FantasyMvvm" Version="1.0.1.12-preview" />
