@@ -32,16 +32,29 @@ public partial class SendTypeDialogModel(DeviceLocalIpBase deviceLocalIp) : Dial
     [RelayCommand]
     public async Task FileInputAsync()
     {
-        FileResult? f = await FilePicker.PickAsync();
-
-        if (f != null)
+        var fileResults = await FilePicker.PickMultipleAsync();
+        
+        if (fileResults.Any())
         {
             string ip = await deviceLocalIp.GetLocalIpAsync();
             if (discoveredDeviceModel is null)
                 throw new NullReferenceException();
-            SendFileModel sendfileModel = new SendFileModel(ip,
-                discoveredDeviceModel.Flag ?? throw new NullReferenceException(), f.FullPath);
-            OnCloseEvent?.Invoke(new CloseResultModel { Success = true, Data = sendfileModel });
+            
+            if (fileResults.Count() == 1)
+            {
+                var fileModel = new SendFileModel(ip, discoveredDeviceModel.Flag ?? throw new NullReferenceException(),
+                    fileResults.First().FullPath);
+            
+                OnCloseEvent?.Invoke(new CloseResultModel { Success = true, Data = fileModel });
+            }
+            else
+            {
+                var fileList = fileResults.Select(item => new SendFileModel(ip, discoveredDeviceModel.Flag ?? throw new NullReferenceException(), item.FullPath)).ToList();
+            
+                OnCloseEvent?.Invoke(new CloseResultModel { Success = true, Data = fileList });
+            }
+
+        
         }
         else
         {

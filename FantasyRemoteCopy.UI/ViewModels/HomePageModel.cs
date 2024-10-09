@@ -240,6 +240,9 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                 case SendFileModel fileModel:
                     SendFile(fileModel);
                     break;
+                case List<SendFileModel> fileModels:
+                    SendCompressFile(fileModels);
+                    break;
                 case SendType and SendType.Text:
                     _navigationService.NavigationToAsync(nameof(TextInputPage), parameter);
                     break;
@@ -252,6 +255,32 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         });
     }
 
+
+    private void SendCompressFile(IEnumerable<SendFileModel> files)
+    {
+        Task.Run(async () =>
+        {
+            var first = files.First();
+            
+            var device =
+                DiscoveredDevices.FirstOrDefault(y => y.Flag == first.TargetFlag);
+            if (device is null)
+                throw new NullReferenceException();
+            try
+            {
+                var sendCompressFileModel = new SendCompressFileModel(first.Flag,first.TargetFlag,files.Select(x=>x.FileFullPath));
+
+                device.WorkState = WorkState.Sending;
+                await _tcpSendFileBase.SendAsync(sendCompressFileModel, ReportProgress(true),
+                    device.CancellationTokenSource.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                device.WorkState = WorkState.None;
+            }
+        });
+    }
+    
     private void SendCompressFile(SendFolderModel folderModel)
     {
         Task.Run(async () =>
