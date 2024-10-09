@@ -49,7 +49,7 @@ public abstract class TcpLoopListenContentBase(FileSavePathBase fileSavePathBase
                 ZipHelper.ExtractToDirectory(saveFullPath, FileSavePathBase.SaveLocation);
                 File.Delete(saveFullPath);
 
-                var fileName = Path.GetFileNameWithoutExtension(saveFullPath);
+                var fileName = Path.Combine(FileSavePathBase.SaveLocation, Path.GetFileNameWithoutExtension(saveFullPath));
                 var result = new TransformResultModel<string>(message.Flag, SendType.Folder, fileName);
                 receivedCallBack.Invoke(result);
             }
