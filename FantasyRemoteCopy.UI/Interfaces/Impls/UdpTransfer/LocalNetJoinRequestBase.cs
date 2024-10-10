@@ -1,11 +1,8 @@
 using System.Net;
-using System.Net.Sockets;
-using System.Text;
 using FantasyRemoteCopy.UI.Consts;
 using FantasyRemoteCopy.UI.Models;
-using Newtonsoft.Json;
 
-namespace FantasyRemoteCopy.UI.Interfaces.Impls;
+namespace FantasyRemoteCopy.UI.Interfaces.Impls.UdpTransfer;
 
 
 public abstract class LocalNetJoinRequestBase:UdpSendBase<JoinMessageModel>

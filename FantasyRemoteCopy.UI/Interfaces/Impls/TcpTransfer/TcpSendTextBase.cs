@@ -2,7 +2,7 @@
 using System.Text;
 using FantasyRemoteCopy.UI.Models;
 
-namespace FantasyRemoteCopy.UI.Interfaces.Impls;
+namespace FantasyRemoteCopy.UI.Interfaces.Impls.TcpTransfer;
 
 /// <summary>
 ///     tcp发送文本基类

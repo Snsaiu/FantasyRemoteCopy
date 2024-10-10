@@ -1,9 +1,10 @@
 using System.Net.Sockets;
 using FantasyRemoteCopy.UI.Enums;
+using FantasyRemoteCopy.UI.Interfaces.Impls.Configs;
 using FantasyRemoteCopy.UI.Models;
 using FantasyRemoteCopy.UI.Tools;
 
-namespace FantasyRemoteCopy.UI.Interfaces.Impls;
+namespace FantasyRemoteCopy.UI.Interfaces.Impls.TcpTransfer;
 
 public abstract class TcpLoopListenContentBase(FileSavePathBase fileSavePathBase)
     : TcpLoopListenerBase<TransformResultModel<string>, ProgressValueModel, string>

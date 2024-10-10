@@ -1,9 +1,8 @@
+using System.Net.Sockets;
 using FantasyRemoteCopy.UI.Consts;
 using FantasyRemoteCopy.UI.Models;
 
-using System.Net.Sockets;
-
-namespace FantasyRemoteCopy.UI.Interfaces.Impls;
+namespace FantasyRemoteCopy.UI.Interfaces.Impls.UdpTransfer;
 
 public class LocalNetJoinProcessBase(DeviceLocalIpBase localIpBase) : UdpLoopIListenBase<JoinMessageModel>(localIpBase)
 {

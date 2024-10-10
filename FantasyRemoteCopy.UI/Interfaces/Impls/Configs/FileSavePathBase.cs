@@ -1,4 +1,4 @@
-namespace FantasyRemoteCopy.UI.Interfaces.Impls;
+namespace FantasyRemoteCopy.UI.Interfaces.Impls.Configs;
 
 public abstract class FileSavePathBase:IFileSavePath
 {

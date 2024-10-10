@@ -1,8 +1,7 @@
+using System.Text;
 using Newtonsoft.Json;
 
-using System.Text;
-
-namespace FantasyRemoteCopy.UI.Interfaces.Impls;
+namespace FantasyRemoteCopy.UI.Interfaces.Impls.UdpTransfer;
 
 public abstract class UdpLoopIListenBase<T> : UdpBase, IListenable<T> where T : IFlag,IName
 {

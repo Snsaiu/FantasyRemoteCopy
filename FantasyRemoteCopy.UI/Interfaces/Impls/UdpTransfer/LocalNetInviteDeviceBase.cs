@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using FantasyRemoteCopy.UI.Consts;
 using FantasyRemoteCopy.UI.Models;
 
-namespace FantasyRemoteCopy.UI.Interfaces.Impls;
+namespace FantasyRemoteCopy.UI.Interfaces.Impls.UdpTransfer;
 
 /// <summary>
 /// 局域网设备邀请

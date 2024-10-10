@@ -1,6 +1,6 @@
 using System.Net.Sockets;
 
-namespace FantasyRemoteCopy.UI.Interfaces.Impls;
+namespace FantasyRemoteCopy.UI.Interfaces.Impls.UdpTransfer;
 
 public abstract class UdpBase : IDisposable
 {

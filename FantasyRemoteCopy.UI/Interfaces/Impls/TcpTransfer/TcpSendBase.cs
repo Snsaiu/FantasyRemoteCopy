@@ -4,7 +4,7 @@ using FantasyRemoteCopy.UI.Consts;
 using FantasyRemoteCopy.UI.Models;
 using Newtonsoft.Json;
 
-namespace FantasyRemoteCopy.UI.Interfaces.Impls;
+namespace FantasyRemoteCopy.UI.Interfaces.Impls.TcpTransfer;
 
 public abstract class TcpSendBase<T, P> : SendBase<T, P, NetworkStream>
     where T : IFlag, ISize, ITargetFlag where P : IProgressValue

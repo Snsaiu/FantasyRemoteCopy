@@ -1,3 +1,5 @@
+using FantasyRemoteCopy.UI.Interfaces.Impls.Configs;
+
 namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
 public abstract class DeskTopFileSavePathBase: FileSavePathBase,IChangePathable

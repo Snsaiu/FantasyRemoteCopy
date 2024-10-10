@@ -2,6 +2,9 @@
 using FantasyMvvm;
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
+using FantasyRemoteCopy.UI.Interfaces.Impls.Configs;
+using FantasyRemoteCopy.UI.Interfaces.Impls.TcpTransfer;
+using FantasyRemoteCopy.UI.Interfaces.Impls.UdpTransfer;
 using FantasyRemoteCopy.UI.ViewModels;
 using FantasyRemoteCopy.UI.ViewModels.DialogModels;
 using FantasyRemoteCopy.UI.Views;

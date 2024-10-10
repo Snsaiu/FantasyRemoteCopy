@@ -11,6 +11,7 @@ using FantasyRemoteCopy.UI.ViewModels.Base;
 using FantasyRemoteCopy.UI.Views;
 
 using System.Globalization;
+using FantasyRemoteCopy.UI.Interfaces.Impls.Configs;
 
 namespace FantasyRemoteCopy.UI.ViewModels;
 

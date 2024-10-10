@@ -1,13 +1,11 @@
-﻿using FantasyRemoteCopy.UI.Consts;
-using FantasyRemoteCopy.UI.Models;
-
-using Newtonsoft.Json;
-
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using FantasyRemoteCopy.UI.Consts;
+using FantasyRemoteCopy.UI.Models;
+using Newtonsoft.Json;
 
-namespace FantasyRemoteCopy.UI.Interfaces.Impls;
+namespace FantasyRemoteCopy.UI.Interfaces.Impls.TcpTransfer;
 
 public abstract class TcpLoopListenerBase<T, P, R> : IReceiveableWithProgress<T, P>
     where T : TransformResultModel<R> where P : IProgressValue

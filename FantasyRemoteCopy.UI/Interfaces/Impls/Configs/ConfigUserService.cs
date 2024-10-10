@@ -1,11 +1,9 @@
 using FantasyResultModel;
 using FantasyResultModel.Impls;
-
 using Newtonsoft.Json;
-
 using UserInfo = FantasyRemoteCopy.UI.Models.UserInfo;
 
-namespace FantasyRemoteCopy.UI.Interfaces.Impls;
+namespace FantasyRemoteCopy.UI.Interfaces.Impls.Configs;
 
 public class ConfigUserService : IUserService
 {

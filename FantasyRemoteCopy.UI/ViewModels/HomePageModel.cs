@@ -9,6 +9,8 @@ using FantasyMvvm.FantasyNavigation;
 using FantasyRemoteCopy.UI.Enums;
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
+using FantasyRemoteCopy.UI.Interfaces.Impls.TcpTransfer;
+using FantasyRemoteCopy.UI.Interfaces.Impls.UdpTransfer;
 using FantasyRemoteCopy.UI.Models;
 using FantasyRemoteCopy.UI.ViewModels.Base;
 using FantasyRemoteCopy.UI.Views;

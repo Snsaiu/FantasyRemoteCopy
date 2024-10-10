@@ -1,10 +1,8 @@
+using System.Net;
 using FantasyRemoteCopy.UI.Extensions;
-
 using Newtonsoft.Json;
 
-using System.Net;
-
-namespace FantasyRemoteCopy.UI.Interfaces.Impls;
+namespace FantasyRemoteCopy.UI.Interfaces.Impls.UdpTransfer;
 
 public abstract class UdpSendBase<T> : UdpBase, ISendeable<T>
 {
