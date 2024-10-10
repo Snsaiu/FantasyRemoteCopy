@@ -1,20 +1,21 @@
-using FantasyRemoteCopy.UI.Consts;
-using FantasyRemoteCopy.UI.Models;
-
-using Newtonsoft.Json;
-
 using System.Net.Sockets;
 using System.Text;
+using FantasyRemoteCopy.UI.Consts;
+using FantasyRemoteCopy.UI.Models;
+using Newtonsoft.Json;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls;
 
-public abstract class TcpSendBase<T, P> : ISendableWithProgress<T, P> where T : IFlag, ISize, ITargetFlag where P : IProgressValue
+public abstract class TcpSendBase<T, P> : SendBase<T, P, NetworkStream>
+    where T : IFlag, ISize, ITargetFlag where P : IProgressValue
 {
-    protected abstract Task SendProcessAsync(NetworkStream stream, T message, IProgress<P>? progress, CancellationToken cancellationToken);
+    protected virtual SendMetadataMessage GetMetaDataMessage(T message)
+    {
+        return new SendMetadataMessage(message.Flag, message.TargetFlag, message.Size);
+    }
 
-    protected virtual SendMetadataMessage GetMetaDataMessage(T message) => new(message.Flag, message.TargetFlag, message.Size);
-
-    protected  Task SendTextAsync(NetworkStream stream, string text, CancellationToken cancellationToken, int? size = null)
+    protected Task SendTextAsync(NetworkStream stream, string text, CancellationToken cancellationToken,
+        int? size = null)
     {
         var messageBytes = Encoding.UTF8.GetBytes(text);
         return stream.WriteAsync(messageBytes, 0, size ?? messageBytes.Length, cancellationToken);
@@ -41,10 +42,12 @@ public abstract class TcpSendBase<T, P> : ISendableWithProgress<T, P> where T : 
     {
         var metaData = GetMetaDataMessage(message);
         var json = JsonConvert.SerializeObject(metaData);
-        return json is null ? throw new NullReferenceException() : SendMetadataTextAsync(stream, json, cancellationToken);
+        return json is null
+            ? throw new NullReferenceException()
+            : SendMetadataTextAsync(stream, json, cancellationToken);
     }
 
-    public async Task SendAsync(T message, IProgress<P>? progress, CancellationToken cancellationToken)
+    public override async Task SendAsync(T message, IProgress<P>? progress, CancellationToken cancellationToken)
     {
         var client = new TcpClient();
         try
