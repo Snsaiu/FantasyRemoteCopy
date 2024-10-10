@@ -12,11 +12,10 @@ public abstract class DeviceLocalIpBase : IGetLocalIp
     {
         var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces()
             .Where(nic => nic.NetworkInterfaceType is NetworkInterfaceType.Wireless80211 or
-                NetworkInterfaceType.Ethernet && (
-                nic.Description.Contains("VMware")
-                || nic.Description.Contains("Virtual")
-                || nic.Description.Contains("VPN")
-                || nic.Description.Contains("Ethernet")));
+                    NetworkInterfaceType.Ethernet && !nic.Description.Contains("VMware")
+                                                  && !nic.Description.Contains("Virtual")
+                                                  && !nic.Description.Contains("VPN")
+                                                  && !nic.Description.Contains("Ethernet"));
 
         foreach (var nic in networkInterfaces)
         {
