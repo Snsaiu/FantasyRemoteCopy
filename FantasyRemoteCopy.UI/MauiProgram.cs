@@ -60,6 +60,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IUserService, ConfigUserService>();
         builder.Services.AddSingleton<ISaveDataService, DbSaveDataService>();
         builder.Services.AddSingleton<ILanguageService, ConfigLanguageService>();
+        builder.Services.AddSingleton<ISendPortService, SendPortService>();
 
         builder.UseRegisterPage<LoginPage, LoginPageModel>();
         builder.UseRegisterPage<HomePage, HomePageModel>();
@@ -69,6 +70,7 @@ public static class MauiProgram
 
         builder.UseRegisterPage<ListPage, ListPageModel>();
         builder.UseRegisterDialog<SendTypeDialog, SendTypeDialogModel>();
+        
 
         return builder.UseGetProvider().Build();
     }
