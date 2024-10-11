@@ -2,17 +2,37 @@
 using System.Net.Sockets;
 using System.Text;
 using FantasyRemoteCopy.UI.Consts;
+using FantasyRemoteCopy.UI.Interfaces.Impls.Configs;
 using FantasyRemoteCopy.UI.Models;
 using Newtonsoft.Json;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls.TcpTransfer;
 
-public abstract class TcpLoopListenerBase<T, P, R> : IReceiveableWithProgress<T, P>
+
+public abstract class LoopListenerBase<T, P, R> : IReceiveableWithProgress<T, P>
     where T : TransformResultModel<R> where P : IProgressValue
 {
     protected virtual Task OnCancelReceiveAsync() => Task.CompletedTask;
+    
+    public abstract Task ReceiveAsync(Action<T> receivedCallBack, IProgress<P>? progress,
+        CancellationToken cancellationToken);
+}
 
-    public async Task ReceiveAsync(Action<T> receivedCallBack, IProgress<P>? progress, CancellationToken cancellationToken)
+
+public abstract class HttpsLoopListenContentBase(FileSavePathBase fileSavePathBase)
+    : LoopListenerBase<TransformResultModel<string>, ProgressValueModel, string>
+{
+    public override Task ReceiveAsync(Action<TransformResultModel<string>> receivedCallBack, IProgress<ProgressValueModel>? progress, CancellationToken cancellationToken)
+    {
+        
+    }
+}
+
+
+public abstract class TcpLoopListenerBase<T, P, R> : LoopListenerBase<T, P,R>
+    where T : TransformResultModel<R> where P : IProgressValue
+{
+    public override async Task ReceiveAsync(Action<T> receivedCallBack, IProgress<P>? progress, CancellationToken cancellationToken)
     {
         using TcpListener listener = new TcpListener(IPAddress.Any, ConstParams.TCP_PORT);
         listener.Start();
