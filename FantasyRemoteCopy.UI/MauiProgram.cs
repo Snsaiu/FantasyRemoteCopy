@@ -64,6 +64,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<ISaveDataService, DbSaveDataService>();
         builder.Services.AddSingleton<ILanguageService, ConfigLanguageService>();
         builder.Services.AddSingleton<ISendPortService, SendPortService>();
+        builder.Services.AddSingleton<IPortCheckable, PortChecker>();
 
         builder.UseRegisterPage<LoginPage, LoginPageModel>();
         builder.UseRegisterPage<HomePage, HomePageModel>();
