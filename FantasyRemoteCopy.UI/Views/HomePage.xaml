@@ -157,7 +157,40 @@
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid
+                 
+                    <Grid ColumnDefinitions="40,*">
+
+                        <CheckBox/>
+
+                        <Grid Grid.Column="1" ColumnDefinitions="auto,*">
+
+                            <Image
+                                HorizontalOptions="StartAndExpand"
+      HeightRequest="{OnPlatform WinUI=40,
+                                  Android=20,
+                                 MacCatalyst=50}"
+      Source="{Binding SystemType,Converter={converters:SystemTypeToImageSourceConverter}}"
+      WidthRequest="{OnPlatform WinUI=40,
+                                MacCatalyst=50}" />
+
+                            <Grid RowDefinitions="*,*" Grid.Column="1" Margin="10,0,0,0" HorizontalOptions="StartAndExpand">
+                                <Label
+                                    VerticalOptions="Center"
+     Text="{Binding NickName}" />
+
+                                <HorizontalStackLayout Grid.Row="1">
+                                    <Image HeightRequest="12" WidthRequest="12" Margin="0,2,0,0" Source="wifi.png" VerticalOptions="Start" ></Image>
+                                    <Label Text="{Binding Flag}" FontSize="10" Margin="5,0,0,0" VerticalOptions="Start"/>
+                                </HorizontalStackLayout>
+                            </Grid>
+                            
+                        </Grid>
+
+                    </Grid>
+                    
+                
+                    
+                    <!--<Grid
                         Padding="5"
                         BackgroundColor="White"
                         ColumnDefinitions="auto,*,auto">
@@ -194,12 +227,7 @@
                                     Text="{Binding DeviceType}" />
                             </StackLayout>
 
-                            <!-- <Label Margin="0,1" Text="{Binding DeviceName,StringFormat='Device Name：{0}'}" Grid.Row="2"  FontSize="10"></Label> -->
-                            <!-- <Label -->
-                            <!--     Grid.Row="2" -->
-                            <!--     Margin="0,1" -->
-                            <!--     FontSize="10" -->
-                            <!--     Text="{Binding Ip, StringFormat='Ip：{0}'}" /> -->
+                        
                         </Grid>
                         <Grid Grid.Column="2" ColumnDefinitions="auto,10,10,auto">
                             <Grid Grid.Column="0" ColumnDefinitions="auto,auto">
@@ -293,7 +321,7 @@
                                 WidthRequest="50" />
                         </Grid>
 
-                    </Grid>
+                    </Grid>-->
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

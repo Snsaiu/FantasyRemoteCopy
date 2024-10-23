@@ -115,6 +115,14 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         ResultBase<UserInfo> userRes = await userService.GetCurrentUserAsync();
         UserName = userRes.Data.Name;
         DeviceNickName = userRes.Data.DeviceNickName;
+
+        InitData();
+    }
+
+
+    private void InitData()
+    {
+        DiscoveredDevices.Add(new DiscoveredDeviceModel() { Flag="192.168.1.1", DeviceName="my pc",NickName="dfdf" ,SystemType=SystemType.Windows });
     }
 
     private async Task SetReceive()
