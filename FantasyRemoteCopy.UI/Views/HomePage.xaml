@@ -15,7 +15,7 @@
     NavigationPage.HasBackButton="False"
     NavigationPage.HasNavigationBar="False">
 
-    <Grid RowDefinitions="100,*,auto">
+    <Grid RowDefinitions="150,*,auto">
 
         <!-- <ContentView> -->
         <!--     <ContentView.Content> -->
@@ -62,7 +62,7 @@
             <!--  用户名和设备昵称  -->
             <VerticalStackLayout Grid.Column="1">
                 <Label
-                    Margin="10,20,0,0"
+                 
                     FontSize="25"
                     Text="{Binding UserName}"
                     TextColor="Black"

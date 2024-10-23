@@ -32,7 +32,7 @@ public abstract class HttpsLoopListenContentBase(FileSavePathBase fileSavePathBa
 
     public override Task ReceiveAsync(Action<TransformResultModel<string>> receivedCallBack, IProgress<ProgressValueModel>? progress, CancellationToken cancellationToken)
     {
-
+        throw new NotImplementedException();
     }
 }
 
