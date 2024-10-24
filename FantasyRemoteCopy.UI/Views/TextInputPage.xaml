@@ -4,11 +4,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:extension="clr-namespace:FantasyRemoteCopy.UI.Extensions"
              x:Class="FantasyRemoteCopy.UI.Views.TextInputPage"
-             Title="{Binding Title}"
+             Title="输入文本"
              x:Name="cp">
     <Grid RowDefinitions="*,auto">
         <Editor x:Name="edit" Text="{Binding Content}" Placeholder="input content here" />
-        <Button Text="SEND" Command="{Binding SendDataCommand}" x:Name="sendBtn" Grid.Row="1"
-                BackgroundColor="DodgerBlue" TextColor="White" />
+        <Button Text="确定" Command="{Binding SendDataCommand}" x:Name="sendBtn" Grid.Row="1"
+                 />
     </Grid>
 </ContentPage>

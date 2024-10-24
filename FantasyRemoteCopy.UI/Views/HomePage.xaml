@@ -15,7 +15,7 @@
     NavigationPage.HasBackButton="False"
     NavigationPage.HasNavigationBar="False">
 
-    <Grid RowDefinitions="120,auto,*,auto">
+    <Grid RowDefinitions="120,auto,auto,*,auto">
 
         <!-- <ContentView> -->
         <!--     <ContentView.Content> -->
@@ -117,7 +117,7 @@
                             WidthRequest="10" />
                     </Grid>
 
-                    <ImageButton Margin="0,0,10,0" BorderWidth="0" BackgroundColor="Transparent" HeightRequest="30" WidthRequest="30" Source="search.png">
+                    <ImageButton Margin="0,0,10,0" BorderWidth="0"    Command="{Binding SearchCommand}" BackgroundColor="Transparent" HeightRequest="30" WidthRequest="30" Source="search.png">
                        
                     </ImageButton>
 
@@ -145,24 +145,38 @@
         </Grid>
 
         <Grid Grid.Row="1" ColumnDefinitions="*,*,*">
-            <Button Text="文本"></Button>
+            <Button Text="文本" Command="{Binding GoTextCommand}"></Button>
             <Button Grid.Column="1" Text="文件"></Button>
             <Button Grid.Column="2" Text="文件夹"></Button>
         </Grid>
+        
+        <!--发送动画-->
 
+        <VerticalStackLayout Grid.Row="2" HorizontalOptions="Fill" IsVisible="{Binding InformationModel, Converter={converters:NotNullToVisibleConverter}}">
+
+            <Border Background="Beige">
+                <Label HorizontalOptions="Center">传输：文本</Label>
+            </Border>
+            <Image Source="send.png" HeightRequest="50" HorizontalOptions="Center"></Image>
+        </VerticalStackLayout>
+        
         <!--  列表  -->
-        <CollectionView Grid.Row="2" ItemsSource="{Binding DiscoveredDevices}">
+        <CollectionView Grid.Row="3" ItemsSource="{Binding DiscoveredDevices}">
             <CollectionView.ItemsLayout>
-                <LinearItemsLayout ItemSpacing="2" Orientation="Vertical" />
+                <LinearItemsLayout ItemSpacing="1" Orientation="Vertical" />
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                 
-                    <Grid ColumnDefinitions="40,*">
 
-                        <CheckBox/>
+                    <VerticalStackLayout>
+                        <BoxView Color="Gray" HeightRequest="1" Opacity="0.5"></BoxView>
 
-                        <Grid Grid.Column="1" ColumnDefinitions="auto,*">
+                        <Grid ColumnDefinitions="40,auto,*">
+
+                            <CheckBox IsChecked="{Binding IsChecked,Mode=TwoWay}"/>
+
+                            <BoxView Grid.Column="1" Color="Gray" Opacity="0.5" WidthRequest="1"></BoxView>
+                        <Grid Grid.Column="2" ColumnDefinitions="auto,*">
 
                             <Image
                                 HorizontalOptions="StartAndExpand"
@@ -187,9 +201,11 @@
                         </Grid>
 
                     </Grid>
-                    
-                
-                    
+
+                        <BoxView Color="Gray" HeightRequest="1" Opacity="0.5"></BoxView>
+
+                    </VerticalStackLayout>
+
                     <!--<Grid
                         Padding="5"
                         BackgroundColor="White"
@@ -326,26 +342,15 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <!--  搜索按钮  -->
-
-
-        <ImageButton
-            x:Name="searchBtn"
-            Grid.Row="2"
-            Margin="0,0,16,10"
-            BackgroundColor="Transparent"
-            Command="{Binding SearchCommand}"
-            HeightRequest="80"
-            HorizontalOptions="End"
-            Source="search.png"
-            WidthRequest="80" />
         <ActivityIndicator
-            Grid.Row="1"
+            Grid.Row="3"
             HeightRequest="{OnPlatform Android=60}"
             IsRunning="{Binding IsBusy}"
             IsVisible="{Binding IsBusy}"
             WidthRequest="{OnPlatform Android=60}"
             Color="LightGray" />
+
+        <Button Grid.Row="4" Text="发送" BorderWidth="0" Command="{Binding SendCommand}"></Button>
     </Grid>
 
 

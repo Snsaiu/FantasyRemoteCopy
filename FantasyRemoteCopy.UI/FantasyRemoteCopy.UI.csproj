@@ -113,6 +113,7 @@
 	  <None Remove="Resources\Images\openfile.png" />
 	  <None Remove="Resources\Images\openfolder.png" />
 	  <None Remove="Resources\Images\search.png" />
+	  <None Remove="Resources\Images\send.png" />
 	  <None Remove="Resources\Images\setting.png" />
 	  <None Remove="Resources\Images\share.png" />
 	  <None Remove="Resources\Images\text.png" />
@@ -159,6 +160,7 @@
 	  <MauiImage Include="Resources\Images\wifi.png" />
 	  <MauiImage Include="Resources\Images\windows.png" />
 	  <None Remove="Resources\Images\foldericon.png" />
+	  <MauiImage Include="Resources\Images\send.png" />
 	  <MauiImage Include="Resources\Images\foldericon.png" />
 	</ItemGroup>
 	<ItemGroup>

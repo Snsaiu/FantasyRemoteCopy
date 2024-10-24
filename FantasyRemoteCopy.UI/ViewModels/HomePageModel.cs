@@ -58,33 +58,47 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         _deviceType = deviceType;
         _navigationService = navigationService;
         DiscoveredDevices = [];
+
+        DiscoveredDevices.CollectionChanged+=(s, e) =>
+        {
+            SendCommand.NotifyCanExecuteChanged();
+        };
+
         Task.Run(() => Task.FromResult(SetReceive()));
     }
+
+    [ObservableProperty]
+    private InformationModel? informationModel=null;
 
     public void OnNavigatedTo(string source, INavigationParameter parameter)
     {
         if (parameter is null)
             return;
         var obj = parameter.Get("data");
-        if (obj is not SendTextModel text) return;
-
-        var device = DiscoveredDevices.FirstOrDefault(x => x.Flag == text.TargetFlag);
-        if (device is null)
+        if (obj is not InformationModel information)
             throw new NullReferenceException();
 
-        Task.Run(async () =>
-        {
-            try
-            {
-                device.WorkState = WorkState.Sending;
-                await _tcpSendTextBase.SendAsync(text, ReportProgress(true),
-                    device.CancellationTokenSource.Token);
-            }
-            catch (OperationCanceledException)
-            {
-                device.WorkState = WorkState.None;
-            }
-        });
+        this.InformationModel=information;
+
+        //if (obj is not SendTextModel text) return;
+
+        //var device = DiscoveredDevices.FirstOrDefault(x => x.Flag == text.TargetFlag);
+        //if (device is null)
+        //    throw new NullReferenceException();
+
+        //Task.Run(async () =>
+        //{
+        //    try
+        //    {
+        //        device.WorkState = WorkState.Sending;
+        //        await _tcpSendTextBase.SendAsync(text, ReportProgress(true),
+        //            device.CancellationTokenSource.Token);
+        //    }
+        //    catch (OperationCanceledException)
+        //    {
+        //        device.WorkState = WorkState.None;
+        //    }
+        //});
     }
 
     public void OnNavigatedFrom(string source, INavigationParameter parameter)
@@ -123,6 +137,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
     private void InitData()
     {
         DiscoveredDevices.Add(new DiscoveredDeviceModel() { Flag="192.168.1.1", DeviceName="my pc",NickName="dfdf" ,SystemType=SystemType.Windows });
+        DiscoveredDevices.Add(new DiscoveredDeviceModel() { Flag="192.168.1.2", DeviceName="my pc", NickName="我的mac", SystemType=SystemType.MacOS });
     }
 
     private async Task SetReceive()
@@ -341,6 +356,24 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         return _navigationService.NavigationToAsync(nameof(SettingPage), null);
     }
 
+    private bool CanSend()
+    {
+        return DiscoveredDevices.Any(x => x.IsChecked);
+    }
+
+    [RelayCommand(CanExecute =nameof(CanSend))]
+    private Task Send()
+    {
+        throw new NotImplementedException();
+    }
+
+    [RelayCommand]
+    private Task GoText()
+    {
+      return _navigationService.NavigationToAsync(nameof(TextInputPage),null);
+    }
+
+
     /// <summary>
     ///     设备发现
     /// </summary>
@@ -411,6 +444,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         return progress;
     }
 
+
     #region Fields
 
     private bool isWindowVisible = true;
@@ -444,9 +478,12 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
 
     [ObservableProperty] private string userName = string.Empty;
 
-    [ObservableProperty] private ObservableCollection<DiscoveredDeviceModel> discoveredDevices;
+    [ObservableProperty]
+    private ItemsChangeObservableCollection<DiscoveredDeviceModel> discoveredDevices;
 
     [ObservableProperty] private string deviceNickName = string.Empty;
+
+
 
     #endregion
 }

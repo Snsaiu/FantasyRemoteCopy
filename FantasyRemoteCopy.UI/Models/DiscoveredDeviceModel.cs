@@ -40,6 +40,10 @@ namespace FantasyRemoteCopy.UI.Models
         [ObservableProperty]
         private double progress;
 
+        [ObservableProperty]
+        private bool isChecked;
+
+
 
         public CancellationTokenSource CancellationTokenSource { get; set; } = new CancellationTokenSource();
 

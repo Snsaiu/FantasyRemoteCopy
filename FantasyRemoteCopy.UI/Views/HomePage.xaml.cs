@@ -19,10 +19,10 @@ public partial class HomePage : ContentPage
 
 
 
-    private void SearchClickEvent(object sender, EventArgs e)
-    {
-        searchBtn.OnceAninmation(TransformType.Fadein, 0.5, 1, 100, Easing.Linear);
-    }
+    //private void SearchClickEvent(object sender, EventArgs e)
+    //{
+    //    searchBtn.OnceAninmation(TransformType.Fadein, 0.5, 1, 100, Easing.Linear);
+    //}
 
 
 }
