@@ -39,6 +39,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         ISystemType systemType,
         ILogger<HomePageModel> logger,
         IDeviceType deviceType,
+        IPortCheckable portCheckable,
         INavigationService navigationService)
     {
         this.userService = userService;
@@ -56,6 +57,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         _systemType = systemType;
         this.logger = logger;
         _deviceType = deviceType;
+        _portCheckable = portCheckable;
         _navigationService = navigationService;
         DiscoveredDevices = [];
 
@@ -219,7 +221,10 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
 
     private void CheckPortEnable(TransformResultModel<string> data)
     {
-        
+        var localIp = _deviceLocalIpBase.GetLocalIpAsync().GetAwaiter().GetResult();
+        var checkResult =  _portCheckable.IsPortInUse(int.Parse(data.Result)).GetAwaiter().GetResult();
+        var sendModel = new SendTextModel(localIp, data.Flag, checkResult ? "1" : "0");
+        this._tcpSendTextBase.SendAsync(sendModel,null,default);
     }
 
     private void SaveDataToLocalDB(TransformResultModel<string> data)
@@ -378,13 +383,12 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         foreach (var item in DiscoveredDevices)
         {
             int port = 0;
-            for (int i = 0; i < 5000; i++)
+            for (int i = 5000; i < 65535; i++)
             {
                 port = i;
                 var portCheckMessage = new SendTextModel(localIp,item.Flag??throw new NullReferenceException(),port.ToString());
-                var result = await _tcpSendTextBase.SendAsync<PortCheckResultModel>(portCheckMessage);
-                if(result.CanUse)
-                    break;
+                var result = await _tcpSendTextBase.SendAsync(portCheckMessage);
+               
             }
            
             // http 发送
@@ -488,6 +492,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
     private readonly ISystemType _systemType;
     private readonly ILogger<HomePageModel> logger;
     private readonly IDeviceType _deviceType;
+    private readonly IPortCheckable _portCheckable;
     private readonly INavigationService _navigationService;
     private readonly CancellationTokenSource _cancelDownloadTokenSource = new();
 

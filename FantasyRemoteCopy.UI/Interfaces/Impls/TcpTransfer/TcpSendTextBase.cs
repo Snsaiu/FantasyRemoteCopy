@@ -27,7 +27,7 @@ public abstract class TcpSendTextBase : TcpSendBase<SendTextModel, ProgressValue
     /// <typeparam name="T">返回结果</typeparam>
     /// <returns>返回数据结果</returns>
     /// <exception cref="Exception">json解析失败抛出异常</exception>
-    public async Task<T> SendAsync<T>(SendTextModel message,CancellationToken cancellationToken=default)
+    public async Task<SendTextModel> SendAsync(SendTextModel message,CancellationToken cancellationToken=default)
     {
         var client = new TcpClient();
         try
@@ -38,21 +38,14 @@ public abstract class TcpSendTextBase : TcpSendBase<SendTextModel, ProgressValue
             await SendMetadataMessageAsync(stream, message, cancellationToken);
             await SendProcessAsync(stream, message, null, cancellationToken);
 
-           var buffer = new byte[1024];
-           var receiveMessage = new StringBuilder();
+           var buffer = new byte[2048];
+           
 
-           int byteRead;
-           while ((byteRead= await stream.ReadAsync(buffer,0,buffer.Length, cancellationToken))>0)
-           {
-               cancellationToken.ThrowIfCancellationRequested();
-               
-               var receiveData = Encoding.UTF8.GetString(buffer,0,byteRead);
-               receiveMessage.Append(receiveData);
-               if (!receiveMessage.ToString().Contains('\n')) continue;
-            
-           }
-           var jsonMessage = receiveMessage.ToString().TrimEnd('\n');
-           return JsonConvert.DeserializeObject<T>(jsonMessage) ?? throw new Exception();
+           var byteRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken);
+          
+           var receiveData = Encoding.UTF8.GetString(buffer, 0, byteRead);
+           
+           return JsonConvert.DeserializeObject<SendTextModel>(receiveData) ?? throw new Exception();
         }
         finally
         {
