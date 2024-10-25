@@ -75,6 +75,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         if (parameter is null)
         {
             InformationModel = null;
+            SendCommand.NotifyCanExecuteChanged();
             return;
         }
 
@@ -83,6 +84,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
             throw new NullReferenceException();
 
         this.InformationModel=information;
+        SendCommand.NotifyCanExecuteChanged();
 
         //if (obj is not SendTextModel text) return;
 
@@ -208,11 +210,16 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
     {
         var thread = new Thread(() =>
             {
-                _ = _tcpLoopListenContentBase.ReceiveAsync(SaveDataToLocalDB, ReportProgress(false),
+                _ = _tcpLoopListenContentBase.ReceiveAsync(CheckPortEnable, ReportProgress(false),
                     _cancelDownloadTokenSource.Token);
             })
             { IsBackground = true };
         thread.Start();
+    }
+
+    private void CheckPortEnable(TransformResultModel<string> data)
+    {
+        
     }
 
     private void SaveDataToLocalDB(TransformResultModel<string> data)
@@ -364,9 +371,25 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
     }
 
     [RelayCommand(CanExecute =nameof(CanSend))]
-    private Task Send()
+    private async Task Send()
     {
-        throw new NotImplementedException();
+        var localIp = await _deviceLocalIpBase.GetLocalIpAsync();
+        // 首先向目标电脑发送一个端口用于检查是否可以使用该端口
+        foreach (var item in DiscoveredDevices)
+        {
+            int port = 0;
+            for (int i = 0; i < 5000; i++)
+            {
+                port = i;
+                var portCheckMessage = new SendTextModel(localIp,item.Flag??throw new NullReferenceException(),port.ToString());
+                var result = await _tcpSendTextBase.SendAsync<PortCheckResultModel>(portCheckMessage);
+                if(result.CanUse)
+                    break;
+            }
+           
+            // http 发送
+            
+        }
     }
 
     [RelayCommand]

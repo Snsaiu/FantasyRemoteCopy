@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 namespace FantasyRemoteCopy.UI.Extensions;
 
@@ -26,4 +27,5 @@ public static class SocketExtensions
             return true;
         }
     }
+    
 }

@@ -21,7 +21,7 @@ public abstract class TcpSendBase<T, P> : SendBase<T, P, NetworkStream>
         return stream.WriteAsync(messageBytes, 0, size ?? messageBytes.Length, cancellationToken);
     }
 
-    private Task SendMetadataTextAsync(NetworkStream stream, string text, CancellationToken cancellationToken)
+    protected Task SendMetadataTextAsync(NetworkStream stream, string text, CancellationToken cancellationToken)
     {
         var originalData = Encoding.UTF8.GetBytes(text);
 
@@ -38,7 +38,7 @@ public abstract class TcpSendBase<T, P> : SendBase<T, P, NetworkStream>
         return stream.WriteAsync(buffer, 0, buffer.Length, cancellationToken);
     }
 
-    private Task SendMetadataMessageAsync(NetworkStream stream, T message, CancellationToken cancellationToken)
+    protected Task SendMetadataMessageAsync(NetworkStream stream, T message, CancellationToken cancellationToken)
     {
         var metaData = GetMetaDataMessage(message);
         var json = JsonConvert.SerializeObject(metaData);
