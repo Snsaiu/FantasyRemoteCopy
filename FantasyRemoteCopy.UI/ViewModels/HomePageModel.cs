@@ -228,25 +228,29 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                 this.logger.LogInformation($"端口{port}是否可用");
                 var checkResult = await _portCheckable.IsPortInUse(int.Parse(port));
                 this.logger.LogInformation($"端口{port}可用状态为 {checkResult}");
-                var sendModel = new SendTextModel(localIp, data.Flag, checkResult ? "1" : "0");
+                var sendModel = new SendTextModel(localIp, data.Flag, checkResult ? $"{port}_1" : $"{port}_0");
                 this.logger.LogInformation($"端口可用状态信息发送给{data.Flag}");
                 await this._tcpSendTextBase.SendAsync(sendModel, null, default);
             }
             else
             {
                 this.logger.LogInformation($"发送方接收回调方{data.Flag}端口可用情况，接收方端口可用情况为 {data.Result}");
+               
+                var splits = data.Result.Split("_");
+                var sourcePort = splits[0];
+                var state = splits[1];
                 //端口不可用，进行累加
-                if (data.Result == "0")
+                if (state == "0")
                 {
-                    int port = int.Parse(data.Result)+1;
-                    this.logger.LogInformation($"接收方{data.Flag}对于{data.Result} 端口无法使用，所以向接收方再次发送{port}端口是否可用");
+                    var port = int.Parse(sourcePort)+1;
+                    this.logger.LogInformation($"接收方{data.Flag}对于{sourcePort} 端口无法使用，所以向接收方再次发送{port}端口是否可用");
                     var portCheckMessage = new SendTextModel(localIp, data.Flag ?? throw new NullReferenceException(),
                         $"portcheck_{port}");
                     await _tcpSendTextBase.SendAsync(portCheckMessage, null, default);
                 }
-                else if (data.Result == "1")
+                else if (state == "1")
                 {
-                    this.logger.LogInformation($"接收方{data.Flag}对于{data.Result}端口可用，使用https进行数据传输");
+                    this.logger.LogInformation($"接收方{data.Flag}对于{sourcePort}端口可用，使用https进行数据传输");
                     // 使用https发送数据
                 }
             }
