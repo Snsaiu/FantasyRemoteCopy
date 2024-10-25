@@ -230,7 +230,4 @@
 	  </EmbeddedResource>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\..\FantasyMvvm\FantasyMvvm\FantasyMvvm.csproj" />
-	</ItemGroup>
 </Project>

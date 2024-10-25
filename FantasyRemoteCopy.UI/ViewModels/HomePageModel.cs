@@ -133,8 +133,6 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         ResultBase<UserInfo> userRes = await userService.GetCurrentUserAsync();
         UserName = userRes.Data.Name;
         DeviceNickName = userRes.Data.DeviceNickName;
-
-        InitData();
     }
 
 
@@ -362,7 +360,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
 
     private bool CanSend()
     {
-        return DiscoveredDevices.Any(x => x.IsChecked);
+        return DiscoveredDevices.Any(x => x.IsChecked) && InformationModel is not null;
     }
 
     [RelayCommand(CanExecute =nameof(CanSend))]
