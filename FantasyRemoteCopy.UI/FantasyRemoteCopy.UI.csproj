@@ -162,6 +162,8 @@
 	  <None Remove="Resources\Images\foldericon.png" />
 	  <MauiImage Include="Resources\Images\send.png" />
 	  <MauiImage Include="Resources\Images\foldericon.png" />
+	  <None Remove="Resources\Images\back.png" />
+	  <MauiImage Include="Resources\Images\back.png" />
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="FantasyMvvm" Version="1.0.1.12-preview" />
@@ -226,5 +228,9 @@
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\FantasyMvvm\FantasyMvvm\FantasyMvvm.csproj" />
 	</ItemGroup>
 </Project>

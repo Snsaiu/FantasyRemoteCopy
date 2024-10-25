@@ -73,7 +73,11 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
     public void OnNavigatedTo(string source, INavigationParameter parameter)
     {
         if (parameter is null)
+        {
+            InformationModel = null;
             return;
+        }
+
         var obj = parameter.Get("data");
         if (obj is not InformationModel information)
             throw new NullReferenceException();
@@ -269,7 +273,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                     SendCompressFile(fileModels);
                     break;
                 case SendType and SendType.Text:
-                    _navigationService.NavigationToAsync(nameof(TextInputPage), parameter);
+                    _navigationService.NavigationToAsync(nameof(TextInputPage),parameter);
                     break;
                 case SendFolderModel folderModel:
                     SendCompressFile(folderModel);

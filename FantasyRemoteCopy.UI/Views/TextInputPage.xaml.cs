@@ -7,6 +7,7 @@ public partial class TextInputPage : ContentPage
     public TextInputPage()
     {
         InitializeComponent();
+        
     }
-
+    
 }

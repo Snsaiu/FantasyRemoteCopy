@@ -40,12 +40,12 @@ public partial class TextInputPageModel(INavigationService navigationService, De
        SendDataCommand.NotifyCanExecuteChanged();
     }
 
+    [RelayCommand]
+    private Task Back() => navigationService.NavigationToAsync(nameof(HomePage),false, parameter: null);
+
     [RelayCommand(CanExecute =(nameof(CanSend)))]
     private async Task SendData()
     {
-        if (string.IsNullOrEmpty(Content))
-            await navigationService.NavigationToAsync(nameof(HomePage), false);
-
         InformationModel model = new()
         {
             SendType=Enums.SendType.Text,
