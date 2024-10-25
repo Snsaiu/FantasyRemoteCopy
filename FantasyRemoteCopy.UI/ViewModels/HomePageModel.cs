@@ -219,12 +219,16 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         thread.Start();
     }
 
-    private void CheckPortEnable(TransformResultModel<string> data)
+    private async void CheckPortEnable(TransformResultModel<string> data)
     {
-        var localIp = _deviceLocalIpBase.GetLocalIpAsync().GetAwaiter().GetResult();
-        var checkResult =  _portCheckable.IsPortInUse(int.Parse(data.Result)).GetAwaiter().GetResult();
-        var sendModel = new SendTextModel(localIp, data.Flag, checkResult ? "1" : "0");
-        this._tcpSendTextBase.SendAsync(sendModel,null,default);
+        var localIp = await _deviceLocalIpBase.GetLocalIpAsync();
+        if (data.Result.Contains("portcheck_"))
+        {
+           var port = data.Result.Replace("portcheck_", "");
+           var checkResult = await _portCheckable.IsPortInUse(int.Parse(port));
+           var sendModel = new SendTextModel(localIp, data.Flag, checkResult ? "1" : "0");
+           this._tcpSendTextBase.SendAsync(sendModel,null,default);
+        }
     }
 
     private void SaveDataToLocalDB(TransformResultModel<string> data)
@@ -386,7 +390,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
             for (int i = 5000; i < 65535; i++)
             {
                 port = i;
-                var portCheckMessage = new SendTextModel(localIp,item.Flag??throw new NullReferenceException(),port.ToString());
+                var portCheckMessage = new SendTextModel(localIp,item.Flag??throw new NullReferenceException(),$"portcheck_{port.ToString()}");
                 var result = await _tcpSendTextBase.SendAsync(portCheckMessage);
                
             }
