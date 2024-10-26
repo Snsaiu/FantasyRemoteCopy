@@ -27,7 +27,7 @@ public class HttpsLoopListenContent(FileSavePathBase fileSavePathBase)
 
         if (ReceiveType == SendType.Text)
         {
-            listenner.Prefixes.Add($"https://{WatchIp}:{Port}/text");
+            listenner.Prefixes.Add($"http://localhost:{Port}/text/");
             listenner.Start();
             while (true)
             {

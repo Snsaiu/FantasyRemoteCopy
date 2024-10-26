@@ -12,7 +12,7 @@ public abstract class HttpsSendTextBase()
     {
      
         // 获得对方的ip
-        var url = $"https://{message.TargetFlag}:{SendPort}/text";
+        var url = $"http://{message.TargetFlag}:{SendPort}/text";
 
         var content = new StringContent(message.Text, Encoding.UTF8, "text/plain");
 

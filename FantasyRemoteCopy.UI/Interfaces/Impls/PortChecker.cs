@@ -10,6 +10,6 @@ public class PortChecker:IPortCheckable
         var ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
         var tcpConnections = ipGlobalProperties.GetActiveTcpConnections();
 
-        return Task.FromResult( tcpConnections.Any(c => c.LocalEndPoint.Port == port));
+        return Task.FromResult(tcpConnections.All(c => c.LocalEndPoint.Port != port));
     }
 }

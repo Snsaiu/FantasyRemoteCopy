@@ -246,7 +246,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                         listenner.ReceiveType = SendType.Text;
                         await listenner.ReceiveAsync(null, null, default);
                     }
-                    else
+                    else if(splits[1]==SendType.File.ToString())
                     {
                         
                     }
