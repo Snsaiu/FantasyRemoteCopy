@@ -3,16 +3,16 @@ using FantasyRemoteCopy.UI.Models;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls.HttpsTransfer;
 
-public abstract class HttpsSendTextBase(ISendPortService sendPortService)
-    : HttpsSendBase<SendTextModel, ProgressValueModel>(sendPortService)
+public abstract class HttpsSendTextBase()
+    : HttpsSendBase<SendTextModel, ProgressValueModel>
 {
     protected override async Task SendProcessAsync(HttpClient sender, SendTextModel message,
         IProgress<ProgressValueModel>? progress,
         CancellationToken cancellationToken)
     {
-        var port = SendPortService.GetPort();
+     
         // 获得对方的ip
-        var url = $"https://{message.TargetFlag}:{port}/text";
+        var url = $"https://{message.TargetFlag}:{SendPort}/text";
 
         var content = new StringContent(message.Text, Encoding.UTF8, "text/plain");
 

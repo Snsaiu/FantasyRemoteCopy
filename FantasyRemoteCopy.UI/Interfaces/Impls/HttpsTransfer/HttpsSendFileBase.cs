@@ -2,15 +2,15 @@ using FantasyRemoteCopy.UI.Models;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls.HttpsTransfer;
 
-public abstract class HttpsSendFileBase(ISendPortService sendPortService)
-    : HttpsSendBase<SendFileModel, ProgressValueModel>(sendPortService)
+public abstract class HttpsSendFileBase()
+    : HttpsSendBase<SendFileModel, ProgressValueModel>
 {
     protected override async Task SendProcessAsync(HttpClient sender, SendFileModel message,
         IProgress<ProgressValueModel>? progress,
         CancellationToken cancellationToken)
     {
-        var port = SendPortService.GetPort();
-        var url = $"https://{message.TargetFlag}:{port}/file";
+        
+        var url = $"https://{message.TargetFlag}:{SendPort}/file";
 
         using (var fileStream = new FileStream(message.FileFullPath, FileMode.Open, FileAccess.Read))
         {

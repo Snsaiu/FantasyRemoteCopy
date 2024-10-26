@@ -3,6 +3,7 @@ using FantasyMvvm;
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
 using FantasyRemoteCopy.UI.Interfaces.Impls.Configs;
+using FantasyRemoteCopy.UI.Interfaces.Impls.HttpsTransfer;
 using FantasyRemoteCopy.UI.Interfaces.Impls.TcpTransfer;
 using FantasyRemoteCopy.UI.Interfaces.Impls.UdpTransfer;
 using FantasyRemoteCopy.UI.ViewModels;
@@ -55,6 +56,8 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<TcpSendFileBase, TcpSendFile>();
         builder.Services.AddSingleton<TcpSendTextBase, TcpSendText>();
+
+        builder.Services.AddSingleton<HttpsSendTextBase, HttpsSendText>();
 
         builder.Services.AddSingleton<TcpLoopListenContentBase, TcpLoopListenContent>();
 

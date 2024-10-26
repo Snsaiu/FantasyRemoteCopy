@@ -1,5 +1,4 @@
 ﻿using FantasyRemoteCopy.UI.Consts;
-using FantasyRemoteCopy.UI.Interfaces.Impls.Configs;
 using FantasyRemoteCopy.UI.Models;
 
 using Newtonsoft.Json;
@@ -22,20 +21,6 @@ public abstract class LoopListenerBase<T, P, R> : IReceiveableWithProgress<T, P>
     public abstract Task ReceiveAsync(Action<T> receivedCallBack, IProgress<P>? progress,
         CancellationToken cancellationToken);
 }
-
-
-public abstract class HttpsLoopListenContentBase(FileSavePathBase fileSavePathBase, ISendPortService sendPortService)
-    : LoopListenerBase<TransformResultModel<string>, ProgressValueModel, string>
-{
-    protected readonly FileSavePathBase FileSavePathBase = fileSavePathBase;
-    protected readonly ISendPortService SendPortService = sendPortService;
-
-    public override Task ReceiveAsync(Action<TransformResultModel<string>> receivedCallBack, IProgress<ProgressValueModel>? progress, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-}
-
 
 public abstract class TcpLoopListenerBase<T, P, R> : LoopListenerBase<T, P, R>
     where T : TransformResultModel<R> where P : IProgressValue

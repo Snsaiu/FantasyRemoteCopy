@@ -3,13 +3,8 @@
 public abstract class HttpsSendBase<T, P> : SendBase<T, P, HttpClient>
     where T : IFlag, ISize, ITargetFlag where P : IProgressValue
 {
-    protected readonly ISendPortService SendPortService;
 
-    public HttpsSendBase(ISendPortService sendPortService)
-    {
-        this.SendPortService = sendPortService;
-    }
-    
+    public int SendPort { get; set; }
     public sealed override Task SendAsync(T message, IProgress<P>? progress, CancellationToken cancellationToken)
     {
         var handler = new HttpClientHandler
