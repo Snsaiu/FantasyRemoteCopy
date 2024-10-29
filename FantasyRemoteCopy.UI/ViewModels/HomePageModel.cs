@@ -243,8 +243,8 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                         var listenner = new HttpsLoopListenContent(null);
                         listenner.WatchIp = data.Flag;
                         listenner.Port = int.Parse(port);
-                        listenner.ReceiveType = SendType.Text;
-                        await listenner.ReceiveAsync(null, null, default);
+                        listenner.ReceiveType = SendType.Text; 
+                        listenner.ReceiveAsync(null, null, default);
                     }
                     else if(splits[1]==SendType.File.ToString())
                     {
