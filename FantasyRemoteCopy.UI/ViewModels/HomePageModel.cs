@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FantasyMvvm;
 using FantasyMvvm.FantasyDialogService;
@@ -25,6 +24,8 @@ namespace FantasyRemoteCopy.UI.ViewModels;
 
 public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
 {
+    [ObservableProperty] private InformationModel? informationModel;
+
     public HomePageModel(IUserService userService,
         ISaveDataService dataService,
         IDialogService dialogService,
@@ -69,8 +70,6 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         Task.Run(() => Task.FromResult(SetReceive()));
     }
 
-    [ObservableProperty] private InformationModel? informationModel = null;
-
     public void OnNavigatedTo(string source, INavigationParameter parameter)
     {
         if (parameter is null)
@@ -84,7 +83,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         if (obj is not InformationModel information)
             throw new NullReferenceException();
 
-        this.InformationModel = information;
+        InformationModel = information;
         SendCommand.NotifyCanExecuteChanged();
 
         //if (obj is not SendTextModel text) return;
@@ -141,9 +140,9 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
 
     private void InitData()
     {
-        DiscoveredDevices.Add(new DiscoveredDeviceModel()
+        DiscoveredDevices.Add(new DiscoveredDeviceModel
             { Flag = "192.168.1.1", DeviceName = "my pc", NickName = "dfdf", SystemType = SystemType.Windows });
-        DiscoveredDevices.Add(new DiscoveredDeviceModel()
+        DiscoveredDevices.Add(new DiscoveredDeviceModel
             { Flag = "192.168.1.2", DeviceName = "my pc", NickName = "我的mac", SystemType = SystemType.MacOS });
     }
 
@@ -222,69 +221,61 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
 
     private async void CheckPortEnable(TransformResultModel<string> data)
     {
-        try
+        var localIp = await _deviceLocalIpBase.GetLocalIpAsync();
+        if (data.Result.StartsWith("portcheck"))
         {
-            var localIp = await _deviceLocalIpBase.GetLocalIpAsync();
-            if (data.Result.StartsWith("portcheck"))
-            {
-                var splits = data.Result.Split('.');
-                var port = splits.Last();
-                this.logger.LogInformation($"端口{port}是否可用");
-                var checkResult = await _portCheckable.IsPortInUse(int.Parse(port));
-                this.logger.LogInformation($"端口{port}可用状态为 {checkResult}");
-                var sendModel = new SendTextModel(localIp, data.Flag, checkResult ? $"{splits[1]}.{port}.1" : $"{splits[1]}.{port}.0");
-                this.logger.LogInformation($"端口可用状态信息发送给{data.Flag}");
+            var splits = data.Result.Split('.');
+            var port = splits.Last();
+            logger.LogInformation($"端口{port}是否可用");
+            var checkResult = await _portCheckable.IsPortInUse(int.Parse(port));
+            logger.LogInformation($"端口{port}可用状态为 {checkResult}");
+            var sendModel = new SendTextModel(localIp, data.Flag,
+                checkResult ? $"{splits[1]}.{port}.1" : $"{splits[1]}.{port}.0");
+            logger.LogInformation($"端口可用状态信息发送给{data.Flag}");
 
-                if (checkResult)
-                {
-                    // 开始监听
-                    if (splits[1] == SendType.Text.ToString())
-                    {
-                        var listenner = new HttpsLoopListenContent(null);
-                        listenner.WatchIp = data.Flag;
-                        listenner.Port = int.Parse(port);
-                        listenner.ReceiveType = SendType.Text; 
-                        listenner.ReceiveAsync(null, null, default);
-                    }
-                    else if(splits[1]==SendType.File.ToString())
-                    {
-                        
-                    }
-                    
-                }
-                
-                await this._tcpSendTextBase.SendAsync(sendModel, null, default);
-                
-            }
-            else
+            if (checkResult)
             {
-                this.logger.LogInformation($"发送方接收回调方{data.Flag}端口可用情况，接收方端口可用情况为 {data.Result}");
-               
-                var splits = data.Result.Split(".");
-                var sendType = splits[0];
-                var sourcePort = splits[1];
-                var state = splits[2];
-                //端口不可用，进行累加
-                if (state == "0")
+                // 开始监听
+                if (splits[1] == SendType.Text.ToString())
                 {
-                    var port = int.Parse(sourcePort)+1;
-                    this.logger.LogInformation($"接收方{data.Flag}对于{sourcePort} 端口无法使用，所以向接收方再次发送{port}端口是否可用");
-                    var portCheckMessage = new SendTextModel(localIp, data.Flag ?? throw new NullReferenceException(),
-                        $"portcheck.{sendType}.{port}");
-                    await _tcpSendTextBase.SendAsync(portCheckMessage, null, default);
+                    var listenner = new HttpsLoopListenContent(null);
+                    listenner.WatchIp = data.Flag;
+                    listenner.Port = int.Parse(port);
+                    listenner.ReceiveType = SendType.Text;
+                    listenner.ReceiveAsync(null, null, default);
                 }
-                else if (state == "1")
+                else if (splits[1] == SendType.File.ToString())
                 {
-                    this.logger.LogInformation($"接收方{data.Flag}对于{sourcePort}端口可用，使用https进行数据传输");
-                    // 使用https发送数据
-                    _httpsSendTextBase.SendPort = int.Parse( sourcePort);
-                    await _httpsSendTextBase.SendAsync(new SendTextModel(localIp, data.Flag,"hello"), null,default);
                 }
             }
+
+            await _tcpSendTextBase.SendAsync(sendModel, null, default);
         }
-        catch (Exception e)
+        else
         {
-            throw; // TODO handle exception
+            logger.LogInformation($"发送方接收回调方{data.Flag}端口可用情况，接收方端口可用情况为 {data.Result}");
+
+            var splits = data.Result.Split(".");
+            var sendType = splits[0];
+            var sourcePort = splits[1];
+            var state = splits[2];
+            //端口不可用，进行累加
+            if (state == "0")
+            {
+                var port = int.Parse(sourcePort) + 1;
+                logger.LogInformation($"接收方{data.Flag}对于{sourcePort} 端口无法使用，所以向接收方再次发送{port}端口是否可用");
+                var portCheckMessage = new SendTextModel(localIp, data.Flag ?? throw new NullReferenceException(),
+                    $"portcheck.{sendType}.{port}");
+                await _tcpSendTextBase.SendAsync(portCheckMessage, null, default);
+            }
+            else if (state == "1")
+            {
+                logger.LogInformation($"接收方{data.Flag}对于{sourcePort}端口可用，使用https进行数据传输");
+                // 使用https发送数据
+                _httpsSendTextBase.SendPort = int.Parse(sourcePort);
+                await _httpsSendTextBase.SendAsync(new SendTextModel(localIp, data.Flag, InformationModel.Text), null,
+                    default);
+            }
         }
     }
 
