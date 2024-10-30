@@ -16,8 +16,10 @@ public abstract class HttpsSendTextBase : HttpsSendBase<SendTextModel, ProgressV
         var content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8, "application/json");
 
         // 发送请求
-        var response = await sender.PostAsync(url, content, cancellationToken);
+        var response = await sender.PostAsync(url, content, default);
         response.EnsureSuccessStatusCode();
         progress?.Report(new ProgressValueModel(message.Flag, message.TargetFlag, 1));
+        sender.Dispose();
+        sender = null;
     }
 }

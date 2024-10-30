@@ -7,7 +7,7 @@ public abstract class HttpsSendBase<T, P> : SendBase<T, P, HttpClient>
 
     public sealed override Task SendAsync(T message, IProgress<P>? progress, CancellationToken cancellationToken)
     {
-        using var client = new HttpClient();
+        var client = new HttpClient();
         return SendProcessAsync(client, message, progress, cancellationToken);
     }
 }
