@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System.Net;
+using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -41,54 +42,49 @@ internal class HttpServer
 
     public static async Task StartServer()
     {
-        var listener = new HttpListener();
-        listener.Prefixes.Add("http://10.10.26.157:5001/text/"); // 使用局域网IP地址作为监听地址
+        // 创建一个TCP监听器，绑定到指定IP和端口
+        TcpListener listener = new TcpListener(IPAddress.Parse("192.168.1.109"), 5001);
         listener.Start();
         Console.WriteLine("服务器已启动，等待连接...");
 
         while (true)
         {
-            var context = await listener.GetContextAsync();
-            var request = context.Request;
-
-            var receivedSignature = request.Headers["X-Signature"];
-
-            var secretKey = "saiu"; // 共享密钥
-
-
-            // 读取客户端发送的数据
-            string requestData;
-            using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
+            // 接受客户端连接
+            using (TcpClient client = listener.AcceptTcpClient())
             {
-                requestData = await reader.ReadToEndAsync();
-            }
+                Console.WriteLine("客户端已连接.");
+                NetworkStream stream = client.GetStream();
 
-            if (VerifyHMACSignature(requestData, receivedSignature, secretKey))
-            {
-                // 处理有效请求
-                Console.WriteLine("Valid request received.");
-                context.Response.StatusCode = (int)HttpStatusCode.OK;
-                using (var writer = new StreamWriter(context.Response.OutputStream))
+                // 读取请求
+                byte[] buffer = new byte[1024];
+                int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                string request = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                Console.WriteLine("请求: \n" + request);
+
+                // 检查请求路径
+                if (request.Contains("GET /text"))
                 {
-                    writer.Write("Request is valid");
+                    // 构造HTTP响应
+                    string response = "HTTP/1.1 200 OK\r\n" +
+                                      "Content-Type: text/plain\r\n" +
+                                      "Connection: close\r\n\r\n" +
+                                      "Hello, World!";
+                    byte[] responseBytes = Encoding.UTF8.GetBytes(response);
+
+                    // 发送响应
+                    stream.Write(responseBytes, 0, responseBytes.Length);
+                    Console.WriteLine("响应已发送.");
+                }
+                else
+                {
+                    // 处理未找到路径的情况
+                    string response = "HTTP/1.1 404 Not Found\r\n" +
+                                      "Connection: close\r\n\r\n" +
+                                      "Not Found";
+                    byte[] responseBytes = Encoding.UTF8.GetBytes(response);
+                    stream.Write(responseBytes, 0, responseBytes.Length);
                 }
             }
-            else
-            {
-                // 处理无效请求
-                Console.WriteLine("Invalid request.");
-                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            }
-
-            Console.WriteLine("收到请求数据: " + requestData);
-
-            // 发送响应数据
-            var response = context.Response;
-            var responseString = "Hello from the server!";
-            var buffer = Encoding.UTF8.GetBytes(responseString);
-            response.ContentLength64 = buffer.Length;
-            await response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
-            response.OutputStream.Close();
         }
     }
 }

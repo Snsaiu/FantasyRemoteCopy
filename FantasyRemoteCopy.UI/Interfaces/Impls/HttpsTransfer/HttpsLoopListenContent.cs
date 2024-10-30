@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using FantasyRemoteCopy.UI.Enums;
 using FantasyRemoteCopy.UI.Extensions;
@@ -33,33 +34,36 @@ public class HttpsLoopListenContent(FileSavePathBase fileSavePathBase)
         if (string.IsNullOrEmpty(UserName))
             throw new NullReferenceException($"{nameof(UserName)} 不能为空");
 
-        var listenner = new HttpListener();
-
+        var listenner = new TcpListener(IPAddress.Parse(WatchIp), Port);
+        listenner.Start();
         if (ReceiveType == SendType.Text)
         {
-            listenner.Prefixes.Add($"http://{WatchIp}:{Port}/text/");
-            listenner.Start();
 
-            var context = await listenner.GetContextAsync();
-            var request = context.Request;
-            var receivedSignature = request.Headers["X-Signature"];
-            var response = context.Response;
-            if (request.HttpMethod == "POST")
-                using (var reader = new StreamReader(request.InputStream, Encoding.UTF8))
-                {
-                    var requestData = await reader.ReadToEndAsync();
-                    // 检查密钥
-                    if (CertificateGenerator.VerifyHMACSignatureForMessage(requestData, receivedSignature,
-                            UserName))
-                        context.Response.StatusCode = (int)HttpStatusCode.OK;
+            using (var client = listenner.AcceptTcpClient())
+            {
+                var stream = client.GetStream();
+            }
+           
+            
 
-                    var model = requestData.ToObject<SendTextModel>();
-                    receivedCallBack?.Invoke(
-                        new TransformResultModel<string>(model.Flag, SendType.Text, model.Text));
-                }
-
-            listenner.Close();
-            listenner = null;
+            // var receivedSignature = request.Headers["X-Signature"];
+            // var response = context.Response;
+            // if (request.HttpMethod == "POST")
+            //     using (var reader = new StreamReader(request.InputStream, Encoding.UTF8))
+            //     {
+            //         var requestData = await reader.ReadToEndAsync();
+            //         // 检查密钥
+            //         if (CertificateGenerator.VerifyHMACSignatureForMessage(requestData, receivedSignature,
+            //                 UserName))
+            //             context.Response.StatusCode = (int)HttpStatusCode.OK;
+            //
+            //         var model = requestData.ToObject<SendTextModel>();
+            //         receivedCallBack?.Invoke(
+            //             new TransformResultModel<string>(model.Flag, SendType.Text, model.Text));
+            //     }
+            //
+            // listenner.Close();
+            // listenner = null;
         }
 
         if (ReceiveType == SendType.File)
