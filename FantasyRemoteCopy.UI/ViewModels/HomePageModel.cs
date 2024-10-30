@@ -230,10 +230,10 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
             var checkResult = await _portCheckable.IsPortInUse(int.Parse(port));
             logger.LogInformation($"端口{port}可用状态为 {checkResult}");
             var sendModel = new SendTextModel(localIp, data.Flag,
-                checkResult ? $"{splits[1]}.{port}.1" : $"{splits[1]}.{port}.0");
+                !checkResult ? $"{splits[1]}.{port}.1" : $"{splits[1]}.{port}.0");
             logger.LogInformation($"端口可用状态信息发送给{data.Flag}");
 
-            if (checkResult)
+            if (!checkResult)
             {
                 // 开始监听
                 if (splits[1] == SendType.Text.ToString())
