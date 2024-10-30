@@ -11,7 +11,7 @@ internal class HttpServer
     public static async Task StartServer()
     {
         var listener = new HttpListener();
-        listener.Prefixes.Add("http://10.10.26.157:5001/"); // 使用局域网IP地址作为监听地址
+        listener.Prefixes.Add("http://10.10.26.157:80/"); // 使用局域网IP地址作为监听地址
         listener.Start();
         Console.WriteLine("服务器已启动，等待连接...");
 
