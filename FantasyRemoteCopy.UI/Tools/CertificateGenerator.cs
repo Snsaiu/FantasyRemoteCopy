@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace FantasyRemoteCopy.UI.Tools;
 
@@ -32,6 +33,26 @@ public class CertificateGenerator
             store.Close();
         }
     }
+
+    private static string GenerateHMACSignatureForMessage(string message, string key)
+    {
+        using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(key)))
+        {
+            var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(message));
+            return Convert.ToBase64String(hash);
+        }
+    }
+
+    private static string GenerateHMACSignatureForFile(string filePath, string key)
+    {
+        using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(key)))
+        {
+            var fileBytes = File.ReadAllBytes(filePath);
+            var hash = hmac.ComputeHash(fileBytes);
+            return Convert.ToBase64String(hash);
+        }
+    }
+
 
     public static bool IsCertificateInstalled()
     {
