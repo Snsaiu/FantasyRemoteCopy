@@ -238,6 +238,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                     if (receiveTaskDictionary.TryGetValue($"{data.Flag}-{data.Port}", out CancellationTokenSource? v))
                     {
                         v?.Cancel();
+                        receiveTaskDictionary.Remove($"{data.Flag}-{data.Port}");
                     }
 
                 }, IPAddress.Parse(data.Flag), int.Parse(port), ReportProgress(false), cancelTokenSource.Token);
