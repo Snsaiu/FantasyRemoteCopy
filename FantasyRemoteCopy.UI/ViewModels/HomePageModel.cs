@@ -229,7 +229,8 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                 // 开始监听
 
                 CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
-                receiveTaskDictionary.Add($"{data.Flag}-{port}", cancelTokenSource);
+                if(!receiveTaskDictionary.ContainsKey($"{data.Flag}-{port}"))
+                    receiveTaskDictionary.Add($"{data.Flag}-{port}", cancelTokenSource);
 
                 _tcpLoopListenContentBase.ReceiveAsync(result =>
                 {

@@ -26,9 +26,15 @@ public abstract class TcpLoopListenerBase<T, P, R> : LoopListenerBase<T, P, R>
 {
     public override async Task ReceiveAsync(Action<T> receivedCallBack, IPAddress address, int port, IProgress<P>? progress, CancellationToken cancellationToken)
     {
-        using TcpListener listener = new TcpListener(address, port);
-        listener.Start();
+        using TcpListener listener = new TcpListener(IPAddress.Any, port);
+        try
+        {   
+            listener.Start();
+        }
+        catch(Exception e)
+        {
 
+        }
         while (true)
         {
             try
