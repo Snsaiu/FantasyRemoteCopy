@@ -1,5 +1,4 @@
-﻿using FantasyRemoteCopy.UI.Consts;
-using FantasyRemoteCopy.UI.Models;
+﻿using FantasyRemoteCopy.UI.Models;
 
 using Newtonsoft.Json;
 
@@ -18,16 +17,16 @@ public abstract class LoopListenerBase<T, P, R> : IReceiveableWithProgress<T, P>
         return Task.CompletedTask;
     }
 
-    public abstract Task ReceiveAsync(Action<T> receivedCallBack, IProgress<P>? progress,
+    public abstract Task ReceiveAsync(Action<T> receivedCallBack, IPAddress address, int port, IProgress<P>? progress,
         CancellationToken cancellationToken);
 }
 
 public abstract class TcpLoopListenerBase<T, P, R> : LoopListenerBase<T, P, R>
     where T : TransformResultModel<R> where P : IProgressValue
 {
-    public override async Task ReceiveAsync(Action<T> receivedCallBack, IProgress<P>? progress, CancellationToken cancellationToken)
+    public override async Task ReceiveAsync(Action<T> receivedCallBack, IPAddress address, int port, IProgress<P>? progress, CancellationToken cancellationToken)
     {
-        using TcpListener listener = new TcpListener(IPAddress.Any, ConstParams.TCP_PORT);
+        using TcpListener listener = new TcpListener(address, port);
         listener.Start();
 
         while (true)
@@ -36,11 +35,13 @@ public abstract class TcpLoopListenerBase<T, P, R> : LoopListenerBase<T, P, R>
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 TcpClient client = await listener.AcceptTcpClientAsync(cancellationToken);
-                _ = HandleClientAsync(client, receivedCallBack, progress, cancellationToken); // 处理客户端连接
+                _ = HandleClientAsync(client, port, receivedCallBack, progress, cancellationToken); // 处理客户端连接
             }
             catch (OperationCanceledException)
             {
+                listener?.Stop();
                 await OnCancelReceiveAsync();
+                break;
             }
         }
     }
@@ -68,9 +69,9 @@ public abstract class TcpLoopListenerBase<T, P, R> : LoopListenerBase<T, P, R>
     }
 
     protected abstract Task HandleReceiveAsync(NetworkStream stream, SendMetadataMessage message,
-        Action<T> receivedCallBack, IProgress<P>? progress, CancellationToken cancellationToken);
+        Action<T> receivedCallBack, IProgress<P>? progress, int port, CancellationToken cancellationToken);
 
-    private async Task HandleClientAsync(TcpClient client, Action<T> receivedCallBack, IProgress<P>? progress, CancellationToken cancellationToken)
+    private async Task HandleClientAsync(TcpClient client, int port, Action<T> receivedCallBack, IProgress<P>? progress, CancellationToken cancellationToken)
     {
         NetworkStream stream = client.GetStream();
         string metaString = await ReceiveMetadataStringAsync(stream, cancellationToken);
@@ -79,7 +80,7 @@ public abstract class TcpLoopListenerBase<T, P, R> : LoopListenerBase<T, P, R>
         {
             throw new NullReferenceException();
         }
-        await HandleReceiveAsync(stream, metaMessage, receivedCallBack, progress, cancellationToken);
+        await HandleReceiveAsync(stream, metaMessage, receivedCallBack, progress, port, cancellationToken);
     }
 
 }
