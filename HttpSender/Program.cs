@@ -12,7 +12,7 @@ var handler = new HttpClientHandler
 using (var client = new HttpClient())
 {
     // 设置目标服务器的 URL
-    var serverUrl = "http://10.10.26.157:5001/text";
+    var serverUrl = "http://192.168.1.118:5001/text";
 
 
     var key = "saiu";
