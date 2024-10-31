@@ -32,7 +32,7 @@ public abstract class TcpSendTextBase : TcpSendBase<SendTextModel, ProgressValue
         var client = new TcpClient();
         try
         {
-            await client.ConnectAsync(message.TargetFlag, ConstParams.TCP_PORT, cancellationToken);
+            await client.ConnectAsync(message.TargetFlag, message.Port, cancellationToken);
 
             var stream = client.GetStream();
             await SendMetadataMessageAsync(stream, message, cancellationToken);
