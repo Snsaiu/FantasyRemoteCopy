@@ -4,9 +4,11 @@ VisualStudioVersion = 17.4.33015.44
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FantasyRemoteCopy.UI", "FantasyRemoteCopy.UI\FantasyRemoteCopy.UI.csproj", "{BB15EBE6-8EC7-4EF4-831D-44FFF17FDCA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpSender", "HttpSender\HttpSender.csproj", "{CDF57FFE-7044-4E3C-81CA-6C2A7A157AE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpSender", "HttpSender\HttpSender.csproj", "{CDF57FFE-7044-4E3C-81CA-6C2A7A157AE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpReceive", "HttpReceive\HttpReceive.csproj", "{6FE16236-AFEC-4599-9C18-47392B0AB3BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpReceive", "HttpReceive\HttpReceive.csproj", "{6FE16236-AFEC-4599-9C18-47392B0AB3BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fantasy.UIKit", "Fantasy.UIKit\Fantasy.UIKit.csproj", "{FA9B8779-2A6F-4087-B78F-11B3ADD7BE18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,6 +30,10 @@ Global
 		{6FE16236-AFEC-4599-9C18-47392B0AB3BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FE16236-AFEC-4599-9C18-47392B0AB3BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FE16236-AFEC-4599-9C18-47392B0AB3BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA9B8779-2A6F-4087-B78F-11B3ADD7BE18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA9B8779-2A6F-4087-B78F-11B3ADD7BE18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA9B8779-2A6F-4087-B78F-11B3ADD7BE18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA9B8779-2A6F-4087-B78F-11B3ADD7BE18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
