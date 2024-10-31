@@ -8,7 +8,6 @@ using FantasyRemoteCopy.UI.Interfaces.Impls.Configs;
 using FantasyRemoteCopy.UI.Interfaces.Impls.TcpTransfer;
 using FantasyRemoteCopy.UI.Interfaces.Impls.UdpTransfer;
 using FantasyRemoteCopy.UI.ViewModels;
-using FantasyRemoteCopy.UI.ViewModels.DialogModels;
 using FantasyRemoteCopy.UI.Views;
 using FantasyRemoteCopy.UI.Views.Dialogs;
 
@@ -77,9 +76,7 @@ public static class MauiProgram
         builder.UseRegisterPage<TextInputPage, TextInputPageModel>();
 
         builder.UseRegisterPage<ListPage, ListPageModel>();
-        builder.UseRegisterDialog<SendTypeDialog, SendTypeDialogModel>();
-
-
+       
         return builder.UseGetProvider().Build();
     }
 }

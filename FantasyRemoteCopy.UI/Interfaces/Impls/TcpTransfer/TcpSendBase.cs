@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace FantasyRemoteCopy.UI.Interfaces.Impls.TcpTransfer;
 
 public abstract class TcpSendBase<T, P> : SendBase<T, P, NetworkStream>
-    where T : IFlag, ISize, ITargetFlag where P : IProgressValue
+    where T : IFlag, ISize, ITargetFlag,IPort where P : IProgressValue
 {
     protected virtual SendMetadataMessage GetMetaDataMessage(T message)
     {
@@ -52,7 +52,7 @@ public abstract class TcpSendBase<T, P> : SendBase<T, P, NetworkStream>
         var client = new TcpClient();
         try
         {
-            await client.ConnectAsync(message.TargetFlag, ConstParams.TCP_PORT, cancellationToken);
+            await client.ConnectAsync(message.TargetFlag, message.Port, cancellationToken);
 
             var stream = client.GetStream();
             await SendMetadataMessageAsync(stream, message, cancellationToken);

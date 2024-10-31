@@ -14,6 +14,8 @@ namespace FantasyRemoteCopy.UI.Models
 
         public string? Text { get; set; }
 
-        public string? Path { get; set; }
+        public string? FolderPath  { get; set; }
+        
+        public IEnumerable<string>? Files { get; set; }
     }
 }

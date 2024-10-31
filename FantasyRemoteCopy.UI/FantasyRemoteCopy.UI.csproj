@@ -231,4 +231,8 @@
 	  </EmbeddedResource>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="ViewModels\DialogModels\" />
+	</ItemGroup>
+
 </Project>

@@ -1,12 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
 using FantasyMvvm;
 using FantasyMvvm.FantasyDialogService;
 using FantasyMvvm.FantasyModels;
 using FantasyMvvm.FantasyModels.Impls;
 using FantasyMvvm.FantasyNavigation;
-
 using FantasyRemoteCopy.UI.Consts;
 using FantasyRemoteCopy.UI.Enums;
 using FantasyRemoteCopy.UI.Interfaces;
@@ -18,16 +16,12 @@ using FantasyRemoteCopy.UI.Models;
 using FantasyRemoteCopy.UI.ViewModels.Base;
 using FantasyRemoteCopy.UI.Views;
 using FantasyRemoteCopy.UI.Views.Dialogs;
-
 using FantasyResultModel;
-
 using H.NotifyIcon;
-
 using Microsoft.Extensions.Logging;
-
 using Newtonsoft.Json;
-
 using System.Net;
+using CommunityToolkit.Maui.Storage;
 
 namespace FantasyRemoteCopy.UI.ViewModels;
 
@@ -92,8 +86,6 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
 
         InformationModel = information;
         SendCommand.NotifyCanExecuteChanged();
-
-
     }
 
     public void OnNavigatedFrom(string source, INavigationParameter parameter)
@@ -130,9 +122,9 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
     private void InitData()
     {
         DiscoveredDevices.Add(new DiscoveredDeviceModel
-        { Flag = "192.168.1.1", DeviceName = "my pc", NickName = "dfdf", SystemType = SystemType.Windows });
+            { Flag = "192.168.1.1", DeviceName = "my pc", NickName = "dfdf", SystemType = SystemType.Windows });
         DiscoveredDevices.Add(new DiscoveredDeviceModel
-        { Flag = "192.168.1.2", DeviceName = "my pc", NickName = "我的mac", SystemType = SystemType.MacOS });
+            { Flag = "192.168.1.2", DeviceName = "my pc", NickName = "我的mac", SystemType = SystemType.MacOS });
     }
 
     private async Task SetReceive()
@@ -193,7 +185,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                     DiscoveredDevices.Add(x);
                 }, default);
             })
-        { IsBackground = true };
+            { IsBackground = true };
         thread.Start();
     }
 
@@ -201,10 +193,11 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
     {
         Thread thread = new Thread(() =>
             {
-                _ = _tcpLoopListenContentBase.ReceiveAsync(CheckPortEnable, IPAddress.Any, ConstParams.TCP_PORT, ReportProgress(false),
+                _ = _tcpLoopListenContentBase.ReceiveAsync(CheckPortEnable, IPAddress.Any, ConstParams.TCP_PORT,
+                    ReportProgress(false),
                     _cancelDownloadTokenSource.Token);
             })
-        { IsBackground = true };
+            { IsBackground = true };
         thread.Start();
     }
 
@@ -229,7 +222,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                 // 开始监听
 
                 CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
-                if(!receiveTaskDictionary.ContainsKey($"{data.Flag}-{port}"))
+                if (!receiveTaskDictionary.ContainsKey($"{data.Flag}-{port}"))
                     receiveTaskDictionary.Add($"{data.Flag}-{port}", cancelTokenSource);
 
                 _tcpLoopListenContentBase.ReceiveAsync(result =>
@@ -241,7 +234,6 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                         v?.Cancel();
                         receiveTaskDictionary.Remove($"{data.Flag}-{data.Port}");
                     }
-
                 }, IPAddress.Parse(data.Flag), int.Parse(port), ReportProgress(false), cancelTokenSource.Token);
 
                 //HttpsLoopListenContent listener = new HttpsLoopListenContent(null)
@@ -251,11 +243,9 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                 //    ReceiveType = SendType.Text
                 //};
                 //listener.ReceiveAsync(null, null, default);
-
             }
 
             await _tcpSendTextBase.SendAsync(sendModel, null, default);
-
         }
         else
         {
@@ -270,7 +260,8 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
             {
                 int port = int.Parse(sourcePort) + 1;
                 logger.LogInformation($"接收方{data.Flag}对于{sourcePort} 端口无法使用，所以向接收方再次发送{port}端口是否可用");
-                SendTextModel portCheckMessage = new SendTextModel(localIp, data.Flag ?? throw new NullReferenceException(),
+                SendTextModel portCheckMessage = new SendTextModel(localIp,
+                    data.Flag ?? throw new NullReferenceException(),
                     $"portcheck.{sendType}.{port}", ConstParams.TCP_PORT);
                 await _tcpSendTextBase.SendAsync(portCheckMessage, null, default);
             }
@@ -281,11 +272,15 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                 switch (InformationModel!.SendType)
                 {
                     case SendType.Text:
-                        _tcpSendTextBase.SendAsync(new SendTextModel(localIp, data.Flag, InformationModel.Text, int.Parse(sourcePort)));
+                        _tcpSendTextBase.SendAsync(
+                            new SendTextModel(localIp, data.Flag, InformationModel.Text, int.Parse(sourcePort)), null,
+                            default);
                         break;
                     case SendType.File:
+                        SendFileAsync(data.Flag, int.Parse(sourcePort));
                         break;
                     case SendType.Folder:
+                        SendFileAsync(data.Flag, int.Parse(sourcePort));
                         break;
                 }
 
@@ -333,64 +328,93 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
     }
 
 
-    [RelayCommand]
-    public Task Share(DiscoveredDeviceModel model)
-    {
-        if (model.WorkState == WorkState.Sending)
-            return _dialogService.DisplayAlert("Warning",
-                "Sorry, the file is being uploaded. Please try again after the upload is completed!", "Ok");
+    // [RelayCommand]
+    // public Task Share(DiscoveredDeviceModel model)
+    // {
+    //     if (model.WorkState == WorkState.Sending)
+    //         return _dialogService.DisplayAlert("Warning",
+    //             "Sorry, the file is being uploaded. Please try again after the upload is completed!", "Ok");
+    //
+    //     NavigationParameter parameter = new NavigationParameter();
+    //     parameter.Add("data", model);
+    //     return _dialogService.ShowPopUpDialogAsync(nameof(SendTypeDialog), parameter, x =>
+    //     {
+    //         if (!x.Success)
+    //             return;
+    //         switch (x.Data)
+    //         {
+    //             case SendFileModel fileModel:
+    //                 SendFile(fileModel);
+    //                 break;
+    //             case List<SendFileModel> fileModels:
+    //                 SendCompressFile(fileModels);
+    //                 break;
+    //             case SendType and SendType.Text:
+    //                 _navigationService.NavigationToAsync(nameof(TextInputPage), parameter);
+    //                 break;
+    //             case SendFolderModel folderModel:
+    //                 SendCompressFile(folderModel);
+    //                 break;
+    //             default:
+    //                 throw new NotImplementedException();
+    //         }
+    //     });
+    // }
 
-        NavigationParameter parameter = new NavigationParameter();
-        parameter.Add("data", model);
-        return _dialogService.ShowPopUpDialogAsync(nameof(SendTypeDialog), parameter, x =>
+
+    [RelayCommand]
+    private async Task OpenFolderAsync()
+    {
+        var folerPicker = await FolderPicker.PickAsync(default);
+        if (!folerPicker.IsSuccessful)
+            return;
+
+        this.InformationModel = new()
         {
-            if (!x.Success)
-                return;
-            switch (x.Data)
-            {
-                case SendFileModel fileModel:
-                    SendFile(fileModel);
-                    break;
-                case List<SendFileModel> fileModels:
-                    SendCompressFile(fileModels);
-                    break;
-                case SendType and SendType.Text:
-                    _navigationService.NavigationToAsync(nameof(TextInputPage), parameter);
-                    break;
-                case SendFolderModel folderModel:
-                    SendCompressFile(folderModel);
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
-        });
+            SendType = SendType.Folder,
+            FolderPath = folerPicker.Folder.Path
+        };
     }
 
-
-    private void SendCompressFile(IEnumerable<SendFileModel> files)
+    [RelayCommand]
+    private async Task OpenFileAsync()
     {
-        Task.Run(async () =>
+        var files = await FilePicker.PickMultipleAsync();
+
+        if (!files.Any())
+            return;
+        this.InformationModel = new()
         {
-            SendFileModel first = files.First();
+            SendType = SendType.File,
+            Files = files.Select(x => x.FullPath)
+        };
+    }
 
-            DiscoveredDeviceModel? device =
-                DiscoveredDevices.FirstOrDefault(y => y.Flag == first.TargetFlag);
-            if (device is null)
-                throw new NullReferenceException();
-            try
+    private async Task SendFileAsync(string targetIp, int port)
+    {
+        var localIp = await _deviceLocalIpBase.GetLocalIpAsync();
+        
+        try
+        {
+            SendCompressFileModel sendCompressFileModel;
+            
+            if(InformationModel!.SendType == SendType.Folder)
+                sendCompressFileModel =new SendCompressFileModel(localIp,targetIp, this.InformationModel.FolderPath ,port);
+            else if (this.InformationModel.SendType == SendType.File)
+                sendCompressFileModel = new SendCompressFileModel(localIp, targetIp, InformationModel.Files, port);
+            else
             {
-                SendCompressFileModel sendCompressFileModel =
-                    new SendCompressFileModel(first.Flag, first.TargetFlag, files.Select(x => x.FileFullPath));
+                throw new NotSupportedException();
+            }
 
-                device.WorkState = WorkState.Sending;
-                await _tcpSendFileBase.SendAsync(sendCompressFileModel, ReportProgress(true),
-                    device.CancellationTokenSource.Token);
-            }
-            catch (OperationCanceledException)
-            {
-                device.WorkState = WorkState.None;
-            }
-        });
+           // device.WorkState = WorkState.Sending;
+           await _tcpSendFileBase.SendAsync(sendCompressFileModel, ReportProgress(true), default);
+           //   device.CancellationTokenSource.Token);
+        }
+        catch (OperationCanceledException)
+        {
+          //  device.WorkState = WorkState.None;
+        }
     }
 
     private void SendCompressFile(SendFolderModel folderModel)
