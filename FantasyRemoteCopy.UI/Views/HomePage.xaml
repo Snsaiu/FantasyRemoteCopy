@@ -4,10 +4,8 @@
     x:Class="FantasyRemoteCopy.UI.Views.HomePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:controls="clr-namespace:FantasyRemoteCopy.UI.Controls"
     xmlns:converters="clr-namespace:FantasyRemoteCopy.UI.Converters"
-    xmlns:models="using:FantasyRemoteCopy.UI.Models"
-   
+
     xmlns:extension="clr-namespace:FantasyRemoteCopy.UI.Extensions"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="cp"
@@ -62,7 +60,7 @@
             <!--  用户名和设备昵称  -->
             <VerticalStackLayout Grid.Column="1" Margin="5,0,0,0" VerticalOptions="CenterAndExpand">
                 <Label
-                 
+
                     FontSize="25"
                     Text="{Binding UserName}"
                     Margin="0,0,0,5"
@@ -70,7 +68,7 @@
                     VerticalOptions="Center" />
                 <StackLayout Orientation="Horizontal">
                     <Label
-                   
+
                         TextColor="Black"
                         FontSize="{OnPlatform MacCatalyst=15,
                                               WinUI=10}"
@@ -84,20 +82,18 @@
 
             </VerticalStackLayout>
 
-            <Grid Grid.Column="2"  RowDefinitions="auto,auto">
-
-
+            <Grid Grid.Column="2" RowDefinitions="auto,auto">
                 <ImageButton
                     Grid.Row="0"
-                        BackgroundColor="Transparent"
-                        Command="{Binding GotoSettingPageCommand}"
-                        HeightRequest="40"
+                    BackgroundColor="Transparent"
+                    Command="{Binding GotoSettingPageCommand}"
+                    HeightRequest="40"
                     BorderWidth="0"
                     HorizontalOptions="EndAndExpand"
                     Margin="0,0,0,10"
-                        Source="setting.png"
-                        WidthRequest="40" />
-                
+                    Source="setting.png"
+                    WidthRequest="40" />
+
                 <HorizontalStackLayout Grid.Row="1">
                     <Grid>
                         <Ellipse
@@ -117,9 +113,8 @@
                             WidthRequest="10" />
                     </Grid>
 
-                    <ImageButton Margin="0,0,10,0" BorderWidth="0"    Command="{Binding SearchCommand}" BackgroundColor="Transparent" HeightRequest="30" WidthRequest="30" Source="search.png">
-                       
-                    </ImageButton>
+                    <ImageButton Margin="0,0,10,0" BorderWidth="0" Command="{Binding SearchCommand}"
+                                 BackgroundColor="Transparent" HeightRequest="30" WidthRequest="30" Source="search.png" />
 
                     <AbsoluteLayout Margin="5,0" VerticalOptions="Center">
                         <ImageButton
@@ -145,21 +140,22 @@
         </Grid>
 
         <Grid Grid.Row="1" ColumnDefinitions="*,*,*">
-            <Button Text="文本" Command="{Binding GoTextCommand}"></Button>
-            <Button Grid.Column="1" Command="{Binding OpenFileCommand}" Text="文件"></Button>
-            <Button Grid.Column="2" Text="文件夹" Command="{Binding OpenFolderCommand}"></Button>
+            <Button Text="文本" Command="{Binding GoTextCommand}" />
+            <Button Grid.Column="1" Command="{Binding OpenFileCommand}" Text="文件" />
+            <Button Grid.Column="2" Text="文件夹" Command="{Binding OpenFolderCommand}" />
         </Grid>
-        
+
         <!--发送动画-->
 
-        <VerticalStackLayout Grid.Row="2" HorizontalOptions="Fill" IsVisible="{Binding InformationModel, Converter={converters:NotNullToVisibleConverter}}">
+        <VerticalStackLayout Grid.Row="2" HorizontalOptions="Fill"
+                             IsVisible="{Binding InformationModel, Converter={converters:NotNullToVisibleConverter}}">
 
             <Border Background="Beige">
                 <Label HorizontalOptions="Center">传输：文本</Label>
             </Border>
-            <Image Source="send.png" HeightRequest="50" HorizontalOptions="Center"></Image>
+            <Image Source="send.png" HeightRequest="50" HorizontalOptions="Center" />
         </VerticalStackLayout>
-        
+
         <!--  列表  -->
         <CollectionView Grid.Row="3" ItemsSource="{Binding DiscoveredDevices}">
             <CollectionView.ItemsLayout>
@@ -169,40 +165,43 @@
                 <DataTemplate>
 
                     <VerticalStackLayout>
-                        <BoxView Color="Gray" HeightRequest="1" Opacity="0.5"></BoxView>
+                        <BoxView Color="Gray" HeightRequest="1" Opacity="0.5" />
 
                         <Grid ColumnDefinitions="40,auto,*">
 
-                            <CheckBox IsChecked="{Binding IsChecked,Mode=TwoWay}"/>
+                            <CheckBox IsChecked="{Binding IsChecked,Mode=TwoWay}" />
 
-                            <BoxView Grid.Column="1" Color="Gray" Opacity="0.5" WidthRequest="1"></BoxView>
-                        <Grid Grid.Column="2" ColumnDefinitions="auto,*">
+                            <BoxView Grid.Column="1" Color="Gray" Opacity="0.5" WidthRequest="1" />
+                            <Grid Grid.Column="2" ColumnDefinitions="auto,*">
 
-                            <Image
-                                HorizontalOptions="StartAndExpand"
-      HeightRequest="{OnPlatform WinUI=40,
+                                <Image
+                                    HorizontalOptions="StartAndExpand"
+                                    HeightRequest="{OnPlatform WinUI=40,
                                   Android=20,
                                  MacCatalyst=50}"
-      Source="{Binding SystemType,Converter={converters:SystemTypeToImageSourceConverter}}"
-      WidthRequest="{OnPlatform WinUI=40,
+                                    Source="{Binding SystemType,Converter={converters:SystemTypeToImageSourceConverter}}"
+                                    WidthRequest="{OnPlatform WinUI=40,
                                 MacCatalyst=50}" />
 
-                            <Grid RowDefinitions="*,*" Grid.Column="1" Margin="10,0,0,0" HorizontalOptions="StartAndExpand">
-                                <Label
-                                    VerticalOptions="Center"
-     Text="{Binding NickName}" />
+                                <Grid RowDefinitions="*,*" Grid.Column="1" Margin="10,0,0,0"
+                                      HorizontalOptions="StartAndExpand">
+                                    <Label
+                                        VerticalOptions="Center"
+                                        Text="{Binding NickName}" />
 
-                                <HorizontalStackLayout Grid.Row="1">
-                                    <Image HeightRequest="12" WidthRequest="12" Margin="0,2,0,0" Source="wifi.png" VerticalOptions="Start" ></Image>
-                                    <Label Text="{Binding Flag}" FontSize="10" Margin="5,0,0,0" VerticalOptions="Start"/>
-                                </HorizontalStackLayout>
+                                    <HorizontalStackLayout Grid.Row="1">
+                                        <Image HeightRequest="12" WidthRequest="12" Margin="0,2,0,0" Source="wifi.png"
+                                               VerticalOptions="Start" />
+                                        <Label Text="{Binding Flag}" FontSize="10" Margin="5,0,0,0"
+                                               VerticalOptions="Start" />
+                                    </HorizontalStackLayout>
+                                </Grid>
+
                             </Grid>
-                            
+
                         </Grid>
 
-                    </Grid>
-
-                        <BoxView Color="Gray" HeightRequest="1" Opacity="0.5"></BoxView>
+                        <BoxView Color="Gray" HeightRequest="1" Opacity="0.5" />
 
                     </VerticalStackLayout>
 
@@ -243,7 +242,7 @@
                                     Text="{Binding DeviceType}" />
                             </StackLayout>
 
-                        
+
                         </Grid>
                         <Grid Grid.Column="2" ColumnDefinitions="auto,10,10,auto">
                             <Grid Grid.Column="0" ColumnDefinitions="auto,auto">
@@ -350,7 +349,7 @@
             WidthRequest="{OnPlatform Android=60}"
             Color="LightGray" />
 
-        <Button Grid.Row="4" Text="发送" BorderWidth="0" Command="{Binding SendCommand}"></Button>
+        <Button Grid.Row="4" Text="发送" BorderWidth="0" Command="{Binding SendCommand}" />
     </Grid>
 
 

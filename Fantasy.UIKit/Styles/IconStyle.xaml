@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:view="clr-namespace:Fantasy.UIKit.Controls.Icon">
+
+    <Style TargetType="view:Icon">
+        <Setter Property="MinimumHeightRequest" Value="24" />
+        <Setter Property="MinimumWidthRequest" Value="24" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="ForegroundColor" Value="Black" />
+    </Style>
+</ResourceDictionary>
