@@ -1,6 +1,7 @@
 ﻿#region
 
 using Fantasy.UIKit.Interfaces;
+using Fantasy.UIKit.Primitives;
 
 #endregion
 
@@ -29,6 +30,8 @@ public class InterfaceGraphicsView : GraphicsView, IUIKitElement, IDisposable
         Dispose(true);
         GC.SuppressFinalize(this);
     }
+
+    public ElementState ViewState { get; set; }
 
     public bool Enable
     {

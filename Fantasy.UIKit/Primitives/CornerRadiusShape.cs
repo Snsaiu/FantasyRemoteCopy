@@ -1,6 +1,7 @@
 ﻿#region
 
 using System.Diagnostics.CodeAnalysis;
+using Math = System.Math;
 
 #endregion
 
@@ -27,6 +28,22 @@ public struct CornerRadiusShape(float topLeft, float topRight, float bottomLeft,
     public CornerRadiusShape(float uniformCornerRadius) : this(uniformCornerRadius, uniformCornerRadius,
         uniformCornerRadius, uniformCornerRadius)
     {
+    }
+
+    public float this[int index]
+    {
+        get
+        {
+            switch (index)
+            {
+                case 0: return TopLeft;
+                case 1: return TopRight;
+                case 2: return BottomLeft;
+                case 3: return BottomRight;
+                default:
+                    throw new IndexOutOfRangeException();
+            }
+        }
     }
 
     public static readonly CornerRadiusShape None = 0;
@@ -57,6 +74,7 @@ public struct CornerRadiusShape(float topLeft, float topRight, float bottomLeft,
 
         return [TopLeft, TopRight, BottomLeft, BottomRight];
     }
+
 
     public static implicit operator CornerRadiusShape(float uniformCornerRadius) => new(uniformCornerRadius);
 

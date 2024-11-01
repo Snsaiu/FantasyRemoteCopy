@@ -11,8 +11,6 @@ public partial class HomePage : ContentPage
     public HomePage()
     {
         InitializeComponent();
-
-        Label
         downloadEllipse.LoopAnimation(TransformType.Fadein, 0, 1, 200, Easing.Default);
         downloadEllipseFill.LoopAnimation(TransformType.Fadein, 1, 0, 200, Easing.Default);
     }
