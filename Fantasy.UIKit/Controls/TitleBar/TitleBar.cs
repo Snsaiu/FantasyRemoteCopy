@@ -1,6 +1,6 @@
 ﻿namespace Fantasy.UIKit.Controls.TitleBar
 {
-    internal class TitleBar : InterfaceGraphicsView, TemplatedView
+    internal class TitleBar : InterfaceGraphicsView
     {
 
     }
