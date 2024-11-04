@@ -3,7 +3,7 @@
 /// <summary>
 ///     针对有标题的控件，可以自定义标题内容
 /// </summary>
-internal interface IHeaderElement : IUIKitElement
+public interface IHeaderElement : IUIKitElement
 {
     public static readonly BindableProperty HeaderProperty = BindableProperty.Create(nameof(Header), typeof(View),
         typeof(IHeaderElement),

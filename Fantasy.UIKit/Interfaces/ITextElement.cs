@@ -3,7 +3,7 @@
 /// <summary>
 ///     可以显示文本
 /// </summary>
-internal interface ITextElement : IUIKitElement
+public interface ITextElement : IUIKitElement
 {
     public static readonly BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string),
         typeof(ITextElement),

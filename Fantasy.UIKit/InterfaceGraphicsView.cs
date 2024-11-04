@@ -47,7 +47,6 @@ public class InterfaceGraphicsView : GraphicsView, IUIKitElement, IDisposable
 
     protected virtual void InterfaceGraphicsView_MoveHoverInteraction(object? sender, TouchEventArgs e)
     {
-        throw new NotImplementedException();
     }
 
     protected virtual void InterfaceGraphicsView_EndHoverInteraction(object? sender, EventArgs e)

@@ -3,7 +3,7 @@
 /// <summary>
 ///     可设置图标
 /// </summary>
-internal interface IIconElement : IBackgroundElement, IForegroundElement
+public interface IIconElement : IBackgroundElement, IForegroundColorElement
 {
     public static readonly BindableProperty IconDataProperty = BindableProperty.Create(
         nameof(IconData),
@@ -12,7 +12,6 @@ internal interface IIconElement : IBackgroundElement, IForegroundElement
         propertyChanged: (bindable, obj, v) =>
         {
             ((IIconElement)bindable).IconPath = PathBuilder.Build((string)v);
-
             ((IUIKitElement)bindable).InvalidateMeasure();
         });
 

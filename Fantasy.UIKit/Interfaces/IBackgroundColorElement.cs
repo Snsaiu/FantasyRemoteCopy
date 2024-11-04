@@ -3,7 +3,7 @@
 /// <summary>
 ///     设置形状的背景色
 /// </summary>
-internal interface IBackgroundElement : ICornerRadiusShapeElement
+public interface IBackgroundElement : ICornerRadiusShapeElement
 {
     public static readonly BindableProperty BackgroundColorProperty =
         BindableProperty.Create(nameof(BackgroundColor), typeof(Color), typeof(IBackgroundElement),

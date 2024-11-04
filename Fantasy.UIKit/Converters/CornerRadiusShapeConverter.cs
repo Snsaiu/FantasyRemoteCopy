@@ -1,8 +1,9 @@
 ﻿#region
 
+using Fantasy.UIKit.Primitives;
+
 using System.ComponentModel;
 using System.Globalization;
-using Fantasy.UIKit.Primitives;
 
 #endregion
 
@@ -56,25 +57,28 @@ internal class CornerRadiusShapeConverter : TypeConverter
             case "Full":
                 return CornerRadiusShape.Full;
             default:
-            {
-                var arr = text.Split(',');
-                switch (arr.Length)
                 {
-                    case 1 when int.TryParse(arr[0], out var i32):
-                        return new CornerRadiusShape(i32);
-                    case 4 when int.TryParse(arr[0], out var topLeft)
-                                && int.TryParse(arr[1], out var topRight)
-                                && int.TryParse(arr[2], out var bottomLeft)
-                                && int.TryParse(arr[3], out var bottomRight):
-                        return new CornerRadiusShape(topLeft, topRight, bottomLeft, bottomRight);
-                }
+                    string[] arr = text.Split(',');
+                    switch (arr.Length)
+                    {
+                        case 1 when int.TryParse(arr[0], out int i32):
+                            return new CornerRadiusShape(i32);
+                        case 4 when int.TryParse(arr[0], out int topLeft)
+                                    && int.TryParse(arr[1], out int topRight)
+                                    && int.TryParse(arr[2], out int bottomLeft)
+                                    && int.TryParse(arr[3], out int bottomRight):
+                            return new CornerRadiusShape(topLeft, topRight, bottomLeft, bottomRight);
+                    }
 
-                break;
-            }
+                    break;
+                }
         }
 
         return null;
     }
 
-    public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context) => new(values);
+    public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context)
+    {
+        return new(values);
+    }
 }

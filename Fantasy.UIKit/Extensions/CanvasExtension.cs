@@ -22,22 +22,24 @@ internal static class CanvasExtension
         if (element.IconPath == null)
             return;
         canvas.StrokeColor = element.ForegroundColor.WithAlpha(element.ViewState is ElementState.Disabled ? 0.38f : 1f);
-        canvas.StrokeColor = element.BackgroundColor.WithAlpha(element.ViewState is ElementState.Disabled ? 0.38f : 1f);
-        using var path = element.IconPath.AsScaledPath(defaultSize / 24f * scale);
-        var sx = rect.Center.X - defaultSize / 2 * scale;
-        var sy = rect.Center.Y - defaultSize / 2 * scale;
+        canvas.FillColor = element.BackgroundColor.WithAlpha(element.ViewState is ElementState.Disabled ? 0.38f : 1f);
+        using PathF path = element.IconPath.AsScaledPath(defaultSize / 24f * scale);
+        float sx = rect.Center.X - defaultSize / 2 * scale;
+        float sy = rect.Center.Y - defaultSize / 2 * scale;
         path.Move(sx, sy);
         canvas.FillPath(path);
     }
 
     internal static CornerRadiusShape GetCornerRadiusShape(this ICornerRadiusShapeElement element, float width,
-        float height) =>
-        element.CornerRadius.TopLeft is -1
+        float height)
+    {
+        return element.CornerRadius.TopLeft is -1
         && element.CornerRadius.TopRight is -1
         && element.CornerRadius.BottomLeft is -1
         && element.CornerRadius.BottomRight is -1
             ? Math.Min(width, height) / 2
             : element.CornerRadius;
+    }
 
 
     /// <summary>
@@ -48,9 +50,9 @@ internal static class CanvasExtension
     /// <returns></returns>
     internal static PathF GetClipPath(this ICornerRadiusShapeElement element, RectF rect)
     {
-        var radius = element.GetCornerRadiusShape(rect.Width, rect.Height);
-        var path = new PathF();
-        path.AppendRoundedRectangle(new RectF(rect.Center.X, rect.Center.Y, rect.Width, rect.Height),
+        CornerRadiusShape radius = element.GetCornerRadiusShape(rect.Width, rect.Height);
+        PathF path = new PathF();
+        path.AppendRoundedRectangle(new RectF(rect.X, rect.Y, rect.Width, rect.Height),
             radius[0],
             radius[1],
             radius[2],

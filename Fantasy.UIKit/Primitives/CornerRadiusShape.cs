@@ -1,6 +1,10 @@
 ﻿#region
 
+using Fantasy.UIKit.Converters;
+
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+
 using Math = System.Math;
 
 #endregion
@@ -14,7 +18,8 @@ namespace Fantasy.UIKit.Primitives;
 /// <param name="topRight">右上角</param>
 /// <param name="bottomLeft">左下角</param>
 /// <param name="bottomRight">右下角</param>
-public struct CornerRadiusShape(float topLeft, float topRight, float bottomLeft, float bottomRight)
+[TypeConverter(typeof(CornerRadiusShapeConverter))]
+public readonly struct CornerRadiusShape(float topLeft, float topRight, float bottomLeft, float bottomRight)
 {
     public readonly float TopLeft { get; } = topLeft;
     public readonly float TopRight { get; } = topRight;
@@ -34,15 +39,14 @@ public struct CornerRadiusShape(float topLeft, float topRight, float bottomLeft,
     {
         get
         {
-            switch (index)
+            return index switch
             {
-                case 0: return TopLeft;
-                case 1: return TopRight;
-                case 2: return BottomLeft;
-                case 3: return BottomRight;
-                default:
-                    throw new IndexOutOfRangeException();
-            }
+                0 => TopLeft,
+                1 => TopRight,
+                2 => BottomLeft,
+                3 => BottomRight,
+                _ => throw new IndexOutOfRangeException(),
+            };
         }
     }
 
@@ -68,7 +72,7 @@ public struct CornerRadiusShape(float topLeft, float topRight, float bottomLeft,
     {
         if (TopLeft is -1 && TopRight is -1 && BottomLeft is -1 && BottomRight is -1)
         {
-            var full = Math.Min(width, height) / 2;
+            float full = Math.Min(width, height) / 2;
             return [full, full, full, full];
         }
 
@@ -76,7 +80,10 @@ public struct CornerRadiusShape(float topLeft, float topRight, float bottomLeft,
     }
 
 
-    public static implicit operator CornerRadiusShape(float uniformCornerRadius) => new(uniformCornerRadius);
+    public static implicit operator CornerRadiusShape(float uniformCornerRadius)
+    {
+        return new(uniformCornerRadius);
+    }
 
     public static bool operator ==(CornerRadiusShape left, CornerRadiusShape right)
     {

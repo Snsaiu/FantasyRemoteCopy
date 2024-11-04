@@ -3,7 +3,7 @@
 /// <summary>
 ///     可绘制前景色
 /// </summary>
-internal interface IForegroundColorElement : IUIKitElement
+public interface IForegroundColorElement : IUIKitElement
 {
     public static readonly BindableProperty ForegroundColorProperty = BindableProperty.Create(nameof(ForegroundColor),
         typeof(Color), typeof(IForegroundColorElement), Colors.Black,
