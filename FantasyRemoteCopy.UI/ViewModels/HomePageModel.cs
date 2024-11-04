@@ -230,10 +230,10 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                 {
                     // 保存到数据库
                     SaveDataToLocalDB(result);
-                    if (receiveTaskDictionary.TryGetValue($"{data.Flag}-{data.Port}", out CancellationTokenSource? v))
+                    if (receiveTaskDictionary.TryGetValue($"{data.Flag}-{port}", out CancellationTokenSource? v))
                     {
                         v?.Cancel();
-                        receiveTaskDictionary.Remove($"{data.Flag}-{data.Port}");
+                        receiveTaskDictionary.Remove($"{data.Flag}-{port}");
                     }
                 }, IPAddress.Parse(data.Flag), int.Parse(port), ReportProgress(false), cancelTokenSource.Token);
 
