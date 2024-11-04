@@ -440,7 +440,6 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
             try
             {
                 var sendCompressFileModel = new SendCompressFileModel(folderModel);
-
                 device.WorkState = WorkState.Sending;
                 await _tcpSendFileBase.SendAsync(sendCompressFileModel, ReportProgress(true),
                     device.CancellationTokenSource.Token);
