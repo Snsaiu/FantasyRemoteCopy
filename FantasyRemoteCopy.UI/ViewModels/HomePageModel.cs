@@ -116,6 +116,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         ResultBase<UserInfo> userRes = await userService.GetCurrentUserAsync();
         UserName = userRes.Data.Name;
         DeviceNickName = userRes.Data.DeviceNickName;
+        //InitData();
     }
 
 
@@ -268,7 +269,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
             else if (state == "1")
             {
                 logger.LogInformation($"接收方{data.Flag}对于{sourcePort}端口可用，使用https进行数据传输");
-
+                ShowProgress(data.Flag);
                 switch (InformationModel!.SendType)
                 {
                     case SendType.Text:
@@ -292,6 +293,16 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                 //    default);
             }
         }
+    }
+
+    private void ShowProgress(string flag)
+    {
+        var device = DiscoveredDevices.FirstOrDefault(x => x.Flag == flag);
+        if(device  is null)
+        {
+            return;
+        }
+        device.WorkState = WorkState.Sending;
     }
 
     private void SaveDataToLocalDB(TransformResultModel<string> data)

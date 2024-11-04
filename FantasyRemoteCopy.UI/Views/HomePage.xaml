@@ -8,6 +8,7 @@
 
     xmlns:extension="clr-namespace:FantasyRemoteCopy.UI.Extensions"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:models="clr-namespace:FantasyRemoteCopy.UI.Models"
     x:Name="cp"
     BackgroundColor="AliceBlue"
     NavigationPage.HasBackButton="False"
@@ -172,7 +173,7 @@
                             <CheckBox IsChecked="{Binding IsChecked,Mode=TwoWay}" />
 
                             <BoxView Grid.Column="1" Color="Gray" Opacity="0.5" WidthRequest="1" />
-                            <Grid Grid.Column="2" ColumnDefinitions="auto,*">
+                            <Grid Grid.Column="2" ColumnDefinitions="auto,*,*">
 
                                 <Image
                                     HorizontalOptions="StartAndExpand"
@@ -196,7 +197,28 @@
                                                VerticalOptions="Start" />
                                     </HorizontalStackLayout>
                                 </Grid>
-
+                                <!-- 进度条 -->
+                                <Grid Grid.Column="2" ColumnDefinitions="*,auto" ColumnSpacing="10" Margin="0,0,10,0">
+                                    <ProgressBar Progress="{Binding Progress}"></ProgressBar>
+                                    <ImageButton Source="close.png" WidthRequest="20" HeightRequest="20" Grid.Column="1"> </ImageButton>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="IsVisible" Value="False"></Setter>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding WorkState}" TargetType="Grid" Value="{x:Static models:WorkState.Downloading }">
+                                                    <Setter Property="IsVisible" Value="True"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WorkState}" TargetType="Grid"  Value="{x:Static models:WorkState.Sending}">
+                                                    <Setter Property="IsVisible" Value="True"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WorkState}" TargetType="Grid"  Value="{x:Static models:WorkState.None}">
+                                                    <Setter Property="IsVisible" Value="False"></Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                </Grid>
+                                
                             </Grid>
 
                         </Grid>
