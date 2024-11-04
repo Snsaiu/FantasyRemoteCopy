@@ -4,7 +4,9 @@ VisualStudioVersion = 17.4.33015.44
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FantasyRemoteCopy.UI", "FantasyRemoteCopy.UI\FantasyRemoteCopy.UI.csproj", "{BB15EBE6-8EC7-4EF4-831D-44FFF17FDCA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fantasy.UIKit", "Fantasy.UIKit\Fantasy.UIKit.csproj", "{FA9B8779-2A6F-4087-B78F-11B3ADD7BE18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fantasy.UIKit", "Fantasy.UIKit\Fantasy.UIKit.csproj", "{FA9B8779-2A6F-4087-B78F-11B3ADD7BE18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UITest", "UITest\UITest.csproj", "{4A689309-FE03-4702-8ED9-F60EF4750B3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,6 +24,12 @@ Global
 		{FA9B8779-2A6F-4087-B78F-11B3ADD7BE18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA9B8779-2A6F-4087-B78F-11B3ADD7BE18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA9B8779-2A6F-4087-B78F-11B3ADD7BE18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A689309-FE03-4702-8ED9-F60EF4750B3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A689309-FE03-4702-8ED9-F60EF4750B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A689309-FE03-4702-8ED9-F60EF4750B3D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{4A689309-FE03-4702-8ED9-F60EF4750B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A689309-FE03-4702-8ED9-F60EF4750B3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A689309-FE03-4702-8ED9-F60EF4750B3D}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

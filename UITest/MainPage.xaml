@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="UITest.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:icon="clr-namespace:IconPacks.IconKind;assembly=IconPacks.Material"
+    xmlns:uikit="clr-namespace:Fantasy.UIKit;assembly=Fantasy.UIKit"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30,0" Spacing="25" >
+            <uikit:ico
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
