@@ -223,16 +223,20 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                 if (!receiveTaskDictionary.ContainsKey($"{data.Flag}-{port}"))
                     receiveTaskDictionary.Add($"{data.Flag}-{port}", cancelTokenSource);
 
-                _tcpLoopListenContentBase.ReceiveAsync(result =>
+                var t = new Thread(() =>
                 {
-                    // 保存到数据库
-                    SaveDataToLocalDB(result);
-                    if (receiveTaskDictionary.TryGetValue($"{data.Flag}-{port}", out var v))
+                    _tcpLoopListenContentBase.ReceiveAsync(result =>
                     {
-                        v?.Cancel();
-                        receiveTaskDictionary.Remove($"{data.Flag}-{port}");
-                    }
-                }, IPAddress.Parse(data.Flag), int.Parse(port), ReportProgress(false), cancelTokenSource.Token);
+                        // 保存到数据库
+                        SaveDataToLocalDB(result);
+                        if (receiveTaskDictionary.TryGetValue($"{data.Flag}-{port}", out var v))
+                        {
+                            v?.Cancel();
+                            receiveTaskDictionary.Remove($"{data.Flag}-{port}");
+                        }
+                    }, IPAddress.Parse(data.Flag), int.Parse(port), ReportProgress(false), cancelTokenSource.Token);
+                });
+                t.Start();
             }
 
             await _tcpSendTextBase.SendAsync(sendModel, null, default);

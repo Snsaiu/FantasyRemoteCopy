@@ -35,19 +35,16 @@ public abstract class TcpLoopListenContentBase(FileSavePathBase fileSavePathBase
             await using var fs = new FileStream(saveFullPath, FileMode.Create, FileAccess.Write);
             int bytesRead;
 
-            await Task.Run(async () =>
+            while ((bytesRead = await stream.ReadAsync(buffer, cancellationToken)) > 0)
             {
-                while ((bytesRead = await stream.ReadAsync(buffer, cancellationToken)) > 0)
-                {
-                    await fs.WriteAsync(buffer, 0, bytesRead, cancellationToken);
-                    receivedBytes += bytesRead;
+                await fs.WriteAsync(buffer, 0, bytesRead, cancellationToken);
+                receivedBytes += bytesRead;
 
-                    // 计算并显示下载进度
-                    var p = (double)receivedBytes / fileSize;
-                    var pModel = new ProgressValueModel(message.Flag, message.TargetFlag, p);
-                    progress?.Report(pModel);
-                }
-            });
+                // 计算并显示下载进度
+                var p = (double)receivedBytes / fileSize;
+                var pModel = new ProgressValueModel(message.Flag, message.TargetFlag, p);
+                progress?.Report(pModel);
+            }
 
             fs?.Close();
             fs?.Dispose();
