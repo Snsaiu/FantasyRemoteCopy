@@ -75,7 +75,6 @@ public abstract class TcpLoopListenerBase<T, P, R> : LoopListenerBase<T, P, R>
         var metaString = await ReceiveMetadataStringAsync(stream, cancellationToken);
         var metaMessage = JsonConvert.DeserializeObject<SendMetadataMessage>(metaString);
         if (metaMessage is null) throw new NullReferenceException();
-
-        await HandleReceiveAsync(stream, metaMessage, receivedCallBack, progress, port, cancellationToken);
+        HandleReceiveAsync(stream, metaMessage, receivedCallBack, progress, port, cancellationToken);
     }
 }
