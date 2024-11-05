@@ -223,24 +223,19 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                 if (!receiveTaskDictionary.ContainsKey($"{data.Flag}-{port}"))
                     receiveTaskDictionary.Add($"{data.Flag}-{port}", cancelTokenSource);
 
-                _tcpLoopListenContentBase.ReceiveAsync(result =>
+                Task.Run(async () =>
                 {
-                    // 保存到数据库
-                    SaveDataToLocalDB(result);
-                    if (receiveTaskDictionary.TryGetValue($"{data.Flag}-{port}", out var v))
+                    await _tcpLoopListenContentBase.ReceiveAsync(result =>
                     {
-                        v?.Cancel();
-                        receiveTaskDictionary.Remove($"{data.Flag}-{port}");
-                    }
-                }, IPAddress.Parse(data.Flag), int.Parse(port), ReportProgress(false), cancelTokenSource.Token);
-
-                //HttpsLoopListenContent listener = new HttpsLoopListenContent(null)
-                //{
-                //    WatchIp = data.Flag,
-                //    Port = int.Parse(port),
-                //    ReceiveType = SendType.Text
-                //};
-                //listener.ReceiveAsync(null, null, default);
+                        // 保存到数据库
+                        SaveDataToLocalDB(result);
+                        if (receiveTaskDictionary.TryGetValue($"{data.Flag}-{port}", out var v))
+                        {
+                            v?.Cancel();
+                            receiveTaskDictionary.Remove($"{data.Flag}-{port}");
+                        }
+                    }, IPAddress.Parse(data.Flag), int.Parse(port), ReportProgress(false), cancelTokenSource.Token);
+                });
             }
 
             await _tcpSendTextBase.SendAsync(sendModel, null, default);
@@ -281,13 +276,6 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                         SendFileAsync(data.Flag, int.Parse(sourcePort));
                         break;
                 }
-
-                // todo 发送信息
-
-                //// 使用https发送数据
-                //_httpsSendTextBase.SendPort = int.Parse(sourcePort);
-                //await _httpsSendTextBase.SendAsync(new SendTextModel(localIp, data.Flag, InformationModel.Text), null,
-                //    default);
             }
         }
     }
@@ -331,40 +319,6 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         NewMessageVisible = false;
         return _navigationService.NavigationToAsync(nameof(ListPage), null);
     }
-
-
-    // [RelayCommand]
-    // public Task Share(DiscoveredDeviceModel model)
-    // {
-    //     if (model.WorkState == WorkState.Sending)
-    //         return _dialogService.DisplayAlert("Warning",
-    //             "Sorry, the file is being uploaded. Please try again after the upload is completed!", "Ok");
-    //
-    //     NavigationParameter parameter = new NavigationParameter();
-    //     parameter.Add("data", model);
-    //     return _dialogService.ShowPopUpDialogAsync(nameof(SendTypeDialog), parameter, x =>
-    //     {
-    //         if (!x.Success)
-    //             return;
-    //         switch (x.Data)
-    //         {
-    //             case SendFileModel fileModel:
-    //                 SendFile(fileModel);
-    //                 break;
-    //             case List<SendFileModel> fileModels:
-    //                 SendCompressFile(fileModels);
-    //                 break;
-    //             case SendType and SendType.Text:
-    //                 _navigationService.NavigationToAsync(nameof(TextInputPage), parameter);
-    //                 break;
-    //             case SendFolderModel folderModel:
-    //                 SendCompressFile(folderModel);
-    //                 break;
-    //             default:
-    //                 throw new NotImplementedException();
-    //         }
-    //     });
-    // }
 
 
     [RelayCommand]
@@ -427,49 +381,6 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         {
             //  device.WorkState = WorkState.None;
         }
-    }
-
-    private void SendCompressFile(SendFolderModel folderModel)
-    {
-        Task.Run(async () =>
-        {
-            var device =
-                DiscoveredDevices.FirstOrDefault(y => y.Flag == folderModel.TargetFlag);
-            if (device is null)
-                throw new NullReferenceException();
-            try
-            {
-                var sendCompressFileModel = new SendCompressFileModel(folderModel);
-                device.WorkState = WorkState.Sending;
-                await _tcpSendFileBase.SendAsync(sendCompressFileModel, ReportProgress(true),
-                    device.CancellationTokenSource.Token);
-            }
-            catch (OperationCanceledException)
-            {
-                device.WorkState = WorkState.None;
-            }
-        });
-    }
-
-    private void SendFile(SendFileModel fileModel)
-    {
-        Task.Run(async () =>
-        {
-            var device =
-                DiscoveredDevices.FirstOrDefault(y => y.Flag == fileModel.TargetFlag);
-            if (device is null)
-                throw new NullReferenceException();
-            try
-            {
-                device.WorkState = WorkState.Sending;
-                await _tcpSendFileBase.SendAsync(fileModel, ReportProgress(true),
-                    device.CancellationTokenSource.Token);
-            }
-            catch (OperationCanceledException)
-            {
-                device.WorkState = WorkState.None;
-            }
-        });
     }
 
     [RelayCommand]
