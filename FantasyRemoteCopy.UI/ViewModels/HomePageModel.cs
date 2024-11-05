@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.ObjectModel;
+using System.Net;
 using CommunityToolkit.Maui.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -223,20 +224,17 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                 if (!receiveTaskDictionary.ContainsKey($"{data.Flag}-{port}"))
                     receiveTaskDictionary.Add($"{data.Flag}-{port}", cancelTokenSource);
 
-                var t = new Thread(() =>
+
+                _tcpLoopListenContentBase.ReceiveAsync(result =>
                 {
-                    _tcpLoopListenContentBase.ReceiveAsync(result =>
+                    // 保存到数据库
+                    SaveDataToLocalDB(result);
+                    if (receiveTaskDictionary.TryGetValue($"{data.Flag}-{port}", out var v))
                     {
-                        // 保存到数据库
-                        SaveDataToLocalDB(result);
-                        if (receiveTaskDictionary.TryGetValue($"{data.Flag}-{port}", out var v))
-                        {
-                            v?.Cancel();
-                            receiveTaskDictionary.Remove($"{data.Flag}-{port}");
-                        }
-                    }, IPAddress.Parse(data.Flag), int.Parse(port), ReportProgress(false), cancelTokenSource.Token);
-                });
-                t.Start();
+                        v?.Cancel();
+                        receiveTaskDictionary.Remove($"{data.Flag}-{port}");
+                    }
+                }, IPAddress.Parse(data.Flag), int.Parse(port), ReportProgress(false), cancelTokenSource.Token);
             }
 
             await _tcpSendTextBase.SendAsync(sendModel, null, default);
@@ -526,7 +524,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
 
     [ObservableProperty] private string userName = string.Empty;
 
-    [ObservableProperty] private ItemsChangeObservableCollection<DiscoveredDeviceModel> discoveredDevices;
+    [ObservableProperty] private ObservableCollection<DiscoveredDeviceModel> discoveredDevices;
 
     [ObservableProperty] private string deviceNickName = string.Empty;
 
