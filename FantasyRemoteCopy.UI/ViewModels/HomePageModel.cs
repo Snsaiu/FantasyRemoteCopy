@@ -66,7 +66,6 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         _navigationService = navigationService;
         DiscoveredDevices = [];
 
-        DiscoveredDevices.CollectionChanged += (s, e) => { SendCommand.NotifyCanExecuteChanged(); };
 
         Task.Run(() => Task.FromResult(SetReceive()));
     }
@@ -415,6 +414,11 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         return _navigationService.NavigationToAsync(nameof(TextInputPage), null);
     }
 
+    [RelayCommand]
+    private void DeviceCheckChanged()
+    {
+        SendCommand.NotifyCanExecuteChanged();
+    }
 
     /// <summary>
     ///     设备发现

@@ -170,7 +170,13 @@
 
                         <Grid ColumnDefinitions="40,auto,*">
 
-                            <CheckBox IsChecked="{Binding IsChecked,Mode=TwoWay}" />
+                            <CheckBox IsChecked="{Binding IsChecked,Mode=TwoWay}">
+                                <CheckBox.Behaviors>
+                                    <toolkit:EventToCommandBehavior
+                                        Command="{Binding BindingContext.DeviceCheckChangedCommand ,Source={x:Reference cp}}"
+                                        EventName="CheckedChanged" />
+                                </CheckBox.Behaviors>
+                            </CheckBox>
 
                             <BoxView Grid.Column="1" Color="Gray" Opacity="0.5" WidthRequest="1" />
                             <Grid Grid.Column="2" ColumnDefinitions="auto,*,*">
@@ -199,26 +205,30 @@
                                 </Grid>
                                 <!-- 进度条 -->
                                 <Grid Grid.Column="2" ColumnDefinitions="*,auto" ColumnSpacing="10" Margin="0,0,10,0">
-                                    <ProgressBar Progress="{Binding Progress}"></ProgressBar>
-                                    <ImageButton Source="close.png" WidthRequest="20" HeightRequest="20" Grid.Column="1"> </ImageButton>
+                                    <ProgressBar Progress="{Binding Progress}" />
+                                    <ImageButton Source="close.png" WidthRequest="20" HeightRequest="20"
+                                                 Grid.Column="1" />
                                     <Grid.Style>
                                         <Style TargetType="Grid">
-                                            <Setter Property="IsVisible" Value="False"></Setter>
+                                            <Setter Property="IsVisible" Value="False" />
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding WorkState}" TargetType="Grid" Value="{x:Static models:WorkState.Downloading }">
-                                                    <Setter Property="IsVisible" Value="True"></Setter>
+                                                <DataTrigger Binding="{Binding WorkState}" TargetType="Grid"
+                                                             Value="{x:Static models:WorkState.Downloading }">
+                                                    <Setter Property="IsVisible" Value="True" />
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding WorkState}" TargetType="Grid"  Value="{x:Static models:WorkState.Sending}">
-                                                    <Setter Property="IsVisible" Value="True"></Setter>
+                                                <DataTrigger Binding="{Binding WorkState}" TargetType="Grid"
+                                                             Value="{x:Static models:WorkState.Sending}">
+                                                    <Setter Property="IsVisible" Value="True" />
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding WorkState}" TargetType="Grid"  Value="{x:Static models:WorkState.None}">
-                                                    <Setter Property="IsVisible" Value="False"></Setter>
+                                                <DataTrigger Binding="{Binding WorkState}" TargetType="Grid"
+                                                             Value="{x:Static models:WorkState.None}">
+                                                    <Setter Property="IsVisible" Value="False" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </Grid.Style>
                                 </Grid>
-                                
+
                             </Grid>
 
                         </Grid>
