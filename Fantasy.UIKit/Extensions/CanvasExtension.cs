@@ -1,8 +1,5 @@
 ﻿#region
 
-using Fantasy.UIKit.Interfaces;
-using Fantasy.UIKit.Primitives;
-
 #endregion
 
 namespace Fantasy.UIKit.Extensions;
@@ -21,8 +18,8 @@ internal static class CanvasExtension
     {
         if (element.IconPath == null)
             return;
-        canvas.StrokeColor = element.ForegroundColor.WithAlpha(element.ViewState is ElementState.Disabled ? 0.38f : 1f);
-        canvas.FillColor = element.BackgroundColor.WithAlpha(element.ViewState is ElementState.Disabled ? 0.38f : 1f);
+        // canvas.StrokeColor = element.ForegroundColor.WithAlpha(element.ViewState is ElementState.Disabled ? 0.38f : 1f);
+        canvas.FillColor = element.ForegroundColor.WithAlpha(element.ViewState is ElementState.Disabled ? 0.38f : 1f);
         using PathF path = element.IconPath.AsScaledPath(defaultSize / 24f * scale);
         float sx = rect.Center.X - defaultSize / 2 * scale;
         float sy = rect.Center.Y - defaultSize / 2 * scale;
@@ -33,12 +30,20 @@ internal static class CanvasExtension
     internal static CornerRadiusShape GetCornerRadiusShape(this ICornerRadiusShapeElement element, float width,
         float height)
     {
-        return element.CornerRadius.TopLeft is -1
-        && element.CornerRadius.TopRight is -1
-        && element.CornerRadius.BottomLeft is -1
-        && element.CornerRadius.BottomRight is -1
+        return element.CornerRadiusShape.TopLeft is -1
+        && element.CornerRadiusShape.TopRight is -1
+        && element.CornerRadiusShape.BottomLeft is -1
+        && element.CornerRadiusShape.BottomRight is -1
             ? Math.Min(width, height) / 2
-            : element.CornerRadius;
+            : element.CornerRadiusShape;
+    }
+
+    internal static void DrawBackground(this ICanvas canvas, IBackgroundElement element, RectF rect)
+    {
+        if (element.BackgroundColor == Colors.Transparent)
+            return;
+        canvas.FillColor = element.BackgroundColor.MultiplyAlpha(element.ViewState is ElementState.Disabled ? 0.12f : 1f);
+        canvas.FillRectangle(rect);
     }
 
 

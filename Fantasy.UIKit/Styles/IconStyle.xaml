@@ -4,10 +4,12 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:view="clr-namespace:Fantasy.UIKit.Controls.Icon">
-    <Style TargetType="view:Icon">
+    <Style x:Key="DefaultIconStyle" TargetType="view:Icon">
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="VerticalOptions" Value="Center" />
-        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BackgroundColor" Value="Red" />
+        <Setter Property="ForegroundColor" Value="Green" />
+        <Setter Property="CornerRadiusShape" Value="Full" />
         <Setter Property="MinimumHeightRequest" Value="40" />
         <Setter Property="MinimumWidthRequest" Value="40" />
     </Style>

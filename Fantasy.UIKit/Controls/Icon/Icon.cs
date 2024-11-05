@@ -1,7 +1,4 @@
-﻿using Fantasy.UIKit.Converters;
-using Fantasy.UIKit.Interfaces;
-using Fantasy.UIKit.Primitives;
-
+﻿
 using System.ComponentModel;
 
 namespace Fantasy.UIKit.Controls.Icon;
@@ -10,20 +7,22 @@ public class Icon : InterfaceGraphicsView, IIconElement
 {
     public Icon()
     {
+        SetDynamicResource(StyleProperty, "DefaultIconStyle");
         IconDrawable drawable = new IconDrawable(this);
         Drawable = drawable;
     }
 
-    public static readonly BindableProperty CornerRadiusProperty = ICornerRadiusShapeElement.CornerRadiusProperty;
+    public static readonly BindableProperty CornerRadiusShapeProperty = ICornerRadiusShapeElement.CornerRadiusShapeProperty;
 
     [TypeConverter(typeof(CornerRadiusShapeConverter))]
-    public CornerRadiusShape CornerRadius { get => (CornerRadiusShape)GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
+    public CornerRadiusShape CornerRadiusShape { get => (CornerRadiusShape)GetValue(CornerRadiusShapeProperty); set => SetValue(CornerRadiusShapeProperty, value); }
+
 
     public static new readonly BindableProperty BackgroundColorProperty = IBackgroundElement.BackgroundColorProperty;
     public new Color BackgroundColor { get => (Color)GetValue(BackgroundColorProperty); set => SetValue(BackgroundColorProperty, value); }
 
-    public static readonly BindableProperty ForeregroundColorProperty = IForegroundColorElement.ForegroundColorProperty;
-    public Color ForegroundColor { get => (Color)GetValue(ForeregroundColorProperty); set => SetValue(ForeregroundColorProperty, value); }
+    public static readonly BindableProperty ForegroundColorProperty = IForegroundElement.ForegroundColorProperty;
+    public Color ForegroundColor { get => (Color)GetValue(ForegroundColorProperty); set => SetValue(ForegroundColorProperty, value); }
 
     PathF? IIconElement.IconPath { get; set; }
 

@@ -1,8 +1,5 @@
 ﻿#region
 
-using Fantasy.UIKit.Interfaces;
-using Fantasy.UIKit.Primitives;
-
 #endregion
 
 namespace Fantasy.UIKit;
@@ -12,6 +9,8 @@ public class InterfaceGraphicsView : GraphicsView, IUIKitElement, IDisposable
     public static readonly BindableProperty EnableProperty = IUIKitElement.EnableProperty;
 
     protected bool IsDispose;
+
+
 
     public InterfaceGraphicsView()
     {

@@ -9,6 +9,8 @@
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
             <uikit:Icon IconData="{Static icon:Material.Settings}" />
+
+
         </VerticalStackLayout>
     </ScrollView>
 
