@@ -490,6 +490,9 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         // 首先向目标电脑发送一个端口用于检查是否可以使用该端口
         foreach (var item in DiscoveredDevices)
         {
+            if (!item.IsChecked)
+                continue;
+
             var portCheckMessage = new SendTextModel(localIp, item.Flag ?? throw new NullReferenceException(),
                 $"portcheck.{InformationModel!.SendType}.{5005}", ConstParams.TCP_PORT);
             await _tcpSendTextBase.SendAsync(portCheckMessage, null, default);
@@ -545,6 +548,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                 return;
             if (isSendModel)
             {
+                logger.LogInformation($"发送数据到{flag.Flag} 进度为{flag.Progress}");
                 if (x.Progress >= 1)
                 {
                     flag.WorkState = WorkState.None;
@@ -557,6 +561,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
             }
             else
             {
+                logger.LogInformation($"接收数据{flag.Flag} 进度为{flag.Progress}");
                 if (x.Progress >= 1)
                 {
                     flag.WorkState = WorkState.None;
