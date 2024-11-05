@@ -1,13 +1,10 @@
 ﻿using FantasyRemoteCopy.UI.Models;
-
 using Newtonsoft.Json;
-
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
 namespace FantasyRemoteCopy.UI.Interfaces.Impls.TcpTransfer;
-
 
 public abstract class LoopListenerBase<T, P, R> : IReceiveableWithProgress<T, P>
     where T : TransformResultModel<R> where P : IProgressValue
@@ -24,17 +21,13 @@ public abstract class LoopListenerBase<T, P, R> : IReceiveableWithProgress<T, P>
 public abstract class TcpLoopListenerBase<T, P, R> : LoopListenerBase<T, P, R>
     where T : TransformResultModel<R> where P : IProgressValue
 {
-    public override async Task ReceiveAsync(Action<T> receivedCallBack, IPAddress address, int port, IProgress<P>? progress, CancellationToken cancellationToken)
+    public override async Task ReceiveAsync(Action<T> receivedCallBack, IPAddress address, int port,
+        IProgress<P>? progress, CancellationToken cancellationToken)
     {
         using TcpListener listener = new TcpListener(IPAddress.Any, port);
-        try
-        {   
-            listener.Start();
-        }
-        catch(Exception e)
-        {
 
-        }
+        listener.Start();
+
         while (true)
         {
             try
@@ -77,7 +70,8 @@ public abstract class TcpLoopListenerBase<T, P, R> : LoopListenerBase<T, P, R>
     protected abstract Task HandleReceiveAsync(NetworkStream stream, SendMetadataMessage message,
         Action<T> receivedCallBack, IProgress<P>? progress, int port, CancellationToken cancellationToken);
 
-    private async Task HandleClientAsync(TcpClient client, int port, Action<T> receivedCallBack, IProgress<P>? progress, CancellationToken cancellationToken)
+    private async Task HandleClientAsync(TcpClient client, int port, Action<T> receivedCallBack, IProgress<P>? progress,
+        CancellationToken cancellationToken)
     {
         NetworkStream stream = client.GetStream();
         string metaString = await ReceiveMetadataStringAsync(stream, cancellationToken);
@@ -86,7 +80,7 @@ public abstract class TcpLoopListenerBase<T, P, R> : LoopListenerBase<T, P, R>
         {
             throw new NullReferenceException();
         }
+
         await HandleReceiveAsync(stream, metaMessage, receivedCallBack, progress, port, cancellationToken);
     }
-
 }
