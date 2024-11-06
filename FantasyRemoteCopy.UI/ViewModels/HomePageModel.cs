@@ -9,6 +9,7 @@ using FantasyMvvm.FantasyModels;
 using FantasyMvvm.FantasyNavigation;
 using FantasyRemoteCopy.UI.Consts;
 using FantasyRemoteCopy.UI.Enums;
+using FantasyRemoteCopy.UI.Extensions;
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
 using FantasyRemoteCopy.UI.Interfaces.Impls.HttpsTransfer;
@@ -26,7 +27,6 @@ namespace FantasyRemoteCopy.UI.ViewModels;
 
 public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
 {
-    private readonly Dictionary<string, CancellationTokenSource> receiveTaskDictionary = [];
     [ObservableProperty] private InformationModel? informationModel;
 
     public HomePageModel(IUserService userService,
@@ -201,88 +201,143 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         thread.Start();
     }
 
+    [RelayCommand]
+    private async Task CloseTransformAsync(DiscoveredDeviceModel device)
+    {
+        if (device.TransmissionTasks.FirstOrDefault() is { } receiveTask)
+        {
+            var cancelCodeWord = CodeWordModel.Create(receiveTask.TaskGuid, CodeWordType.CancelTransmission,
+                receiveTask.Flag,
+                receiveTask.TargetFlag, receiveTask.Port, receiveTask.SendType);
+
+            this.logger.LogInformation(
+                $"请求 {cancelCodeWord.Flag} 与 {cancelCodeWord.TargetFlag} 通过端口 {cancelCodeWord.Port} 的数据传输人工中断");
+
+            await this._tcpSendTextBase.SendAsync(
+                new SendTextModel(receiveTask.Flag, receiveTask.TargetFlag, cancelCodeWord.ToJson(),
+                    ConstParams.TCP_PORT), null, default);
+
+            receiveTask.CancellationTokenSource.Cancel();
+        }
+
+        device.Progress = 0;
+        device.WorkState = WorkState.None;
+    }
+
+
     private async void CheckPortEnable(TransformResultModel<string> data)
     {
         var localIp = await _deviceLocalIpBase.GetLocalIpAsync();
-        if (data.Result.StartsWith("portcheck"))
+
+        var codeWord = data.Result.ToObject<CodeWordModel>();
+        if (codeWord.Type == CodeWordType.CheckingPort)
         {
-            string[] splits = data.Result.Split('.');
-            var port = splits.Last();
+            var port = codeWord.Port;
             logger.LogInformation($"端口{port}是否可用");
-            var checkResult = await _portCheckable.IsPortInUse(int.Parse(port));
+            var checkResult = await _portCheckable.IsPortInUse(port);
             logger.LogInformation($"端口{port}可用状态为 {checkResult}");
             var sendModel = new SendTextModel(localIp, data.Flag,
-                !checkResult ? $"{splits[1]}.{port}.1" : $"{splits[1]}.{port}.0", ConstParams.TCP_PORT);
+                !checkResult
+                    ? CodeWordModel.Create(codeWord.TaskGuid, CodeWordType.CheckingPortCanUse, localIp, data.Flag, port,
+                            codeWord.SendType)
+                        .ToJson()
+                    : CodeWordModel.Create(codeWord.TaskGuid, CodeWordType.CheckingPortCanNotUse, localIp, data.Flag,
+                        port,
+                        codeWord.SendType).ToJson(),
+                ConstParams.TCP_PORT);
             logger.LogInformation($"端口可用状态信息发送给{data.Flag}");
-
             if (!checkResult)
             {
                 // 开始监听
-
                 var cancelTokenSource = new CancellationTokenSource();
-                if (!receiveTaskDictionary.ContainsKey($"{data.Flag}-{port}"))
-                    receiveTaskDictionary.Add($"{data.Flag}-{port}", cancelTokenSource);
+                var receiveDevice = DiscoveredDevices.FirstOrDefault(x => x.Flag == data.Flag);
+                if (receiveDevice is null)
+                {
+                    logger.LogInformation($"设备列表中未发现端口为{data.Flag},取消监听");
+                    return;
+                }
 
+                if (receiveDevice.TransmissionTasks.Any(
+                        x => x.TaskGuid == codeWord.TaskGuid))
+                    logger.LogInformation($"{data.Flag}中已经包含了 {data.Flag}-{port} 的任务");
+                else
+                    receiveDevice.TransmissionTasks.Add(new TransmissionTaskModel(codeWord.TaskGuid, codeWord.Type,
+                        localIp, codeWord.Flag, codeWord.Port, codeWord.SendType, codeWord.CancellationTokenSource));
 
                 _tcpLoopListenContentBase.ReceiveAsync(result =>
                 {
                     // 保存到数据库
                     SaveDataToLocalDB(result);
-                    if (receiveTaskDictionary.TryGetValue($"{data.Flag}-{port}", out var v))
+                    if (receiveDevice.TryGetTransmissionTask(codeWord.TaskGuid,
+                            out var v))
                     {
-                        v?.Cancel();
-                        receiveTaskDictionary.Remove($"{data.Flag}-{port}");
+                        v?.CancellationTokenSource.Cancel();
+                        receiveDevice.RemoveTransmissionTask(codeWord.TaskGuid);
                     }
-                }, IPAddress.Parse(data.Flag), int.Parse(port), ReportProgress(false), cancelTokenSource.Token);
+                }, IPAddress.Parse(data.Flag), port, ReportProgress(false), cancelTokenSource.Token);
             }
 
             await _tcpSendTextBase.SendAsync(sendModel, null, default);
         }
+        else if (codeWord.Type == CodeWordType.CancelTransmission)
+        {
+            foreach (var device in DiscoveredDevices)
+            {
+                if (device.TryGetTransmissionTask(codeWord.TaskGuid, out var task))
+                {
+                    task?.CancellationTokenSource?.Cancel();
+                    device.Progress = 0;
+                    device.WorkState = WorkState.None;
+                    return;
+                }
+            }
+        }
         else
         {
-            logger.LogInformation($"发送方接收回调方{data.Flag}端口可用情况，接收方端口可用情况为 {data.Result}");
+            logger.LogInformation($"发送方接收回调方{data.Flag}端口可用情况，接收方端口可用情况为 {codeWord.Type}");
 
-            string[] splits = data.Result.Split(".");
-            var sendType = splits[0];
-            var sourcePort = splits[1];
-            var state = splits[2];
             //端口不可用，进行累加
-            if (state == "0")
+            if (codeWord.Type == CodeWordType.CheckingPortCanNotUse)
             {
-                var port = int.Parse(sourcePort) + 1;
-                logger.LogInformation($"接收方{data.Flag}对于{sourcePort} 端口无法使用，所以向接收方再次发送{port}端口是否可用");
+                var port = codeWord.Port + 1;
+                logger.LogInformation($"接收方{data.Flag}对于{codeWord.Port} 端口无法使用，所以向接收方再次发送{port}端口是否可用");
                 var portCheckMessage = new SendTextModel(localIp,
                     data.Flag ?? throw new NullReferenceException(),
-                    $"portcheck.{sendType}.{port}", ConstParams.TCP_PORT);
+                    CodeWordModel.Create(codeWord.TaskGuid, CodeWordType.CheckingPort, localIp, data.Flag, port,
+                            codeWord.SendType)
+                        .ToJson()
+                    , ConstParams.TCP_PORT);
                 await _tcpSendTextBase.SendAsync(portCheckMessage, null, default);
             }
-            else if (state == "1")
+            else if (codeWord.Type == CodeWordType.CheckingPortCanUse)
             {
-                logger.LogInformation($"接收方{data.Flag}对于{sourcePort}端口可用，使用https进行数据传输");
-                ShowProgress(data.Flag);
+                var sendCancelTokenSource = new CancellationTokenSource();
+
+                SenderAddTaskAndShowProgress(codeWord, sendCancelTokenSource);
+
                 switch (InformationModel!.SendType)
                 {
                     case SendType.Text:
                         _tcpSendTextBase.SendAsync(
-                            new SendTextModel(localIp, data.Flag, InformationModel.Text, int.Parse(sourcePort)), null,
-                            default);
+                            new SendTextModel(localIp, data.Flag, InformationModel.Text, codeWord.Port), null,
+                            sendCancelTokenSource.Token);
                         break;
                     case SendType.File:
-                        SendFileAsync(data.Flag, int.Parse(sourcePort));
-                        break;
                     case SendType.Folder:
-                        SendFileAsync(data.Flag, int.Parse(sourcePort));
+                        SendFileAsync(data.Flag, codeWord.Port, sendCancelTokenSource.Token);
                         break;
                 }
             }
         }
     }
 
-    private void ShowProgress(string flag)
+    private void SenderAddTaskAndShowProgress(CodeWordModel codeWord, CancellationTokenSource cancelTokenSource)
     {
-        var device = DiscoveredDevices.FirstOrDefault(x => x.Flag == flag);
+        var device = DiscoveredDevices.FirstOrDefault(x => x.Flag == codeWord.TargetFlag);
         if (device is null) return;
         device.WorkState = WorkState.Sending;
+        device.TransmissionTasks.Add(new TransmissionTaskModel(codeWord.TaskGuid, codeWord.Type, codeWord.TargetFlag,
+            codeWord.Flag, codeWord.Port, codeWord.SendType, codeWord.CancellationTokenSource));
     }
 
     private void SaveDataToLocalDB(TransformResultModel<string> data)
@@ -347,7 +402,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         };
     }
 
-    private async Task SendFileAsync(string targetIp, int port)
+    private async Task SendFileAsync(string targetIp, int port, CancellationToken token)
     {
         var localIp = await _deviceLocalIpBase.GetLocalIpAsync();
 
@@ -372,7 +427,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
             }
 
             // device.WorkState = WorkState.Sending;
-            await _tcpSendFileBase.SendAsync(sendfile, ReportProgress(true), default);
+            await _tcpSendFileBase.SendAsync(sendfile, ReportProgress(true), token);
             //   device.CancellationTokenSource.Token);
         }
         catch (OperationCanceledException)
@@ -402,8 +457,13 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
             if (!item.IsChecked)
                 continue;
 
+            var codeWord = CodeWordModel.Create(Guid.NewGuid().ToString(), CodeWordType.CheckingPort, localIp,
+                item.Flag, 5005,
+                InformationModel.SendType);
+
+
             var portCheckMessage = new SendTextModel(localIp, item.Flag ?? throw new NullReferenceException(),
-                $"portcheck.{InformationModel!.SendType}.{5005}", ConstParams.TCP_PORT);
+                codeWord.ToJson(), ConstParams.TCP_PORT);
             await _tcpSendTextBase.SendAsync(portCheckMessage, null, default);
         }
     }

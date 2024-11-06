@@ -207,7 +207,9 @@
                                 <Grid Grid.Column="2" ColumnDefinitions="*,auto" ColumnSpacing="10" Margin="0,0,10,0">
                                     <ProgressBar Progress="{Binding Progress}" />
                                     <ImageButton Source="close.png" WidthRequest="20" HeightRequest="20"
-                                                 Grid.Column="1" />
+                                                 Grid.Column="1"
+                                                 Command="{Binding BindingContext.CloseTransformCommand,Source={x:Reference cp}}"
+                                                 CommandParameter="{Binding .}" />
                                     <Grid.Style>
                                         <Style TargetType="Grid">
                                             <Setter Property="IsVisible" Value="False" />
