@@ -1,5 +1,6 @@
 using FantasyRemoteCopy.UI.Enums;
 using FantasyRemoteCopy.UI.Interfaces;
+using Newtonsoft.Json;
 
 namespace FantasyRemoteCopy.UI.Models;
 
@@ -41,7 +42,7 @@ public class CodeWordModel : IFlag, ITargetFlag, IPort, ISendType, ITaskGuid
     public string TargetFlag { get; }
     public int Port { get; }
 
-    public CancellationTokenSource? CancellationTokenSource { get; }
+    [JsonIgnore] public CancellationTokenSource? CancellationTokenSource { get; }
     public SendType SendType { get; }
     public string TaskGuid { get; }
 }
