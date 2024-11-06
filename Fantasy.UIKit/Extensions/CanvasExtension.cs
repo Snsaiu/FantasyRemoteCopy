@@ -46,6 +46,16 @@ internal static class CanvasExtension
         canvas.FillRectangle(rect);
     }
 
+    internal static void DrawBorderColor(this ICanvas canvas, IBorderElement element, RectF rect)
+    {
+        if (element.BorderColor == Colors.Transparent || element.BorderThickness == 0)
+            return;
+        canvas.StrokeColor = element.BorderColor.WithAlpha(element.ViewState is ElementState.Disabled ? 0.12f : 1f);
+        canvas.StrokeSize = element.BorderThickness;
+        PathF path = element.GetClipPath(rect);
+        canvas.DrawPath(path);
+    }
+
 
     /// <summary>
     ///     获得剪裁后的path

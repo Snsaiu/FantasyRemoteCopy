@@ -10,6 +10,8 @@
         <Setter Property="BackgroundColor" Value="Red" />
         <Setter Property="ForegroundColor" Value="Green" />
         <Setter Property="CornerRadiusShape" Value="Full" />
+        <Setter Property="BorderColor" Value="Blue" />
+        <Setter Property="BorderThickness" Value="5" />
         <Setter Property="MinimumHeightRequest" Value="40" />
         <Setter Property="MinimumWidthRequest" Value="40" />
     </Style>

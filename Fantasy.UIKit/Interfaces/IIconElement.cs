@@ -3,7 +3,7 @@
 /// <summary>
 ///     可设置图标
 /// </summary>
-public interface IIconElement : IBackgroundElement, IForegroundElement
+public interface IIconElement : IBackgroundElement, IForegroundElement, IBorderElement
 {
     public static readonly BindableProperty IconDataProperty = BindableProperty.Create(
         nameof(IconData),
