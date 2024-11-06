@@ -262,7 +262,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                     logger.LogInformation($"{data.Flag}中已经包含了 {data.Flag}-{port} 的任务");
                 else
                     receiveDevice.TransmissionTasks.Add(new TransmissionTaskModel(codeWord.TaskGuid, codeWord.Type,
-                        localIp, codeWord.Flag, codeWord.Port, codeWord.SendType, codeWord.CancellationTokenSource));
+                        localIp, codeWord.Flag, codeWord.Port, codeWord.SendType, cancelTokenSource));
 
                 _tcpLoopListenContentBase.ReceiveAsync(result =>
                 {
