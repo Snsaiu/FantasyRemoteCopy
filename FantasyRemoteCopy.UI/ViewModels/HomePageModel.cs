@@ -333,7 +333,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
 
     private void SenderAddTaskAndShowProgress(CodeWordModel codeWord, CancellationTokenSource cancelTokenSource)
     {
-        var device = DiscoveredDevices.FirstOrDefault(x => x.Flag == codeWord.TargetFlag);
+        var device = DiscoveredDevices.FirstOrDefault(x => x.Flag == codeWord.Flag);
         if (device is null) return;
         device.WorkState = WorkState.Sending;
         device.TransmissionTasks.Add(new TransmissionTaskModel(codeWord.TaskGuid, codeWord.Type, codeWord.TargetFlag,
