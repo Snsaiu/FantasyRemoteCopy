@@ -23,7 +23,8 @@ public class CodeWordModel : IFlag, ITargetFlag, IPort, ISendType, ITaskGuid
         new CodeWordModel(taskId, wordModel, localIp, targetIp, port, sendType, cancellationTokenSource);
 
 
-    public CodeWordModel(string taskId, CodeWordType type, string flag, string targetFlag, int port, SendType sendType,
+    public CodeWordModel(string taskGuid, CodeWordType type, string flag, string targetFlag, int port,
+        SendType sendType,
         CancellationTokenSource? cancellationTokenSource)
     {
         Type = type;
@@ -31,7 +32,7 @@ public class CodeWordModel : IFlag, ITargetFlag, IPort, ISendType, ITaskGuid
         TargetFlag = targetFlag;
         Port = port;
         SendType = sendType;
-        TaskGuid = taskId;
+        TaskGuid = taskGuid;
         CancellationTokenSource = cancellationTokenSource;
     }
 

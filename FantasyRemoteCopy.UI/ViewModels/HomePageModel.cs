@@ -457,7 +457,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
             if (!item.IsChecked)
                 continue;
 
-            var codeWord = CodeWordModel.Create(Guid.NewGuid().ToString(), CodeWordType.CheckingPort, localIp,
+            var codeWord = CodeWordModel.Create(Guid.NewGuid().ToString("N"), CodeWordType.CheckingPort, localIp,
                 item.Flag, 5005,
                 InformationModel.SendType);
 
