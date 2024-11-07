@@ -226,11 +226,15 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                 if (device.TryGetTransmissionTask(codeWord.TaskGuid, out var task))
                 {
                     task?.CancellationTokenSource?.Cancel();
+                    device.TransmissionTasks.Remove(task);
                     device.Progress = 0;
                     device.WorkState = WorkState.None;
-                    return;
+                    break;
                 }
             }
+
+            SendCommand.NotifyCanExecuteChanged();
+            SearchCommand.NotifyCanExecuteChanged();
         }
         else
         {
