@@ -65,8 +65,6 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         _portCheckable = portCheckable;
         _navigationService = navigationService;
         DiscoveredDevices = [];
-
-
         Task.Run(() => Task.FromResult(SetReceive()));
     }
 
@@ -127,79 +125,13 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
             { Flag = "192.168.1.2", DeviceName = "my pc", NickName = "我的mac", SystemType = SystemType.MacOS });
     }
 
-    private async Task SetReceive()
-    {
-        try
-        {
-            IsBusy = true;
+ 
+    /// <summary>
+    /// 检查当前是否还有任务在运行
+    /// </summary>
+    /// <returns>如果有任务，返回true，否则返回false</returns>
+    private bool HasTaskRunning() => DiscoveredDevices.Any() && DiscoveredDevices.Any(x => x.TransmissionTasks.Any());
 
-            var localIp = await _deviceLocalIpBase.GetLocalIpAsync();
-            //设备发现 ，当有新的设备加入的时候产生回调
-            StartDiscovery(localIp);
-            StartJoin();
-            StartTcpListener();
-            await DeviceDiscoverAsync();
-        }
-        finally
-        {
-            IsBusy = false;
-        }
-    }
-
-    private void StartDiscovery(string localIp)
-    {
-        var thread = new Thread(() =>
-        {
-            _ = _localNetDeviceDiscoveryBase.ReceiveAsync(x =>
-            {
-                if (localIp == x.Flag)
-                    return;
-
-                if (x.Name != UserName)
-                    return;
-
-                var joinRequestModel = new JoinMessageModel(_systemType.System, _deviceType.Device,
-                    localIp, DeviceNickName, x.Flag, x.Name);
-                // 发送加入请求
-                _localNetJoinRequestBase.SendAsync(joinRequestModel, default);
-            }, default);
-        })
-        {
-            IsBackground = true
-        };
-        thread.Start();
-    }
-
-    private void StartJoin()
-    {
-        var thread = new Thread(() =>
-            {
-                _ = _localNetJoinProcessBase.ReceiveAsync(x =>
-                {
-                    logger.LogInformation("接收到要加入的设备{0}", JsonConvert.SerializeObject(x));
-                    if (x.Name != UserName)
-                        return;
-
-                    if (DiscoveredDevices.Any(y => y.Flag == x.Flag)) return;
-                    logger.LogInformation("加入设备{0}", JsonConvert.SerializeObject(x));
-                    DiscoveredDevices.Add(x);
-                }, default);
-            })
-            { IsBackground = true };
-        thread.Start();
-    }
-
-    private void StartTcpListener()
-    {
-        var thread = new Thread(() =>
-            {
-                _ = _tcpLoopListenContentBase.ReceiveAsync(CheckPortEnable, IPAddress.Any, ConstParams.TCP_PORT,
-                    ReportProgress(false),
-                    _cancelDownloadTokenSource.Token);
-            })
-            { IsBackground = true };
-        thread.Start();
-    }
 
     [RelayCommand]
     private async Task CloseTransformAsync(DiscoveredDeviceModel device)
@@ -218,7 +150,12 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                     ConstParams.TCP_PORT), null, default);
 
             receiveTask.CancellationTokenSource.Cancel();
+
+            device.TransmissionTasks.Remove(receiveTask);
         }
+
+        SearchCommand.NotifyCanExecuteChanged();
+        SendCommand.NotifyCanExecuteChanged();
 
         device.Progress = 0;
         device.WorkState = WorkState.None;
@@ -274,7 +211,10 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                         v?.CancellationTokenSource.Cancel();
                         receiveDevice.RemoveTransmissionTask(codeWord.TaskGuid);
                     }
-                }, IPAddress.Parse(data.Flag), port, ReportProgress(false), cancelTokenSource.Token);
+
+                    SearchCommand.NotifyCanExecuteChanged();
+                    SendCommand.NotifyCanExecuteChanged();
+                }, IPAddress.Parse(data.Flag), port, ReportProgress(false, codeWord.TaskGuid), cancelTokenSource.Token);
             }
 
             await _tcpSendTextBase.SendAsync(sendModel, null, default);
@@ -324,7 +264,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                         break;
                     case SendType.File:
                     case SendType.Folder:
-                        SendFileAsync(data.Flag, codeWord.Port, sendCancelTokenSource.Token);
+                        SendFileAsync(data.Flag, codeWord.Port, sendCancelTokenSource.Token, codeWord.TaskGuid);
                         break;
                 }
             }
@@ -360,7 +300,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         _dataService.AddAsync(saveDataModel);
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanSearch))]
     public Task Search()
     {
         return DeviceDiscoverAsync();
@@ -402,7 +342,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         };
     }
 
-    private async Task SendFileAsync(string targetIp, int port, CancellationToken token)
+    private async Task SendFileAsync(string targetIp, int port, CancellationToken token, string taskId)
     {
         var localIp = await _deviceLocalIpBase.GetLocalIpAsync();
 
@@ -426,9 +366,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                 throw new NotSupportedException();
             }
 
-            // device.WorkState = WorkState.Sending;
-            await _tcpSendFileBase.SendAsync(sendfile, ReportProgress(true), token);
-            //   device.CancellationTokenSource.Token);
+            await _tcpSendFileBase.SendAsync(sendfile, ReportProgress(true, taskId), token);
         }
         catch (OperationCanceledException)
         {
@@ -442,9 +380,12 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         return _navigationService.NavigationToAsync(nameof(SettingPage), null);
     }
 
+    private bool CanSearch() => HasTaskRunning();
+
+
     private bool CanSend()
     {
-        return DiscoveredDevices.Any(x => x.IsChecked) && InformationModel is not null;
+        return DiscoveredDevices.Any(x => x.IsChecked && !x.TransmissionTasks.Any()) && InformationModel is not null;
     }
 
     [RelayCommand(CanExecute = nameof(CanSend))]
@@ -511,7 +452,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
     }
 
 
-    private IProgress<ProgressValueModel> ReportProgress(bool isSendModel)
+    private IProgress<ProgressValueModel> ReportProgress(bool isSendModel, string taskId)
     {
         Progress<ProgressValueModel> progress = new(x =>
         {
@@ -527,6 +468,9 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
                 {
                     flag.WorkState = WorkState.None;
                     flag.Progress = 0;
+                    flag.RemoveTransmissionTask(taskId);
+                    SendCommand.NotifyCanExecuteChanged();
+                    SearchCommand.NotifyCanExecuteChanged();
                 }
                 else
                 {
@@ -553,44 +497,4 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
     }
 
 
-    #region Fields
-
-    private bool isWindowVisible = true;
-    private readonly IUserService userService;
-    private readonly ISaveDataService _dataService;
-    private readonly IDialogService _dialogService;
-    private readonly LocalNetDeviceDiscoveryBase _localNetDeviceDiscoveryBase;
-    private readonly LocalNetInviteDeviceBase _localNetInviteDeviceBase;
-    private readonly DeviceLocalIpBase _deviceLocalIpBase;
-    private readonly LocalIpScannerBase _localIpScannerBase;
-    private readonly LocalNetJoinRequestBase _localNetJoinRequestBase;
-    private readonly LocalNetJoinProcessBase _localNetJoinProcessBase;
-    private readonly TcpLoopListenContentBase _tcpLoopListenContentBase;
-    private readonly TcpSendFileBase _tcpSendFileBase;
-    private readonly TcpSendTextBase _tcpSendTextBase;
-    private readonly ISystemType _systemType;
-    private readonly HttpsSendTextBase _httpsSendTextBase;
-    private readonly ILogger<HomePageModel> logger;
-    private readonly IDeviceType _deviceType;
-    private readonly IPortCheckable _portCheckable;
-    private readonly INavigationService _navigationService;
-    private readonly CancellationTokenSource _cancelDownloadTokenSource = new();
-
-    #endregion
-
-    #region NotifyProperties
-
-    [ObservableProperty] private bool isDownLoadingVisible;
-
-    [ObservableProperty] private bool newMessageVisible;
-
-    [ObservableProperty] private bool isBusy;
-
-    [ObservableProperty] private string userName = string.Empty;
-
-    [ObservableProperty] private ObservableCollection<DiscoveredDeviceModel> discoveredDevices;
-
-    [ObservableProperty] private string deviceNickName = string.Empty;
-
-    #endregion
 }
