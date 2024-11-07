@@ -125,7 +125,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
             { Flag = "192.168.1.2", DeviceName = "my pc", NickName = "我的mac", SystemType = SystemType.MacOS });
     }
 
- 
+
     /// <summary>
     /// 检查当前是否还有任务在运行
     /// </summary>
@@ -380,7 +380,12 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         return _navigationService.NavigationToAsync(nameof(SettingPage), null);
     }
 
-    private bool CanSearch() => HasTaskRunning();
+    private bool CanSearch()
+    {
+        if (!DiscoveredDevices.Any())
+            return true;
+        return !DiscoveredDevices.Any(x => x.TransmissionTasks.Any());
+    }
 
 
     private bool CanSend()
@@ -495,6 +500,4 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         });
         return progress;
     }
-
-
 }
