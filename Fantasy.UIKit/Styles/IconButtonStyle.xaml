@@ -7,11 +7,12 @@
     <Style x:Key="DefaultIconButtonStyle" TargetType="uiKit:IconButton">
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="VerticalOptions" Value="Center" />
-        <Setter Property="BackgroundColor" Value="Red" />
+        <Setter Property="BackgroundColor" Value="Gold" />
         <Setter Property="ForegroundColor" Value="Green" />
         <Setter Property="CornerRadiusShape" Value="Full" />
         <Setter Property="BorderColor" Value="Blue" />
         <Setter Property="WidthRequest" Value="40" />
+        <Setter Property="StateColor" Value="Black" />
         <Setter Property="HeightRequest" Value="40" />
         <Setter Property="BorderThickness" Value="5" />
         <Setter Property="MinimumHeightRequest" Value="40" />

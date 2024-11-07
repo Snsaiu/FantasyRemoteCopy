@@ -10,7 +10,7 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
-            <uiKit:Icon IconData="{Static icon:Material.Settings}" />
+            <!--<uiKit:Icon IconData="{Static icon:Material.Settings}" />-->
             <uiKit:IconButton Command="{Binding IconClickCommand}" IconData="{Static icon:Material.Add}" />
 
 

@@ -5,8 +5,9 @@
 /// </summary>
 public interface IStateLayerElement : ICornerRadiusShapeElement
 {
-    public Color StateColor { get; set; }
+    Color StateColor { get; set; }
 
-    public static BindableProperty StateColorProperty = BindableProperty.Create(nameof(StateColor), typeof(Color),
+    public static readonly BindableProperty StateColorProperty = BindableProperty.Create(nameof(StateColor),
+        typeof(Color),
         typeof(IStateLayerElement), default, propertyChanged: (b, o, v) => ((IUIKitElement)b).OnPropertyChanged());
 }

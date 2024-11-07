@@ -2,7 +2,7 @@
 
 namespace Fantasy.UIKit;
 
-public class IconButton : Icon, ICommandElement
+public class IconButton : IconBase, ICommandElement
 {
     public IconButton()
     {
@@ -36,10 +36,5 @@ public class IconButton : Icon, ICommandElement
     {
         get => GetValue(CommandProperty);
         set => SetValue(CommandParameterProperty, value);
-    }
-
-    protected override void InterfaceGraphicsView_StartInteraction(object? sender, TouchEventArgs e)
-    {
-        base.InterfaceGraphicsView_StartInteraction(sender, e);
     }
 }

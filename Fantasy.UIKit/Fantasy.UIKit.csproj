@@ -35,4 +35,8 @@
       </MauiXaml>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Controls\Bases\" />
+    </ItemGroup>
+
 </Project>

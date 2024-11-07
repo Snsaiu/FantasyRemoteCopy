@@ -16,8 +16,20 @@
             canvas.ClipPath(_view.GetClipPath(dirtyRect));
             canvas.DrawBackground(_view, dirtyRect);
             canvas.DrawBorderColor(_view, dirtyRect);
+
             float scale = dirtyRect.Height / 40f;
             canvas.DrawIcon(_view, dirtyRect, 24, scale);
+
+            if (_view.RipplePercent is 0f or 1f)
+            {
+                canvas.DrawStateLayer(_view, dirtyRect, _view.ViewState);
+            }
+            else
+            {
+                canvas.DrawRipple(_view, _view.LastTouchPosition, _view.RippleSize, _view.RipplePercent);
+            }
+
+
             canvas.ResetState();
         }
     }

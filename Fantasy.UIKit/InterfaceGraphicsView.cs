@@ -2,6 +2,7 @@
 
 #endregion
 
+using Microsoft.Maui.Animations;
 using System.ComponentModel;
 
 namespace Fantasy.UIKit;
@@ -16,7 +17,11 @@ public class InterfaceGraphicsView : GraphicsView, IUIKitElement, IStateLayerEle
 
     protected bool isTouching;
 
-    protected PointF LastTouchPosition;
+    internal PointF LastTouchPosition { get; set; }
+
+    internal float RipplePercent { get; set; }
+
+    protected IAnimationManager animationManager;
 
     internal float RippleSize { get; set; }
 
@@ -75,6 +80,16 @@ public class InterfaceGraphicsView : GraphicsView, IUIKitElement, IStateLayerEle
     }
 
 
+    protected void StartRippleAnimation()
+    {
+        this.animationManager ??= this.Handler?.MauiContext?.Services.GetRequiredService<IAnimationManager>();
+        this.animationManager?.Add(new Microsoft.Maui.Animations.Animation(callback: (progress) =>
+        {
+            this.RipplePercent = 0f.Lerp(1f, progress);
+            this.Invalidate();
+        }, duration: this.RippleDuration, easing: this.RippleEasing));
+    }
+
     protected bool IsVisualStateChanging { get; set; }
 
     public void Dispose()
@@ -99,18 +114,33 @@ public class InterfaceGraphicsView : GraphicsView, IUIKitElement, IStateLayerEle
 
     protected virtual void InterfaceGraphicsView_MoveHoverInteraction(object? sender, TouchEventArgs e)
     {
+        if (!this.Enable)
+            return;
+        if (!e.IsInsideBounds)
+            this.ViewState = ElementState.Normal;
     }
 
     protected virtual void InterfaceGraphicsView_EndHoverInteraction(object? sender, EventArgs e)
     {
+        if (!this.Enable)
+            return;
+        this.ViewState = ElementState.Normal;
     }
 
     protected virtual void InterfaceGraphicsView_StartHoverInteraction(object? sender, TouchEventArgs e)
     {
+        if (!this.Enable)
+            return;
+        this.ViewState = ElementState.Hovered;
     }
 
     protected virtual void InterfaceGraphicsView_CancelInteraction(object? sender, EventArgs e)
     {
+        if (!this.Enable)
+            return;
+        this.ViewState = ElementState.Hovered;
+        this.isTouching = false;
+        this.touchTimer.Stop();
     }
 
     protected virtual void InterfaceGraphicsView_EndInteraction(object? sender, TouchEventArgs e)
@@ -128,8 +158,7 @@ public class InterfaceGraphicsView : GraphicsView, IUIKitElement, IStateLayerEle
         LastTouchPosition = e.Touches[0];
 
         this.RippleSize = this.GetRippleSize();
-
-
+        this.StartRippleAnimation();
         this.Pressed?.Invoke(this, e);
         this.isTouching = true;
         this.touchTimer.Start();

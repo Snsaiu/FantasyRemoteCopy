@@ -2,6 +2,8 @@
 
 #endregion
 
+using Microsoft.Maui.Animations;
+
 namespace Fantasy.UIKit.Extensions;
 
 internal static class CanvasExtension
@@ -31,9 +33,9 @@ internal static class CanvasExtension
         float height)
     {
         return element.CornerRadiusShape.TopLeft is -1
-        && element.CornerRadiusShape.TopRight is -1
-        && element.CornerRadiusShape.BottomLeft is -1
-        && element.CornerRadiusShape.BottomRight is -1
+               && element.CornerRadiusShape.TopRight is -1
+               && element.CornerRadiusShape.BottomLeft is -1
+               && element.CornerRadiusShape.BottomRight is -1
             ? Math.Min(width, height) / 2
             : element.CornerRadiusShape;
     }
@@ -42,7 +44,8 @@ internal static class CanvasExtension
     {
         if (element.BackgroundColor == Colors.Transparent)
             return;
-        canvas.FillColor = element.BackgroundColor.MultiplyAlpha(element.ViewState is ElementState.Disabled ? 0.12f : 1f);
+        canvas.FillColor =
+            element.BackgroundColor.MultiplyAlpha(element.ViewState is ElementState.Disabled ? 0.12f : 1f);
         canvas.FillRectangle(rect);
     }
 
@@ -56,6 +59,28 @@ internal static class CanvasExtension
         canvas.DrawPath(path);
     }
 
+
+    internal static void DrawStateLayer(this ICanvas canvas, IStateLayerElement element, RectF rect,
+        ElementState viewState)
+    {
+        if (viewState is ElementState.Hovered)
+        {
+            canvas.FillColor = element.StateColor.WithAlpha(StateLayerOpacity.Hovered);
+            canvas.FillRectangle(rect);
+        }
+        else if (viewState is ElementState.Pressed)
+        {
+            canvas.FillColor = element.StateColor.WithAlpha(StateLayerOpacity.Pressed);
+            canvas.FillRectangle(rect);
+        }
+    }
+
+    internal static void DrawRipple(this ICanvas canvas, IRippleElement element, PointF point, float size,
+        float percent)
+    {
+        canvas.FillColor = element.StateColor.WithAlpha(StateLayerOpacity.Pressed);
+        canvas.FillCircle(point, 0f.Lerp(size, percent));
+    }
 
     /// <summary>
     ///     获得剪裁后的path

@@ -7,5 +7,6 @@
 
     <ResourceDictionary.MergedDictionaries>
         <styles:IconStyle />
+        <styles:IconButtonStyle />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
