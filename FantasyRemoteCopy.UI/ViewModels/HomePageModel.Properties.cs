@@ -37,6 +37,7 @@ public partial class HomePageModel
     private readonly INavigationService _navigationService;
     private readonly CancellationTokenSource _cancelDownloadTokenSource = new();
 
+    private DeviceModel localDevice;
     #endregion
 
 
