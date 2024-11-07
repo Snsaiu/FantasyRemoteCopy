@@ -3,8 +3,8 @@
     x:Class="Fantasy.UIKit.Styles.IconButtonStyle"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:view="clr-namespace:Fantasy.UIKit.Controls.IconButton">
-    <Style x:Key="DefaultIconButtonStyle" TargetType="view:IconButton">
+    xmlns:uiKit="clr-namespace:Fantasy.UIKit">
+    <Style x:Key="DefaultIconButtonStyle" TargetType="uiKit:IconButton">
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="VerticalOptions" Value="Center" />
         <Setter Property="BackgroundColor" Value="Red" />

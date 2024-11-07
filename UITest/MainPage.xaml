@@ -4,11 +4,15 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:icon="clr-namespace:IconPacks.IconKind;assembly=IconPacks.Material"
-    xmlns:uikit="clr-namespace:Fantasy.UIKit.Controls.Icon;assembly=Fantasy.UIKit">
+    xmlns:uiKit="clr-namespace:Fantasy.UIKit;assembly=Fantasy.UIKit"
+    xmlns:uiTest="clr-namespace:UITest"
+    x:DataType="uiTest:MainPageViewModel">
 
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
-            <uikit:Icon IconData="{Static icon:Material.Settings}" />
+            <uiKit:Icon IconData="{Static icon:Material.Settings}" />
+            <uiKit:IconButton Command="{Binding IconClickCommand}" IconData="{Static icon:Material.Add}" />
+
 
 
         </VerticalStackLayout>

@@ -1,4 +1,4 @@
-﻿namespace Fantasy.UIKit.Controls.Icon;
+﻿namespace Fantasy.UIKit;
 
 public class IconDrawable(Icon view) : IDrawable
 {
@@ -14,6 +14,5 @@ public class IconDrawable(Icon view) : IDrawable
         float scale = dirtyRect.Height / 40f;
         canvas.DrawIcon(_view, dirtyRect, 24, scale);
         canvas.ResetState();
-
     }
 }

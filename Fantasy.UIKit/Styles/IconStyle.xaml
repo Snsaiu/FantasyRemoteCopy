@@ -3,8 +3,8 @@
     x:Class="Fantasy.UIKit.Styles.IconStyle"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:view="clr-namespace:Fantasy.UIKit.Controls.Icon">
-    <Style x:Key="DefaultIconStyle" TargetType="view:Icon">
+    xmlns:uiKit="clr-namespace:Fantasy.UIKit">
+    <Style x:Key="DefaultIconStyle" TargetType="uiKit:Icon">
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="VerticalOptions" Value="Center" />
         <Setter Property="BackgroundColor" Value="Red" />
