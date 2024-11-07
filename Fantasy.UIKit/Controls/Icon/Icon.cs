@@ -11,16 +11,6 @@ public class Icon : InterfaceGraphicsView, IIconElement
         Drawable = drawable;
     }
 
-    public static readonly BindableProperty CornerRadiusShapeProperty =
-        ICornerRadiusShapeElement.CornerRadiusShapeProperty;
-
-    [TypeConverter(typeof(CornerRadiusShapeConverter))]
-    public CornerRadiusShape CornerRadiusShape
-    {
-        get => (CornerRadiusShape)GetValue(CornerRadiusShapeProperty);
-        set => SetValue(CornerRadiusShapeProperty, value);
-    }
-
 
     public static readonly BindableProperty BorderColorProperty = IBorderElement.BorderColorProperty;
 

@@ -2,9 +2,11 @@
 
 #endregion
 
+using System.ComponentModel;
+
 namespace Fantasy.UIKit;
 
-public class InterfaceGraphicsView : GraphicsView, IUIKitElement, IDisposable
+public class InterfaceGraphicsView : GraphicsView, IUIKitElement, IStateLayerElement, IRippleElement, IDisposable
 {
     public static readonly BindableProperty EnableProperty = IUIKitElement.EnableProperty;
 
@@ -16,6 +18,7 @@ public class InterfaceGraphicsView : GraphicsView, IUIKitElement, IDisposable
 
     protected PointF LastTouchPosition;
 
+    internal float RippleSize { get; set; }
 
     public event EventHandler<TouchEventArgs> Clicked;
     public event EventHandler<TouchEventArgs> Pressed;
@@ -45,6 +48,30 @@ public class InterfaceGraphicsView : GraphicsView, IUIKitElement, IDisposable
             {
             }
         };
+    }
+
+    protected virtual float GetRippleSize()
+    {
+        var points = new PointF[4];
+        points[0].X = points[2].X = this.LastTouchPosition.X;
+        points[0].Y = points[1].Y = this.LastTouchPosition.Y;
+        points[1].X = points[3].X = this.LastTouchPosition.X - (float)this.Bounds.Width;
+        points[2].Y = points[3].Y = this.LastTouchPosition.Y - (float)this.Bounds.Height;
+        var maxSize = 0f;
+        foreach (var point in points)
+        {
+            var size = MathF.Pow(
+                MathF.Pow(point.X - this.LastTouchPosition.X, 2f)
+                + MathF.Pow(point.Y - this.LastTouchPosition.Y, 2f),
+                0.5f
+            );
+            if (size > maxSize)
+            {
+                maxSize = size;
+            }
+        }
+
+        return maxSize;
     }
 
 
@@ -99,6 +126,10 @@ public class InterfaceGraphicsView : GraphicsView, IUIKitElement, IDisposable
     {
         this.ViewState = ElementState.Pressed;
         LastTouchPosition = e.Touches[0];
+
+        this.RippleSize = this.GetRippleSize();
+
+
         this.Pressed?.Invoke(this, e);
         this.isTouching = true;
         this.touchTimer.Start();
@@ -120,5 +151,40 @@ public class InterfaceGraphicsView : GraphicsView, IUIKitElement, IDisposable
 
             IsDispose = true;
         }
+    }
+
+    public static readonly BindableProperty StateColorProperty = IStateLayerElement.StateColorProperty;
+
+    public Color StateColor
+    {
+        get => (Color)GetValue(StateColorProperty);
+        set => SetValue(StateColorProperty, value);
+    }
+
+    public static readonly BindableProperty RippleDurationProperty = IRippleElement.RippleDurationProperty;
+
+    public double RippleDuration
+    {
+        get => (double)GetValue(RippleDurationProperty);
+        set => SetValue(RippleDurationProperty, value);
+    }
+
+    public static readonly BindableProperty RippleEasingProperty = IRippleElement.RippleEasingProperty;
+
+    public Easing RippleEasing
+    {
+        get => (Easing)GetValue(RippleEasingProperty);
+        set => SetValue(RippleEasingProperty, value);
+    }
+
+
+    public static readonly BindableProperty CornerRadiusShapeProperty =
+        ICornerRadiusShapeElement.CornerRadiusShapeProperty;
+
+    [TypeConverter(typeof(CornerRadiusShapeConverter))]
+    public CornerRadiusShape CornerRadiusShape
+    {
+        get => (CornerRadiusShape)GetValue(CornerRadiusShapeProperty);
+        set => SetValue(CornerRadiusShapeProperty, value);
     }
 }
