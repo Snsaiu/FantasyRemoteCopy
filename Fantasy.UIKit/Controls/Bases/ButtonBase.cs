@@ -1,26 +1,9 @@
 ﻿using System.Windows.Input;
 
-namespace Fantasy.UIKit;
+namespace Fantasy.UIKit.Controls.Bases;
 
-public partial class IconButton : IconBase, ICommandElement, IDrawable
+public abstract class ButtonBase : VisualBase, ICommandElement
 {
-    public IconButton()
-    {
-        this.SetDynamicResource(StyleProperty, "DefaultIconButtonStyle");
-        this.Clicked += OnClicked;
-    }
-
-    private void OnClicked(object? sender, TouchEventArgs e)
-    {
-        if (this.Command is null)
-            return;
-
-        if (this.Command.CanExecute(this.CommandParameter))
-        {
-            Command.Execute(this.CommandParameter);
-        }
-    }
-
     public static readonly BindableProperty CommandProperty = ICommandElement.CommandProperty;
     public static readonly BindableProperty CommandParameterProperty = ICommandElement.CommandParameterProperty;
 

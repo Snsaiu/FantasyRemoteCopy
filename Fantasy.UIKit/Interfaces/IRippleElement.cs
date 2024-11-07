@@ -10,7 +10,7 @@ public interface IRippleElement : IStateLayerElement
     Easing RippleEasing { get; set; }
 
     public static readonly BindableProperty RippleDurationProperty = BindableProperty.Create(nameof(RippleDuration),
-        typeof(double), typeof(IRippleElement), 0.9);
+        typeof(double), typeof(IRippleElement), 0.5);
 
     public static readonly BindableProperty RippleEasingProperty = BindableProperty.Create(nameof(RippleEasing),
         typeof(Easing), typeof(IRippleElement),

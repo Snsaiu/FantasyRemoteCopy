@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace Fantasy.UIKit;
 
-public class InterfaceGraphicsView : GraphicsView, IUIKitElement, IStateLayerElement, IRippleElement, IDisposable
+public class InterfaceGraphicsView : GraphicsView, IRippleElement, IDisposable
 {
     public static readonly BindableProperty EnableProperty = IUIKitElement.EnableProperty;
 
