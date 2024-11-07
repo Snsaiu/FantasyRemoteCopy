@@ -24,6 +24,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <MauiXaml Update="Styles\ButtonStyle.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
       <MauiXaml Update="Styles\IconButtonStyle.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
@@ -33,6 +36,10 @@
       <MauiXaml Update="Styles\UIKitStyles.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Platforms\Windows\" />
     </ItemGroup>
 
 </Project>

@@ -8,5 +8,6 @@
     <ResourceDictionary.MergedDictionaries>
         <styles:IconStyle />
         <styles:IconButtonStyle />
+        <styles:ButtonStyle />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

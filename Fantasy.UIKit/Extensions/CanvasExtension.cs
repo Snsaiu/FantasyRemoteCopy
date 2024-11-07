@@ -75,6 +75,30 @@ internal static class CanvasExtension
         }
     }
 
+    internal static void DrawText<T>(this ICanvas canvas, T element, RectF rect,
+        HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center,
+        VerticalAlignment verticalAlignment = VerticalAlignment.Center) where T : ITextElement, IFontElement
+    {
+        if (rect is { Width: > 0, Height: > 0 })
+        {
+            canvas.DrawText(element, element.Text, rect, horizontalAlignment, verticalAlignment);
+        }
+    }
+
+    internal static void DrawText<T>(this ICanvas canvas, T element, string text, RectF rect,
+        HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center,
+        VerticalAlignment verticalAlignment = VerticalAlignment.Center) where T : IFontElement
+    {
+        if (rect.Width < 0 || rect.Height < 0)
+            return;
+        var style = element.FontIsItalic ? FontStyleType.Italic : FontStyleType.Normal;
+        canvas.Font = new Microsoft.Maui.Graphics.Font(element.FontFamily, (int)element.FontWeight, style);
+        canvas.FontColor = element.ForegroundColor.WithAlpha(element.ViewState is ElementState.Disabled ? 0.38f : 1f);
+        canvas.FontSize = element.FontSize;
+        canvas.DrawString(text, rect, horizontalAlignment, verticalAlignment);
+    }
+
+
     internal static void DrawRipple(this ICanvas canvas, IRippleElement element, PointF point, float size,
         float percent)
     {

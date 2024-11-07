@@ -7,19 +7,8 @@ public partial class IconButton : IconBase, ICommandElement, IDrawable
     public IconButton()
     {
         this.SetDynamicResource(StyleProperty, "DefaultIconButtonStyle");
-        this.Clicked += OnClicked;
     }
 
-    private void OnClicked(object? sender, TouchEventArgs e)
-    {
-        if (this.Command is null)
-            return;
-
-        if (this.Command.CanExecute(this.CommandParameter))
-        {
-            Command.Execute(this.CommandParameter);
-        }
-    }
 
     public static readonly BindableProperty CommandProperty = ICommandElement.CommandProperty;
     public static readonly BindableProperty CommandParameterProperty = ICommandElement.CommandParameterProperty;
