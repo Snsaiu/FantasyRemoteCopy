@@ -1,6 +1,5 @@
 using FantasyRemoteCopy.UI.Enums;
 using FantasyRemoteCopy.UI.Interfaces;
-using Newtonsoft.Json;
 
 namespace FantasyRemoteCopy.UI.Models;
 
@@ -12,37 +11,24 @@ public enum CodeWordType
     CancelTransmission
 }
 
-public class CodeWordModel : IFlag, ITargetFlag, IPort, ISendType, ITaskGuid
+public class CodeWordModel : TransmissionTaskModel
 {
-    public static CodeWordModel Create(string taskId, CodeWordType wordType, string localIp, string targetIp, int port,
-        SendType sendType) =>
-        new CodeWordModel(taskId, wordType, localIp, targetIp, port, sendType, null);
-
-    public static CodeWordModel Create(string taskId, CodeWordType wordModel, string localIp, string targetIp, int port,
-        SendType sendType,
-        CancellationTokenSource cancellationTokenSource) =>
-        new CodeWordModel(taskId, wordModel, localIp, targetIp, port, sendType, cancellationTokenSource);
-
-
-    public CodeWordModel(string taskGuid, CodeWordType type, string flag, string targetFlag, int port,
-        SendType sendType,
-        CancellationTokenSource? cancellationTokenSource)
+    public CodeWordModel(string taskId, CodeWordType type, string flag, string targetFlag, int port,
+        SendType sendType, DeviceModel deviceModel, CancellationTokenSource? cancellationTokenSource) : base(taskId,
+        flag, targetFlag,
+        port, sendType, cancellationTokenSource)
     {
         Type = type;
-        Flag = flag;
-        TargetFlag = targetFlag;
-        Port = port;
-        SendType = sendType;
-        TaskGuid = taskGuid;
-        CancellationTokenSource = cancellationTokenSource;
+        DeviceModel = deviceModel;
     }
 
-    public CodeWordType Type { get; set; }
-    public string Flag { get; }
-    public string TargetFlag { get; }
-    public int Port { get; }
 
-    [JsonIgnore] public CancellationTokenSource? CancellationTokenSource { get; }
-    public SendType SendType { get; }
-    public string TaskGuid { get; }
+    public static CodeWordModel CreateCodeWord(string taskId, CodeWordType type, string flag, string targetFlag,
+        int port,
+        SendType sendType, DeviceModel deviceModel, CancellationTokenSource? cancellationTokenSource) =>
+        new CodeWordModel(taskId, type, flag, targetFlag, port, sendType, deviceModel, cancellationTokenSource);
+
+    public CodeWordType Type { get; set; }
+
+    public DeviceModel DeviceModel { get; set; }
 }
