@@ -65,7 +65,11 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         _portCheckable = portCheckable;
         _navigationService = navigationService;
         DiscoveredDevices = [];
-        Task.Run(() => Task.FromResult(SetReceive()));
+        Task.Run(async () =>
+        {
+            await Init();
+            SetReceive();
+        });
     }
 
     public void OnNavigatedTo(string source, INavigationParameter parameter)
@@ -107,7 +111,7 @@ public partial class HomePageModel : ViewModelBase, IPageKeep, INavigationAware
         isWindowVisible = !isWindowVisible;
     }
 
-    [RelayCommand]
+
     public async Task Init()
     {
         ResultBase<UserInfo> userRes = await userService.GetCurrentUserAsync();

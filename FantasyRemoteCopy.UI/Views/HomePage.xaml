@@ -387,7 +387,7 @@
     </Grid>
 
 
-    <ContentPage.Behaviors>
-        <toolkit:EventToCommandBehavior Command="{Binding InitCommand}" EventName="Loaded" />
-    </ContentPage.Behaviors>
+    <!-- <ContentPage.Behaviors> -->
+    <!--     <toolkit:EventToCommandBehavior Command="{Binding InitCommand}" EventName="Loaded" /> -->
+    <!-- </ContentPage.Behaviors> -->
 </ContentPage>
