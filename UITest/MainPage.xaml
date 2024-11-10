@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage
     x:Class="UITest.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -11,9 +12,10 @@
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
             <!--<uiKit:Icon IconData="{Static icon:Material.Settings}" />-->
-            <uiKit:IconButton Command="{Binding IconClickCommand}" IconData="{Static icon:Material.Add}" />
-            <uiKit:Button FontSize="10" Text="大明举重冠军！！！！！" />
-
+            <uiKit:IconButton WidthRequest="80" BorderColor="White" BorderThickness="4" HeightRequest="80"
+                              Command="{Binding IconClickCommand}"
+                              IconData="{Static icon:Material.Add}" />
+            <uiKit:Button Text="大明举重冠军！！！anc,你好啊！🃏 以上的粉红色法律" FontSize="20" Enable="True" ForegroundColor="White" />
 
 
         </VerticalStackLayout>
