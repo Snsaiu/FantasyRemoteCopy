@@ -92,7 +92,8 @@ public partial class HomePageModel
     {
         if (DiscoveredDevices.Any(x => x.Flag == deviceModel.Flag))
             return;
-        DiscoveredDevices.Add((DiscoveredDeviceModel)deviceModel);
+
+        DiscoveredDevices.Add(new DiscoveredDeviceModel(deviceModel));
     }
 
 

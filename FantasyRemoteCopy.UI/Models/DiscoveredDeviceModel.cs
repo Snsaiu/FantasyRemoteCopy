@@ -34,7 +34,19 @@ public partial class DiscoveredDeviceModel : DeviceModel
     {
         TransmissionTasks.Remove(TransmissionTasks.FirstOrDefault(x => x.TaskGuid == taskId));
     }
-    
+
+    public DiscoveredDeviceModel()
+    {
+    }
+
+    public DiscoveredDeviceModel(DeviceModel device)
+    {
+        NickName = device.NickName;
+        DeviceType = device.DeviceType;
+        SystemType = device.SystemType;
+        Flag = device.Flag;
+        DeviceName = device.DeviceName;
+    }
 
     public static implicit operator DiscoveredDeviceModel(JoinMessageModel model)
     {
