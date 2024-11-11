@@ -15,7 +15,10 @@
         <Setter Property="StateColor" Value="Black" />
         <Setter Property="HeightRequest" Value="40" />
         <Setter Property="BorderThickness" Value="5" />
+        <Setter Property="StateColor" Value="Red" />
         <Setter Property="MinimumHeightRequest" Value="40" />
         <Setter Property="MinimumWidthRequest" Value="40" />
+        
+        
     </Style>
 </ResourceDictionary>
