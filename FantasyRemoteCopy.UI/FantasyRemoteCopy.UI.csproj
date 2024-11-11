@@ -98,6 +98,7 @@
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\logo.png" />
 	  <None Remove="Resources\Images\android.png" />
+	  <None Remove="Resources\Images\close.png" />
 	  <None Remove="Resources\Images\copy.png" />
 	  <None Remove="Resources\Images\delete.png" />
 	  <None Remove="Resources\Images\detail.png" />
@@ -112,10 +113,12 @@
 	  <None Remove="Resources\Images\openfile.png" />
 	  <None Remove="Resources\Images\openfolder.png" />
 	  <None Remove="Resources\Images\search.png" />
+	  <None Remove="Resources\Images\send.png" />
 	  <None Remove="Resources\Images\setting.png" />
 	  <None Remove="Resources\Images\share.png" />
 	  <None Remove="Resources\Images\text.png" />
 	  <None Remove="Resources\Images\texticon.png" />
+	  <None Remove="Resources\Images\wifi.png" />
 	  <None Remove="Resources\Images\windows.png" />
 	  <None Remove="Resources\Raw\red.ico" />
 	  <None Remove="Resources\Splash\splash.png" />
@@ -126,6 +129,7 @@
 	  <None Include="Platforms\Windows\DefaultScanLocalNetIp.cs" />
 	  <None Include="Platforms\Windows\DeviceTypeProvider.cs" />
 	  <None Include="Platforms\Windows\GlobalScan.cs" />
+	  <None Include="Platforms\Windows\HttpsSendText.cs" />
 	  <None Include="Platforms\Windows\LocalNetDeviceDiscovery.cs" />
 	  <None Include="Platforms\Windows\LocalNetInviteDevice.cs" />
 	  <None Include="Platforms\Windows\LocalNetJoinProcess.cs" />
@@ -136,6 +140,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <MauiImage Include="Resources\Images\android.png" />
+	  <MauiImage Include="Resources\Images\close.png" />
 	  <MauiImage Include="Resources\Images\copy.png" />
 	  <MauiImage Include="Resources\Images\delete.png" />
 	  <MauiImage Include="Resources\Images\detail.png" />
@@ -153,9 +158,13 @@
 	  <MauiImage Include="Resources\Images\share.png" />
 	  <MauiImage Include="Resources\Images\text.png" />
 	  <MauiImage Include="Resources\Images\texticon.png" />
+	  <MauiImage Include="Resources\Images\wifi.png" />
 	  <MauiImage Include="Resources\Images\windows.png" />
 	  <None Remove="Resources\Images\foldericon.png" />
+	  <MauiImage Include="Resources\Images\send.png" />
 	  <MauiImage Include="Resources\Images\foldericon.png" />
+	  <None Remove="Resources\Images\back.png" />
+	  <MauiImage Include="Resources\Images\back.png" />
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="FantasyMvvm" Version="1.0.1.12-preview" />
@@ -221,4 +230,9 @@
 	    <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="ViewModels\DialogModels\" />
+	</ItemGroup>
+
 </Project>

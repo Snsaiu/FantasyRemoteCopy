@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage
+    x:Class="UITest.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:icon="clr-namespace:IconPacks.IconKind;assembly=IconPacks.Material"
+    xmlns:uiKit="clr-namespace:Fantasy.UIKit;assembly=Fantasy.UIKit"
+    xmlns:uiTest="clr-namespace:UITest"
+    x:DataType="uiTest:MainPageViewModel">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30,0" Spacing="25">
+            <!--<uiKit:Icon IconData="{Static icon:Material.Settings}" />-->
+            <uiKit:IconButton WidthRequest="80" BorderColor="White" BorderThickness="4" HeightRequest="80"
+                              Command="{Binding IconClickCommand}"
+                              IconData="{Static icon:Material.Add}" />
+            <uiKit:Button Text="大明举重冠军！！！anc,你好啊！🃏 以上的粉红色法律" FontSize="20" Enable="True" ForegroundColor="White" />
+
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

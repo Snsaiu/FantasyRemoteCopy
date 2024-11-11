@@ -6,7 +6,7 @@ namespace FantasyRemoteCopy.UI.Models;
 public class SendCompressFileModel : SendFileModel, ICompress
 {
     public SendCompressFileModel(SendFolderModel folderModel) : this(folderModel.Flag, folderModel.TargetFlag,
-        folderModel.FileFullPath)
+        folderModel.FileFullPath,folderModel.Port)
     {
     }
 
@@ -17,7 +17,7 @@ public class SendCompressFileModel : SendFileModel, ICompress
     /// <param name="flag">本地flag</param>
     /// <param name="targetFlag">目标flag</param>
     /// <param name="files">需要被压缩的文件集合</param>
-    public SendCompressFileModel(string flag, string targetFlag, IEnumerable<string> files) : base(flag, targetFlag, "")
+    public SendCompressFileModel(string flag, string targetFlag, IEnumerable<string> files,int port) : base(flag, targetFlag, "",port)
     {
         // 创建一个随机的文件夹名称,这个文件夹用于将files 拷贝到该目录，用于后期的压缩
         var tempName = Guid.NewGuid().ToString("N");
@@ -36,8 +36,8 @@ public class SendCompressFileModel : SendFileModel, ICompress
         Directory.Delete(tempFolder, true);
     }
 
-    public SendCompressFileModel(string flag, string targetFlag, string fileFullPath) : base(flag, targetFlag,
-        fileFullPath)
+    public SendCompressFileModel(string flag, string targetFlag, string fileFullPath,int port) : base(flag, targetFlag,
+        fileFullPath,port)
     {
         if (!Directory.Exists(FileFullPath))
             throw new DirectoryNotFoundException();

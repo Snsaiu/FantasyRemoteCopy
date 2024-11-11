@@ -6,8 +6,8 @@
 /// <param name="flag"></param>
 /// <param name="targetFlag"></param>
 /// <param name="fileFullPath"></param>
-public class SendFileModel(string flag, string targetFlag, string fileFullPath)
-    : SendModelBase(flag, targetFlag, fileFullPath)
+public class SendFileModel(string flag, string targetFlag, string fileFullPath,int port)
+    : SendModelBase(flag, targetFlag, fileFullPath, port)
 {
     public override long Size
     {

@@ -4,18 +4,17 @@
     x:Class="FantasyRemoteCopy.UI.Views.HomePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:controls="clr-namespace:FantasyRemoteCopy.UI.Controls"
     xmlns:converters="clr-namespace:FantasyRemoteCopy.UI.Converters"
-    xmlns:models="using:FantasyRemoteCopy.UI.Models"
-   
+
     xmlns:extension="clr-namespace:FantasyRemoteCopy.UI.Extensions"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:models="clr-namespace:FantasyRemoteCopy.UI.Models"
     x:Name="cp"
     BackgroundColor="AliceBlue"
     NavigationPage.HasBackButton="False"
     NavigationPage.HasNavigationBar="False">
 
-    <Grid RowDefinitions="100,*,auto">
+    <Grid RowDefinitions="120,auto,auto,*,auto">
 
         <!-- <ContentView> -->
         <!--     <ContentView.Content> -->
@@ -60,16 +59,17 @@
             </Grid>
 
             <!--  用户名和设备昵称  -->
-            <VerticalStackLayout Grid.Column="1">
+            <VerticalStackLayout Grid.Column="1" Margin="5,0,0,0" VerticalOptions="CenterAndExpand">
                 <Label
-                    Margin="10,20,0,0"
+
                     FontSize="25"
                     Text="{Binding UserName}"
+                    Margin="0,0,0,5"
                     TextColor="Black"
                     VerticalOptions="Center" />
                 <StackLayout Orientation="Horizontal">
                     <Label
-                        Margin="10,0,0,0"
+
                         TextColor="Black"
                         FontSize="{OnPlatform MacCatalyst=15,
                                               WinUI=10}"
@@ -83,8 +83,19 @@
 
             </VerticalStackLayout>
 
-            <Grid Grid.Column="2">
-                <HorizontalStackLayout>
+            <Grid Grid.Column="2" RowDefinitions="auto,auto">
+                <ImageButton
+                    Grid.Row="0"
+                    BackgroundColor="Transparent"
+                    Command="{Binding GotoSettingPageCommand}"
+                    HeightRequest="40"
+                    BorderWidth="0"
+                    HorizontalOptions="EndAndExpand"
+                    Margin="0,0,0,10"
+                    Source="setting.png"
+                    WidthRequest="40" />
+
+                <HorizontalStackLayout Grid.Row="1">
                     <Grid>
                         <Ellipse
                             x:Name="downloadEllipseFill"
@@ -103,9 +114,13 @@
                             WidthRequest="10" />
                     </Grid>
 
+                    <ImageButton Margin="0,0,10,0" BorderWidth="0" Command="{Binding SearchCommand}"
+                                 BackgroundColor="Transparent" HeightRequest="30" WidthRequest="30" Source="search.png" />
+
                     <AbsoluteLayout Margin="5,0" VerticalOptions="Center">
                         <ImageButton
                             BackgroundColor="Transparent"
+                            BorderWidth="0"
                             Command="{Binding GotoListCommand}"
                             HeightRequest="30"
                             Source="list.png"
@@ -120,25 +135,111 @@
                             WidthRequest="10" />
                     </AbsoluteLayout>
 
-                    <ImageButton
-                        BackgroundColor="Transparent"
-                        Command="{Binding GotoSettingPageCommand}"
-                        HeightRequest="50"
-                        Source="setting.png"
-                        WidthRequest="50" />
                 </HorizontalStackLayout>
 
             </Grid>
         </Grid>
 
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*">
+            <Button Text="文本" Command="{Binding GoTextCommand}" />
+            <Button Grid.Column="1" Command="{Binding OpenFileCommand}" Text="文件" />
+            <Button Grid.Column="2" Text="文件夹" Command="{Binding OpenFolderCommand}" />
+        </Grid>
+
+        <!--发送动画-->
+
+        <VerticalStackLayout Grid.Row="2" HorizontalOptions="Fill"
+                             IsVisible="{Binding InformationModel, Converter={converters:NotNullToVisibleConverter}}">
+
+            <Border Background="Beige">
+                <Label HorizontalOptions="Center">传输：文本</Label>
+            </Border>
+            <Image Source="send.png" HeightRequest="50" HorizontalOptions="Center" />
+        </VerticalStackLayout>
+
         <!--  列表  -->
-        <CollectionView Grid.Row="1" ItemsSource="{Binding DiscoveredDevices}">
+        <CollectionView Grid.Row="3" ItemsSource="{Binding DiscoveredDevices}">
             <CollectionView.ItemsLayout>
-                <LinearItemsLayout ItemSpacing="2" Orientation="Vertical" />
+                <LinearItemsLayout ItemSpacing="1" Orientation="Vertical" />
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid
+
+                    <VerticalStackLayout>
+                        <BoxView Color="Gray" HeightRequest="1" Opacity="0.5" />
+
+                        <Grid ColumnDefinitions="40,auto,*">
+
+                            <CheckBox IsChecked="{Binding IsChecked,Mode=TwoWay}">
+                                <CheckBox.Behaviors>
+                                    <toolkit:EventToCommandBehavior
+                                        Command="{Binding BindingContext.DeviceCheckChangedCommand ,Source={x:Reference cp}}"
+                                        EventName="CheckedChanged" />
+                                </CheckBox.Behaviors>
+                            </CheckBox>
+
+                            <BoxView Grid.Column="1" Color="Gray" Opacity="0.5" WidthRequest="1" />
+                            <Grid Grid.Column="2" ColumnDefinitions="auto,*,*">
+
+                                <Image
+                                    HorizontalOptions="StartAndExpand"
+                                    HeightRequest="{OnPlatform WinUI=40,
+                                  Android=20,
+                                 MacCatalyst=50}"
+                                    Source="{Binding SystemType,Converter={converters:SystemTypeToImageSourceConverter}}"
+                                    WidthRequest="{OnPlatform WinUI=40,
+                                MacCatalyst=50}" />
+
+                                <Grid RowDefinitions="*,*" Grid.Column="1" Margin="10,0,0,0"
+                                      HorizontalOptions="StartAndExpand">
+                                    <Label
+                                        VerticalOptions="Center"
+                                        Text="{Binding NickName}" />
+
+                                    <HorizontalStackLayout Grid.Row="1">
+                                        <Image HeightRequest="12" WidthRequest="12" Margin="0,2,0,0" Source="wifi.png"
+                                               VerticalOptions="Start" />
+                                        <Label Text="{Binding Flag}" FontSize="10" Margin="5,0,0,0"
+                                               VerticalOptions="Start" />
+                                    </HorizontalStackLayout>
+                                </Grid>
+                                <!-- 进度条 -->
+                                <Grid Grid.Column="2" ColumnDefinitions="*,auto" ColumnSpacing="10" Margin="0,0,10,0">
+                                    <ProgressBar Progress="{Binding Progress}" />
+                                    <ImageButton Source="close.png" WidthRequest="20" HeightRequest="20"
+                                                 Grid.Column="1"
+                                                 Command="{Binding BindingContext.CloseTransformCommand,Source={x:Reference cp}}"
+                                                 CommandParameter="{Binding .}" />
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="IsVisible" Value="False" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding WorkState}" TargetType="Grid"
+                                                             Value="{x:Static models:WorkState.Downloading }">
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WorkState}" TargetType="Grid"
+                                                             Value="{x:Static models:WorkState.Sending}">
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WorkState}" TargetType="Grid"
+                                                             Value="{x:Static models:WorkState.None}">
+                                                    <Setter Property="IsVisible" Value="False" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                </Grid>
+
+                            </Grid>
+
+                        </Grid>
+
+                        <BoxView Color="Gray" HeightRequest="1" Opacity="0.5" />
+
+                    </VerticalStackLayout>
+
+                    <!--<Grid
                         Padding="5"
                         BackgroundColor="White"
                         ColumnDefinitions="auto,*,auto">
@@ -175,12 +276,7 @@
                                     Text="{Binding DeviceType}" />
                             </StackLayout>
 
-                            <!-- <Label Margin="0,1" Text="{Binding DeviceName,StringFormat='Device Name：{0}'}" Grid.Row="2"  FontSize="10"></Label> -->
-                            <!-- <Label -->
-                            <!--     Grid.Row="2" -->
-                            <!--     Margin="0,1" -->
-                            <!--     FontSize="10" -->
-                            <!--     Text="{Binding Ip, StringFormat='Ip：{0}'}" /> -->
+
                         </Grid>
                         <Grid Grid.Column="2" ColumnDefinitions="auto,10,10,auto">
                             <Grid Grid.Column="0" ColumnDefinitions="auto,auto">
@@ -274,35 +370,24 @@
                                 WidthRequest="50" />
                         </Grid>
 
-                    </Grid>
+                    </Grid>-->
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <!--  搜索按钮  -->
-
-
-        <ImageButton
-            x:Name="searchBtn"
-            Grid.Row="2"
-            Margin="0,0,16,10"
-            BackgroundColor="Transparent"
-            Command="{Binding SearchCommand}"
-            HeightRequest="80"
-            HorizontalOptions="End"
-            Source="search.png"
-            WidthRequest="80" />
         <ActivityIndicator
-            Grid.Row="1"
+            Grid.Row="3"
             HeightRequest="{OnPlatform Android=60}"
             IsRunning="{Binding IsBusy}"
             IsVisible="{Binding IsBusy}"
             WidthRequest="{OnPlatform Android=60}"
             Color="LightGray" />
+
+        <Button Grid.Row="4" Text="发送" BorderWidth="0" Command="{Binding SendCommand}" />
     </Grid>
 
 
-    <ContentPage.Behaviors>
-        <toolkit:EventToCommandBehavior Command="{Binding InitCommand}" EventName="Loaded" />
-    </ContentPage.Behaviors>
+    <!-- <ContentPage.Behaviors> -->
+    <!--     <toolkit:EventToCommandBehavior Command="{Binding InitCommand}" EventName="Loaded" /> -->
+    <!-- </ContentPage.Behaviors> -->
 </ContentPage>

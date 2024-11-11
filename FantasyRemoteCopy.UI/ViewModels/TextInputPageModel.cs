@@ -17,9 +17,9 @@ public partial class TextInputPageModel(INavigationService navigationService, De
     : ViewModelBase, INavigationAware
 {
     private DiscoveredDeviceModel? _discoveredDeviceModel;
-    [ObservableProperty] private string content = string.Empty;
 
-    [ObservableProperty] private string title = "To: ";
+    [ObservableProperty]
+    private string content = string.Empty;
 
     public void OnNavigatedFrom(string source, INavigationParameter parameter)
     {
@@ -27,21 +27,32 @@ public partial class TextInputPageModel(INavigationService navigationService, De
 
     public void OnNavigatedTo(string source, INavigationParameter parameter)
     {
-        _discoveredDeviceModel = parameter.Get<DiscoveredDeviceModel>("data");
-        Title += _discoveredDeviceModel.NickName;
+     
     }
 
+    private bool CanSend()
+    {
+        return !string.IsNullOrWhiteSpace(Content);
+    }
+
+    partial void OnContentChanged(string value)
+    {
+       SendDataCommand.NotifyCanExecuteChanged();
+    }
 
     [RelayCommand]
+    private Task Back() => navigationService.NavigationToAsync(nameof(HomePage),false, parameter: null);
+
+    [RelayCommand(CanExecute =(nameof(CanSend)))]
     private async Task SendData()
     {
-        if (string.IsNullOrEmpty(Content))
-            await navigationService.NavigationToAsync(nameof(HomePage), false);
+        InformationModel model = new()
+        {
+            SendType=Enums.SendType.Text,
+            Text=Content
+        };
 
-        string ip = await localIpBase.GetLocalIpAsync();
-
-        SendTextModel model = new SendTextModel(ip, _discoveredDeviceModel?.Flag ?? throw new NullReferenceException(), Content);
-        NavigationParameter para = new NavigationParameter();
+        NavigationParameter para = new();
         para.Add("data", model);
         await navigationService.NavigationToAsync(nameof(HomePage), false, para);
     }

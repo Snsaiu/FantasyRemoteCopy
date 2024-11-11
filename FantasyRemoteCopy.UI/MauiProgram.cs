@@ -1,11 +1,16 @@
 ﻿using CommunityToolkit.Maui;
+
 using FantasyMvvm;
+
 using FantasyRemoteCopy.UI.Interfaces;
 using FantasyRemoteCopy.UI.Interfaces.Impls;
+using FantasyRemoteCopy.UI.Interfaces.Impls.Configs;
+using FantasyRemoteCopy.UI.Interfaces.Impls.TcpTransfer;
+using FantasyRemoteCopy.UI.Interfaces.Impls.UdpTransfer;
 using FantasyRemoteCopy.UI.ViewModels;
-using FantasyRemoteCopy.UI.ViewModels.DialogModels;
 using FantasyRemoteCopy.UI.Views;
 using FantasyRemoteCopy.UI.Views.Dialogs;
+
 using Microsoft.Extensions.Logging;
 
 namespace FantasyRemoteCopy.UI;
@@ -14,7 +19,7 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
-        var builder = MauiApp.CreateBuilder();
+        MauiAppBuilder builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
             .ConfigureFonts(fonts =>
@@ -37,8 +42,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<LocalIpScannerBase, DefaultScanLocalNetIp>();
         builder.Services.AddSingleton<LocalNetJoinRequestBase, LocalNetJoinRequest>();
         builder.Services.AddSingleton<FileSavePathBase, FileSavePath>();
-        builder.Services.AddSingleton<ISavePathService,SavePathService>();
-      
+        builder.Services.AddSingleton<ISavePathService, SavePathService>();
+
 
         builder.Services.AddSingleton<DeviceLocalIpBase, DefaultLocalIp>();
 
@@ -46,12 +51,13 @@ public static class MauiProgram
         builder.Services.AddSingleton<IDeviceType, DeviceTypeProvider>();
 
         builder.Services.AddSingleton<IOpenFileable, OpenFileProvider>();
-        
+
         builder.Services.AddSingleton<LocalNetJoinProcessBase, LocalNetJoinProcess>();
         builder.Services.AddSingleton<GlobalScanBase, GlobalScan>();
 
         builder.Services.AddSingleton<TcpSendFileBase, TcpSendFile>();
         builder.Services.AddSingleton<TcpSendTextBase, TcpSendText>();
+
 
         builder.Services.AddSingleton<TcpLoopListenContentBase, TcpLoopListenContent>();
 
@@ -60,6 +66,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<IUserService, ConfigUserService>();
         builder.Services.AddSingleton<ISaveDataService, DbSaveDataService>();
         builder.Services.AddSingleton<ILanguageService, ConfigLanguageService>();
+        builder.Services.AddSingleton<ISendPortService, SendPortService>();
+        builder.Services.AddSingleton<IPortCheckable, PortChecker>();
 
         builder.UseRegisterPage<LoginPage, LoginPageModel>();
         builder.UseRegisterPage<HomePage, HomePageModel>();
@@ -68,8 +76,7 @@ public static class MauiProgram
         builder.UseRegisterPage<TextInputPage, TextInputPageModel>();
 
         builder.UseRegisterPage<ListPage, ListPageModel>();
-        builder.UseRegisterDialog<SendTypeDialog, SendTypeDialogModel>();
-
+       
         return builder.UseGetProvider().Build();
     }
 }

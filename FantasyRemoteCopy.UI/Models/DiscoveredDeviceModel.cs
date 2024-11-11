@@ -1,60 +1,61 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using FantasyRemoteCopy.UI.Enums;
-using FantasyRemoteCopy.UI.Interfaces;
 
-namespace FantasyRemoteCopy.UI.Models
+namespace FantasyRemoteCopy.UI.Models;
+
+public enum WorkState
 {
+    None,
+    Sending,
+    Downloading
+}
 
-    public enum WorkState
+/// <summary>
+///     设备发现的模型
+/// </summary>
+public partial class DiscoveredDeviceModel : DeviceModel
+{
+    [ObservableProperty] private bool isChecked;
+
+    [ObservableProperty] private double progress;
+
+    [ObservableProperty] private WorkState workState;
+
+    public List<TransmissionTaskModel> TransmissionTasks { get; } = [];
+
+    public bool TryGetTransmissionTask(string taskId, out TransmissionTaskModel? task)
     {
-        None,
-        Sending,
-        Downloading,
+        task = null;
+        if (TransmissionTasks.Any(x => x.TaskGuid == taskId))
+            task = TransmissionTasks.FirstOrDefault(x => x.TaskGuid == taskId);
+        return task != null;
     }
 
-    /// <summary>
-    /// 设备发现的模型
-    /// </summary>
-    public partial class DiscoveredDeviceModel : ObservableObject, IFlag
+    public void RemoveTransmissionTask(string taskId)
     {
+        TransmissionTasks.Remove(TransmissionTasks.FirstOrDefault(x => x.TaskGuid == taskId));
+    }
 
-        [ObservableProperty]
-        private string? deviceType;
+    public DiscoveredDeviceModel()
+    {
+    }
 
-        [ObservableProperty]
-        private string? nickName;
+    public DiscoveredDeviceModel(DeviceModel device)
+    {
+        NickName = device.NickName;
+        DeviceType = device.DeviceType;
+        SystemType = device.SystemType;
+        Flag = device.Flag;
+        DeviceName = device.DeviceName;
+    }
 
-        [ObservableProperty]
-        private string? flag;
-
-        [ObservableProperty]
-        private string? deviceName;
-        
-        [ObservableProperty]
-        private SystemType systemType;
-
-
-        [ObservableProperty]
-        private WorkState workState;
-
-        [ObservableProperty]
-        private double progress;
-
-
-        public CancellationTokenSource CancellationTokenSource { get; set; } = new CancellationTokenSource();
-
-
-        public static implicit operator DiscoveredDeviceModel(JoinMessageModel model)
+    public static implicit operator DiscoveredDeviceModel(JoinMessageModel model)
+    {
+        return new DiscoveredDeviceModel
         {
-          
-            return new DiscoveredDeviceModel()
-            {
-                NickName = model.DeviceName,
-                Flag = model.Flag,
-                SystemType = model.SystemType,
-                DeviceType = model.Device.ToString()
-            };
-        }
-
+            NickName = model.DeviceName,
+            Flag = model.Flag,
+            SystemType = model.SystemType,
+            DeviceType = model.Device.ToString()
+        };
     }
 }

@@ -1,3 +1,5 @@
+using System.Net;
+
 namespace FantasyRemoteCopy.UI.Interfaces;
 
 public interface IReceiveableWithProgress : IListenable
@@ -12,7 +14,7 @@ public interface IReceiveableWithProgress : IListenable
 
 public interface IReceiveableWithProgress<out T, out P> : IReceiveableWithProgress where P : IProgressValue
 {
-    Task ReceiveAsync(Action<T> receivedCallBack, IProgress<P>? progress, CancellationToken cancellationToken);
+    Task ReceiveAsync(Action<T> receivedCallBack, IPAddress address, int port, IProgress<P>? progress, CancellationToken cancellationToken);
 
     Task IReceiveableWithProgress.ReceiveAsync(Action<object> receivedCallBack, IProgress<object>? progress, CancellationToken cancellationToken)
     {
