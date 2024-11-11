@@ -1,9 +1,14 @@
-﻿#region
+﻿using Microsoft.Maui.Animations;
+using Microsoft.Maui.Graphics.Platform;
 
-#endregion
+using IImage = Microsoft.Maui.Graphics.IImage;
 
-using Microsoft.Maui.Animations;
+#if !WINDOWS
+using Microsoft.Maui.Graphics.Platform;
 
+#else
+using Microsoft.Maui.Graphics.Win2D;
+#endif
 namespace Fantasy.UIKit.Extensions;
 
 internal static class CanvasExtension
@@ -59,6 +64,51 @@ internal static class CanvasExtension
         canvas.DrawPath(path);
     }
 
+    /// <summary>
+    /// Gets IImage from image source stream for all platforms.
+    /// </summary>
+    /// <param name="source">Image source stream.</param>
+    /// <returns>MAUI IImage implementation from the image stream.</returns>
+    internal static IImage GetImageFromStream(Stream source)
+    {
+#if WINDOWS
+            return new W2DImageLoadingService().FromStream(source);
+#else
+        return PlatformImage.FromStream(source);
+#endif
+    }
+
+    internal static async Task<Stream> GetStreamFromImageSourceAsync(ImageSource imageSource)
+    {
+        switch (imageSource)
+        {
+            case FileImageSource fileImageSource:
+                return await FileSystem.OpenAppPackageFileAsync(fileImageSource.File);
+
+            case UriImageSource uriImageSource:
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    return await httpClient.GetStreamAsync(uriImageSource.Uri);
+                }
+
+            case StreamImageSource streamImageSource:
+                return await streamImageSource.Stream(CancellationToken.None);
+
+            default:
+                throw new NotSupportedException("Unsupported ImageSource type");
+        }
+    }
+
+
+    internal static void DrawPicture(this ICanvas canvas, IImageElement element, RectF rect)
+    {
+        GetStreamFromImageSourceAsync(element.Source).ContinueWith(x =>
+        {
+            Stream stream = x.GetAwaiter().GetResult();
+            IImage image = GetImageFromStream(stream);
+            canvas.DrawImage(image, rect.X, rect.Y, rect.Width, rect.Height);
+        });
+    }
 
     internal static void DrawStateLayer(this ICanvas canvas, IStateLayerElement element, RectF rect,
         ElementState viewState)
@@ -91,7 +141,7 @@ internal static class CanvasExtension
     {
         if (rect.Width < 0 || rect.Height < 0)
             return;
-        var style = element.FontIsItalic ? FontStyleType.Italic : FontStyleType.Normal;
+        FontStyleType style = element.FontIsItalic ? FontStyleType.Italic : FontStyleType.Normal;
         canvas.Font = new Microsoft.Maui.Graphics.Font(element.FontFamily, (int)element.FontWeight, style);
         canvas.FontColor = element.ForegroundColor.WithAlpha(element.ViewState is ElementState.Disabled ? 0.38f : 1f);
         canvas.FontSize = element.FontSize;

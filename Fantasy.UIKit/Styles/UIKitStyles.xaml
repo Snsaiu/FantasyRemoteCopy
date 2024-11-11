@@ -9,5 +9,6 @@
         <styles:IconStyle />
         <styles:IconButtonStyle />
         <styles:ButtonStyle />
+        <styles:AvatarStyle />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

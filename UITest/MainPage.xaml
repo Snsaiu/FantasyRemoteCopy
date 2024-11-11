@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 
 <ContentPage
     x:Class="UITest.MainPage"
@@ -12,11 +12,21 @@
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
             <!--<uiKit:Icon IconData="{Static icon:Material.Settings}" />-->
-            <uiKit:IconButton WidthRequest="80" BorderColor="White" BorderThickness="4" HeightRequest="80"
-                              Command="{Binding IconClickCommand}"
-                              IconData="{Static icon:Material.Add}" />
-            <uiKit:Button Text="大明举重冠军！！！anc,你好啊！🃏 以上的粉红色法律" FontSize="20" Enable="True" ForegroundColor="White" />
+            <uiKit:IconButton
+                BorderColor="White"
+                BorderThickness="4"
+                Command="{Binding IconClickCommand}"
+                HeightRequest="80"
+                IconData="{Static icon:Material.Add}"
+                WidthRequest="80" />
+            <uiKit:Button
+                Enable="True"
+                FontSize="20"
+                ForegroundColor="White"
+                Text="大明举重冠军！！！anc,你好啊！🃏 以上的粉红色法律" />
 
+            <Image></Image>
+            <uiKit:Avatar Source="dotnet_bot.png" />
 
         </VerticalStackLayout>
     </ScrollView>
