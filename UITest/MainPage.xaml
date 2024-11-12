@@ -12,7 +12,7 @@
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
             <!--<uiKit:Icon IconData="{Static icon:Material.Settings}" />-->
-            <uiKit:IconButton
+            <!--<uiKit:IconButton
                 BorderColor="White"
                 BorderThickness="4"
                 Command="{Binding IconClickCommand}"
@@ -23,10 +23,10 @@
                 Enable="True"
                 FontSize="20"
                 ForegroundColor="White"
-                Text="大明举重冠军！！！anc,你好啊！🃏 以上的粉红色法律" />
+                Text="大明举重冠军！！！anc,你好啊！🃏 以上的粉红色法律" />-->
 
-            <Image></Image>
-            <uiKit:Avatar Source="dotnet_bot.png" />
+
+            <uiKit:Avatar Enable="False" Source="dotnet_bot.png" />
 
         </VerticalStackLayout>
     </ScrollView>

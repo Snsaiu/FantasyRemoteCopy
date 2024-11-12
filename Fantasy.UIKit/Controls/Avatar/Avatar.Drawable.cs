@@ -1,4 +1,14 @@
-﻿namespace Fantasy.UIKit;
+﻿#if WINDOWS
+using Microsoft.UI.Xaml.Media.Imaging;
+
+using Windows.Storage.Streams;
+
+#elif MACCATALYST
+#elif ANDROID
+#else
+#endif
+
+namespace Fantasy.UIKit;
 
 public partial class Avatar
 {
@@ -13,14 +23,38 @@ public partial class Avatar
         }
         else
         {
-            canvas.DrawPicture(this, dirtyRect);
+#if WINDOWS
+
+
+            IImageSourceServiceProvider imageSourceServiceProvider =
+                Handler.MauiContext.Services.GetRequiredService<IImageSourceServiceProvider>();
+
+            IImageSourceService? imageSourceService = imageSourceServiceProvider.GetImageSourceService(Source);
+
+
+            BitmapImage? bitmapImage =
+                imageSourceService.GetImageSourceAsync(Source).GetAwaiter().GetResult().Value as BitmapImage;
+
+            IRandomAccessStreamReference streamReference =
+                RandomAccessStreamReference.CreateFromUri(bitmapImage.UriSource);
+
+            using Stream stream = streamReference.OpenReadAsync().GetAwaiter().GetResult().AsStreamForRead();
+            //image = PlatformImage.FromStream(stream);
+#endif
+
+
+            //  canvas.DrawImage(image, dirtyRect.X, dirtyRect.Y, dirtyRect.Width, dirtyRect.Height);
         }
 
+        //if (Enable == false)
+        //{
+        //    canvas.FillColor =
+        //        Colors.White.MultiplyAlpha(0.5f);
+        //    canvas.FillRectangle(dirtyRect);
+        //}
+
+
         canvas.DrawBorderColor(this, dirtyRect);
-
-        // 如果没有图片，那么显示背景色
-
-
         canvas.ResetState();
     }
 }

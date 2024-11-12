@@ -78,36 +78,9 @@ internal static class CanvasExtension
 #endif
     }
 
-    internal static async Task<Stream> GetStreamFromImageSourceAsync(ImageSource imageSource)
-    {
-        switch (imageSource)
-        {
-            case FileImageSource fileImageSource:
-                return await FileSystem.OpenAppPackageFileAsync(fileImageSource.File);
-
-            case UriImageSource uriImageSource:
-                using (HttpClient httpClient = new HttpClient())
-                {
-                    return await httpClient.GetStreamAsync(uriImageSource.Uri);
-                }
-
-            case StreamImageSource streamImageSource:
-                return await streamImageSource.Stream(CancellationToken.None);
-
-            default:
-                throw new NotSupportedException("Unsupported ImageSource type");
-        }
-    }
-
 
     internal static void DrawPicture(this ICanvas canvas, IImageElement element, RectF rect)
     {
-        GetStreamFromImageSourceAsync(element.Source).ContinueWith(x =>
-        {
-            Stream stream = x.GetAwaiter().GetResult();
-            IImage image = GetImageFromStream(stream);
-            canvas.DrawImage(image, rect.X, rect.Y, rect.Width, rect.Height);
-        });
     }
 
     internal static void DrawStateLayer(this ICanvas canvas, IStateLayerElement element, RectF rect,
