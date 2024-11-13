@@ -1,4 +1,8 @@
-﻿#if WINDOWS
+﻿using Microsoft.Maui.Graphics.Platform;
+
+using IImage = Microsoft.Maui.Graphics.IImage;
+
+#if WINDOWS
 using Microsoft.UI.Xaml.Media.Imaging;
 
 using Windows.Storage.Streams;
@@ -12,7 +16,11 @@ namespace Fantasy.UIKit;
 
 public partial class Avatar
 {
-    public override void Draw(ICanvas canvas, RectF dirtyRect)
+    private Uri backUri;
+
+    private IImage image;
+
+    public override async void Draw(ICanvas canvas, RectF dirtyRect)
     {
         canvas.SaveState();
         canvas.Antialias = true;
@@ -24,34 +32,40 @@ public partial class Avatar
         else
         {
 #if WINDOWS
-
-
-            IImageSourceServiceProvider imageSourceServiceProvider =
+            var imageSourceServiceProvider =
                 Handler.MauiContext.Services.GetRequiredService<IImageSourceServiceProvider>();
 
-            IImageSourceService? imageSourceService = imageSourceServiceProvider.GetImageSourceService(Source);
+            var imageSourceService = imageSourceServiceProvider.GetImageSourceService(Source);
 
+            var bitmapImage =
+                (await imageSourceService.GetImageSourceAsync(Source)).Value as BitmapImage;
 
-            BitmapImage? bitmapImage =
-                imageSourceService.GetImageSourceAsync(Source).GetAwaiter().GetResult().Value as BitmapImage;
+            if (backUri is null || bitmapImage.UriSource.AbsolutePath != backUri.AbsolutePath)
+            {
+                backUri = bitmapImage.UriSource;
+                var streamReference =
+                    RandomAccessStreamReference.CreateFromUri(backUri);
+                using var streamReader = await streamReference.OpenReadAsync();
 
-            IRandomAccessStreamReference streamReference =
-                RandomAccessStreamReference.CreateFromUri(bitmapImage.UriSource);
+                var stream = streamReader.AsStreamForRead();
+                image = PlatformImage.FromStream(stream);
+            }
+            else if (backUri is null)
+            {
+                image = null;
+            }
 
-            using Stream stream = streamReference.OpenReadAsync().GetAwaiter().GetResult().AsStreamForRead();
-            //image = PlatformImage.FromStream(stream);
+            if (image is not null)
+                canvas.DrawImage(image, dirtyRect.X, dirtyRect.Y, dirtyRect.Width, dirtyRect.Height);
 #endif
-
-
-            //  canvas.DrawImage(image, dirtyRect.X, dirtyRect.Y, dirtyRect.Width, dirtyRect.Height);
         }
 
-        //if (Enable == false)
-        //{
-        //    canvas.FillColor =
-        //        Colors.White.MultiplyAlpha(0.5f);
-        //    canvas.FillRectangle(dirtyRect);
-        //}
+        if (Enable == false)
+        {
+            canvas.FillColor =
+                Colors.White.MultiplyAlpha(0.12f);
+            canvas.FillRectangle(dirtyRect);
+        }
 
 
         canvas.DrawBorderColor(this, dirtyRect);
