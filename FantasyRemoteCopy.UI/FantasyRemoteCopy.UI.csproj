@@ -235,4 +235,8 @@
 	  <Folder Include="ViewModels\DialogModels\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Fantasy.UIKit\Fantasy.UIKit.csproj" />
+	</ItemGroup>
+
 </Project>
