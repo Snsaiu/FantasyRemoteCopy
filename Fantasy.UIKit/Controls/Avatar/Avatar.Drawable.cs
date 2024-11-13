@@ -39,7 +39,6 @@ public partial class Avatar
             if (imageSourceService is null)
                 throw new NullReferenceException();
 
-
             if ((await imageSourceService.GetImageSourceAsync(Source)).Value is not BitmapImage bitmapImage)
                 throw new NullReferenceException();
 
