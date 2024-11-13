@@ -16,9 +16,9 @@ namespace Fantasy.UIKit;
 
 public partial class Avatar
 {
-    private Uri backUri;
+    private Uri? backUri;
 
-    private IImage image;
+    private IImage? image;
 
     public override async void Draw(ICanvas canvas, RectF dirtyRect)
     {
@@ -36,9 +36,12 @@ public partial class Avatar
                 Handler.MauiContext.Services.GetRequiredService<IImageSourceServiceProvider>();
 
             var imageSourceService = imageSourceServiceProvider.GetImageSourceService(Source);
+            if (imageSourceService is null)
+                throw new NullReferenceException();
 
-            var bitmapImage =
-                (await imageSourceService.GetImageSourceAsync(Source)).Value as BitmapImage;
+
+            if ((await imageSourceService.GetImageSourceAsync(Source)).Value is not BitmapImage bitmapImage)
+                throw new NullReferenceException();
 
             if (backUri is null || bitmapImage.UriSource.AbsolutePath != backUri.AbsolutePath)
             {
