@@ -27,9 +27,9 @@ internal static class CanvasExtension
             return;
         // canvas.StrokeColor = element.ForegroundColor.WithAlpha(element.ViewState is ElementState.Disabled ? 0.38f : 1f);
         canvas.FillColor = element.ForegroundColor.WithAlpha(element.ViewState is ElementState.Disabled ? 0.38f : 1f);
-        using PathF path = element.IconPath.AsScaledPath(defaultSize / 24f * scale);
-        float sx = rect.Center.X - defaultSize / 2 * scale;
-        float sy = rect.Center.Y - defaultSize / 2 * scale;
+        using var path = element.IconPath.AsScaledPath(defaultSize / 24f * scale);
+        var sx = rect.Center.X - defaultSize / 2 * scale;
+        var sy = rect.Center.Y - defaultSize / 2 * scale;
         path.Move(sx, sy);
         canvas.FillPath(path);
     }
@@ -54,13 +54,23 @@ internal static class CanvasExtension
         canvas.FillRectangle(rect);
     }
 
+    internal static void DrawForeground(this ICanvas canvas, IForegroundElement element, RectF rect)
+    {
+        if (element.ForegroundColor == Colors.Transparent)
+            return;
+        canvas.FillColor =
+            element.ForegroundColor.MultiplyAlpha(element.ViewState is ElementState.Disabled ? 0.12f : 1f);
+        canvas.FillRectangle(rect);
+    }
+
+
     internal static void DrawBorderColor(this ICanvas canvas, IBorderElement element, RectF rect)
     {
         if (element.BorderColor == Colors.Transparent || element.BorderThickness == 0)
             return;
         canvas.StrokeColor = element.BorderColor.WithAlpha(element.ViewState is ElementState.Disabled ? 0.12f : 1f);
         canvas.StrokeSize = element.BorderThickness;
-        PathF path = element.GetClipPath(rect);
+        var path = element.GetClipPath(rect);
         canvas.DrawPath(path);
     }
 
@@ -114,7 +124,7 @@ internal static class CanvasExtension
     {
         if (rect.Width < 0 || rect.Height < 0)
             return;
-        FontStyleType style = element.FontIsItalic ? FontStyleType.Italic : FontStyleType.Normal;
+        var style = element.FontIsItalic ? FontStyleType.Italic : FontStyleType.Normal;
         canvas.Font = new Microsoft.Maui.Graphics.Font(element.FontFamily, (int)element.FontWeight, style);
         canvas.FontColor = element.ForegroundColor.WithAlpha(element.ViewState is ElementState.Disabled ? 0.38f : 1f);
         canvas.FontSize = element.FontSize;
@@ -137,8 +147,8 @@ internal static class CanvasExtension
     /// <returns></returns>
     internal static PathF GetClipPath(this ICornerRadiusShapeElement element, RectF rect)
     {
-        CornerRadiusShape radius = element.GetCornerRadiusShape(rect.Width, rect.Height);
-        PathF path = new PathF();
+        var radius = element.GetCornerRadiusShape(rect.Width, rect.Height);
+        var path = new PathF();
         path.AppendRoundedRectangle(new RectF(rect.X, rect.Y, rect.Width, rect.Height),
             radius[0],
             radius[1],

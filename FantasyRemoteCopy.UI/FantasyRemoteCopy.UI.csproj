@@ -95,6 +95,16 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
+
+	<ItemGroup>
+	  <AndroidResource Remove="ViewModels\DialogModels\**" />
+	  <Compile Remove="ViewModels\DialogModels\**" />
+	  <EmbeddedResource Remove="ViewModels\DialogModels\**" />
+	  <MauiCss Remove="ViewModels\DialogModels\**" />
+	  <MauiXaml Remove="ViewModels\DialogModels\**" />
+	  <None Remove="ViewModels\DialogModels\**" />
+	</ItemGroup>
+
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\logo.png" />
 	  <None Remove="Resources\Images\android.png" />
@@ -229,10 +239,6 @@
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="ViewModels\DialogModels\" />
 	</ItemGroup>
 
 	<ItemGroup>

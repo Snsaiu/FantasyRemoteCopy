@@ -36,6 +36,9 @@
       <MauiXaml Update="Styles\IconStyle.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
+      <MauiXaml Update="Styles\ProgressBarStyle.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
       <MauiXaml Update="Styles\UIKitStyles.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>

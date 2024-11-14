@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary
+    x:Class="Fantasy.UIKit.Styles.ProgressBarStyle"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:view="clr-namespace:Fantasy.UIKit">
+
+    <Style x:Key="DefaultProgressBarStyle" TargetType="view:ProgressBar">
+        <Setter Property="HeightRequest" Value="10" />
+        <Setter Property="BackgroundColor" Value="White" />
+        <Setter Property="ForegroundColor" Value="Green" />
+        <Setter Property="CornerRadiusShape" Value="ExtraSmall" />
+    </Style>
+</ResourceDictionary>

@@ -56,6 +56,7 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0-preview1" />
 		<PackageReference Include="IconPacks.Material" Version="1.0.8793.1-build" />
 	</ItemGroup>
 

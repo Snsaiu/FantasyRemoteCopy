@@ -1,8 +1,4 @@
-﻿#region
-
-#endregion
-
-using Microsoft.Maui.Animations;
+﻿using Microsoft.Maui.Animations;
 
 using System.ComponentModel;
 
@@ -58,15 +54,15 @@ public class InterfaceGraphicsView : GraphicsView, IRippleElement, IDisposable
 
     protected virtual float GetRippleSize()
     {
-        PointF[] points = new PointF[4];
+        var points = new PointF[4];
         points[0].X = points[2].X = LastTouchPosition.X;
         points[0].Y = points[1].Y = LastTouchPosition.Y;
         points[1].X = points[3].X = LastTouchPosition.X - (float)Bounds.Width;
         points[2].Y = points[3].Y = LastTouchPosition.Y - (float)Bounds.Height;
-        float maxSize = 0f;
-        foreach (PointF point in points)
+        var maxSize = 0f;
+        foreach (var point in points)
         {
-            float size = MathF.Pow(
+            var size = MathF.Pow(
                 MathF.Pow(point.X - LastTouchPosition.X, 2f)
                 + MathF.Pow(point.Y - LastTouchPosition.Y, 2f),
                 0.5f

@@ -25,6 +25,8 @@
                 ForegroundColor="White"
                 Text="大明举重冠军！！！anc,你好啊！🃏 以上的粉红色法律" />-->
 
+            <uiKit:ProgressBar Value="{Binding Progress}" />
+
 
             <uiKit:Avatar Enable="False" Source="dotnet_bot.png" />
 

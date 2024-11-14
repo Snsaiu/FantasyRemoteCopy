@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+using System.Windows.Input;
 
 namespace UITest
 {
@@ -9,17 +11,35 @@ namespace UITest
         public MainPage()
         {
             InitializeComponent();
-            this.BindingContext = new MainPageViewModel();
+            BindingContext = new MainPageViewModel();
         }
     }
 
-    public class MainPageViewModel
+    public partial class MainPageViewModel : ObservableObject
     {
         public ICommand IconClickCommand { get; set; }
 
+        [ObservableProperty] private double progress;
+
         public MainPageViewModel()
         {
-            this.IconClickCommand = new Command(x => { });
+            IconClickCommand = new Command(x => { });
+
+            Progress = 0;
+            StartProgressAnimation();
+        }
+
+        private void StartProgressAnimation()
+        {
+            var timer = Application.Current.Dispatcher.CreateTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += (s, e) =>
+            {
+                Progress += 0.1;
+                if (Progress > 1)
+                    timer.Stop();
+            };
+            timer.Start();
         }
     }
 }

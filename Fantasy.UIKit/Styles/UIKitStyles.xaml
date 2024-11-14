@@ -10,5 +10,6 @@
         <styles:IconButtonStyle />
         <styles:ButtonStyle />
         <styles:AvatarStyle />
+        <styles:ProgressBarStyle />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
