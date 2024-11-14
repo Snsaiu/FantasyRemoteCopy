@@ -27,6 +27,9 @@
       <MauiXaml Update="Styles\AvatarStyle.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
+      <MauiXaml Update="Styles\BadgeStyle.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
       <MauiXaml Update="Styles\ButtonStyle.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>

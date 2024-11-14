@@ -27,6 +27,7 @@
 
             <uiKit:ProgressBar Value="{Binding Progress}" />
 
+            <Border></Border>
 
             <uiKit:Avatar Enable="False" Source="dotnet_bot.png" />
 
