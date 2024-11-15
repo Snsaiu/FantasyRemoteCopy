@@ -26,10 +26,9 @@
                 Text="大明举重冠军！！！anc,你好啊！🃏 以上的粉红色法律" />-->
 
             <uiKit:ProgressBar Value="{Binding Progress}" />
-
-            <Border></Border>
-
-            <uiKit:Avatar Enable="False" Source="dotnet_bot.png" />
+            <uiKit:Badge Text="99+">
+                <Label Text="badfsfsadfsdfefgsefsdge" />
+            </uiKit:Badge>
 
         </VerticalStackLayout>
     </ScrollView>

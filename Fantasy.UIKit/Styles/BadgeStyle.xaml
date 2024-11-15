@@ -1,10 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:view="clr-namespace:Fantasy.UIKit"
-                    x:Class="Fantasy.UIKit.Styles.BadgeStyle">
+<ResourceDictionary
+    x:Class="Fantasy.UIKit.Styles.BadgeStyle"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:view="clr-namespace:Fantasy.UIKit">
 
     <Style TargetType="view:Badge">
-        <Setter Property="c"
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="ControlTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <AbsoluteLayout x:Name="PART_Root">
+                        <ContentPresenter Padding="{TemplateBinding Padding}" Content="{TemplateBinding Content}" />
+                        <view:BadgeContainer
+                            x:Name="PART_Container"
+                            AbsoluteLayout.LayoutFlags="PositionProportional"
+                            BackgroundColor="{TemplateBinding BackgroundColor}"
+                            CornerRadiusShape="Full"
+                            FontSize="12"
+                            ForegroundColor="{TemplateBinding ForegroundColor}"
+                            MinimumHeightRequest="10"
+                            MinimumWidthRequest="20"
+                            Text="{TemplateBinding Text}" />
+                    </AbsoluteLayout>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="DefaultBadgeStyle" TargetType="view:Badge">
+        <Setter Property="BackgroundColor" Value="Red" />
+        <Setter Property="ForegroundColor" Value="Black" />
     </Style>
 </ResourceDictionary>

@@ -26,7 +26,6 @@ namespace UITest
             IconClickCommand = new Command(x => { });
 
             Progress = 0;
-            ContentView
             StartProgressAnimation();
         }
 
