@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ResourceDictionary
     x:Class="Fantasy.UIKit.Styles.BadgeStyle"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -29,6 +30,6 @@
 
     <Style x:Key="DefaultBadgeStyle" TargetType="view:Badge">
         <Setter Property="BackgroundColor" Value="Red" />
-        <Setter Property="ForegroundColor" Value="Black" />
+        <Setter Property="ForegroundColor" Value="White" />
     </Style>
 </ResourceDictionary>

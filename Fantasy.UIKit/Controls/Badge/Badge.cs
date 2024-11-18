@@ -74,8 +74,11 @@ namespace Fantasy.UIKit
         {
             var size = this.GetStringSize();
 
-            AbsoluteLayout.SetLayoutBounds(PART_Container,
+#if WINDOWS
+              AbsoluteLayout.SetLayoutBounds(PART_Container,
                 new Rect(1.05, -0.6, size.Width, size.Height));
+#endif
+
             InvalidateMeasure();
         }
 

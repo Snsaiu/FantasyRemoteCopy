@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 
 <ContentPage
     x:Class="UITest.MainPage"
@@ -12,13 +12,15 @@
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
 
-            <uiKit:Badge Text="99+">
-                <Label Text="badfsfsadfsdfefgsefsdge" />
-            </uiKit:Badge>
+            <uiKit:Avatar Source="dotnet_bot.png"></uiKit:Avatar>
 
-            <uiKit:Badge Text="99+">
-                <uiKit:Icon IconData="{Static icon:Material.Settings}" />
-            </uiKit:Badge>
+            <!-- <uiKit:Badge Text="99+"> -->
+            <!--     <Label Text="badfsfsadfsdfefgsefsdge" /> -->
+            <!-- </uiKit:Badge> -->
+            <!-- -->
+            <!-- <uiKit:Badge Text="99+"> -->
+            <!--     <uiKit:Icon IconData="{Static icon:Material.Settings}" /> -->
+            <!-- </uiKit:Badge> -->
             <!--<uiKit:IconButton
                 BorderColor="White"
                 BorderThickness="4"
