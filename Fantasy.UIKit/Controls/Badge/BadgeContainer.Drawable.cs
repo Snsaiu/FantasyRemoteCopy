@@ -8,8 +8,10 @@ public partial class BadgeContainer
         if (string.IsNullOrEmpty(Text))
             return;
         canvas.SaveState();
-        canvas.DrawPath(this.GetClipPath(dirtyRect));
+        //canvas.DrawPath(this.GetClipPath(dirtyRect));
         canvas.DrawBackground(this, dirtyRect);
+
+        //  dirtyRect.Y = dirtyRect.Height / 2;
         canvas.DrawText(this, dirtyRect);
         canvas.ResetState();
     }

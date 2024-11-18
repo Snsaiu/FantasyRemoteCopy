@@ -47,8 +47,4 @@
       </MauiXaml>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Platforms\Windows\" />
-    </ItemGroup>
-
 </Project>

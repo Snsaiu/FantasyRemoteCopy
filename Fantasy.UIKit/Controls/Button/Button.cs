@@ -1,5 +1,4 @@
 ﻿using Fantasy.UIKit.Controls.Bases;
-using System.Windows.Input;
 
 namespace Fantasy.UIKit;
 
@@ -7,7 +6,7 @@ public partial class Button : ButtonBase, ITextElement, IFontElement
 {
     public Button()
     {
-        this.SetDynamicResource(StyleProperty, "DefaultButtonStyle");
+        SetDynamicResource(StyleProperty, "DefaultButtonStyle");
     }
 
     public static readonly BindableProperty TextProperty = ITextElement.TextProperty;
@@ -23,16 +22,16 @@ public partial class Button : ButtonBase, ITextElement, IFontElement
     protected override Size MeasureOverride(double widthConstraint, double heightConstraint)
     {
         // 获得文字size
-        var textSize = IFontElementExtension.GetStringSize(this);
-        if (textSize.Height < this.MinimumHeightRequest)
+        var textSize = this.GetStringSize();
+        if (textSize.Height < MinimumHeightRequest)
             textSize.Height = (float)MinimumHeightRequest;
-        if (textSize.Width < this.MinimumWidthRequest)
+        if (textSize.Width < MinimumWidthRequest)
             textSize.Width = (float)MinimumWidthRequest;
 
         textSize.Width += 48f;
         // textSize.Height += 40f;
 
-        this.DesiredSize = textSize;
+        DesiredSize = textSize;
         return textSize;
     }
 

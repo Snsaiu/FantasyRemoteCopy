@@ -11,7 +11,14 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
-            <!--<uiKit:Icon IconData="{Static icon:Material.Settings}" />-->
+
+            <uiKit:Badge Text="99+">
+                <Label Text="badfsfsadfsdfefgsefsdge" />
+            </uiKit:Badge>
+
+            <uiKit:Badge Text="99+">
+                <uiKit:Icon IconData="{Static icon:Material.Settings}" />
+            </uiKit:Badge>
             <!--<uiKit:IconButton
                 BorderColor="White"
                 BorderThickness="4"
@@ -25,10 +32,10 @@
                 ForegroundColor="White"
                 Text="大明举重冠军！！！anc,你好啊！🃏 以上的粉红色法律" />-->
 
-            <uiKit:ProgressBar Value="{Binding Progress}" />
+            <!--<uiKit:ProgressBar Value="{Binding Progress}" />
             <uiKit:Badge Text="99+">
                 <Label Text="badfsfsadfsdfefgsefsdge" />
-            </uiKit:Badge>
+            </uiKit:Badge>-->
 
         </VerticalStackLayout>
     </ScrollView>

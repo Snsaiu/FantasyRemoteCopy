@@ -18,10 +18,8 @@
                             AbsoluteLayout.LayoutFlags="PositionProportional"
                             BackgroundColor="{TemplateBinding BackgroundColor}"
                             CornerRadiusShape="Full"
-                            FontSize="12"
+                            FontSize="10"
                             ForegroundColor="{TemplateBinding ForegroundColor}"
-                            MinimumHeightRequest="10"
-                            MinimumWidthRequest="20"
                             Text="{TemplateBinding Text}" />
                     </AbsoluteLayout>
                 </ControlTemplate>

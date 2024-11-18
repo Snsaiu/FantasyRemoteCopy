@@ -54,7 +54,7 @@ public partial class BadgeContainer : VisualBase, ITextElement, IFontElement
 
     protected override Size MeasureOverride(double widthConstraint, double heightConstraint)
     {
-        var textSize = IFontElementExtension.GetStringSize(this);
+        var textSize = this.GetStringSize();
         if (textSize.Height < MinimumHeightRequest)
             textSize.Height = (float)MinimumHeightRequest;
         if (textSize.Width < MinimumWidthRequest)

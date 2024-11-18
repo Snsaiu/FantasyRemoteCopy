@@ -73,8 +73,9 @@ namespace Fantasy.UIKit
         void IUIKitElement.OnPropertyChanged()
         {
             var size = this.GetStringSize();
+
             AbsoluteLayout.SetLayoutBounds(PART_Container,
-                new Rect(1, 0, Math.Max(20, size.Width), Math.Max(10, size.Height)));
+                new Rect(1.05, -0.6, size.Width, size.Height));
             InvalidateMeasure();
         }
 
