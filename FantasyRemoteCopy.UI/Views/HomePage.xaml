@@ -10,11 +10,11 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:models="clr-namespace:FantasyRemoteCopy.UI.Models"
     x:Name="cp"
-    BackgroundColor="AliceBlue"
+   
     NavigationPage.HasBackButton="False"
     NavigationPage.HasNavigationBar="False">
 
-    <Grid RowDefinitions="120,auto,auto,*,auto">
+    <Grid RowDefinitions="120,auto,auto,*,auto"  BackgroundColor="{DynamicResource Gray900Brush}"> 
 
         <!-- <ContentView> -->
         <!--     <ContentView.Content> -->
@@ -70,7 +70,7 @@
                 <StackLayout Orientation="Horizontal">
                     <Label
 
-                        TextColor="Black"
+                        TextColor="White"
                         FontSize="{OnPlatform MacCatalyst=15,
                                               WinUI=10}"
                         Text="{extension:Translate NickOfName}" />
@@ -78,7 +78,7 @@
                         FontSize="{OnPlatform MacCatalyst=15,
                                               WinUI=10}"
                         Text="{Binding DeviceNickName}"
-                        TextColor="Black" />
+                        TextColor="White" />
                 </StackLayout>
 
             </VerticalStackLayout>
