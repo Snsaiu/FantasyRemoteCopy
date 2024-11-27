@@ -1,5 +1,8 @@
-﻿using Microsoft.Maui.Graphics.Platform;
+﻿using Android.Graphics;
+using Android.Graphics.Drawables;
+using Microsoft.Maui.Graphics.Platform;
 using IImage = Microsoft.Maui.Graphics.IImage;
+using RectF = Microsoft.Maui.Graphics.RectF;
 
 #if WINDOWS
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -61,7 +64,26 @@ public partial class Avatar
 
 
 #elif MACCATALYST
-         var imageSourceServiceProvider =
+            var imageSourceServiceProvider =
+                   Handler.MauiContext.Services.GetRequiredService<IImageSourceServiceProvider>();
+
+            if (imageSourceServiceProvider is null)
+                throw new NullReferenceException();
+
+            var imageSourceService = imageSourceServiceProvider.GetImageSourceService(Source);
+            if (imageSourceService is null)
+                throw new NullReferenceException();
+
+            var uiimage = await imageSourceService.GetPlatformImageAsync(Source, Handler.MauiContext);
+            if (uiimage is null)
+                throw new NullReferenceException();
+            var stream = (uiimage.Value.AsPNG()?.AsStream()) ?? throw new NullReferenceException();
+            image = PlatformImage.FromStream(stream);
+            canvas.DrawImage(image, dirtyRect.X, dirtyRect.Y, dirtyRect.Width, dirtyRect.Height);
+
+#elif ANDROID
+
+            var imageSourceServiceProvider =
                 Handler.MauiContext.Services.GetRequiredService<IImageSourceServiceProvider>();
 
             if (imageSourceServiceProvider is null)
@@ -75,13 +97,17 @@ public partial class Avatar
             if (uiimage is null)
                 throw new NullReferenceException();
 
-            var stream = (uiimage.Value.AsPNG()?.AsStream()) ?? throw new NullReferenceException();
-            image = PlatformImage.FromStream(stream);
-            canvas.DrawImage(image, dirtyRect.X, dirtyRect.Y, dirtyRect.Width, dirtyRect.Height);
+            if (uiimage.Value is BitmapDrawable bitmapDrawable)
+            {
+                var bitmap = bitmapDrawable.Bitmap;
+                using var stream = new MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Png, 100, stream);
+                stream.Seek(0, SeekOrigin.Begin);
+                image = PlatformImage.FromStream(stream);
+                canvas.DrawImage(image, dirtyRect.X, dirtyRect.Y, dirtyRect.Width, dirtyRect.Height);
+            }
+
 #endif
-
-
-
         }
 
         if (Enable == false)
