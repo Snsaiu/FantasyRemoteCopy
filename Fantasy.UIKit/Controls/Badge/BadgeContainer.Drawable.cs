@@ -9,7 +9,7 @@ public partial class BadgeContainer
             return;
         canvas.SaveState();
         canvas.Antialias = true;
-        canvas.DrawPath(this.GetClipPath(dirtyRect));
+        canvas.ClipPath(this.GetClipPath(dirtyRect));
         canvas.DrawBackground(this, dirtyRect);
         canvas.DrawText(this, dirtyRect);
         canvas.ResetState();
