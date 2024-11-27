@@ -10,13 +10,17 @@
     x:DataType="uiTest:MainPageViewModel">
 
     <ScrollView>
-        <VerticalStackLayout Padding="30,0" Spacing="25">
+        <VerticalStackLayout Padding="30,0"
+                             Spacing="25">
 
-            <uiKit:Avatar Source="dotnet_bot.png"></uiKit:Avatar>
 
-            <!-- <uiKit:Badge Text="99+"> -->
-            <!--     <Label Text="badfsfsadfsdfefgsefsdge" /> -->
-            <!-- </uiKit:Badge> -->
+
+            <uiKit:Badge Text="999+">
+                <uiKit:Avatar Source="dotnet_bot.png"></uiKit:Avatar>
+            </uiKit:Badge>
+            <uiKit:Badge Text="hello world">
+                <uiKit:Button Text="click"></uiKit:Button>
+            </uiKit:Badge>
             <!-- -->
             <!-- <uiKit:Badge Text="99+"> -->
             <!--     <uiKit:Icon IconData="{Static icon:Material.Settings}" /> -->

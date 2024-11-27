@@ -60,9 +60,8 @@ public partial class Avatar
                 canvas.DrawImage(image, dirtyRect.X, dirtyRect.Y, dirtyRect.Width, dirtyRect.Height);
 
 
-#endif
-
-            var imageSourceServiceProvider =
+#elif MACCATALYST
+         var imageSourceServiceProvider =
                 Handler.MauiContext.Services.GetRequiredService<IImageSourceServiceProvider>();
 
             if (imageSourceServiceProvider is null)
@@ -79,6 +78,9 @@ public partial class Avatar
             var stream = (uiimage.Value.AsPNG()?.AsStream()) ?? throw new NullReferenceException();
             image = PlatformImage.FromStream(stream);
             canvas.DrawImage(image, dirtyRect.X, dirtyRect.Y, dirtyRect.Width, dirtyRect.Height);
+#endif
+
+
 
         }
 

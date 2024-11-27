@@ -1,9 +1,11 @@
-﻿using Fantasy.UIKit.Controls.Bases;
+﻿using System.ComponentModel;
+using Fantasy.UIKit.Controls.Bases;
 
 namespace Fantasy.UIKit;
 
 public partial class BadgeContainer : VisualBase, ITextElement, IFontElement
 {
+
     public static readonly BindableProperty TextProperty = ITextElement.TextProperty;
 
     public string Text

@@ -7,29 +7,35 @@
     xmlns:view="clr-namespace:Fantasy.UIKit">
 
     <Style TargetType="view:Badge">
-        <Setter Property="HorizontalOptions" Value="Center" />
-        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="HorizontalOptions"
+                Value="Center"/>
+        <Setter Property="VerticalOptions"
+                Value="Center"/>
         <Setter Property="ControlTemplate">
             <Setter.Value>
                 <ControlTemplate>
                     <AbsoluteLayout x:Name="PART_Root">
-                        <ContentPresenter Padding="{TemplateBinding Padding}" Content="{TemplateBinding Content}" />
+                        <ContentPresenter Padding="{TemplateBinding Padding}"
+                                          Content="{TemplateBinding Content}"/>
                         <view:BadgeContainer
                             x:Name="PART_Container"
                             AbsoluteLayout.LayoutFlags="PositionProportional"
                             BackgroundColor="{TemplateBinding BackgroundColor}"
-                            CornerRadiusShape="Full"
+                            CornerRadiusShape="Small"
                             FontSize="10"
                             ForegroundColor="{TemplateBinding ForegroundColor}"
-                            Text="{TemplateBinding Text}" />
+                            Text="{TemplateBinding Text}"/>
                     </AbsoluteLayout>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style x:Key="DefaultBadgeStyle" TargetType="view:Badge">
-        <Setter Property="BackgroundColor" Value="Red" />
-        <Setter Property="ForegroundColor" Value="White" />
+    <Style x:Key="DefaultBadgeStyle"
+           TargetType="view:Badge">
+        <Setter Property="BackgroundColor"
+                Value="Red"/>
+        <Setter Property="ForegroundColor"
+                Value="White"/>
     </Style>
 </ResourceDictionary>
