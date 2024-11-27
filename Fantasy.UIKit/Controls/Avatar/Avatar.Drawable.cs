@@ -1,6 +1,4 @@
-﻿using Android.Graphics;
-using Android.Graphics.Drawables;
-using Microsoft.Maui.Graphics.Platform;
+﻿using Microsoft.Maui.Graphics.Platform;
 using IImage = Microsoft.Maui.Graphics.IImage;
 using RectF = Microsoft.Maui.Graphics.RectF;
 
@@ -11,6 +9,8 @@ using Windows.Storage.Streams;
 
 #elif MACCATALYST
 #elif ANDROID
+using Android.Graphics;
+using Android.Graphics.Drawables;
 #else
 #endif
 
