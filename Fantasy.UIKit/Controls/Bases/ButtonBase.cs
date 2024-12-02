@@ -6,17 +6,17 @@ public abstract class ButtonBase : VisualBase, ICommandElement, IForegroundEleme
 {
     protected ButtonBase()
     {
-        this.Clicked += OnClicked;
+        Clicked += OnClicked;
     }
 
     private void OnClicked(object? sender, TouchEventArgs e)
     {
-        if (this.Command is null)
+        if (Command is null)
             return;
 
-        if (this.Command.CanExecute(this.CommandParameter))
+        if (Command.CanExecute(CommandParameter))
         {
-            Command.Execute(this.CommandParameter);
+            Command.Execute(CommandParameter);
         }
     }
 
@@ -36,6 +36,7 @@ public abstract class ButtonBase : VisualBase, ICommandElement, IForegroundEleme
         set => SetValue(CommandProperty, value);
     }
 
+
     public object CommandParameter
     {
         get => GetValue(CommandProperty);
@@ -44,8 +45,8 @@ public abstract class ButtonBase : VisualBase, ICommandElement, IForegroundEleme
 
     protected override void ChangeVisualState()
     {
-        this.IsVisualStateChanging = true;
-        var state = this.ViewState switch
+        IsVisualStateChanging = true;
+        var state = ViewState switch
         {
             ElementState.Normal => "normal",
             ElementState.Hovered => "hovered",
@@ -55,8 +56,8 @@ public abstract class ButtonBase : VisualBase, ICommandElement, IForegroundEleme
         };
 
         VisualStateManager.GoToState(this, state);
-        this.IsVisualStateChanging = false;
-        this.Invalidate();
-        this.InvalidateMeasure();
+        IsVisualStateChanging = false;
+        Invalidate();
+        InvalidateMeasure();
     }
 }

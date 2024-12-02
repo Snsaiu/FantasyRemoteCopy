@@ -21,6 +21,10 @@
             <uiKit:Badge Text="hello world">
                 <uiKit:Button Text="click"></uiKit:Button>
             </uiKit:Badge>
+
+            <Button>
+                
+            </Button>
             <!-- -->
             <!-- <uiKit:Badge Text="99+"> -->
             <!--     <uiKit:Icon IconData="{Static icon:Material.Settings}" /> -->

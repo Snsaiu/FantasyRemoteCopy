@@ -1,10 +1,11 @@
-﻿using System.ComponentModel;
+﻿using Fantasy.UIKit.Controls.Bases;
+
+using System.ComponentModel;
 
 namespace Fantasy.UIKit
 {
     [ContentProperty(nameof(Content))]
-    public class Badge : TemplatedView, IContentElement,
-        IBackgroundElement, ITextElement, IFontElement
+    public class Badge : ContainerBase, ITextElement, IFontElement
     {
         private AbsoluteLayout PART_Root;
 
@@ -25,13 +26,6 @@ namespace Fantasy.UIKit
             VisualDiagnostics.OnChildAdded(this, PART_Root);
         }
 
-        public new Color BackgroundColor
-        {
-            get => (Color)GetValue(BackgroundColorProperty);
-            set => SetValue(BackgroundColorProperty, value);
-        }
-
-        public static readonly BindableProperty BackgroundColorProperty = IBackgroundElement.BackgroundColorProperty;
 
         protected override void OnBindingContextChanged()
         {
@@ -52,25 +46,8 @@ namespace Fantasy.UIKit
 
         public static readonly BindableProperty ForegroundColorProperty = IForegroundElement.ForegroundColorProperty;
 
-        public View Content
-        {
-            get => (View)GetValue(ContentProperty);
-            set => SetValue(ContentProperty, value);
-        }
 
-        public static readonly BindableProperty ContentProperty = IContentElement.ContentProperty;
-
-        public ElementState ViewState { get; set; } = ElementState.Normal;
-
-        public bool Enable
-        {
-            get => (bool)GetValue(EnableProperty);
-            set => SetValue(EnableProperty, value);
-        }
-
-        public static readonly BindableProperty EnableProperty = IUIKitElement.EnableProperty;
-
-        void IUIKitElement.OnPropertyChanged()
+        protected override void OnPropertyChanged()
         {
             var size = this.GetStringSize();
 
@@ -81,12 +58,6 @@ namespace Fantasy.UIKit
             InvalidateMeasure();
         }
 
-        [TypeConverter(typeof(CornerRadiusShapeConverter))]
-        public CornerRadiusShape CornerRadiusShape
-        {
-            get => (CornerRadiusShape)GetValue(ICornerRadiusShapeElement.CornerRadiusShapeProperty);
-            set => SetValue(ICornerRadiusShapeElement.CornerRadiusShapeProperty, value);
-        }
 
         public static readonly BindableProperty TextProperty = ITextElement.TextProperty;
 

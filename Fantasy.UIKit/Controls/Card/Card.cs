@@ -1,4 +1,4 @@
-
+using Fantasy.UIKit.Controls.Bases;
 
 using System.ComponentModel;
 using System.Windows.Input;
@@ -6,30 +6,30 @@ using System.Windows.Input;
 namespace Fantasy.UIKit;
 
 [ContentProperty(nameof(Content))]
-public class Card : TemplatedView, IBackgroundElement, IBorderElement, ICommandElement
+public class Card : ContainerBase, IBackgroundElement, IBorderElement, ICommandElement
 {
-    public static readonly BindableProperty ContentProperty = IContentElement.ContentProperty;
-
-    public View Content
+    public Card()
     {
-        get => (View)GetValue(ContentProperty);
-        set => SetValue(ContentProperty, value);
     }
 
-    public static readonly BindableProperty CornerRadiusShapeProperty = ICornerRadiusShapeElement.CornerRadiusShapeProperty;
-
-    [TypeConverter(typeof(CornerRadiusShapeConverter))]
-    public CornerRadiusShape CornerRadiusShape { get => (CornerRadiusShape)GetValue(CornerRadiusShapeProperty); set => SetValue(CornerRadiusShapeProperty, value); }
-
-    public ElementState ViewState { get; set; }
-    public bool Enable { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public Color BorderColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int BorderThickness { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public ICommand Command { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public object CommandParameter { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-    public void OnPropertyChanged()
+    protected override void OnPropertyChanged()
     {
-        InvalidateMeasure();
+        throw new NotImplementedException();
+    }
+
+    public static readonly BindableProperty CommandProperty = ICommandElement.CommandProperty;
+
+    public ICommand Command
+    {
+        get => (ICommand)GetValue(CommandProperty);
+        set => SetValue(CommandProperty, value);
+    }
+
+    public static readonly BindableProperty CommandParameterProperty = ICommandElement.CommandParameterProperty;
+
+    public object CommandParameter
+    {
+        get => GetValue(CommandParameterProperty);
+        set => SetValue(CommandParameterProperty, value);
     }
 }
