@@ -1,17 +1,48 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<div >
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+    <FluentLayout >
+        <FluentStack Orientation="@Orientation">
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+            <FluentNavMenu Collapsible="true" Expanded="false"> 
+                <FluentNavLink Href="/">Home</FluentNavLink>
+                <FluentNavLink Href="/counter">counter</FluentNavLink>
+            </FluentNavMenu>
+            <FluentBodyContent>
+                @Body
+            </FluentBodyContent>
+        </FluentStack>
+
+
+
+
+
+    </FluentLayout>
 </div>
+<FluentToastProvider />
+<FluentDialogProvider />
+<FluentTooltipProvider />
+<FluentMessageBarProvider />
+<FluentMenuProvider />
+
+@code{
+    [Parameter]
+    public Orientation Orientation{ get; set; }
+
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (DeviceInfo.Current.Idiom == DeviceIdiom.Desktop || DeviceInfo.Current.Idiom == DeviceIdiom.Tablet)
+        {
+            Orientation = Orientation.Horizontal;
+        }
+        else
+        {
+            Orientation = Orientation.Vertical;
+        }
+       
+    }
+}

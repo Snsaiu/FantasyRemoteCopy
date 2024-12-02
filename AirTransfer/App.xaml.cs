@@ -10,7 +10,7 @@
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new MainPage()) { Title = "AirTransfer", Width = 400, Height = 600 };
+            return new Window(new MainPage()) { Title = "AirTransfer" };
         }
     }
 }
