@@ -1,12 +1,12 @@
 ﻿@inherits LayoutComponentBase
 
-<div >
+<div>
 
-    <FluentLayout >
+    <FluentLayout>
         <FluentStack Orientation="@Orientation">
 
-            <FluentNavMenu Collapsible="true" Expanded="false"> 
-                <FluentNavLink Href="/">Home</FluentNavLink>
+            <FluentNavMenu Collapsible="true" Expanded="false">
+                <FluentNavLink Href="/home">Home</FluentNavLink>
                 <FluentNavLink Href="/counter">counter</FluentNavLink>
             </FluentNavMenu>
             <FluentBodyContent>
@@ -15,21 +15,16 @@
         </FluentStack>
 
 
-
-
-
     </FluentLayout>
 </div>
-<FluentToastProvider />
-<FluentDialogProvider />
-<FluentTooltipProvider />
-<FluentMessageBarProvider />
-<FluentMenuProvider />
+<FluentToastProvider/>
+<FluentDialogProvider/>
+<FluentTooltipProvider/>
+<FluentMessageBarProvider/>
+<FluentMenuProvider/>
 
 @code{
-    [Parameter]
-    public Orientation Orientation{ get; set; }
-
+    [Parameter] public Orientation Orientation { get; set; }
 
 
     protected override void OnInitialized()
@@ -43,6 +38,6 @@
         {
             Orientation = Orientation.Vertical;
         }
-       
     }
+
 }

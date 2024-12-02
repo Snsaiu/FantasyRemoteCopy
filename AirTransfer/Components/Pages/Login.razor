@@ -1,0 +1,8 @@
+@layout EmptyLayout
+
+@page "/"
+@using AirTransfer.Components.Layout
+
+<FluentTextField TextFieldType="TextFieldType.Text" Value="@LoginName"></FluentTextField>
+<FluentTextField TextFieldType="TextFieldType.Text" Value="@DeviceName"></FluentTextField>
+<FluentButton OnClick="LoginAsync">click</FluentButton>
