@@ -61,12 +61,15 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="FantasyResultModel" Version="1.0.0" />
         <PackageReference Include="Microsoft.Fast.Components.FluentUI" Version="3.8.0" />
         <PackageReference Include="Microsoft.Fast.Components.FluentUI.Emojis" Version="3.6.0" />
         <PackageReference Include="Microsoft.Fast.Components.FluentUI.Icons" Version="3.8.0" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="9.0.10" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
     </ItemGroup>
 
 </Project>

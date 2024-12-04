@@ -3,6 +3,10 @@
 @page "/"
 @using AirTransfer.Components.Layout
 
-<FluentTextField TextFieldType="TextFieldType.Text" Value="@LoginName"></FluentTextField>
-<FluentTextField TextFieldType="TextFieldType.Text" Value="@DeviceName"></FluentTextField>
-<FluentButton OnClick="LoginAsync">click</FluentButton>
+
+<FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center">
+
+    <FluentTextField Label="用户名" TextFieldType="TextFieldType.Text" @bind-Value="@LoginName"></FluentTextField>
+    <FluentTextField Label="设备名" TextFieldType="TextFieldType.Text" @bind-Value="@DeviceName"></FluentTextField>
+    <FluentButton OnClick="LoginAsync">登录</FluentButton>
+</FluentStack>
