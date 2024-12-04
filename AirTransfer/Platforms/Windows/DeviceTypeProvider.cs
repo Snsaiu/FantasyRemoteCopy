@@ -1,8 +1,9 @@
 using AirTransfer.Interfaces;
 
-using Device = FantasyRemoteCopy.UI.Enums.Device;
+using Device = AirTransfer.Enums.Device;
 
 namespace AirTransfer;
+
 public sealed class DeviceTypeProvider : IDeviceType
 {
     public Device Device { get; } = Device.Desktop;
