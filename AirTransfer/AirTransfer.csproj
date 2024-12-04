@@ -61,6 +61,40 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Remove="Platforms\Windows\DefaultLocalIp.cs" />
+      <Compile Remove="Platforms\Windows\DefaultOpenFolder.cs" />
+      <Compile Remove="Platforms\Windows\DefaultScanLocalNetIp.cs" />
+      <Compile Remove="Platforms\Windows\DeviceTypeProvider.cs" />
+      <Compile Remove="Platforms\Windows\FileSavePath.cs" />
+      <Compile Remove="Platforms\Windows\GlobalScan.cs" />
+      <Compile Remove="Platforms\Windows\HttpsSendText.cs" />
+      <Compile Remove="Platforms\Windows\LocalNetDeviceDiscovery.cs" />
+      <Compile Remove="Platforms\Windows\LocalNetInviteDevice.cs" />
+      <Compile Remove="Platforms\Windows\LocalNetJoinProcess.cs" />
+      <Compile Remove="Platforms\Windows\LocalNetJoinRequest.cs" />
+      <Compile Remove="Platforms\Windows\OpenFileProvider.cs" />
+      <Compile Remove="Platforms\Windows\SystemTypeProvider.cs" />
+      <Compile Remove="Platforms\Windows\TcpLoopListenContent.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="Platforms\Windows\DefaultLocalIp.cs" />
+      <None Include="Platforms\Windows\DefaultOpenFolder.cs" />
+      <None Include="Platforms\Windows\DefaultScanLocalNetIp.cs" />
+      <None Include="Platforms\Windows\DeviceTypeProvider.cs" />
+      <None Include="Platforms\Windows\FileSavePath.cs" />
+      <None Include="Platforms\Windows\GlobalScan.cs" />
+      <None Include="Platforms\Windows\HttpsSendText.cs" />
+      <None Include="Platforms\Windows\LocalNetDeviceDiscovery.cs" />
+      <None Include="Platforms\Windows\LocalNetInviteDevice.cs" />
+      <None Include="Platforms\Windows\LocalNetJoinProcess.cs" />
+      <None Include="Platforms\Windows\LocalNetJoinRequest.cs" />
+      <None Include="Platforms\Windows\OpenFileProvider.cs" />
+      <None Include="Platforms\Windows\SystemTypeProvider.cs" />
+      <None Include="Platforms\Windows\TcpLoopListenContent.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="FantasyResultModel" Version="1.0.0" />
         <PackageReference Include="Microsoft.Fast.Components.FluentUI" Version="3.8.0" />
         <PackageReference Include="Microsoft.Fast.Components.FluentUI.Emojis" Version="3.6.0" />
