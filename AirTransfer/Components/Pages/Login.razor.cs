@@ -1,25 +1,83 @@
+using AirTransfer.Interfaces;
+using AirTransfer.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Fast.Components.FluentUI;
 
 namespace AirTransfer.Components.Pages;
 
 public partial class Login : ComponentBase
 {
-    [Parameter] public string? LoginName { get; set; }
+    #region MyRegion
 
-    [Parameter] public string? DeviceName { get; set; }
+    [Parameter] public string? UserName { get; set; }
+
+    [Parameter] public string? DeviceNiceName { get; set; }
+
+    [Parameter] public bool IsBusy { get; set; }
+
+    #endregion Parameters
 
 
-    [Inject] private NavigationManager NavigationManager { get; set; }
+    #region Injects
 
-    private Task LoginAsync()
+    [Inject] private NavigationManager? NavigationManager { get; set; }
+
+    [Inject] private IUserService? UserService { get; set; }
+
+
+    [Inject] private IDialogService? DialogService { get; set; }
+
+    #endregion
+
+    protected override async Task OnInitializedAsync()
     {
-        if (string.IsNullOrWhiteSpace(LoginName) || string.IsNullOrWhiteSpace(DeviceName))
+        if (UserService is null)
+            throw new NullReferenceException();
+        try
         {
-            return Task.CompletedTask;
+            this.IsBusy = true;
+            var userResult = await UserService.GetCurrentUserAsync();
+            if (userResult.Ok)
+            {
+                NavigationManager?.NavigateTo("/home");
+            }
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    /// <summary>
+    /// 登陆
+    /// </summary>
+    /// <exception cref="NullReferenceException"></exception>
+    private async Task LoginAsync()
+    {
+        if (string.IsNullOrWhiteSpace(UserName))
+        {
+            DialogService?.ShowError("用户名称不能为空", "错误");
+            return;
         }
 
-        this.NavigationManager.NavigateTo($"/home");
+        if (string.IsNullOrWhiteSpace(DeviceNiceName))
+        {
+            DialogService?.ShowError("设备昵称不能为空", "错误");
+            return;
+        }
 
-        return Task.CompletedTask;
+        if (UserService is null)
+            throw new NullReferenceException(nameof(UserService));
+        this.IsBusy = true;
+        try
+        {
+            await UserService.SaveUserAsync(new UserInfo() { Name = UserName, DeviceNickName = DeviceNiceName });
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+
+        NavigationManager?.NavigateTo($"/home");
     }
 }

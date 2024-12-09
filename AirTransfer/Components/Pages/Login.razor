@@ -3,10 +3,12 @@
 @page "/"
 @using AirTransfer.Components.Layout
 
+<FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center"
+             VerticalAlignment="VerticalAlignment.Center">
 
-<FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center">
-
-    <FluentTextField Label="用户名" TextFieldType="TextFieldType.Text" @bind-Value="@LoginName"></FluentTextField>
-    <FluentTextField Label="设备名" TextFieldType="TextFieldType.Text" @bind-Value="@DeviceName"></FluentTextField>
-    <FluentButton OnClick="LoginAsync">登录</FluentButton>
+    <FluentTextField Label="鐢ㄦ埛鍚嶇О" TextFieldType="TextFieldType.Text" @bind-Value="@UserName"></FluentTextField>
+    <FluentTextField Label="璁惧鏄电О" TextFieldType="TextFieldType.Text"
+                     @bind-Value="@DeviceNiceName"></FluentTextField>
+    <FluentButton OnClick="LoginAsync">鐧婚檰</FluentButton>
+    <FluentProgressRing Visible="@IsBusy"></FluentProgressRing>
 </FluentStack>
