@@ -5,9 +5,10 @@
     <FluentLayout>
         <FluentStack Orientation="@Orientation">
 
-            <FluentNavMenu Collapsible="true" Expanded="false">
-                <FluentNavLink Href="/home">Home</FluentNavLink>
+            <FluentNavMenu Width="@Width" Collapsible="true" Expanded="false">
+                <FluentNavLink Href="/home">主页</FluentNavLink>
                 <FluentNavLink Href="/counter">counter</FluentNavLink>
+                <FluentNavLink Href="/setting">设置</FluentNavLink>
             </FluentNavMenu>
             <FluentBodyContent>
                 @Body
@@ -27,6 +28,7 @@
 
 @code{
     [Parameter] public Orientation Orientation { get; set; }
+    [Parameter] public int? Width { get; set; }
 
 
     protected override void OnInitialized()
@@ -35,6 +37,7 @@
         if (DeviceInfo.Current.Idiom == DeviceIdiom.Desktop || DeviceInfo.Current.Idiom == DeviceIdiom.Tablet)
         {
             Orientation = Orientation.Horizontal;
+            Width = 200;
         }
         else
         {
