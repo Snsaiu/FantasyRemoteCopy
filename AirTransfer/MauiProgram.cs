@@ -1,7 +1,8 @@
 ﻿using AirTransfer.Interfaces;
 using AirTransfer.Interfaces.Impls.Configs;
 using Microsoft.Extensions.Logging;
-using Microsoft.Fast.Components.FluentUI;
+using Microsoft.FluentUI.AspNetCore.Components;
+
 
 namespace AirTransfer
 {

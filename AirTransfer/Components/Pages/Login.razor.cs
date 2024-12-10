@@ -1,7 +1,7 @@
 using AirTransfer.Interfaces;
 using AirTransfer.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Fast.Components.FluentUI;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace AirTransfer.Components.Pages;
 

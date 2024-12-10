@@ -1,22 +1,26 @@
-﻿@inherits LayoutComponentBase
+﻿
+@inherits LayoutComponentBase
 
 <div>
 
-    <FluentLayout>
-        <FluentStack Orientation="@Orientation">
+   
+    <FluentStack Orientation="@Orientation">
 
-            <FluentNavMenu Width="@Width" Collapsible="true" Expanded="false">
-                <FluentNavLink Href="/home">主页</FluentNavLink>
-                <FluentNavLink Href="/counter">counter</FluentNavLink>
-                <FluentNavLink Href="/setting">设置</FluentNavLink>
-            </FluentNavMenu>
-            <FluentBodyContent>
-                @Body
-            </FluentBodyContent>
-        </FluentStack>
+        <FluentAppBar>
+            <FluentAppBarItem Href="/home" Text="主页"></FluentAppBarItem>
+            <FluentAppBarItem Href="/setting" Text="设置"></FluentAppBarItem>
+        </FluentAppBar>
+        @* <FluentNavMenu Width="@Width" Collapsible="true" Expanded="false"> *@
+        @*     <FluentNavLink Href="/home">主页</FluentNavLink> *@
+        @*     <FluentNavLink Href="/counter">counter</FluentNavLink> *@
+        @*     <FluentNavLink Href="/setting">设置</FluentNavLink> *@
+        @* </FluentNavMenu> *@
+
+        @Body
+
+    </FluentStack>
 
 
-    </FluentLayout>
 </div>
 
 <FluentToastProvider/>
