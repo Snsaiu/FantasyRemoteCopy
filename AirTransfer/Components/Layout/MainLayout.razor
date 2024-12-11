@@ -11,8 +11,9 @@
         @if (orientation == Orientation.Horizontal)
         {
             <FluentAppBar Orientation="Orientation.Vertical" Style="height: 100vh;">
-                <FluentAppBarItem Href="/home" IconRest="@(new Size20.Home())" Text="主页"></FluentAppBarItem>
-                <FluentAppBarItem Href="/setting" IconRest="@(new Size20.Settings())" Text="设置"></FluentAppBarItem>
+                <FluentAppBarItem Href="/home" IconRest="@(new Size32.Home())" Text="主页"></FluentAppBarItem>
+                <FluentAppBarItem Href="/history" IconRest="@(new Size32.History())" Text="历史"></FluentAppBarItem>
+                <FluentAppBarItem Href="/setting" IconRest="@(new Size32.Settings())" Text="设置"></FluentAppBarItem>
             </FluentAppBar>
             <FluentBodyContent>
                 @Body
