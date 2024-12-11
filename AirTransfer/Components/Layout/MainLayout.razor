@@ -25,12 +25,22 @@
             </FluentBodyContent>
 
 
-            <FluentAppBar Orientation="Orientation.Horizontal" Style="width: 100%">
-                <FluentGrid Style="width: 100%;" Justify="JustifyContent.SpaceBetween">
+            <FluentAppBar Orientation="Orientation.Horizontal"
+                          Style="width: 100%;">
+                <FluentGrid Style="width: 100%;background-color: rgba(213,213,213,0.32)"
+                            Justify="JustifyContent.SpaceAround">
                     <FluentGridItem sm="6">
-                        <FluentAppBarItem Style="width: 100%" Href="/home" IconRest="@(new Size20.Home())"
+                        <FluentAppBarItem Style="width: 100%;" Href="/home"
+                                          IconRest="@(new Size20.Home())"
                                           Text="主页"></FluentAppBarItem>
                     </FluentGridItem>
+
+                    <FluentGridItem sm="6">
+                        <FluentAppBarItem Style="width: 100%;" Href="/home"
+                                          IconRest="@(new Size20.History())"
+                                          Text="历史"></FluentAppBarItem>
+                    </FluentGridItem>
+
                     <FluentGridItem sm="6">
                         <FluentAppBarItem Style="width: 100%" Href="/setting" IconRest="@(new Size20.Settings())"
                                           Text="设置"></FluentAppBarItem>
@@ -60,14 +70,14 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-// if (DeviceInfo.Current.Idiom == DeviceIdiom.Desktop || DeviceInfo.Current.Idiom == DeviceIdiom.Tablet)
-// {
-//     orientation = Orientation.Horizontal;
-// }
-// else
-// {
-//     orientation = Orientation.Vertical;
-// }
+        if (DeviceInfo.Current.Idiom == DeviceIdiom.Desktop || DeviceInfo.Current.Idiom == DeviceIdiom.Tablet)
+        {
+            orientation = Orientation.Horizontal;
+        }
+        else
+        {
+            orientation = Orientation.Vertical;
+        }
     }
 
 }
