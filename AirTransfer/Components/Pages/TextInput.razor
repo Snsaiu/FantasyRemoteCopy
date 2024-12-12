@@ -1,0 +1,19 @@
+@page "/Home/TextInput"
+
+<div>
+
+    <FluentStack Orientation="Orientation.Vertical">
+        <FluentTextArea Rows="20" Resize="TextAreaResize.Vertical" Label="输入文本：" @bind-Value="Text"
+                        Placeholder="请输入要发送的文本内容:" Autofocus="true"
+                        Style="width: 100%;"></FluentTextArea>
+
+        <FluentSpacer></FluentSpacer>
+        <FluentButton Style="width: 100%" OnClick="this.SubmitCommand">确定</FluentButton>
+    </FluentStack>
+
+</div>
+
+
+@code {
+
+}

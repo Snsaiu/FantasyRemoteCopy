@@ -1,17 +1,39 @@
-﻿@page "/home"
+﻿@page "/Home"
+@page "/Home/{text}"
 @using Microsoft.FluentUI.AspNetCore.Components.Icons.Filled
 
 <div>
 
-    <FluentGrid Spacing="5">
+    <FluentGrid Spacing="0" Justify="JustifyContent.Center">
         <FluentGridItem xs="12">
             <FluentCard Style="width: 100%">
-                <FluentStack Orientation="Orientation.Horizontal">
-                    <FluentPersona Name="Saiu" Status="PresenceStatus.Available"
+                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Stretch"
+                >
+                    <FluentPersona Status="PresenceStatus.Available"
                                    StatusSize="PresenceBadgeSize.Large"
                                    Image="images/h.jpg" ImageSize="80px"></FluentPersona>
+                    <FluentStack Orientation="Orientation.Vertical" Style="height: 100%">
+                        <FluentLabel Alignment="HorizontalAlignment.Start" Style="margin-top: 20px;"
+                                     Typo="Typography.H5">Saiu
+                        </FluentLabel>
+                        <FluentLabel Alignment="HorizontalAlignment.Start" Typo="Typography.H6">my device</FluentLabel>
+                    </FluentStack>
+                    <FluentSpacer></FluentSpacer>
+                    <FluentButton Style="margin-right: 10px; margin-top: 10px;"
+                                  IconStart="@(new Size32.Search())"></FluentButton>
                 </FluentStack>
             </FluentCard>
         </FluentGridItem>
+        <FluentGridItem xs="4">
+            <FluentButton Style="width: 100%" OnClick="this.GotoTextInputPage">文本</FluentButton>
+        </FluentGridItem>
+        <FluentGridItem xs="4">
+            <FluentButton Style="width: 100%">文件</FluentButton>
+        </FluentGridItem>
+        <FluentGridItem xs="4">
+            <FluentButton Style="width: 100%">文件夹</FluentButton>
+        </FluentGridItem>
+
     </FluentGrid>
+    <FluentLabel>@Text</FluentLabel>
 </div>
