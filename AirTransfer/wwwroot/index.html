@@ -25,7 +25,14 @@
     </div>
     <script src="_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js" type="module" async></script>
     <script src="_framework/blazor.webview.js" autostart="false"></script>
-<script src="_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js" type="module" async></script>
+    <script src="_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js" type="module" async></script>
+<script>
+        document.addEventListener('wheel', function (event) {
+            if (event.ctrlKey) {
+                event.preventDefault(); // 禁止缩放
+            }
+        }, { passive: false });
+    </script>
 </body>
 
 </html>
