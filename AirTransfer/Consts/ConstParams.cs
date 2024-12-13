@@ -11,9 +11,14 @@ public static class ConstParams
 
     public static readonly int TCP_PORT = 5978;
 
+    public static class StateManagerKeys
+    {
+        public static readonly string ListenKey = "listen";
+    }
+
     public static string SaveFilePath()
     {
-        string path = string.Empty;
+        var path = string.Empty;
 
 
 #if WINDOWS

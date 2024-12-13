@@ -1,5 +1,7 @@
 ﻿using AirTransfer.Interfaces;
+using AirTransfer.Interfaces.Impls;
 using AirTransfer.Interfaces.Impls.Configs;
+
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
 
@@ -25,6 +27,8 @@ namespace AirTransfer
 #endif
 
             builder.Services.AddSingleton<IUserService, ConfigUserService>();
+            builder.Services.AddSingleton<IStateManager, StateManager>();
+
 
             return builder.Build();
         }
