@@ -19,20 +19,22 @@ public partial class Home : ComponentBase
     [Parameter] public string Text { get; set; }
 
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         if (StateManager.ExistKey(ConstParams.StateManagerKeys.ListenKey))
         {
             var state = StateManager.GetState<bool>(ConstParams.StateManagerKeys.ListenKey);
-            if (state)
-                InitListenAsync();
+            if (!state)
+            {
+                StateManager.SetState(ConstParams.StateManagerKeys.ListenKey, true);
+                await InitListenAsync();
+            }
         }
         else
         {
             StateManager.SetState(ConstParams.StateManagerKeys.ListenKey, true);
-            InitListenAsync();
+            await InitListenAsync();
         }
-        return base.OnInitializedAsync();
 
     }
 

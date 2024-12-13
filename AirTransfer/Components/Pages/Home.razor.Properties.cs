@@ -48,7 +48,7 @@ public partial class Home
 
     private string UserName = string.Empty;
 
-    private ObservableCollection<DiscoveredDeviceModel> DiscoveredDevices;
+    [Parameter] public List<DiscoveredDeviceModel>? DiscoveredDevices { get; set; } = [];
 
     private string DeviceNickName = string.Empty;
 
