@@ -1,6 +1,4 @@
-using AirTransfer.Interfaces;
-
-namespace FantasyRemoteCopy.UI.Interfaces.Impls
+namespace AirTransfer.Interfaces.Impls.Configs
 {
     public class SendPortService : ISendPortService
     {

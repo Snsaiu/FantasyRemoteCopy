@@ -19,7 +19,7 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
-        MauiAppBuilder builder = MauiApp.CreateBuilder();
+        var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
             .ConfigureFonts(fonts =>
@@ -76,7 +76,7 @@ public static class MauiProgram
         builder.UseRegisterPage<TextInputPage, TextInputPageModel>();
 
         builder.UseRegisterPage<ListPage, ListPageModel>();
-       
+
         return builder.UseGetProvider().Build();
     }
 }

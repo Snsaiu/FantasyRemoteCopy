@@ -3,8 +3,6 @@ using System.Text;
 
 using AirTransfer.Models;
 
-using FantasyRemoteCopy.UI.Interfaces.Impls;
-
 using Newtonsoft.Json;
 
 namespace AirTransfer.Interfaces.Impls.TcpTransfer;

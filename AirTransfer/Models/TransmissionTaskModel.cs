@@ -1,7 +1,7 @@
 using AirTransfer.Enums;
 using AirTransfer.Interfaces;
 
-using FantasyRemoteCopy.UI.Interfaces;
+
 
 using Newtonsoft.Json;
 

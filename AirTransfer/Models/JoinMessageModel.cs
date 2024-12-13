@@ -1,6 +1,6 @@
 ﻿using AirTransfer.Enums;
 using AirTransfer.Interfaces;
-using FantasyRemoteCopy.UI.Interfaces;
+
 using Device = AirTransfer.Enums.Device;
 
 namespace AirTransfer.Models;
