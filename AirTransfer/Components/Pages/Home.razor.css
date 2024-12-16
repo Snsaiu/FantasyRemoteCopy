@@ -1,0 +1,9 @@
+.send-button {
+    position: fixed;
+    bottom: 0; /* 距离底部 0 */
+    left: 0; /* 距离左边 0 */
+    width: 100%; /* 占满宽度 */
+    background-color: #f1f1f1; /* 可选的背景色 */
+
+
+}

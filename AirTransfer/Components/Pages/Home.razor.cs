@@ -1,11 +1,8 @@
 using AirTransfer.Interfaces;
 using AirTransfer.Models;
-
 using FantasyRemoteCopy.UI.Consts;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
-
 using System.ComponentModel.Design;
 using AirTransfer.Enums;
 using CommunityToolkit.Maui.Storage;
@@ -15,8 +12,6 @@ namespace AirTransfer.Components.Pages;
 
 public partial class Home : ComponentBase
 {
-
-
     [Parameter] public string Text { get; set; }
 
 
@@ -36,12 +31,11 @@ public partial class Home : ComponentBase
             StateManager.SetState(ConstParams.StateManagerKeys.ListenKey, true);
             await InitListenAsync();
         }
-
     }
 
 
-
     #region Commands
+
     private void GotoTextInputPageCommand()
     {
         NavigationManager.NavigateTo("/Home/TextInput");
@@ -61,22 +55,28 @@ public partial class Home : ComponentBase
         };
     }
 
-
     #endregion
 
     #region Private Methods
 
-
     private void InitData()
     {
         DiscoveredDevices.Add(new DiscoveredDeviceModel
-        { Flag = "192.168.1.1", DeviceName = "my window", NickName = "�ҵ�windows", SystemType = Enums.SystemType.Windows });
+        {
+            Flag = "192.168.1.1", DeviceName = "my window", NickName = "�ҵ�windows",
+            SystemType = Enums.SystemType.Windows
+        });
         DiscoveredDevices.Add(new DiscoveredDeviceModel
-        { Flag = "192.168.1.2", DeviceName = "my macos", NickName = "�ҵ�mac", SystemType = Enums.SystemType.MacOS });
+        {
+            Flag = "192.168.1.2", DeviceName = "my macos", NickName = "�ҵ�mac", SystemType = Enums.SystemType.MacOS
+        });
         DiscoveredDevices.Add(new DiscoveredDeviceModel
-        { Flag = "192.168.1.2", DeviceName = "my ios", NickName = "�ҵ�iphone", SystemType = Enums.SystemType.IOS });
+            { Flag = "192.168.1.2", DeviceName = "my ios", NickName = "�ҵ�iphone", SystemType = Enums.SystemType.IOS });
         DiscoveredDevices.Add(new DiscoveredDeviceModel
-        { Flag = "192.168.1.2", DeviceName = "my android", NickName = "�ҵ�android", SystemType = Enums.SystemType.Android });
+        {
+            Flag = "192.168.1.2", DeviceName = "my android", NickName = "�ҵ�android",
+            SystemType = Enums.SystemType.Android
+        });
     }
 
 
@@ -113,8 +113,8 @@ public partial class Home : ComponentBase
                 ? new SendCompressFileModel(localIp, targetIp, InformationModel.FolderPath, port)
                 : InformationModel.SendType == SendType.File
                     ? InformationModel.Files.Count() == 1
-                                    ? new SendFileModel(localIp, targetIp, InformationModel.Files.First(), port)
-                                    : new SendCompressFileModel(localIp, targetIp, InformationModel.Files, port)
+                        ? new SendFileModel(localIp, targetIp, InformationModel.Files.First(), port)
+                        : new SendCompressFileModel(localIp, targetIp, InformationModel.Files, port)
                     : throw new NotSupportedException();
             await TcpSendFileBase.SendAsync(sendfile, ReportProgress(true, taskId), token);
         }
@@ -135,7 +135,7 @@ public partial class Home : ComponentBase
                 return;
             if (isSendModel)
             {
-                Logger.LogInformation($"�������ݵ�{flag.Flag} ����Ϊ{flag.Progress}");
+                // Logger.LogInformation($"�������ݵ�{flag.Flag} ����Ϊ{flag.Progress}");
                 if (x.Progress >= 1)
                 {
                     flag.WorkState = WorkState.None;
@@ -149,7 +149,7 @@ public partial class Home : ComponentBase
             }
             else
             {
-                Logger.LogInformation($"��������{flag.Flag} ����Ϊ{flag.Progress}");
+                // Logger.LogInformation($"��������{flag.Flag} ����Ϊ{flag.Progress}");
                 if (x.Progress >= 1)
                 {
                     flag.WorkState = WorkState.None;
@@ -185,16 +185,16 @@ public partial class Home : ComponentBase
         try
         {
             IsBusy = true;
-            await Task.Yield();
+
             DiscoveredDevices.Clear();
 
-            Logger.LogInformation("���ֱ���ip:{0}", localDevice.Flag);
+            // Logger.LogInformation("���ֱ���ip:{0}", localDevice.Flag);
 
             var devices = LocalIpScannerBase.GetDevicesAsync(default);
 
             await foreach (var device in devices)
             {
-                Logger.LogInformation("ͨ���豸����ɨ�赽��ip:{0}", device.Flag);
+                // Logger.LogInformation("ͨ���豸����ɨ�赽��ip:{0}", device.Flag);
 
                 await LocalNetInviteDeviceBase.SendAsync(
                     new DeviceDiscoveryMessage(UserName, localDevice.Flag, device.Flag) ??
@@ -204,7 +204,6 @@ public partial class Home : ComponentBase
         finally
         {
             IsBusy = false;
-            await Task.Yield();
         }
     }
 

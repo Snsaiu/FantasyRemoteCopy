@@ -16,7 +16,6 @@ public partial class Home
         try
         {
             IsBusy = true;
-
             var localIp = await DeviceLocalIpBase.GetLocalIpAsync();
             //设备发现 ，当有新的设备加入的时候产生回调
             StartDiscovery(localIp);
@@ -57,31 +56,31 @@ public partial class Home
     private void StartJoin()
     {
         var thread = new Thread(() =>
-        {
-            _ = LocalNetJoinProcessBase.ReceiveAsync(x =>
             {
-                Logger.LogInformation("接收到要加入的设备{0}", JsonConvert.SerializeObject(x));
-                if (x.Name != UserName)
-                    return;
+                _ = LocalNetJoinProcessBase.ReceiveAsync(x =>
+                {
+                    Logger.LogInformation("接收到要加入的设备{0}", JsonConvert.SerializeObject(x));
+                    if (x.Name != UserName)
+                        return;
 
-                if (DiscoveredDevices.Any(y => y.Flag == x.Flag)) return;
-                Logger.LogInformation("加入设备{0}", JsonConvert.SerializeObject(x));
-                DiscoveredDevices.Add(x);
-            }, default);
-        })
-        { IsBackground = true };
+                    if (DiscoveredDevices.Any(y => y.Flag == x.Flag)) return;
+                    Logger.LogInformation("加入设备{0}", JsonConvert.SerializeObject(x));
+                    DiscoveredDevices.Add(x);
+                }, default);
+            })
+            { IsBackground = true };
         thread.Start();
     }
 
     private void StartTcpListener()
     {
         var thread = new Thread(() =>
-        {
-            _ = TcpLoopListenContentBase.ReceiveAsync(CheckPortEnable, IPAddress.Any, ConstParams.TCP_PORT,
-                ReportProgress(false, string.Empty),
-                _cancelDownloadTokenSource.Token);
-        })
-        { IsBackground = true };
+            {
+                _ = TcpLoopListenContentBase.ReceiveAsync(CheckPortEnable, IPAddress.Any, ConstParams.TCP_PORT,
+                    ReportProgress(false, string.Empty),
+                    _cancelDownloadTokenSource.Token);
+            })
+            { IsBackground = true };
         thread.Start();
     }
 
@@ -119,7 +118,7 @@ public partial class Home
                         localDevice.Flag,
                         data.Flag,
                         port,
-            codeWord.SendType, localDevice, null).ToJson(),
+                        codeWord.SendType, localDevice, null).ToJson(),
                 ConstParams.TCP_PORT);
             Logger.LogInformation($"端口可用状态信息发送给{data.Flag}");
             if (!checkResult)
