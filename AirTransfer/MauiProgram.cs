@@ -4,6 +4,8 @@ using AirTransfer.Interfaces.Impls.Configs;
 using AirTransfer.Interfaces.Impls.TcpTransfer;
 using AirTransfer.Interfaces.Impls.UdpTransfer;
 
+using CommunityToolkit.Maui;
+
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
 
@@ -17,6 +19,7 @@ namespace AirTransfer
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts => { fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular"); });
 
 

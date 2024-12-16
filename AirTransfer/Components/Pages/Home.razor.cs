@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 
 using System.ComponentModel.Design;
 using AirTransfer.Enums;
+using CommunityToolkit.Maui.Storage;
 using FantasyResultModel;
 
 namespace AirTransfer.Components.Pages;
@@ -46,18 +47,48 @@ public partial class Home : ComponentBase
         NavigationManager.NavigateTo("/Home/TextInput");
     }
 
+
+    private async Task OpenFolderCommand()
+    {
+        var folerPicker = await FolderPicker.PickAsync(default);
+        if (!folerPicker.IsSuccessful)
+            return;
+
+        InformationModel = new InformationModel
+        {
+            SendType = SendType.Folder,
+            FolderPath = folerPicker.Folder.Path
+        };
+    }
+
+
     #endregion
 
     #region Private Methods
+
+
+    private void InitData()
+    {
+        DiscoveredDevices.Add(new DiscoveredDeviceModel
+        { Flag = "192.168.1.1", DeviceName = "my window", NickName = "我的windows", SystemType = Enums.SystemType.Windows });
+        DiscoveredDevices.Add(new DiscoveredDeviceModel
+        { Flag = "192.168.1.2", DeviceName = "my macos", NickName = "我的mac", SystemType = Enums.SystemType.MacOS });
+        DiscoveredDevices.Add(new DiscoveredDeviceModel
+        { Flag = "192.168.1.2", DeviceName = "my ios", NickName = "我的iphone", SystemType = Enums.SystemType.IOS });
+        DiscoveredDevices.Add(new DiscoveredDeviceModel
+        { Flag = "192.168.1.2", DeviceName = "my android", NickName = "我的android", SystemType = Enums.SystemType.Android });
+    }
+
 
     private async Task InitListenAsync()
     {
         await Init();
         await SetReceive();
+        InitData();
     }
 
 
-    public async Task Init()
+    private async Task Init()
     {
         var userRes = await UserService.GetCurrentUserAsync();
         UserName = userRes.Data.Name;

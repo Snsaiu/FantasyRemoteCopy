@@ -50,6 +50,8 @@ public partial class Home
 
     [Parameter] public List<DiscoveredDeviceModel>? DiscoveredDevices { get; set; } = [];
 
+
+
     private string DeviceNickName = string.Empty;
 
     private InformationModel? InformationModel;
