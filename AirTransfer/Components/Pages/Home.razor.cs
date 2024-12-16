@@ -70,13 +70,13 @@ public partial class Home : ComponentBase
     private void InitData()
     {
         DiscoveredDevices.Add(new DiscoveredDeviceModel
-        { Flag = "192.168.1.1", DeviceName = "my window", NickName = "ÎÒµÄwindows", SystemType = Enums.SystemType.Windows });
+        { Flag = "192.168.1.1", DeviceName = "my window", NickName = "ï¿½Òµï¿½windows", SystemType = Enums.SystemType.Windows });
         DiscoveredDevices.Add(new DiscoveredDeviceModel
-        { Flag = "192.168.1.2", DeviceName = "my macos", NickName = "ÎÒµÄmac", SystemType = Enums.SystemType.MacOS });
+        { Flag = "192.168.1.2", DeviceName = "my macos", NickName = "ï¿½Òµï¿½mac", SystemType = Enums.SystemType.MacOS });
         DiscoveredDevices.Add(new DiscoveredDeviceModel
-        { Flag = "192.168.1.2", DeviceName = "my ios", NickName = "ÎÒµÄiphone", SystemType = Enums.SystemType.IOS });
+        { Flag = "192.168.1.2", DeviceName = "my ios", NickName = "ï¿½Òµï¿½iphone", SystemType = Enums.SystemType.IOS });
         DiscoveredDevices.Add(new DiscoveredDeviceModel
-        { Flag = "192.168.1.2", DeviceName = "my android", NickName = "ÎÒµÄandroid", SystemType = Enums.SystemType.Android });
+        { Flag = "192.168.1.2", DeviceName = "my android", NickName = "ï¿½Òµï¿½android", SystemType = Enums.SystemType.Android });
     }
 
 
@@ -135,7 +135,7 @@ public partial class Home : ComponentBase
                 return;
             if (isSendModel)
             {
-                Logger.LogInformation($"·¢ËÍÊý¾Ýµ½{flag.Flag} ½ø¶ÈÎª{flag.Progress}");
+                Logger.LogInformation($"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½{flag.Flag} ï¿½ï¿½ï¿½ï¿½Îª{flag.Progress}");
                 if (x.Progress >= 1)
                 {
                     flag.WorkState = WorkState.None;
@@ -149,7 +149,7 @@ public partial class Home : ComponentBase
             }
             else
             {
-                Logger.LogInformation($"½ÓÊÕÊý¾Ý{flag.Flag} ½ø¶ÈÎª{flag.Progress}");
+                Logger.LogInformation($"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½{flag.Flag} ï¿½ï¿½ï¿½ï¿½Îª{flag.Progress}");
                 if (x.Progress >= 1)
                 {
                     flag.WorkState = WorkState.None;
@@ -178,7 +178,7 @@ public partial class Home : ComponentBase
     }
 
     /// <summary>
-    ///     Éè±¸·¢ÏÖ
+    ///     ï¿½è±¸ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     private async Task DeviceDiscoverAsync()
     {
@@ -188,13 +188,13 @@ public partial class Home : ComponentBase
             await Task.Yield();
             DiscoveredDevices.Clear();
 
-            Logger.LogInformation("·¢ÏÖ±¾µØip:{0}", localDevice.Flag);
+            Logger.LogInformation("ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ip:{0}", localDevice.Flag);
 
             var devices = LocalIpScannerBase.GetDevicesAsync(default);
 
             await foreach (var device in devices)
             {
-                Logger.LogInformation("Í¨¹ýÉè±¸·¢ÏÖÉ¨Ãèµ½µÄip:{0}", device.Flag);
+                Logger.LogInformation("Í¨ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½É¨ï¿½èµ½ï¿½ï¿½ip:{0}", device.Flag);
 
                 await LocalNetInviteDeviceBase.SendAsync(
                     new DeviceDiscoveryMessage(UserName, localDevice.Flag, device.Flag) ??
