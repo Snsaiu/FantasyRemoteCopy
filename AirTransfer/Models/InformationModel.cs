@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using AirTransfer.Enums;
 
 namespace AirTransfer.Models
 {
     public class InformationModel
     {
-
         public SendType SendType { get; set; }
 
         public string? Text { get; set; }
@@ -23,7 +21,8 @@ namespace AirTransfer.Models
         {
             SendType.Text => Text?[..Math.Min(Text.Length, 20)],
             SendType.Folder => FolderPath?[..Math.Min(FolderPath.Length, 20)],
-            SendType.File => string.Join(",", Files ?? throw new ArgumentNullException())[..Math.Min(string.Join(",", Files).Length, 20)],
+            SendType.File => string.Join(",", Files?.Select(Path.GetFileName) ?? throw new ArgumentNullException())[
+                ..Math.Min(string.Join(",", Files.Select((Path.GetFileName))).Length, 20)],
             _ => throw new NotImplementedException()
         };
     }

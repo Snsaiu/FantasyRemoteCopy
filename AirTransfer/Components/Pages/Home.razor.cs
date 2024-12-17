@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.Design;
 using AirTransfer.Enums;
+using AirTransfer.Extensions;
 using CommunityToolkit.Maui.Storage;
 using FantasyResultModel;
 
@@ -31,8 +32,8 @@ public partial class Home : PageComponentBase
             StateManager.SetState(ConstParams.StateManagerKeys.ListenKey, true);
             await InitListenAsync();
         }
-        InitData();
 
+        //  InitData();
     }
 
     protected override Task OnPageInitializedAsync(string? url, Dictionary<string, object>? data)
@@ -47,19 +48,57 @@ public partial class Home : PageComponentBase
                 SendType = SendType.Text
             };
         }
-        return Task.CompletedTask;
 
+        return Task.CompletedTask;
     }
+
     #endregion
 
 
     #region Commands
+
+    private async Task SendCommand()
+    {
+        // 首先向目标电脑发送一个端口用于检查是否可以使用该端口
+        foreach (var item in DiscoveredDevices)
+        {
+            if (!item.IsChecked)
+                continue;
+
+            var codeWord = CodeWordModel.CreateCodeWord(Guid.NewGuid().ToString("N"), CodeWordType.CheckingPort,
+                localDevice.Flag,
+                item.Flag, 5005,
+                InformationModel.SendType, localDevice, null);
+
+
+            var portCheckMessage = new SendTextModel(localDevice.Flag, item.Flag ?? throw new NullReferenceException(),
+                codeWord.ToJson(), ConstParams.TCP_PORT);
+            await TcpSendTextBase.SendAsync(portCheckMessage, null, default);
+        }
+    }
+
+    private void ClearInformationModelCommand()
+    {
+        this.InformationModel = null;
+    }
 
     private void GotoTextInputPageCommand()
     {
         NavigationManager.NavigateTo("/Home/TextInput");
     }
 
+    private async Task OpenFileCommand()
+    {
+        var files = await FilePicker.PickMultipleAsync();
+
+        if (!files.Any())
+            return;
+        InformationModel = new InformationModel
+        {
+            SendType = SendType.File,
+            Files = files.Select(x => x.FullPath)
+        };
+    }
 
     private async Task OpenFolderCommand()
     {
@@ -78,8 +117,6 @@ public partial class Home : PageComponentBase
 
     #region Private Methods
 
-
-
     private void InitData()
     {
         DiscoveredDevices.Add(new DiscoveredDeviceModel
@@ -97,7 +134,7 @@ public partial class Home : PageComponentBase
             SystemType = Enums.SystemType.MacOS
         });
         DiscoveredDevices.Add(new DiscoveredDeviceModel
-        { Flag = "192.168.1.2", DeviceName = "my ios", NickName = "�ҵ�iphone", SystemType = Enums.SystemType.IOS });
+            { Flag = "192.168.1.2", DeviceName = "my ios", NickName = "�ҵ�iphone", SystemType = Enums.SystemType.IOS });
         DiscoveredDevices.Add(new DiscoveredDeviceModel
         {
             Flag = "192.168.1.2",
@@ -112,7 +149,6 @@ public partial class Home : PageComponentBase
     {
         await Init();
         await SetReceive();
-
     }
 
 

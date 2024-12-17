@@ -17,7 +17,8 @@
                                          Typo="Typography.H5">
                                 Saiu
                             </FluentLabel>
-                            <FluentLabel Alignment="HorizontalAlignment.Start" Typo="Typography.H6">my device</FluentLabel>
+                            <FluentLabel Alignment="HorizontalAlignment.Start" Typo="Typography.H6">my device
+                            </FluentLabel>
                         </FluentStack>
                         <FluentSpacer></FluentSpacer>
                         <FluentButton Style="margin-right: 10px; margin-top: 10px;"
@@ -29,7 +30,7 @@
                 <FluentButton Style="width: 100%" OnClick="this.GotoTextInputPageCommand">文本</FluentButton>
             </FluentGridItem>
             <FluentGridItem xs="4">
-                <FluentButton Style="width: 100%">文件</FluentButton>
+                <FluentButton Style="width: 100%" OnClick="OpenFileCommand">文件</FluentButton>
             </FluentGridItem>
             <FluentGridItem xs="4">
                 <FluentButton Style="width: 100%" OnClick="this.OpenFolderCommand">文件夹</FluentButton>
@@ -39,10 +40,15 @@
             {
                 <FluentGridItem xs="12">
                     <FluentCard>
-                        <FluentStack HorizontalAlignment="HorizontalAlignment.Center" Orientation="Orientation.Vertical">
-                            <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+                        <FluentStack HorizontalAlignment="HorizontalAlignment.Center"
+                                     Orientation="Orientation.Vertical">
+                            <FluentStack Orientation="Orientation.Horizontal"
+                                         VerticalAlignment="VerticalAlignment.Center"
+                                         HorizontalAlignment="HorizontalAlignment.Center">
                                 <FluentBadge>@InformationModel.SendType </FluentBadge>
-                               <FluentBadge>@InformationModel.Summary</FluentBadge>
+                                <FluentBadge>@InformationModel.Summary</FluentBadge>
+                                <FluentButton IconStart="@(new Size16.Stop())"
+                                              OnClick="ClearInformationModelCommand"></FluentButton>
                             </FluentStack>
 
                             <FluentProgress Width="90%"></FluentProgress>
@@ -52,7 +58,8 @@
             }
 
             <FluentGridItem xs="12">
-                <FluentListbox Class="listbox" Style="overflow:hidden;outline:none;border:none" TOption="DiscoveredDeviceModel" Width="100%">
+                <FluentListbox Class="listbox" Style="overflow:hidden;outline:none;border:none"
+                               TOption="DiscoveredDeviceModel" Width="100%">
                     @foreach (var item in DiscoveredDevices)
                     {
                         <FluentCard Style="margin: 2px;">
@@ -112,7 +119,7 @@
     @if (InformationModel is not null && DiscoveredDevices is not null && DiscoveredDevices.Any(x => x.IsChecked))
     {
         <div class="bottom">
-            <FluentButton Style="width:100%">发送</FluentButton>
+            <FluentButton Style="width:100%" OnClick="SendCommand">发送</FluentButton>
         </div>
     }
 </div>
