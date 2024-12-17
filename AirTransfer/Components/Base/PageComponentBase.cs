@@ -64,7 +64,10 @@ public abstract class PageComponentBase : ComponentBase
     protected void NavigateTo(string uri, Dictionary<string, object> dataDictionary)
     {
         var currentPage = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
-        var json = JsonConvert.SerializeObject(dataDictionary);
+        var json = JsonConvert.SerializeObject(dataDictionary, new JsonSerializerSettings
+        {
+            StringEscapeHandling = StringEscapeHandling.EscapeNonAscii
+        });
         NavigationManager.NavigateTo($"{uri}?{fromPage}={currentPage.AbsolutePath}&{data}={json}");
     }
 

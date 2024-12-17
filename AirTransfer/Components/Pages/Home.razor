@@ -40,7 +40,10 @@
                 <FluentGridItem xs="12">
                     <FluentCard>
                         <FluentStack HorizontalAlignment="HorizontalAlignment.Center" Orientation="Orientation.Vertical">
-                            <FluentBadge>发送文本:测试文本</FluentBadge>
+                            <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+                                <FluentBadge>@InformationModel.SendType </FluentBadge>
+                               <FluentBadge>@InformationModel.Summary</FluentBadge>
+                            </FluentStack>
 
                             <FluentProgress Width="90%"></FluentProgress>
                         </FluentStack>

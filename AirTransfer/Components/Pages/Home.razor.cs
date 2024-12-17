@@ -37,7 +37,17 @@ public partial class Home : PageComponentBase
 
     protected override Task OnPageInitializedAsync(string? url, Dictionary<string, object>? data)
     {
-        return base.OnPageInitializedAsync(url, data);
+        if (url is null)
+            return Task.CompletedTask;
+        if (url == "/Home/TextInput" && data != null && data.ContainsKey("text"))
+        {
+            InformationModel = new()
+            {
+                Text = data["text"].ToString(),
+                SendType = SendType.Text
+            };
+        }
+        return Task.CompletedTask;
 
     }
     #endregion
