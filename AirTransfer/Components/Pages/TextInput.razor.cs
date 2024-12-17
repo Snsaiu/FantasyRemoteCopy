@@ -11,7 +11,7 @@ public partial class TextInput : ComponentBase
 
     private void SubmitCommand()
     {
-        var p = this.NavigationManager.GetUriWithQueryParameter("/home", Text);
-        NavigationManager.NavigateTo($"/home/{Text}");
+        var p = NavigationManager.GetUriWithQueryParameter("/home", Text);
+        NavigationManager.NavigateTo($"/home?data={Text}");
     }
 }

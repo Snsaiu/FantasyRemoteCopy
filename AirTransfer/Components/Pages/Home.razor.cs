@@ -12,8 +12,6 @@ namespace AirTransfer.Components.Pages;
 
 public partial class Home : ComponentBase
 {
-    [Parameter] public string Text { get; set; }
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -31,6 +29,8 @@ public partial class Home : ComponentBase
             StateManager.SetState(ConstParams.StateManagerKeys.ListenKey, true);
             await InitListenAsync();
         }
+        InitData();
+        PageBack();
     }
 
 
@@ -59,22 +59,35 @@ public partial class Home : ComponentBase
 
     #region Private Methods
 
+    private void PageBack()
+    {
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+    }
+
     private void InitData()
     {
         DiscoveredDevices.Add(new DiscoveredDeviceModel
         {
-            Flag = "192.168.1.1", DeviceName = "my window", NickName = "�ҵ�windows",
+            Flag = "192.168.1.1",
+            DeviceName = "my window",
+            NickName = "�ҵ�windows",
             SystemType = Enums.SystemType.Windows
         });
         DiscoveredDevices.Add(new DiscoveredDeviceModel
         {
-            Flag = "192.168.1.2", DeviceName = "my macos", NickName = "�ҵ�mac", SystemType = Enums.SystemType.MacOS
+            Flag = "192.168.1.2",
+            DeviceName = "my macos",
+            NickName = "�ҵ�mac",
+            SystemType = Enums.SystemType.MacOS
         });
         DiscoveredDevices.Add(new DiscoveredDeviceModel
-            { Flag = "192.168.1.2", DeviceName = "my ios", NickName = "�ҵ�iphone", SystemType = Enums.SystemType.IOS });
+        { Flag = "192.168.1.2", DeviceName = "my ios", NickName = "�ҵ�iphone", SystemType = Enums.SystemType.IOS });
         DiscoveredDevices.Add(new DiscoveredDeviceModel
         {
-            Flag = "192.168.1.2", DeviceName = "my android", NickName = "�ҵ�android",
+            Flag = "192.168.1.2",
+            DeviceName = "my android",
+            NickName = "�ҵ�android",
             SystemType = Enums.SystemType.Android
         });
     }
@@ -84,7 +97,7 @@ public partial class Home : ComponentBase
     {
         await Init();
         await SetReceive();
-        InitData();
+
     }
 
 

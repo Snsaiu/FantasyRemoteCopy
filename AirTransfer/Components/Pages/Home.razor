@@ -1,109 +1,114 @@
 ﻿@page "/Home"
-@page "/Home/{text}"
 @using AirTransfer.Models
 @using Microsoft.FluentUI.AspNetCore.Components.Icons.Filled
 
-<div>
-
-    <FluentGrid Spacing="0" Justify="JustifyContent.Center">
-        <FluentGridItem xs="12">
-            <FluentCard Style="width: 100%">
-                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Stretch">
-                    <FluentPersona Status="PresenceStatus.Available"
-                                   StatusSize="PresenceBadgeSize.Large"
-                                   Image="images/h.jpg" ImageSize="80px"></FluentPersona>
-                    <FluentStack Orientation="Orientation.Vertical" Style="height: 100%">
-                        <FluentLabel Alignment="HorizontalAlignment.Start" Style="margin-top: 20px;"
-                                     Typo="Typography.H5">
-                            Saiu
-                        </FluentLabel>
-                        <FluentLabel Alignment="HorizontalAlignment.Start" Typo="Typography.H6">my device</FluentLabel>
+<div class="container">
+    <div class="top">
+        <FluentGrid Spacing="0" Justify="JustifyContent.Center">
+            <FluentGridItem xs="12">
+                <FluentCard Style="width: 100%">
+                    <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Stretch">
+                        <FluentPersona Status="PresenceStatus.Available"
+                                       StatusSize="PresenceBadgeSize.Large"
+                                       Image="images/h.jpg" ImageSize="80px"></FluentPersona>
+                        <FluentStack Orientation="Orientation.Vertical" Style="height: 100%">
+                            <FluentLabel Alignment="HorizontalAlignment.Start" Style="margin-top: 20px;"
+                                         Typo="Typography.H5">
+                                Saiu
+                            </FluentLabel>
+                            <FluentLabel Alignment="HorizontalAlignment.Start" Typo="Typography.H6">my device</FluentLabel>
+                        </FluentStack>
+                        <FluentSpacer></FluentSpacer>
+                        <FluentButton Style="margin-right: 10px; margin-top: 10px;"
+                                      IconStart="@(new Size32.Search())"></FluentButton>
                     </FluentStack>
-                    <FluentSpacer></FluentSpacer>
-                    <FluentButton Style="margin-right: 10px; margin-top: 10px;"
-                                  IconStart="@(new Size32.Search())"></FluentButton>
-                </FluentStack>
-            </FluentCard>
-        </FluentGridItem>
-        <FluentGridItem xs="4">
-            <FluentButton Style="width: 100%" OnClick="this.GotoTextInputPageCommand">文本</FluentButton>
-        </FluentGridItem>
-        <FluentGridItem xs="4">
-            <FluentButton Style="width: 100%">文件</FluentButton>
-        </FluentGridItem>
-        <FluentGridItem xs="4">
-            <FluentButton Style="width: 100%" OnClick="this.OpenFolderCommand">文件夹</FluentButton>
-        </FluentGridItem>
+                </FluentCard>
+            </FluentGridItem>
+            <FluentGridItem xs="4">
+                <FluentButton Style="width: 100%" OnClick="this.GotoTextInputPageCommand">文本</FluentButton>
+            </FluentGridItem>
+            <FluentGridItem xs="4">
+                <FluentButton Style="width: 100%">文件</FluentButton>
+            </FluentGridItem>
+            <FluentGridItem xs="4">
+                <FluentButton Style="width: 100%" OnClick="this.OpenFolderCommand">文件夹</FluentButton>
+            </FluentGridItem>
 
-        <FluentGridItem xs="12">
-            <FluentCard>
-                <FluentStack HorizontalAlignment="HorizontalAlignment.Center" Orientation="Orientation.Vertical">
-                    <FluentBadge>发送文本:测试文本</FluentBadge>
+            @if (InformationModel is not null)
+            {
+                <FluentGridItem xs="12">
+                    <FluentCard>
+                        <FluentStack HorizontalAlignment="HorizontalAlignment.Center" Orientation="Orientation.Vertical">
+                            <FluentBadge>发送文本:测试文本</FluentBadge>
 
-                    <FluentProgress Width="90%"></FluentProgress>
-                </FluentStack>
-            </FluentCard>
-        </FluentGridItem>
-        <FluentGridItem xs="12">
-            <FluentListbox TOption="DiscoveredDeviceModel">
-                @foreach (var item in DiscoveredDevices)
-                {
-                    <FluentCard Style="margin: 2px;">
-                        <FluentGrid Style="width:100%;">
-                            <FluentGridItem xs="4">
-                                <FluentStack VerticalAlignment="VerticalAlignment.Center"
-                                             Orientation="Orientation.Horizontal">
-
-                                    <FluentCheckbox Style="margin-left: 10px; margin-right:5px;"
-                                                    @bind-Value="@item.IsChecked"></FluentCheckbox>
-                                    @switch (item.SystemType)
-                                    {
-                                        case Enums.SystemType.Windows:
-                                            <FluentIcon Style="text-align:center"
-                                                        Value="@(Icon.FromImageUrl("images/windows.png"))"></FluentIcon>
-                                            break;
-                                        case Enums.SystemType.MacOS:
-                                            <FluentIcon Style="text-align:center"
-                                                        Value="@(Icon.FromImageUrl("images/mac.png"))"></FluentIcon>
-                                            break;
-                                        case Enums.SystemType.IOS:
-                                            <FluentIcon Style="text-align:center"
-                                                        Value="@(Icon.FromImageUrl("images/iphone.png"))"></FluentIcon>
-                                            break;
-                                        case Enums.SystemType.Android:
-                                            <FluentIcon Style="text-align:center"
-                                                        Value="@(Icon.FromImageUrl("images/android.png"))"></FluentIcon>
-                                            break;
-                                        default:
-                                            throw new NotImplementedException("目前图标只支持 windows,mac,ios,android");
-                                    }
-
-                                    <FluentStack Orientation="Orientation.Vertical">
-                                        <FluentLabel>@item.DeviceName</FluentLabel>
-                                        <FluentStack Orientation="Orientation.Horizontal">
-                                            <FluentIcon Value="@(new Size20.Wifi1())"></FluentIcon>
-                                            <FluentBadge>@item.Flag</FluentBadge>
-                                        </FluentStack>
-                                    </FluentStack>
-
-                                </FluentStack>
-                            </FluentGridItem>
-                            <FluentGridItem xs="6">
-                                <FluentProgress Style="align-items: center;height: 100%"></FluentProgress>
-                            </FluentGridItem>
-                            <FluentGridItem xs="2">
-                                <FluentButton Style="align-items: center;height: 100%"
-                                              IconStart="@(new Size24.ShareScreenStop())"></FluentButton>
-                            </FluentGridItem>
-                        </FluentGrid>
+                            <FluentProgress Width="90%"></FluentProgress>
+                        </FluentStack>
                     </FluentCard>
-                }
-            </FluentListbox>
-        </FluentGridItem>
-    </FluentGrid>
-    <FluentSpacer/>
-    <FluentFooter>
-        <FluentButton>发送</FluentButton>
-    </FluentFooter>
+                </FluentGridItem>
+            }
 
+            <FluentGridItem xs="12">
+                <FluentListbox Class="listbox" Style="overflow:hidden;outline:none;border:none" TOption="DiscoveredDeviceModel" Width="100%">
+                    @foreach (var item in DiscoveredDevices)
+                    {
+                        <FluentCard Style="margin: 2px;">
+                            <FluentGrid>
+                                <FluentGridItem xs="4">
+                                    <FluentStack VerticalAlignment="VerticalAlignment.Center"
+                                                 Orientation="Orientation.Horizontal">
+
+                                        <FluentCheckbox Style="margin-left: 10px; margin-right:5px;"
+                                                        @bind-Value="@item.IsChecked"></FluentCheckbox>
+                                        @switch (item.SystemType)
+                                        {
+                                            case Enums.SystemType.Windows:
+                                                <FluentIcon Style="text-align:center"
+                                                            Value="@(Icon.FromImageUrl("images/windows.png"))"></FluentIcon>
+                                                break;
+                                            case Enums.SystemType.MacOS:
+                                                <FluentIcon Style="text-align:center"
+                                                            Value="@(Icon.FromImageUrl("images/mac.png"))"></FluentIcon>
+                                                break;
+                                            case Enums.SystemType.IOS:
+                                                <FluentIcon Style="text-align:center"
+                                                            Value="@(Icon.FromImageUrl("images/iphone.png"))"></FluentIcon>
+                                                break;
+                                            case Enums.SystemType.Android:
+                                                <FluentIcon Style="text-align:center"
+                                                            Value="@(Icon.FromImageUrl("images/android.png"))"></FluentIcon>
+                                                break;
+                                            default:
+                                                throw new NotImplementedException("目前图标只支持 windows,mac,ios,android");
+                                        }
+
+                                        <FluentStack Orientation="Orientation.Vertical">
+                                            <FluentLabel>@item.DeviceName</FluentLabel>
+                                            <FluentStack Orientation="Orientation.Horizontal">
+                                                <FluentIcon Value="@(new Size20.Wifi1())"></FluentIcon>
+                                                <FluentBadge>@item.Flag</FluentBadge>
+                                            </FluentStack>
+                                        </FluentStack>
+
+                                    </FluentStack>
+                                </FluentGridItem>
+                                <FluentGridItem xs="6">
+                                    <FluentProgress Style="align-items: center;height: 100%"></FluentProgress>
+                                </FluentGridItem>
+                                <FluentGridItem xs="2">
+                                    <FluentButton Style="align-items: center;height: 100%"
+                                                  IconStart="@(new Size24.ShareScreenStop())"></FluentButton>
+                                </FluentGridItem>
+                            </FluentGrid>
+                        </FluentCard>
+                    }
+                </FluentListbox>
+            </FluentGridItem>
+        </FluentGrid>
+    </div>
+    @if (InformationModel is not null && DiscoveredDevices is not null && DiscoveredDevices.Any(x => x.IsChecked))
+    {
+        <div class="bottom">
+            <FluentButton Style="width:100%">发送</FluentButton>
+        </div>
+    }
 </div>

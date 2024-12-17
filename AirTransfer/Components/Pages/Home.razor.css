@@ -1,9 +1,27 @@
-.send-button {
-    position: fixed;
-    bottom: 0; /* 距离底部 0 */
-    left: 0; /* 距离左边 0 */
-    width: 100%; /* 占满宽度 */
-    background-color: #f1f1f1; /* 可选的背景色 */
+.container {
+    display: flex; /* 启用 Flex 布局 */
+    flex-direction: column; /* 子元素上下排列 */
+    height: 100%; /* 或者给一个固定高度，比如 500px */
+  
+}
 
+.top {
+    flex: 1; /* 占据剩余空间 */
+}
 
+.bottom {
+    /* 不需要额外设置位置，默认在 Flex 布局中会位于底部 */
+}
+
+.listbox{
+    overflow-x: hidden
+}
+
+.listbox:focus {
+    border: none;
+    outline: none;
+}
+.listbox:focus-visible {
+    border: none;
+    outline: none;
 }
