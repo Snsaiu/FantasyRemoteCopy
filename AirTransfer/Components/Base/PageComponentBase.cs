@@ -21,6 +21,8 @@ public abstract class PageComponentBase : ComponentBase
 
     #endregion
 
+    public bool IsBusy { get; set; }
+
     protected override Task OnInitializedAsync()
     {
         return ParseInitPageDataAsync();

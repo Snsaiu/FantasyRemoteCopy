@@ -1,6 +1,16 @@
 @page "/History"
-<h3>History</h3>
+@using AirTransfer.Models
+@inherits PageComponentBase
 
-@code {
-
-}
+<div>
+    <FluentListbox TOption="SaveItemModel">
+        @if(this.Models !=null){
+        @foreach(var item in this.Models)
+        {
+            <FluentCard>
+                
+            </FluentCard>
+        }
+        }
+    </FluentListbox>
+</div>
