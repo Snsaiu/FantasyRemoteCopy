@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace AirTransfer.Components.Pages;
 
-public partial class TextInput : ComponentBase
+public partial class TextInput : PageComponentBase
 {
     [Inject] private NavigationManager NavigationManager { get; set; } = null!;
 
@@ -11,7 +11,6 @@ public partial class TextInput : ComponentBase
 
     private void SubmitCommand()
     {
-        var p = NavigationManager.GetUriWithQueryParameter("/home", Text);
-        NavigationManager.NavigateTo($"/home?data={Text}");
+        this.NavigateTo("/home", new Dictionary<string, object> { { "text", Text } });
     }
 }

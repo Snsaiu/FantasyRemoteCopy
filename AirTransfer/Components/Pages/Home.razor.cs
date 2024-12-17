@@ -10,11 +10,13 @@ using FantasyResultModel;
 
 namespace AirTransfer.Components.Pages;
 
-public partial class Home : ComponentBase
+public partial class Home : PageComponentBase
 {
+    #region Override Methods
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         if (StateManager.ExistKey(ConstParams.StateManagerKeys.ListenKey))
         {
             var state = StateManager.GetState<bool>(ConstParams.StateManagerKeys.ListenKey);
@@ -30,8 +32,15 @@ public partial class Home : ComponentBase
             await InitListenAsync();
         }
         InitData();
-        PageBack();
+
     }
+
+    protected override Task OnPageInitializedAsync(string? url, Dictionary<string, object>? data)
+    {
+        return base.OnPageInitializedAsync(url, data);
+
+    }
+    #endregion
 
 
     #region Commands
@@ -59,11 +68,7 @@ public partial class Home : ComponentBase
 
     #region Private Methods
 
-    private void PageBack()
-    {
-        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
-        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
-    }
+
 
     private void InitData()
     {
