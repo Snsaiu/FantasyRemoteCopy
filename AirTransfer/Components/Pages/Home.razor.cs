@@ -57,6 +57,11 @@ public partial class Home : PageComponentBase
 
     #region Commands
 
+    private Task SearchCommand()
+    {
+        return DeviceDiscoverAsync();
+    }
+
     private async Task SendCommand()
     {
         // 首先向目标电脑发送一个端口用于检查是否可以使用该端口
