@@ -108,17 +108,17 @@ public partial class Home
             Logger.LogInformation($"端口{port}是否可用");
             var checkResult = await PortCheckable.IsPortInUse(port);
             Logger.LogInformation($"端口{port}可用状态为 {checkResult}");
-            var sendModel = new SendTextModel(localDevice.Flag, data.Flag,
+            var sendModel = new SendTextModel(LocalDevice.Flag, data.Flag,
                 !checkResult
-                    ? CodeWordModel.CreateCodeWord(codeWord.TaskGuid, CodeWordType.CheckingPortCanUse, localDevice.Flag,
+                    ? CodeWordModel.CreateCodeWord(codeWord.TaskGuid, CodeWordType.CheckingPortCanUse, LocalDevice.Flag,
                             data.Flag, port,
-                            codeWord.SendType, localDevice, null)
+                            codeWord.SendType, LocalDevice, null)
                         .ToJson()
                     : CodeWordModel.CreateCodeWord(codeWord.TaskGuid, CodeWordType.CheckingPortCanNotUse,
-                        localDevice.Flag,
+                        LocalDevice.Flag,
                         data.Flag,
                         port,
-                        codeWord.SendType, localDevice, null).ToJson(),
+                        codeWord.SendType, LocalDevice, null).ToJson(),
                 ConstParams.TCP_PORT);
             Logger.LogInformation($"端口可用状态信息发送给{data.Flag}");
             if (!checkResult)
@@ -137,7 +137,7 @@ public partial class Home
                     Logger.LogInformation($"{data.Flag}中已经包含了 {data.Flag}-{port} 的任务");
                 else
                     receiveDevice.TransmissionTasks.Add(new TransmissionTaskModel(codeWord.TaskGuid,
-                        localDevice.Flag, codeWord.Flag, codeWord.Port, codeWord.SendType, cancelTokenSource));
+                        LocalDevice.Flag, codeWord.Flag, codeWord.Port, codeWord.SendType, cancelTokenSource));
 
                 TcpLoopListenContentBase.ReceiveAsync(result =>
                 {
@@ -181,11 +181,11 @@ public partial class Home
             {
                 var port = codeWord.Port + 1;
                 Logger.LogInformation($"接收方{data.Flag}对于{codeWord.Port} 端口无法使用，所以向接收方再次发送{port}端口是否可用");
-                var portCheckMessage = new SendTextModel(localDevice.Flag,
+                var portCheckMessage = new SendTextModel(LocalDevice.Flag,
                     data.Flag ?? throw new NullReferenceException(),
-                    CodeWordModel.CreateCodeWord(codeWord.TaskGuid, CodeWordType.CheckingPort, localDevice.Flag,
+                    CodeWordModel.CreateCodeWord(codeWord.TaskGuid, CodeWordType.CheckingPort, LocalDevice.Flag,
                             data.Flag, port,
-                            codeWord.SendType, localDevice, null)
+                            codeWord.SendType, LocalDevice, null)
                         .ToJson()
                     , ConstParams.TCP_PORT);
                 await TcpSendTextBase.SendAsync(portCheckMessage, null, default);
@@ -200,7 +200,7 @@ public partial class Home
                 {
                     case SendType.Text:
                         TcpSendTextBase.SendAsync(
-                            new SendTextModel(localDevice.Flag, data.Flag, InformationModel.Text, codeWord.Port), null,
+                            new SendTextModel(LocalDevice.Flag, data.Flag, InformationModel.Text, codeWord.Port), null,
                             sendCancelTokenSource.Token);
                         break;
                     case SendType.File:

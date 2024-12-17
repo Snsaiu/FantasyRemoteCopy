@@ -4,11 +4,9 @@ using AirTransfer.Interfaces.Impls.HttpsTransfer;
 using AirTransfer.Interfaces.Impls.TcpTransfer;
 using AirTransfer.Interfaces.Impls.UdpTransfer;
 using AirTransfer.Models;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
-
 using System.Collections.ObjectModel;
 
 namespace AirTransfer.Components.Pages;
@@ -16,6 +14,7 @@ namespace AirTransfer.Components.Pages;
 public partial class Home
 {
     #region Injects
+
     [Inject] private NavigationManager NavigationManager { get; set; } = null!;
     [Inject] private ILogger<Home> Logger { get; set; } = null!;
     [Inject] private IStateManager StateManager { get; set; } = null!;
@@ -35,10 +34,12 @@ public partial class Home
     [Inject] private IPortCheckable PortCheckable { get; set; } = null!;
 
     [Inject] private IUserService UserService { get; set; } = null!;
+
     #endregion
+
     private CancellationTokenSource _cancelDownloadTokenSource = new();
 
-    private DeviceModel localDevice;
+    [Parameter] public DeviceModel LocalDevice { get; set; }
 
     private bool IsDownLoadingVisible;
 
@@ -49,7 +50,6 @@ public partial class Home
     private string UserName = string.Empty;
 
     [Parameter] public List<DiscoveredDeviceModel>? DiscoveredDevices { get; set; } = [];
-
 
 
     private string DeviceNickName = string.Empty;

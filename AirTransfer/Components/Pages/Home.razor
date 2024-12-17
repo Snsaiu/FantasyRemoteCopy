@@ -15,9 +15,10 @@
                         <FluentStack Orientation="Orientation.Vertical" Style="height: 100%">
                             <FluentLabel Alignment="HorizontalAlignment.Start" Style="margin-top: 20px;"
                                          Typo="Typography.H5">
-                                Saiu
+                                @LocalDevice.NickName
                             </FluentLabel>
-                            <FluentLabel Alignment="HorizontalAlignment.Start" Typo="Typography.H6">my device
+                            <FluentLabel Alignment="HorizontalAlignment.Start"
+                                         Typo="Typography.H6">@LocalDevice.DeviceName
                             </FluentLabel>
                         </FluentStack>
                         <FluentSpacer></FluentSpacer>

@@ -71,12 +71,12 @@ public partial class Home : PageComponentBase
                 continue;
 
             var codeWord = CodeWordModel.CreateCodeWord(Guid.NewGuid().ToString("N"), CodeWordType.CheckingPort,
-                localDevice.Flag,
+                LocalDevice.Flag,
                 item.Flag, 5005,
-                InformationModel.SendType, localDevice, null);
+                InformationModel.SendType, LocalDevice, null);
 
 
-            var portCheckMessage = new SendTextModel(localDevice.Flag, item.Flag ?? throw new NullReferenceException(),
+            var portCheckMessage = new SendTextModel(LocalDevice.Flag, item.Flag ?? throw new NullReferenceException(),
                 codeWord.ToJson(), ConstParams.TCP_PORT);
             await TcpSendTextBase.SendAsync(portCheckMessage, null, default);
         }
@@ -162,7 +162,7 @@ public partial class Home : PageComponentBase
         var userRes = await UserService.GetCurrentUserAsync();
         UserName = userRes.Data.Name;
         DeviceNickName = userRes.Data.DeviceNickName;
-        localDevice = new DeviceModel()
+        LocalDevice = new DeviceModel()
         {
             DeviceName = DeviceNickName,
             DeviceType = DeviceType.Device.ToString(),
@@ -266,7 +266,7 @@ public partial class Home : PageComponentBase
                 // Logger.LogInformation("ͨ���豸����ɨ�赽��ip:{0}", device.Flag);
 
                 await LocalNetInviteDeviceBase.SendAsync(
-                    new DeviceDiscoveryMessage(UserName, localDevice.Flag, device.Flag) ??
+                    new DeviceDiscoveryMessage(UserName, LocalDevice.Flag, device.Flag) ??
                     throw new NullReferenceException(), default);
             }
         }
