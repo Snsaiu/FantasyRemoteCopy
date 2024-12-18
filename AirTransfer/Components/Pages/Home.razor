@@ -118,11 +118,24 @@
                                     </FluentStack>
                                 </FluentGridItem>
                                 <FluentGridItem xs="6">
-                                    <FluentProgress Style="align-items: center;height: 100%"></FluentProgress>
+                                    @if (item.WorkState == WorkState.Downloading)
+                                    {
+                                        var progress = (int)item.Progress * 100;
+                                        <FluentProgress Style="align-items: center;height: 100%" Value="@progress"></FluentProgress>
+                                    }
+                                    else if(item.WorkState==WorkState.Sending)
+                                    {
+                                        var progress = (int)item.Progress * 100;
+                                        <FluentProgress Style="align-items: center;height: 100%" Value="@progress"></FluentProgress>
+                                    }
+                                    
                                 </FluentGridItem>
                                 <FluentGridItem xs="1">
-                                    <FluentButton Style="align-items: center;height: 100%"
-                                                  IconStart="@(new Size24.ShareScreenStop())"></FluentButton>
+                                    @if (item.WorkState == WorkState.Downloading || item.WorkState == WorkState.Sending)
+                                    {
+                                        <FluentButton Style="align-items: center;height: 100%"
+                                                      IconStart="@(new Size24.ShareScreenStop())"></FluentButton>
+                                    }
                                 </FluentGridItem>
                             </FluentGrid>
                         </FluentCard>

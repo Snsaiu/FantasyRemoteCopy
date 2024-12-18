@@ -142,10 +142,10 @@ public partial class Home
                     receiveDevice.TransmissionTasks.Add(new(codeWord.TaskGuid,
                         LocalDevice.Flag, codeWord.Flag, codeWord.Port, codeWord.SendType, cancelTokenSource));
 
-                TcpLoopListenContentBase.ReceiveAsync(result =>
+                TcpLoopListenContentBase.ReceiveAsync(async result =>
                 {
                     // 保存到数据库
-                    SaveDataToLocalDB(result);
+                    await SaveDataToLocalDbAsync(result);
                     if (receiveDevice.TryGetTransmissionTask(codeWord.TaskGuid,
                             out var v))
                     {

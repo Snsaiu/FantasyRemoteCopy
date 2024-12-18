@@ -291,7 +291,7 @@ public partial class Home : PageComponentBase
     }
 
 
-    private void SaveDataToLocalDB(TransformResultModel<string> data)
+    private async Task SaveDataToLocalDbAsync(TransformResultModel<string> data)
     {
         var saveDataModel = new SaveDataModel
         {
@@ -308,7 +308,8 @@ public partial class Home : PageComponentBase
         IsDownLoadingVisible = false;
         saveDataModel.SourceDeviceNickName = model.NickName ?? string.Empty;
         saveDataModel.Guid = Guid.NewGuid().ToString();
-        DataService.AddAsync(saveDataModel);
+        await DataService.AddAsync(saveDataModel);
+        StateHasChanged();
     }
 
     #endregion
