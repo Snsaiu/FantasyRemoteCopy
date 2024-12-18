@@ -211,7 +211,7 @@ public partial class Home : PageComponentBase
                 return;
             if (isSendModel)
             {
-                // Logger.LogInformation($"�������ݵ�{flag.Flag} ����Ϊ{flag.Progress}");
+                 Logger.LogInformation($"发送数据到{flag.Flag}， 进度{flag.Progress}");
                 if (x.Progress >= 1)
                 {
                     flag.WorkState = WorkState.None;
@@ -225,7 +225,7 @@ public partial class Home : PageComponentBase
             }
             else
             {
-                // Logger.LogInformation($"��������{flag.Flag} ����Ϊ{flag.Progress}");
+                Logger.LogInformation($"接收{flag.Flag}，进度Ϊ{flag.Progress}");
                 if (x.Progress >= 1)
                 {
                     flag.WorkState = WorkState.None;
@@ -236,9 +236,9 @@ public partial class Home : PageComponentBase
                     flag.WorkState = WorkState.Downloading;
                 }
             }
-
-            //Application.Current.Dispatcher.Dispatch(() => { SendCommand.NotifyCanExecuteChanged(); });
+            
             flag.Progress = x.Progress;
+            Application.Current.Dispatcher.Dispatch(StateHasChanged);
         });
 
         return progress;

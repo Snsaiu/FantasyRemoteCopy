@@ -67,8 +67,12 @@ public partial class Home
                         return;
                     if (StateManager.ExistDiscoveryModel(x.Flag)) return;
                     Logger.LogInformation("加入设备{0}", JsonConvert.SerializeObject(x));
-                    StateManager.AddDiscoveryModel(x);
-                    Application.Current.Dispatcher.Dispatch(() => { StateHasChanged(); });
+                   
+                    Application.Current.Dispatcher.Dispatch(() =>
+                    { 
+                        StateManager.AddDiscoveryModel(x);
+                        StateHasChanged();
+                    });
                 }, default);
             })
             { IsBackground = true };
