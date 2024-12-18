@@ -18,6 +18,7 @@ public partial class Home : PageComponentBase
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        await Init();
         if (StateManager.ExistKey(ConstParams.StateManagerKeys.ListenKey))
         {
             var state = StateManager.GetState<bool>(ConstParams.StateManagerKeys.ListenKey);
@@ -152,7 +153,6 @@ public partial class Home : PageComponentBase
 
     private async Task InitListenAsync()
     {
-        await Init();
         await SetReceive();
     }
 

@@ -1,11 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
-using System.ComponentModel.Design;
+﻿#region
+
 using System.Net;
 using AirTransfer.Enums;
 using AirTransfer.Extensions;
 using AirTransfer.Models;
 using FantasyRemoteCopy.UI.Consts;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+
+#endregion
 
 namespace AirTransfer.Components.Pages;
 
@@ -66,6 +69,7 @@ public partial class Home
                     if (DiscoveredDevices.Any(y => y.Flag == x.Flag)) return;
                     Logger.LogInformation("加入设备{0}", JsonConvert.SerializeObject(x));
                     DiscoveredDevices.Add(x);
+                    Application.Current.Dispatcher.Dispatch(() => { StateHasChanged(); });
                 }, default);
             })
             { IsBackground = true };
@@ -86,14 +90,14 @@ public partial class Home
 
 
     /// <summary>
-    /// 根据<see cref="DeviceModel"/>检查当前列表是否包含flag，如果不存在则在列表中加入
+    ///     根据<see cref="DeviceModel" />检查当前列表是否包含flag，如果不存在则在列表中加入
     /// </summary>
     private void CheckDeviceExistAndSave(DeviceModel deviceModel)
     {
         if (DiscoveredDevices.Any(x => x.Flag == deviceModel.Flag))
             return;
 
-        DiscoveredDevices.Add(new DiscoveredDeviceModel(deviceModel));
+        DiscoveredDevices.Add(new(deviceModel));
     }
 
 
@@ -136,7 +140,7 @@ public partial class Home
                         x => x.TaskGuid == codeWord.TaskGuid))
                     Logger.LogInformation($"{data.Flag}中已经包含了 {data.Flag}-{port} 的任务");
                 else
-                    receiveDevice.TransmissionTasks.Add(new TransmissionTaskModel(codeWord.TaskGuid,
+                    receiveDevice.TransmissionTasks.Add(new(codeWord.TaskGuid,
                         LocalDevice.Flag, codeWord.Flag, codeWord.Port, codeWord.SendType, cancelTokenSource));
 
                 TcpLoopListenContentBase.ReceiveAsync(result =>
@@ -159,7 +163,6 @@ public partial class Home
         else if (codeWord.Type == CodeWordType.CancelTransmission)
         {
             foreach (var device in DiscoveredDevices)
-            {
                 if (device.TryGetTransmissionTask(codeWord.TaskGuid, out var task))
                 {
                     task?.CancellationTokenSource?.Cancel();
@@ -168,7 +171,6 @@ public partial class Home
                     device.WorkState = WorkState.None;
                     break;
                 }
-            }
 
             //SendCommand.NotifyCanExecuteChanged();
         }
@@ -200,7 +202,7 @@ public partial class Home
                 {
                     case SendType.Text:
                         TcpSendTextBase.SendAsync(
-                            new SendTextModel(LocalDevice.Flag, data.Flag, InformationModel.Text, codeWord.Port), null,
+                            new(LocalDevice.Flag, data.Flag, InformationModel.Text, codeWord.Port), null,
                             sendCancelTokenSource.Token);
                         break;
                     case SendType.File:

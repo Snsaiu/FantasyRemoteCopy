@@ -77,14 +77,5 @@
         <Content Remove="wwwroot\images\header.jpg"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <None Update="Platforms\Android\Resources\values\xml\fileprovider_paths.xml">
-            <SubType>Designer</SubType>
-            <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-        </None>
-        <None Update="Platforms\Android\Resources\xml\fileprovider_paths.xml">
-            <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-        </None>
-    </ItemGroup>
 
 </Project>

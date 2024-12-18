@@ -1,11 +1,12 @@
 ﻿@page "/Home"
-@inherits PageComponentBase
 @using AirTransfer.Models
 @using Microsoft.FluentUI.AspNetCore.Components.Icons.Filled
+@using Size12 = Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12
+@inherits PageComponentBase
 
 <div class="container">
     <div class="top">
-        <FluentGrid Spacing="0" Justify="JustifyContent.Center">
+        <FluentGrid Spacing="0" Justify="JustifyContent.SpaceBetween">
             <FluentGridItem xs="12">
                 <FluentCard Style="width: 100%">
                     <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Stretch">
@@ -28,13 +29,13 @@
                 </FluentCard>
             </FluentGridItem>
             <FluentGridItem xs="4">
-                <FluentButton Style="width: 100%" OnClick="this.GotoTextInputPageCommand">文本</FluentButton>
+                <FluentButton Style="width: 100%" OnClick="GotoTextInputPageCommand">文本</FluentButton>
             </FluentGridItem>
             <FluentGridItem xs="4">
                 <FluentButton Style="width: 100%" OnClick="OpenFileCommand">文件</FluentButton>
             </FluentGridItem>
             <FluentGridItem xs="4">
-                <FluentButton Style="width: 100%" OnClick="this.OpenFolderCommand">文件夹</FluentButton>
+                <FluentButton Style="width: 100%" OnClick="OpenFolderCommand">文件夹</FluentButton>
             </FluentGridItem>
 
             @if (InformationModel is not null)
@@ -65,48 +66,59 @@
                     {
                         <FluentCard Style="margin: 2px;">
                             <FluentGrid>
-                                <FluentGridItem xs="4">
-                                    <FluentStack VerticalAlignment="VerticalAlignment.Center"
-                                                 Orientation="Orientation.Horizontal">
-
-                                        <FluentCheckbox Style="margin-left: 10px; margin-right:5px;"
+                                <FluentGridItem xs="1">
+                                    <FluentCheckbox
+                                        Style="margin-left: 5px; margin-right:5px; height: 100%;align-items: center"
                                                         @bind-Value="@item.IsChecked"></FluentCheckbox>
-                                        @switch (item.SystemType)
-                                        {
-                                            case Enums.SystemType.Windows:
-                                                <FluentIcon Style="text-align:center"
-                                                            Value="@(Icon.FromImageUrl("images/windows.png"))"></FluentIcon>
-                                                break;
-                                            case Enums.SystemType.MacOS:
-                                                <FluentIcon Style="text-align:center"
-                                                            Value="@(Icon.FromImageUrl("images/mac.png"))"></FluentIcon>
-                                                break;
-                                            case Enums.SystemType.IOS:
-                                                <FluentIcon Style="text-align:center"
-                                                            Value="@(Icon.FromImageUrl("images/iphone.png"))"></FluentIcon>
-                                                break;
-                                            case Enums.SystemType.Android:
-                                                <FluentIcon Style="text-align:center"
-                                                            Value="@(Icon.FromImageUrl("images/android.png"))"></FluentIcon>
-                                                break;
-                                            default:
-                                                throw new NotImplementedException("目前图标只支持 windows,mac,ios,android");
-                                        }
+                                </FluentGridItem>
 
-                                        <FluentStack Orientation="Orientation.Vertical">
-                                            <FluentLabel>@item.DeviceName</FluentLabel>
-                                            <FluentStack Orientation="Orientation.Horizontal">
-                                                <FluentIcon Value="@(new Size20.Wifi1())"></FluentIcon>
-                                                <FluentBadge>@item.Flag</FluentBadge>
-                                            </FluentStack>
+                                <FluentGridItem xs="1">
+                                    @switch (item.SystemType)
+                                    {
+                                        case Enums.SystemType.Windows:
+                                            <FluentIcon Class="SystemTypeIcon"
+                                                        Width="40px;"
+                                                        Value="@(Icon.FromImageUrl("images/windows.png"))"></FluentIcon>
+                                            break;
+                                        case Enums.SystemType.MacOS:
+                                            <FluentIcon Class="SystemTypeIcon"
+                                                        Value="@(Icon.FromImageUrl("images/mac.png"))"></FluentIcon>
+                                            break;
+                                        case Enums.SystemType.IOS:
+                                            <FluentIcon Class="SystemTypeIcon"
+                                                        Value="@(Icon.FromImageUrl("images/iphone.png"))"></FluentIcon>
+                                            break;
+                                        case Enums.SystemType.Android:
+                                            <FluentIcon
+                                                Width="40px;"
+                                                Class="SystemTypeIcon"
+                                                Value="@(Icon.FromImageUrl("images/android.png"))"></FluentIcon>
+                                            break;
+                                        default:
+                                            throw new NotImplementedException("目前图标只支持 windows,mac,ios,android");
+                                    }
+                                </FluentGridItem>
+                                <FluentGridItem xs="3">
+                                    <FluentStack
+                                        HorizontalAlignment="HorizontalAlignment.Center"
+                                        HorizontalGap="1"
+                                        VerticalGap="1"
+                                        Orientation="Orientation.Vertical">
+                                        <FluentLabel Style="background-color: red;font-size: 10px;">@item.DeviceName
+                                        </FluentLabel>
+                                        <FluentStack Orientation="Orientation.Horizontal">
+                                            <FluentIcon
+                                                Value="@(new Size20.Wifi1())"></FluentIcon>
+                                            <FluentLabel Alignment="HorizontalAlignment.Start"
+                                                         Typo="Typography.Body"
+                                                         Style="font-size: 10px;">@item.Flag</FluentLabel>
                                         </FluentStack>
-
                                     </FluentStack>
                                 </FluentGridItem>
                                 <FluentGridItem xs="6">
                                     <FluentProgress Style="align-items: center;height: 100%"></FluentProgress>
                                 </FluentGridItem>
-                                <FluentGridItem xs="2">
+                                <FluentGridItem xs="1">
                                     <FluentButton Style="align-items: center;height: 100%"
                                                   IconStart="@(new Size24.ShareScreenStop())"></FluentButton>
                                 </FluentGridItem>

@@ -1,18 +1,39 @@
-﻿using AirTransfer.Interfaces;
+﻿#region
+
+using AirTransfer.Interfaces;
 using AirTransfer.Interfaces.Impls;
-using AirTransfer.Interfaces.Impls.HttpsTransfer;
 using AirTransfer.Interfaces.Impls.TcpTransfer;
 using AirTransfer.Interfaces.Impls.UdpTransfer;
 using AirTransfer.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
-using System.Collections.ObjectModel;
+
+#endregion
 
 namespace AirTransfer.Components.Pages;
 
 public partial class Home
 {
+    private readonly CancellationTokenSource _cancelDownloadTokenSource = new();
+
+
+    private string DeviceNickName = string.Empty;
+
+    private InformationModel? InformationModel;
+
+    private bool IsBusy;
+
+    private bool IsDownLoadingVisible;
+
+    private bool NewMessageVisible;
+
+    private string UserName = string.Empty;
+
+    [Parameter] public DeviceModel LocalDevice { get; set; }
+
+    [Parameter] public List<DiscoveredDeviceModel>? DiscoveredDevices { get; set; } = [];
+
     #region Injects
 
     [Inject] private NavigationManager NavigationManager { get; set; } = null!;
@@ -36,23 +57,4 @@ public partial class Home
     [Inject] private IUserService UserService { get; set; } = null!;
 
     #endregion
-
-    private CancellationTokenSource _cancelDownloadTokenSource = new();
-
-    [Parameter] public DeviceModel LocalDevice { get; set; }
-
-    private bool IsDownLoadingVisible;
-
-    private bool NewMessageVisible;
-
-    private bool IsBusy;
-
-    private string UserName = string.Empty;
-
-    [Parameter] public List<DiscoveredDeviceModel>? DiscoveredDevices { get; set; } = [];
-
-
-    private string DeviceNickName = string.Empty;
-
-    private InformationModel? InformationModel;
 }
