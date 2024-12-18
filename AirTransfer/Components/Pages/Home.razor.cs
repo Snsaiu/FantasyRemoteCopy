@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using AirTransfer.Enums;
 using AirTransfer.Extensions;
 using CommunityToolkit.Maui.Storage;
+using Microsoft.Extensions.Logging;
 
 namespace AirTransfer.Components.Pages;
 
@@ -271,9 +272,16 @@ public partial class Home : PageComponentBase
             {
                 // Logger.LogInformation("ͨ���豸����ɨ�赽��ip:{0}", device.Flag);
 
-                await LocalNetInviteDeviceBase.SendAsync(
-                    new DeviceDiscoveryMessage(UserName, LocalDevice.Flag, device.Flag) ??
-                    throw new NullReferenceException(), default);
+                try
+                {
+                    await LocalNetInviteDeviceBase.SendAsync(
+                        new DeviceDiscoveryMessage(UserName, LocalDevice.Flag, device.Flag),default);
+                }
+                catch (Exception exception)
+                {
+                  this.Logger.LogError(exception,"设备发现出错");
+                }
+             
             }
         }
         finally

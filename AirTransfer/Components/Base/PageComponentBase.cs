@@ -1,5 +1,5 @@
 ﻿using AirTransfer.Interfaces;
-
+using Microsoft.FluentUI.AspNetCore.Components;
 using Newtonsoft.Json;
 
 namespace Microsoft.AspNetCore.Components;
@@ -7,9 +7,14 @@ namespace Microsoft.AspNetCore.Components;
 public abstract class PageComponentBase : ComponentBase
 {
     #region Injects
+
     [Inject] protected NavigationManager NavigationManager { get; set; } = null!;
 
     [Inject] protected IStateManager StateManager { get; set; } = null!;
+
+    [Inject] protected IToastService ToastService { get; set; } = null!;
+
+    [Inject] protected ISaveDataService SaveDataService { get; set; } = null!;
 
     #endregion
 
@@ -47,7 +52,6 @@ public abstract class PageComponentBase : ComponentBase
                 var dataString = query[this.data];
                 data = JsonConvert.DeserializeObject<Dictionary<string, object>>(dataString);
             }
-
         }
 
         return OnPageInitializedAsync(fromUri, data);
@@ -72,5 +76,4 @@ public abstract class PageComponentBase : ComponentBase
         });
         NavigationManager.NavigateTo($"{uri}?{fromPage}={currentPage.AbsolutePath}&{data}={json}");
     }
-
 }
