@@ -17,10 +17,7 @@ public partial class Home
 {
     private readonly CancellationTokenSource _cancelDownloadTokenSource = new();
 
-
     private string DeviceNickName = string.Empty;
-
-    private InformationModel? InformationModel;
 
     private bool IsBusy;
 

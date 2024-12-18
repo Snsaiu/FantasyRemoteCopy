@@ -40,11 +40,11 @@ public partial class Home : PageComponentBase
             return Task.CompletedTask;
         if (url == "/Home/TextInput" && data != null && data.ContainsKey("text"))
         {
-            InformationModel = new()
+            StateManager.SetInformationModel(new()
             {
                 Text = data["text"].ToString(),
                 SendType = SendType.Text
-            };
+            });
         }
 
         return Task.CompletedTask;
@@ -68,10 +68,14 @@ public partial class Home : PageComponentBase
             if (!item.IsChecked)
                 continue;
 
+            var information = StateManager.GetInformationModel();
+            if (information is null)
+                throw new NullReferenceException();
+
             var codeWord = CodeWordModel.CreateCodeWord(Guid.NewGuid().ToString("N"), CodeWordType.CheckingPort,
-                LocalDevice.Flag,
-                item.Flag, 5005,
-                InformationModel.SendType, LocalDevice, null);
+                LocalDevice.Flag ?? throw new NullReferenceException(),
+                item.Flag ?? throw new NullReferenceException(), 5005,
+                information.SendType, LocalDevice, null);
 
 
             var portCheckMessage = new SendTextModel(LocalDevice.Flag, item.Flag ?? throw new NullReferenceException(),
@@ -82,7 +86,7 @@ public partial class Home : PageComponentBase
 
     private void ClearInformationModelCommand()
     {
-        this.InformationModel = null;
+        StateManager.SetInformationModel(null);
     }
 
     private void GotoTextInputPageCommand()
@@ -96,11 +100,11 @@ public partial class Home : PageComponentBase
 
         if (!files.Any())
             return;
-        InformationModel = new InformationModel
+        StateManager.SetInformationModel(new()
         {
             SendType = SendType.File,
             Files = files.Select(x => x.FullPath)
-        };
+        });
     }
 
     private async Task OpenFolderCommand()
@@ -109,11 +113,11 @@ public partial class Home : PageComponentBase
         if (!folerPicker.IsSuccessful)
             return;
 
-        InformationModel = new InformationModel
+        StateManager.SetInformationModel(new()
         {
             SendType = SendType.Folder,
             FolderPath = folerPicker.Folder.Path
-        };
+        });
     }
 
     #endregion
@@ -173,14 +177,19 @@ public partial class Home : PageComponentBase
     {
         var localIp = await DeviceLocalIpBase.GetLocalIpAsync();
 
+        var information = StateManager.GetInformationModel();
+        if (information is null)
+            throw new NullReferenceException();
+
         try
         {
-            var sendfile = InformationModel!.SendType == SendType.Folder
-                ? new SendCompressFileModel(localIp, targetIp, InformationModel.FolderPath, port)
-                : InformationModel.SendType == SendType.File
-                    ? InformationModel.Files.Count() == 1
-                        ? new SendFileModel(localIp, targetIp, InformationModel.Files.First(), port)
-                        : new SendCompressFileModel(localIp, targetIp, InformationModel.Files, port)
+            var sendfile = information.SendType == SendType.Folder
+                ? new SendCompressFileModel(localIp, targetIp,
+                    information.FolderPath ?? throw new NullReferenceException(), port)
+                : information.SendType == SendType.File
+                    ? information.Files.Count() == 1
+                        ? new SendFileModel(localIp, targetIp, information.Files.First(), port)
+                        : new SendCompressFileModel(localIp, targetIp, information.Files, port)
                     : throw new NotSupportedException();
             await TcpSendFileBase.SendAsync(sendfile, ReportProgress(true, taskId), token);
         }

@@ -197,11 +197,15 @@ public partial class Home
 
                 SenderAddTaskAndShowProgress(codeWord, sendCancelTokenSource);
 
-                switch (InformationModel!.SendType)
+                var information = StateManager.GetInformationModel();
+                if (information is null)
+                    throw new NullReferenceException();
+                switch (information!.SendType)
                 {
                     case SendType.Text:
                         TcpSendTextBase.SendAsync(
-                            new(LocalDevice.Flag, data.Flag, InformationModel.Text, codeWord.Port), null,
+                            new(LocalDevice.Flag ?? throw new NullReferenceException(), data.Flag,
+                                information.Text ?? string.Empty, codeWord.Port), null,
                             sendCancelTokenSource.Token);
                         break;
                     case SendType.File:

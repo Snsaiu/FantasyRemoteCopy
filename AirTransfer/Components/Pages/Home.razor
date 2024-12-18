@@ -39,8 +39,9 @@
                 <FluentButton Style="width: 100%" OnClick="OpenFolderCommand">文件夹</FluentButton>
             </FluentGridItem>
 
-            @if (InformationModel is not null)
+            @if (StateManager.GetInformationModel() is not null)
             {
+                var information = StateManager.GetInformationModel();
                 <FluentGridItem xs="12">
                     <FluentCard>
                         <FluentStack HorizontalAlignment="HorizontalAlignment.Center"
@@ -48,8 +49,8 @@
                             <FluentStack Orientation="Orientation.Horizontal"
                                          VerticalAlignment="VerticalAlignment.Center"
                                          HorizontalAlignment="HorizontalAlignment.Center">
-                                <FluentBadge>@InformationModel.SendType </FluentBadge>
-                                <FluentBadge>@InformationModel.Summary</FluentBadge>
+                                <FluentBadge>@information.SendType </FluentBadge>
+                                <FluentBadge>@information.Summary</FluentBadge>
                                 <FluentButton IconStart="@(new Size16.Stop())"
                                               OnClick="ClearInformationModelCommand"></FluentButton>
                             </FluentStack>
@@ -130,7 +131,7 @@
             </FluentGridItem>
         </FluentGrid>
     </div>
-    @if (InformationModel is not null && StateManager.Devices().Any(x => x.IsChecked))
+    @if (StateManager.GetInformationModel() is not null && StateManager.Devices().Any(x => x.IsChecked))
     {
         <div class="bottom">
             <FluentButton Style="width:100%" OnClick="SendCommand">发送</FluentButton>

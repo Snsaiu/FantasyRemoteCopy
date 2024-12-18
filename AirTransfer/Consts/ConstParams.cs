@@ -16,6 +16,8 @@ public static class ConstParams
         public static readonly string ListenKey = "listen";
 
         public static readonly string DevicesKey = "devices";
+
+        public static readonly string InformationModelKey = "information";
     }
 
     public static string SaveFilePath()

@@ -6,12 +6,19 @@ namespace AirTransfer.Extensions;
 
 public static class StateManagerExtension
 {
+    private static void CreateInformationModelContainer(IStateManager manager)
+    {
+        if (!manager.ExistKey(ConstParams.StateManagerKeys.InformationModelKey))
+            manager.SetState<InformationModel>(ConstParams.StateManagerKeys.InformationModelKey, null);
+    }
+
+    #region DiscoveryModels
+
     private static void CreateDeviceContainer(IStateManager manager)
     {
         if (!manager.ExistKey(ConstParams.StateManagerKeys.DevicesKey))
             manager.SetState(ConstParams.StateManagerKeys.DevicesKey, new List<DiscoveredDeviceModel>());
     }
-
     public static void AddDiscoveryModel(this IStateManager manager, DiscoveredDeviceModel device)
     {
         CreateDeviceContainer(manager);
@@ -50,4 +57,20 @@ public static class StateManagerExtension
         CreateDeviceContainer(manager);
         return manager.GetState<List<DiscoveredDeviceModel>>(ConstParams.StateManagerKeys.DevicesKey);
     }
+
+    #endregion
+
+    public static InformationModel? GetInformationModel(this IStateManager manager)
+    {
+        CreateInformationModelContainer(manager);
+        return manager.GetState<InformationModel>(ConstParams.StateManagerKeys.InformationModelKey);
+    }
+
+    public static void SetInformationModel(this IStateManager manager, InformationModel? informationModel)
+    {
+        CreateInformationModelContainer(manager);
+        manager.SetState<InformationModel>(ConstParams.StateManagerKeys.InformationModelKey, informationModel);
+    }
+
+
 }
