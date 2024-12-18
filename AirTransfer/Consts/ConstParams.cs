@@ -14,6 +14,8 @@ public static class ConstParams
     public static class StateManagerKeys
     {
         public static readonly string ListenKey = "listen";
+
+        public static readonly string DevicesKey = "devices";
     }
 
     public static string SaveFilePath()
@@ -22,7 +24,7 @@ public static class ConstParams
 
 
 #if WINDOWS
-      
+
         path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "FantasyRemoteCopy");
 #else
         path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FantasyRemoteCopy");

@@ -32,13 +32,10 @@ public partial class Home
 
     [Parameter] public DeviceModel LocalDevice { get; set; }
 
-    [Parameter] public List<DiscoveredDeviceModel>? DiscoveredDevices { get; set; } = [];
-
     #region Injects
 
     [Inject] private NavigationManager NavigationManager { get; set; } = null!;
     [Inject] private ILogger<Home> Logger { get; set; } = null!;
-    [Inject] private IStateManager StateManager { get; set; } = null!;
     [Inject] private ISaveDataService DataService { get; set; } = null!;
     [Inject] private IDialogService DialogService { get; set; } = null!;
     [Inject] private LocalNetDeviceDiscoveryBase LocalNetDeviceDiscoveryBase { get; set; } = null!;

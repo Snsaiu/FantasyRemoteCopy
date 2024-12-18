@@ -2,12 +2,9 @@ using AirTransfer.Interfaces;
 using AirTransfer.Models;
 using FantasyRemoteCopy.UI.Consts;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
-using System.ComponentModel.Design;
 using AirTransfer.Enums;
 using AirTransfer.Extensions;
 using CommunityToolkit.Maui.Storage;
-using FantasyResultModel;
 
 namespace AirTransfer.Components.Pages;
 
@@ -66,7 +63,7 @@ public partial class Home : PageComponentBase
     private async Task SendCommand()
     {
         // 首先向目标电脑发送一个端口用于检查是否可以使用该端口
-        foreach (var item in DiscoveredDevices)
+        foreach (var item in StateManager.Devices())
         {
             if (!item.IsChecked)
                 continue;
@@ -123,32 +120,32 @@ public partial class Home : PageComponentBase
 
     #region Private Methods
 
-    private void InitData()
-    {
-        DiscoveredDevices.Add(new DiscoveredDeviceModel
-        {
-            Flag = "192.168.1.1",
-            DeviceName = "my window",
-            NickName = "�ҵ�windows",
-            SystemType = Enums.SystemType.Windows
-        });
-        DiscoveredDevices.Add(new DiscoveredDeviceModel
-        {
-            Flag = "192.168.1.2",
-            DeviceName = "my macos",
-            NickName = "�ҵ�mac",
-            SystemType = Enums.SystemType.MacOS
-        });
-        DiscoveredDevices.Add(new DiscoveredDeviceModel
-            { Flag = "192.168.1.2", DeviceName = "my ios", NickName = "�ҵ�iphone", SystemType = Enums.SystemType.IOS });
-        DiscoveredDevices.Add(new DiscoveredDeviceModel
-        {
-            Flag = "192.168.1.2",
-            DeviceName = "my android",
-            NickName = "�ҵ�android",
-            SystemType = Enums.SystemType.Android
-        });
-    }
+    // private void InitData()
+    // {
+    //     DiscoveredDevices.Add(new DiscoveredDeviceModel
+    //     {
+    //         Flag = "192.168.1.1",
+    //         DeviceName = "my window",
+    //         NickName = "�ҵ�windows",
+    //         SystemType = Enums.SystemType.Windows
+    //     });
+    //     DiscoveredDevices.Add(new DiscoveredDeviceModel
+    //     {
+    //         Flag = "192.168.1.2",
+    //         DeviceName = "my macos",
+    //         NickName = "�ҵ�mac",
+    //         SystemType = Enums.SystemType.MacOS
+    //     });
+    //     DiscoveredDevices.Add(new DiscoveredDeviceModel
+    //         { Flag = "192.168.1.2", DeviceName = "my ios", NickName = "�ҵ�iphone", SystemType = Enums.SystemType.IOS });
+    //     DiscoveredDevices.Add(new DiscoveredDeviceModel
+    //     {
+    //         Flag = "192.168.1.2",
+    //         DeviceName = "my android",
+    //         NickName = "�ҵ�android",
+    //         SystemType = Enums.SystemType.Android
+    //     });
+    // }
 
 
     private async Task InitListenAsync()
@@ -198,8 +195,8 @@ public partial class Home : PageComponentBase
         Progress<ProgressValueModel> progress = new(x =>
         {
             var flag = isSendModel
-                ? DiscoveredDevices.FirstOrDefault(y => y.Flag == x.TargetFlag)
-                : DiscoveredDevices.FirstOrDefault(y => y.Flag == x.Flag);
+                ? StateManager.FindDiscoveredDeviceModel(x.TargetFlag)
+                : StateManager.FindDiscoveredDeviceModel(x.Flag);
             if (flag is null)
                 return;
             if (isSendModel)
@@ -239,7 +236,7 @@ public partial class Home : PageComponentBase
 
     private void SenderAddTaskAndShowProgress(CodeWordModel codeWord, CancellationTokenSource cancelTokenSource)
     {
-        var device = DiscoveredDevices.FirstOrDefault(x => x.Flag == codeWord.Flag);
+        var device = StateManager.FindDiscoveredDeviceModel(codeWord.Flag);
         if (device is null) return;
         device.WorkState = WorkState.Sending;
         device.TransmissionTasks.Add(new TransmissionTaskModel(codeWord.TaskGuid, codeWord.TargetFlag,
@@ -255,7 +252,7 @@ public partial class Home : PageComponentBase
         {
             IsBusy = true;
 
-            DiscoveredDevices.Clear();
+            StateManager.ClearDiscoveryModel();
 
             // Logger.LogInformation("���ֱ���ip:{0}", localDevice.Flag);
 
@@ -286,7 +283,7 @@ public partial class Home : PageComponentBase
             Time = DateTime.Now
         };
 
-        var model = DiscoveredDevices.FirstOrDefault(x => x.Flag == data.Flag);
+        var model = StateManager.FindDiscoveredDeviceModel(data.Flag);
         if (model is null)
             throw new NullReferenceException();
         model.WorkState = WorkState.None;

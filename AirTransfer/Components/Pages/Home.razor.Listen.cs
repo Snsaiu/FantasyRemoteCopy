@@ -65,10 +65,9 @@ public partial class Home
                     Logger.LogInformation("接收到要加入的设备{0}", JsonConvert.SerializeObject(x));
                     if (x.Name != UserName)
                         return;
-
-                    if (DiscoveredDevices.Any(y => y.Flag == x.Flag)) return;
+                    if (StateManager.ExistDiscoveryModel(x.Flag)) return;
                     Logger.LogInformation("加入设备{0}", JsonConvert.SerializeObject(x));
-                    DiscoveredDevices.Add(x);
+                    StateManager.AddDiscoveryModel(x);
                     Application.Current.Dispatcher.Dispatch(() => { StateHasChanged(); });
                 }, default);
             })
@@ -94,10 +93,10 @@ public partial class Home
     /// </summary>
     private void CheckDeviceExistAndSave(DeviceModel deviceModel)
     {
-        if (DiscoveredDevices.Any(x => x.Flag == deviceModel.Flag))
+        if (StateManager.ExistDiscoveryModel(deviceModel.Flag))
             return;
 
-        DiscoveredDevices.Add(new(deviceModel));
+        StateManager.AddDiscoveryModel(new(deviceModel));
     }
 
 
@@ -129,7 +128,7 @@ public partial class Home
             {
                 // 开始监听
                 var cancelTokenSource = new CancellationTokenSource();
-                var receiveDevice = DiscoveredDevices.FirstOrDefault(x => x.Flag == data.Flag);
+                var receiveDevice = StateManager.FindDiscoveredDeviceModel(data.Flag);
                 if (receiveDevice is null)
                 {
                     Logger.LogInformation($"设备列表中未发现端口为{data.Flag},取消监听");
@@ -162,7 +161,7 @@ public partial class Home
         }
         else if (codeWord.Type == CodeWordType.CancelTransmission)
         {
-            foreach (var device in DiscoveredDevices)
+            foreach (var device in StateManager.Devices())
                 if (device.TryGetTransmissionTask(codeWord.TaskGuid, out var task))
                 {
                     task?.CancellationTokenSource?.Cancel();
