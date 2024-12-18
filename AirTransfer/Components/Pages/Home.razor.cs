@@ -309,7 +309,9 @@ public partial class Home : PageComponentBase
         saveDataModel.SourceDeviceNickName = model.NickName ?? string.Empty;
         saveDataModel.Guid = Guid.NewGuid().ToString();
         await DataService.AddAsync(saveDataModel);
-        StateHasChanged();
+        
+        Application.Current.Dispatcher.Dispatch(StateHasChanged);
+        
     }
 
     #endregion
