@@ -1,8 +1,10 @@
-﻿namespace AirTransfer.Interfaces.Impls;
+﻿using System.Collections.Concurrent;
+
+namespace AirTransfer.Interfaces.Impls;
 
 public class StateManager : IStateManager
 {
-    private readonly Dictionary<string, object?> stateDictionary = [];
+    private readonly ConcurrentDictionary<string, object?> stateDictionary = [];
 
     public void SetState<T>(string key, T? value)
     {

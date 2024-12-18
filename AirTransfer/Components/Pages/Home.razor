@@ -26,18 +26,19 @@
                         </FluentStack>
                         <FluentSpacer></FluentSpacer>
                         <FluentButton Style="margin-right: 10px; margin-top: 10px;"
+                                      Disabled="@StateManager.GetIsWorkingBusyState()"
                                       IconStart="@(new Size32.Search())" OnClick="SearchCommand"></FluentButton>
                     </FluentStack>
                 </FluentCard>
             </FluentGridItem>
             <FluentGridItem xs="4">
-                <FluentButton Style="width: 100%" OnClick="GotoTextInputPageCommand">文本</FluentButton>
+                <FluentButton Disabled="@StateManager.GetIsWorkingBusyState()" Style="width: 100%" OnClick="GotoTextInputPageCommand">文本</FluentButton>
             </FluentGridItem>
             <FluentGridItem xs="4">
-                <FluentButton Style="width: 100%" OnClick="OpenFileCommand">文件</FluentButton>
+                <FluentButton Disabled="@StateManager.GetIsWorkingBusyState()" Style="width: 100%" OnClick="OpenFileCommand">文件</FluentButton>
             </FluentGridItem>
             <FluentGridItem xs="4">
-                <FluentButton Style="width: 100%" OnClick="OpenFolderCommand">文件夹</FluentButton>
+                <FluentButton Disabled="@StateManager.GetIsWorkingBusyState()" Style="width: 100%" OnClick="OpenFolderCommand">文件夹</FluentButton>
             </FluentGridItem>
 
             @if (StateManager.GetInformationModel() is not null)
@@ -53,6 +54,7 @@
                                 <FluentBadge>@information.SendType </FluentBadge>
                                 <FluentBadge>@information.Summary</FluentBadge>
                                 <FluentButton IconStart="@(new Size16.Stop())"
+                                              Disabled="@StateManager.GetIsWorkingBusyState()"
                                               OnClick="ClearInformationModelCommand"></FluentButton>
                             </FluentStack>
 
@@ -71,6 +73,7 @@
                             <FluentGrid>
                                 <FluentGridItem xs="1">
                                     <FluentCheckbox
+                                        Disabled="@StateManager.GetIsWorkingBusyState()"
                                         Style="margin-left: 5px; margin-right:5px; height: 100%;align-items: center"
                                                         @bind-Value="@item.IsChecked"></FluentCheckbox>
                                 </FluentGridItem>
@@ -121,12 +124,12 @@
                                 <FluentGridItem xs="6">
                                     @if (item.WorkState == WorkState.Downloading)
                                     {
-                                        var progress = (int)item.Progress * 100;
+                                        var progress =  (int)(item.Progress * 100);
                                         <FluentProgress Style="align-items: center;height: 100%"  Color="@OfficeColor.Exchange.ToAttributeValue()"  Min="0" Max="100" Value="@progress"></FluentProgress>
                                     }
                                     else if(item.WorkState==WorkState.Sending)
                                     {
-                                        var progress = (int)item.Progress * 100;
+                                        var progress =  (int)(item.Progress * 100);
                                         <FluentProgress Style="align-items: center;height: 100%" Color="@OfficeColor.Booking.ToAttributeValue()" Min="0" Max="100"  Value="@progress"></FluentProgress>
                                     }
                                     
@@ -148,7 +151,7 @@
     @if (StateManager.GetInformationModel() is not null && StateManager.Devices().Any(x => x.IsChecked))
     {
         <div class="bottom">
-            <FluentButton Style="width:100%" OnClick="SendCommand">发送</FluentButton>
+            <FluentButton Style="width:100%" OnClick="SendCommand" Disabled="@StateManager.GetIsWorkingBusyState()">发送</FluentButton>
         </div>
     }
 </div>

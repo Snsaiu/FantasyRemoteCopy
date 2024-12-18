@@ -100,7 +100,12 @@ public partial class Home
         if (StateManager.ExistDiscoveryModel(deviceModel.Flag))
             return;
 
-        StateManager.AddDiscoveryModel(new(deviceModel));
+        Application.Current.Dispatcher.Dispatch(() =>
+        {
+            StateManager.AddDiscoveryModel(new(deviceModel));
+            StateHasChanged();
+        });
+
     }
 
 

@@ -12,6 +12,24 @@ public static class StateManagerExtension
             manager.SetState<InformationModel>(ConstParams.StateManagerKeys.InformationModelKey, null);
     }
 
+    public static void CreateIsWorkingBusyContainer(IStateManager manager)
+    {
+        if(!manager.ExistKey(ConstParams.StateManagerKeys.IsWorkBusyKey))
+            manager.SetState(ConstParams.StateManagerKeys.IsWorkBusyKey, false);
+    }
+
+    public static void SetIsWorkingBusyState(this IStateManager manager, bool isbusy)
+    {
+        CreateIsWorkingBusyContainer(manager);
+        manager.SetState(ConstParams.StateManagerKeys.IsWorkBusyKey, isbusy);
+    }
+
+    public static bool GetIsWorkingBusyState(this IStateManager manager)
+    {
+        CreateIsWorkingBusyContainer(manager);
+        return manager.GetState<bool>(ConstParams.StateManagerKeys.IsWorkBusyKey);
+    }
+
     #region DiscoveryModels
 
     private static void CreateDeviceContainer(IStateManager manager)
@@ -48,7 +66,9 @@ public static class StateManagerExtension
 
     public static void ClearDiscoveryModel(this IStateManager manager)
     {
+        
         CreateDeviceContainer(manager);
+        
         manager.GetState<List<DiscoveredDeviceModel>>(ConstParams.StateManagerKeys.DevicesKey).Clear();
     }
 

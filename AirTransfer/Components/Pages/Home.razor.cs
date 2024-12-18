@@ -63,6 +63,7 @@ public partial class Home : PageComponentBase
 
     private async Task SendCommand()
     {
+        StateManager.SetIsWorkingBusyState(true);
         // 首先向目标电脑发送一个端口用于检查是否可以使用该端口
         foreach (var item in StateManager.Devices())
         {
@@ -236,9 +237,15 @@ public partial class Home : PageComponentBase
                     flag.WorkState = WorkState.Downloading;
                 }
             }
-            
-            flag.Progress = x.Progress;
-            Application.Current.Dispatcher.Dispatch(StateHasChanged);
+            Application.Current.Dispatcher.Dispatch(() =>
+            {
+                flag.Progress = x.Progress;
+                var noWork = StateManager.Devices().All(x => x.WorkState == WorkState.None);
+                this.StateManager.SetIsWorkingBusyState(!noWork);
+                if(noWork)
+                    StateManager.SetInformationModel(null);
+                StateHasChanged();
+            });
         });
 
         return progress;
@@ -262,7 +269,12 @@ public partial class Home : PageComponentBase
         {
             IsBusy = true;
 
-            StateManager.ClearDiscoveryModel();
+            Application.Current.Dispatcher.Dispatch(() =>
+            {
+                StateManager.ClearDiscoveryModel();
+                StateHasChanged();
+            });
+            
 
             // Logger.LogInformation("���ֱ���ip:{0}", localDevice.Flag);
 
