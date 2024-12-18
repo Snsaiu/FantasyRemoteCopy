@@ -1,6 +1,7 @@
 ﻿@page "/Home"
 @using AirTransfer.Extensions
 @using AirTransfer.Models
+@using Microsoft.FluentUI.AspNetCore.Components.Extensions
 @using Microsoft.FluentUI.AspNetCore.Components.Icons.Filled
 @using Size12 = Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12
 @inherits PageComponentBase
@@ -121,12 +122,12 @@
                                     @if (item.WorkState == WorkState.Downloading)
                                     {
                                         var progress = (int)item.Progress * 100;
-                                        <FluentProgress Style="align-items: center;height: 100%"  Color="@OfficeColor.Exchange"  Min="0" Max="100" Value="@progress"></FluentProgress>
+                                        <FluentProgress Style="align-items: center;height: 100%"  Color="@OfficeColor.Exchange.ToAttributeValue()"  Min="0" Max="100" Value="@progress"></FluentProgress>
                                     }
                                     else if(item.WorkState==WorkState.Sending)
                                     {
                                         var progress = (int)item.Progress * 100;
-                                        <FluentProgress Style="align-items: center;height: 100%" Color="@OfficeColor.Booking" Min="0" Max="100"  Value="@progress"></FluentProgress>
+                                        <FluentProgress Style="align-items: center;height: 100%" Color="@OfficeColor.Booking.ToAttributeValue()" Min="0" Max="100"  Value="@progress"></FluentProgress>
                                     }
                                     
                                 </FluentGridItem>
