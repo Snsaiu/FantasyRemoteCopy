@@ -132,7 +132,7 @@
                                         var progress =  (int)(item.Progress * 100);
                                         <FluentProgress Style="align-items: center;height: 100%" Color="@OfficeColor.Booking.ToAttributeValue()" Min="0" Max="100"  Value="@progress"></FluentProgress>
                                     }
-                                    
+
                                 </FluentGridItem>
                                 <FluentGridItem xs="1">
                                     @if (item.WorkState == WorkState.Downloading || item.WorkState == WorkState.Sending)

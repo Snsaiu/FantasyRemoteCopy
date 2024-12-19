@@ -1,5 +1,6 @@
 ﻿#region
 
+using AirTransfer.Extensions;
 using AirTransfer.Interfaces;
 using AirTransfer.Interfaces.Impls;
 using AirTransfer.Interfaces.Impls.TcpTransfer;

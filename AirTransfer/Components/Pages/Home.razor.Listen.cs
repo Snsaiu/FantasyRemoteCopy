@@ -63,16 +63,12 @@ public partial class Home
                 _ = LocalNetJoinProcessBase.ReceiveAsync(x =>
                 {
                     Logger.LogInformation("接收到要加入的设备{0}", JsonConvert.SerializeObject(x));
-                    if (x.Name != UserName)
-                        return;
-                    if (StateManager.ExistDiscoveryModel(x.Flag)) return;
+
+                    if (x.Name != UserName || StateManager.ExistDiscoveryModel(x.Flag)) return;
+
                     Logger.LogInformation("加入设备{0}", JsonConvert.SerializeObject(x));
-                   
-                    Application.Current.Dispatcher.Dispatch(() =>
-                    { 
-                        StateManager.AddDiscoveryModel(x);
-                        StateHasChanged();
-                    });
+
+                    StateManager.AddDiscoveryModel(x);
                 }, default);
             })
             { IsBackground = true };
@@ -99,13 +95,7 @@ public partial class Home
     {
         if (StateManager.ExistDiscoveryModel(deviceModel.Flag))
             return;
-
-        Application.Current.Dispatcher.Dispatch(() =>
-        {
-            StateManager.AddDiscoveryModel(new(deviceModel));
-            StateHasChanged();
-        });
-
+        StateManager.AddDiscoveryModel(new(deviceModel));
     }
 
 

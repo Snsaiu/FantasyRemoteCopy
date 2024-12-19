@@ -32,7 +32,7 @@ public partial class Home : PageComponentBase
             await InitListenAsync();
         }
 
-        //  InitData();
+        StateManager.ObservableDevices().CollectionChanged += (s, e) => InvokeAsync(StateHasChanged);
     }
 
     protected override Task OnPageInitializedAsync(string? url, Dictionary<string, object>? data)
@@ -58,6 +58,15 @@ public partial class Home : PageComponentBase
 
     private Task SearchCommand()
     {
+        // StateManager.ClearDiscoveryModel();
+        // StateManager.AddDiscoveryModel(new()
+        // {
+        //     Flag = "192.168.1.1",
+        //     DeviceName = "my window",
+        //     NickName = "�ҵ�windows",
+        //     SystemType = Enums.SystemType.Windows
+        // });
+        //  return Task.CompletedTask;
         return DeviceDiscoverAsync();
     }
 
@@ -212,7 +221,7 @@ public partial class Home : PageComponentBase
                 return;
             if (isSendModel)
             {
-                 Logger.LogInformation($"发送数据到{flag.Flag}， 进度{flag.Progress}");
+                Logger.LogInformation($"发送数据到{flag.Flag}， 进度{flag.Progress}");
                 if (x.Progress >= 1)
                 {
                     flag.WorkState = WorkState.None;
@@ -237,15 +246,13 @@ public partial class Home : PageComponentBase
                     flag.WorkState = WorkState.Downloading;
                 }
             }
-            Application.Current.Dispatcher.Dispatch(() =>
-            {
-                flag.Progress = x.Progress;
-                var noWork = StateManager.Devices().All(x => x.WorkState == WorkState.None);
-                this.StateManager.SetIsWorkingBusyState(!noWork);
-                if(noWork)
-                    StateManager.SetInformationModel(null);
-                StateHasChanged();
-            });
+
+            flag.Progress = x.Progress;
+            var noWork = StateManager.Devices().All(x => x.WorkState == WorkState.None);
+            StateManager.SetIsWorkingBusyState(!noWork);
+            if (noWork)
+                StateManager.SetInformationModel(null);
+            InvokeAsync(StateHasChanged);
         });
 
         return progress;
@@ -269,31 +276,22 @@ public partial class Home : PageComponentBase
         {
             IsBusy = true;
 
-            Application.Current.Dispatcher.Dispatch(() =>
-            {
-                StateManager.ClearDiscoveryModel();
-                StateHasChanged();
-            });
-            
-
-            // Logger.LogInformation("���ֱ���ip:{0}", localDevice.Flag);
+            StateManager.ClearDiscoveryModel();
+            await InvokeAsync(StateHasChanged);
 
             var devices = LocalIpScannerBase.GetDevicesAsync(default);
 
             await foreach (var device in devices)
             {
-                // Logger.LogInformation("ͨ���豸����ɨ�赽��ip:{0}", device.Flag);
-
                 try
                 {
                     await LocalNetInviteDeviceBase.SendAsync(
-                        new DeviceDiscoveryMessage(UserName, LocalDevice.Flag, device.Flag),default);
+                        new(UserName, LocalDevice.Flag, device.Flag), default);
                 }
                 catch (Exception exception)
                 {
-                  this.Logger.LogError(exception,"设备发现出错");
+                    Logger.LogError(exception, "设备发现出错");
                 }
-             
             }
         }
         finally
@@ -321,9 +319,7 @@ public partial class Home : PageComponentBase
         saveDataModel.SourceDeviceNickName = model.NickName ?? string.Empty;
         saveDataModel.Guid = Guid.NewGuid().ToString();
         await DataService.AddAsync(saveDataModel);
-        
-        Application.Current.Dispatcher.Dispatch(StateHasChanged);
-        
+        await InvokeAsync(StateHasChanged);
     }
 
     #endregion
