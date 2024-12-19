@@ -1,10 +1,11 @@
 ﻿using AirTransfer.Interfaces;
+using FantasyRemoteCopy.UI.Consts;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Newtonsoft.Json;
 
 namespace Microsoft.AspNetCore.Components;
 
-public abstract class PageComponentBase : ComponentBase, IDisposable
+public abstract class PageComponentBase : ComponentBase
 {
     #region Injects
 
@@ -30,7 +31,6 @@ public abstract class PageComponentBase : ComponentBase, IDisposable
 
     protected override Task OnInitializedAsync()
     {
-        StateManager.StateChanged = null;
         StateManager.StateChanged += () => StateChanged();
         return ParseInitPageDataAsync();
     }
@@ -38,11 +38,14 @@ public abstract class PageComponentBase : ComponentBase, IDisposable
     private Task StateChanged()
     {
         return InvokeAsync(StateHasChanged);
+
     }
 
     private Task ParseInitPageDataAsync()
     {
         var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        StateManager.SetState(ConstParams.StateManagerKeys.CurrentUriKey, NavigationManager.ToBaseRelativePath(NavigationManager.Uri));
+        
         var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
 
         Dictionary<string, object>? data = null;
@@ -84,12 +87,5 @@ public abstract class PageComponentBase : ComponentBase, IDisposable
         NavigationManager.NavigateTo($"{uri}?{fromPage}={currentPage.AbsolutePath}&{data}={json}");
     }
 
-    public void Dispose()
-    {
-        OnDispose();
-    }
-
-    protected virtual void OnDispose()
-    {
-    }
+ 
 }

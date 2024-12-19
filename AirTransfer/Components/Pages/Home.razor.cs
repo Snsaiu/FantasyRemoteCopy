@@ -14,16 +14,20 @@ public partial class Home : PageComponentBase
 {
     #region Override Methods
 
-    protected override void OnDispose()
+    public override Task SetParametersAsync(ParameterView parameters)
     {
-        base.OnDispose();
         StateManager.ObservableDevices().CollectionChanged -= UpdateDevices;
+        return base.SetParametersAsync(parameters);
     }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         await Init();
+        
+        var noWork = StateManager.Devices().All(x => x.WorkState == WorkState.None);
+        StateManager.SetIsWorkingBusyState(!noWork);
+        
         if (StateManager.ExistKey(ConstParams.StateManagerKeys.ListenKey))
         {
             var state = StateManager.GetState<bool>(ConstParams.StateManagerKeys.ListenKey);
@@ -53,7 +57,7 @@ public partial class Home : PageComponentBase
     {
         if (url is null)
             return Task.CompletedTask;
-        if (url == "/Home/TextInput" && data != null && data.ContainsKey("text"))
+        if (url == "/home/text-input" && data != null && data.ContainsKey("text"))
         {
             StateManager.SetInformationModel(new()
             {
@@ -116,7 +120,7 @@ public partial class Home : PageComponentBase
 
     private void GotoTextInputPageCommand()
     {
-        NavigationManager.NavigateTo("/Home/TextInput");
+        NavigationManager.NavigateTo("/home/text-input");
     }
 
     private async Task OpenFileCommand()
@@ -224,7 +228,8 @@ public partial class Home : PageComponentBase
         }
     }
 
-    private IProgress<ProgressValueModel> ReportProgress(bool isSendModel, string taskId)
+    private IProgress<ProgressValueModel> 
+        ReportProgress(bool isSendModel, string taskId)
     {
         Progress<ProgressValueModel> progress = new(x =>
         {
@@ -263,7 +268,14 @@ public partial class Home : PageComponentBase
 
             flag.Progress = x.Progress;
             var noWork = StateManager.Devices().All(x => x.WorkState == WorkState.None);
-            StateManager.SetIsWorkingBusyState(!noWork);
+            if (StateManager.ExistKey(ConstParams.StateManagerKeys.CurrentUriKey))
+            {
+                var value = StateManager.GetState<string>(ConstParams.StateManagerKeys.CurrentUriKey);
+                if(value=="home")
+                    StateManager.SetIsWorkingBusyState(!noWork);
+                
+            }
+            
             if (noWork)
             {
                 StateManager.SetInformationModel(null);

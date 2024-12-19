@@ -2,6 +2,7 @@ using AirTransfer.Interfaces;
 using Microsoft.AspNetCore.Components;
 using System.Collections.ObjectModel;
 using AirTransfer.Enums;
+using AirTransfer.Extensions;
 using AirTransfer.Models;
 using Microsoft.FluentUI.AspNetCore.Components;
 
@@ -22,6 +23,9 @@ public partial class History : PageComponentBase
 
     protected override async Task OnPageInitializedAsync(string? url, Dictionary<string, object>? data)
     {
+        
+        StateManager.ClearNotReadCount();
+        
         var list = await SaveDataService.GetAllAsync();
 
         if (list.Ok)
