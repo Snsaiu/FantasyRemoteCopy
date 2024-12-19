@@ -18,8 +18,10 @@ public static class ConstParams
         public static readonly string DevicesKey = "devices";
 
         public static readonly string InformationModelKey = "information";
-        
+
         public static readonly string IsWorkBusyKey= "isWorking";
+
+        public static readonly string NotReadCountKey = "notReadCount";
     }
 
     public static string SaveFilePath()

@@ -265,7 +265,9 @@ public partial class Home : PageComponentBase
             var noWork = StateManager.Devices().All(x => x.WorkState == WorkState.None);
             StateManager.SetIsWorkingBusyState(!noWork);
             if (noWork)
+            {
                 StateManager.SetInformationModel(null);
+            }
         });
 
         return progress;
@@ -329,6 +331,12 @@ public partial class Home : PageComponentBase
         saveDataModel.SourceDeviceNickName = model.NickName ?? string.Empty;
         saveDataModel.Guid = Guid.NewGuid().ToString();
         DataService.AddAsync(saveDataModel);
+        InvokeAsync(() =>
+        {
+            StateManager.AppendNotReadCount();
+            StateHasChanged();
+        });
+
         return Task.CompletedTask;
     }
 

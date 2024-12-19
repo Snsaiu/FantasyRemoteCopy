@@ -19,6 +19,31 @@ public static class StateManagerExtension
             manager.SetState(ConstParams.StateManagerKeys.IsWorkBusyKey, false);
     }
 
+    public static void CreateNotReadCountContainer(IStateManager manager)
+    {
+        if (!manager.ExistKey(ConstParams.StateManagerKeys.NotReadCountKey))
+            manager.SetState(ConstParams.StateManagerKeys.NotReadCountKey, 0);
+    }
+
+    public static void AppendNotReadCount(this IStateManager manager)
+    {
+        CreateNotReadCountContainer(manager);
+        var currentValue = manager.GetState<int>(ConstParams.StateManagerKeys.NotReadCountKey);
+        manager.SetState<int>(ConstParams.StateManagerKeys.NotReadCountKey, currentValue + 1);
+    }
+
+    public static void ClearNotReadCount(this IStateManager manager)
+    {
+        CreateNotReadCountContainer(manager);
+        manager.SetState<int>(ConstParams.StateManagerKeys.NotReadCountKey, 0);
+    }
+
+    public static int GetNotReadCount(this IStateManager manager)
+    {
+        CreateNotReadCountContainer(manager);
+        return manager.GetState<int>(ConstParams.StateManagerKeys.NotReadCountKey);
+    }
+
     public static void SetIsWorkingBusyState(this IStateManager manager, bool isbusy)
     {
         CreateIsWorkingBusyContainer(manager);

@@ -15,6 +15,8 @@ public partial class History : PageComponentBase
 
     [Inject] private IOpenFileable OpenFile { get; set; } = null!;
 
+    [Inject] protected ISystemType SystemType { get; set; } = null!;
+
 
     [Parameter] public ObservableCollection<SaveItemModel>? Models { get; set; } = [];
 

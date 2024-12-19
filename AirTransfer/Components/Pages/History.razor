@@ -73,14 +73,17 @@
                             else if (item.SendType == SendType.File)
                             {
                                 <FluentButton
-                                    OnClick="()=>OpenFileCommand(item)"
+                                    OnClick="() => OpenFileCommand(item)"
                                     IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Open())"/>
 
-                                <FluentButton
-                                    OnClick="()=>OpenFolderCommand(item)"
-                                    IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.FolderOpen())"/>
+                                @if (SystemType.System is Enums.SystemType.Windows or Enums.SystemType.MacOS)
+                                {
+                                    <FluentButton
+                                        OnClick="() => OpenFolderCommand(item)"
+                                        IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.FolderOpen())"/>
+                                }
                             }
-                            else if (item.SendType == SendType.Folder)
+                            else if (item.SendType == SendType.Folder && SystemType.System is not Enums.SystemType.IOS and not Enums.SystemType.Android)
                             {
                                 <FluentButton
                                     OnClick="()=>OpenFolderCommand(item)"
