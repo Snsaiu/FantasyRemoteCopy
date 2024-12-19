@@ -11,6 +11,17 @@ public partial class TextInput : PageComponentBase
 
     private void SubmitCommand()
     {
+        if (string.IsNullOrEmpty(Text))
+        {
+            this.ToastService.ShowError("Please enter a text");
+            return;
+        }
+        
         this.NavigateTo("/home", new Dictionary<string, object> { { "text", Text } });
+    }
+
+    private void ReturnCommand()
+    {
+        this.NavigateTo("/home");
     }
 }
