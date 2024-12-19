@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Microsoft.AspNetCore.Components;
 
-public abstract class PageComponentBase : ComponentBase
+public abstract class PageComponentBase : ComponentBase, IDisposable
 {
     #region Injects
 
@@ -30,7 +30,14 @@ public abstract class PageComponentBase : ComponentBase
 
     protected override Task OnInitializedAsync()
     {
+        StateManager.StateChanged = null;
+        StateManager.StateChanged += () => StateChanged();
         return ParseInitPageDataAsync();
+    }
+
+    private Task StateChanged()
+    {
+        return InvokeAsync(StateHasChanged);
     }
 
     private Task ParseInitPageDataAsync()
@@ -75,5 +82,14 @@ public abstract class PageComponentBase : ComponentBase
             StringEscapeHandling = StringEscapeHandling.EscapeNonAscii
         });
         NavigationManager.NavigateTo($"{uri}?{fromPage}={currentPage.AbsolutePath}&{data}={json}");
+    }
+
+    public void Dispose()
+    {
+        OnDispose();
+    }
+
+    protected virtual void OnDispose()
+    {
     }
 }

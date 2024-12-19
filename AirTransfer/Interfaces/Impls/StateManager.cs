@@ -6,9 +6,12 @@ public class StateManager : IStateManager
 {
     private readonly ConcurrentDictionary<string, object?> stateDictionary = [];
 
+    public Action? StateChanged { get; set; }
+
     public void SetState<T>(string key, T? value)
     {
         stateDictionary[key] = value;
+        StateChanged?.Invoke();
     }
 
     public T? GetState<T>(string key)

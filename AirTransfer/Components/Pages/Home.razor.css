@@ -1,17 +1,4 @@
-.container {
-    display: flex; /* 启用 Flex 布局 */
-    flex-direction: column; /* 子元素上下排列 */
-    height: 100%; /* 或者给一个固定高度，比如 500px */
 
-}
-
-.top {
-    flex: 1; /* 占据剩余空间 */
-}
-
-.bottom {
-    /* 不需要额外设置位置，默认在 Flex 布局中会位于底部 */
-}
 
 .listbox {
     overflow-x: hidden
@@ -27,8 +14,11 @@
     outline: none;
 }
 
-.SystemTypeIcon {
-    text-align: center;
+.system-type-icon {
+    width: 30px;
+    display: flex;
     align-items: center;
-    height: 100px;
+    height: 100%;
+    text-align: center;
+    justify-content: center;
 }

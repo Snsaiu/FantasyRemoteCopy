@@ -65,7 +65,7 @@ public static class StateManagerExtension
     public static DiscoveredDeviceModel? FindDiscoveredDeviceModel(this IStateManager manager, string? flag)
     {
         CreateDeviceContainer(manager);
-        return manager.GetState<List<DiscoveredDeviceModel>>(ConstParams.StateManagerKeys.DevicesKey)!
+        return manager.GetState<ObservableCollection<DiscoveredDeviceModel>>(ConstParams.StateManagerKeys.DevicesKey)!
             .FirstOrDefault(x => x.Flag == flag);
     }
 

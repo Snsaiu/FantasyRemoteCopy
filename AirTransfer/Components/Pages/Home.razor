@@ -6,7 +6,7 @@
 @using Size12 = Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12
 @inherits PageComponentBase
 
-<div class="container">
+<div class="main-container">
     <div class="top">
         <FluentGrid Spacing="0" Justify="JustifyContent.SpaceBetween">
             <FluentGridItem xs="12">
@@ -75,44 +75,50 @@
                                     <FluentCheckbox
                                         Disabled="@StateManager.GetIsWorkingBusyState()"
                                         Style="margin-left: 5px; margin-right:5px; height: 100%;align-items: center"
-                                                        @bind-Value="@item.IsChecked"></FluentCheckbox>
+                                        @bind-Value="@item.IsChecked"></FluentCheckbox>
                                 </FluentGridItem>
 
                                 <FluentGridItem xs="1">
                                     @switch (item.SystemType)
                                     {
                                         case Enums.SystemType.Windows:
-                                            <FluentIcon Class="SystemTypeIcon"
-                                                        Width="40px;"
-                                                        Value="@(Icon.FromImageUrl("images/windows.png"))"></FluentIcon>
+                                            <div class="system-type-icon">
+                                                <FluentIcon
+                                                    Value="@(Icon.FromImageUrl("images/windows.png"))"></FluentIcon>
+                                            </div>
                                             break;
                                         case Enums.SystemType.MacOS:
-                                            <FluentIcon Class="SystemTypeIcon"
+                                            <div class="system-type-icon">
+                                                <FluentIcon Class="system-type-icon"
                                                         Value="@(Icon.FromImageUrl("images/mac.png"))"></FluentIcon>
+                                            </div>
                                             break;
                                         case Enums.SystemType.IOS:
-                                            <FluentIcon Class="SystemTypeIcon"
-                                                        Value="@(Icon.FromImageUrl("images/iphone.png"))"></FluentIcon>
+                                            <div class="system-type-icon">
+                                                <FluentIcon
+                                                    Value="@(Icon.FromImageUrl("images/iphone.png"))"></FluentIcon>
+                                            </div>
                                             break;
                                         case Enums.SystemType.Android:
+                                            <div class="system-type-icon">
                                             <FluentIcon
-                                                Width="40px;"
-                                                Class="SystemTypeIcon"
                                                 Value="@(Icon.FromImageUrl("images/android.png"))"></FluentIcon>
+                                            </div>
                                             break;
                                         default:
                                             throw new NotImplementedException("目前图标只支持 windows,mac,ios,android");
                                     }
                                 </FluentGridItem>
-                                <FluentGridItem xs="3">
+                                <FluentGridItem xs="4">
                                     <FluentStack
-                                        HorizontalAlignment="HorizontalAlignment.Center"
-                                        HorizontalGap="1"
-                                        VerticalGap="1"
+                                        HorizontalAlignment="HorizontalAlignment.Left"
+                                        HorizontalGap="0"
+                                        VerticalGap="0"
                                         Orientation="Orientation.Vertical">
-                                        <FluentLabel Style="background-color: red;font-size: 10px;">@item.DeviceName
+                                        <FluentLabel Style="font-size: 10px;">@item.NickName
                                         </FluentLabel>
-                                        <FluentStack Orientation="Orientation.Horizontal">
+                                        <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="0"
+                                                     HorizontalAlignment="HorizontalAlignment.Left">
                                             <FluentIcon
                                                 Value="@(new Size20.Wifi1())"></FluentIcon>
                                             <FluentLabel Alignment="HorizontalAlignment.Start"
@@ -121,7 +127,7 @@
                                         </FluentStack>
                                     </FluentStack>
                                 </FluentGridItem>
-                                <FluentGridItem xs="6">
+                                <FluentGridItem xs="5">
                                     @if (item.WorkState == WorkState.Downloading)
                                     {
                                         var progress =  (int)(item.Progress * 100);
@@ -148,6 +154,10 @@
             </FluentGridItem>
         </FluentGrid>
     </div>
+    <div class="busy-container">
+        <FluentProgressRing Visible="@IsBusy"></FluentProgressRing>
+    </div>
+
     @if (StateManager.GetInformationModel() is not null && StateManager.Devices().Any(x => x.IsChecked))
     {
         <div class="bottom">

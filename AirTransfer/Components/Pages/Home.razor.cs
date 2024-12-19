@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using AirTransfer.Interfaces;
 using AirTransfer.Models;
 using FantasyRemoteCopy.UI.Consts;
@@ -12,6 +13,12 @@ namespace AirTransfer.Components.Pages;
 public partial class Home : PageComponentBase
 {
     #region Override Methods
+
+    protected override void OnDispose()
+    {
+        base.OnDispose();
+        StateManager.ObservableDevices().CollectionChanged -= UpdateDevices;
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -32,7 +39,14 @@ public partial class Home : PageComponentBase
             await InitListenAsync();
         }
 
-        StateManager.ObservableDevices().CollectionChanged += (s, e) => InvokeAsync(StateHasChanged);
+
+        StateManager.ObservableDevices().CollectionChanged += UpdateDevices;
+    }
+
+
+    private void UpdateDevices(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        InvokeAsync(StateHasChanged);
     }
 
     protected override Task OnPageInitializedAsync(string? url, Dictionary<string, object>? data)
@@ -252,7 +266,6 @@ public partial class Home : PageComponentBase
             StateManager.SetIsWorkingBusyState(!noWork);
             if (noWork)
                 StateManager.SetInformationModel(null);
-            InvokeAsync(StateHasChanged);
         });
 
         return progress;
@@ -267,9 +280,6 @@ public partial class Home : PageComponentBase
             codeWord.Flag, codeWord.Port, codeWord.SendType, codeWord.CancellationTokenSource));
     }
 
-    /// <summary>
-    ///     �豸����
-    /// </summary>
     private async Task DeviceDiscoverAsync()
     {
         try
@@ -301,7 +311,7 @@ public partial class Home : PageComponentBase
     }
 
 
-    private async Task SaveDataToLocalDbAsync(TransformResultModel<string> data)
+    private Task SaveDataToLocalDbAsync(TransformResultModel<string> data)
     {
         var saveDataModel = new SaveDataModel
         {
@@ -318,8 +328,8 @@ public partial class Home : PageComponentBase
         IsDownLoadingVisible = false;
         saveDataModel.SourceDeviceNickName = model.NickName ?? string.Empty;
         saveDataModel.Guid = Guid.NewGuid().ToString();
-        await DataService.AddAsync(saveDataModel);
-        await InvokeAsync(StateHasChanged);
+        DataService.AddAsync(saveDataModel);
+        return Task.CompletedTask;
     }
 
     #endregion

@@ -1,6 +1,10 @@
 ﻿/*#if (SampleContent)*/
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    touch-action: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
 a, .btn-link {
@@ -85,4 +89,25 @@ h1:focus {
     .flex-column, .navbar-brand {
         padding-left: env(safe-area-inset-left);
     }
+}
+
+.main-container {
+    display: flex; /* 启用 Flex 布局 */
+    flex-direction: column; /* 子元素上下排列 */
+    height: 100%; /* 或者给一个固定高度，比如 500px */
+    position: relative;
+}
+
+.busy-container {
+    position: absolute;
+    top: 50%;
+    left: 45%;
+}
+
+.top {
+    flex: 1; /* 占据剩余空间 */
+}
+
+.bottom {
+    /* 不需要额外设置位置，默认在 Flex 布局中会位于底部 */
 }

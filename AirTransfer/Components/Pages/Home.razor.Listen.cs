@@ -202,10 +202,13 @@ public partial class Home
                 switch (information!.SendType)
                 {
                     case SendType.Text:
-                        TcpSendTextBase.SendAsync(
+
+                        await TcpSendTextBase.SendAsync(
                             new(LocalDevice.Flag ?? throw new NullReferenceException(), data.Flag,
-                                information.Text ?? string.Empty, codeWord.Port), null,
+                                information.Text ?? string.Empty, codeWord.Port),
+                            ReportProgress(true, codeWord.TaskGuid),
                             sendCancelTokenSource.Token);
+
                         break;
                     case SendType.File:
                     case SendType.Folder:
