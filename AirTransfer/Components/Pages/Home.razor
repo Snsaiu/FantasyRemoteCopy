@@ -143,7 +143,7 @@
                                 <FluentGridItem xs="1">
                                     @if (item.WorkState == WorkState.Downloading || item.WorkState == WorkState.Sending)
                                     {
-                                        <FluentButton Style="align-items: center;height: 100%"
+                                        <FluentButton Style="align-items: center;height: 100%;margin-right: 5px;"
                                                       OnClick="()=> CloseTransformCommand(item)"
                                                       IconStart="@(new Size24.ShareScreenStop())"></FluentButton>
                                     }
