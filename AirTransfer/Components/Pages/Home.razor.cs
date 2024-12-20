@@ -25,8 +25,7 @@ public partial class Home : PageComponentBase
         await base.OnInitializedAsync();
         await Init();
 
-        var noWork = StateManager.Devices().All(x => x.WorkState == WorkState.None);
-        StateManager.SetIsWorkingBusyState(!noWork);
+        CheckWorkBusyState();
 
         if (StateManager.ExistKey(ConstParams.StateManagerKeys.ListenKey))
         {
@@ -45,6 +44,12 @@ public partial class Home : PageComponentBase
 
 
         StateManager.ObservableDevices().CollectionChanged += UpdateDevices;
+    }
+
+    private void CheckWorkBusyState()
+    {
+        var noWork = StateManager.Devices().All(x => x.WorkState == WorkState.None);
+        StateManager.SetIsWorkingBusyState(!noWork);
     }
 
 
@@ -73,6 +78,32 @@ public partial class Home : PageComponentBase
 
 
     #region Commands
+
+    private async Task CloseTransformCommand(DiscoveredDeviceModel device)
+    {
+        if (device.TransmissionTasks.FirstOrDefault() is { } receiveTask)
+        {
+            var cancelCodeWord = CodeWordModel.CreateCodeWord(receiveTask.TaskGuid, CodeWordType.CancelTransmission,
+                receiveTask.Flag,
+                receiveTask.TargetFlag, receiveTask.Port, receiveTask.SendType, LocalDevice, null);
+
+            Logger.LogInformation(
+                $"请求 {cancelCodeWord.Flag} 与 {cancelCodeWord.TargetFlag} 通过端口 {cancelCodeWord.Port} 的数据传输人工中断");
+
+            await TcpSendTextBase.SendAsync(
+                new(receiveTask.Flag, receiveTask.TargetFlag, cancelCodeWord.ToJson(),
+                    ConstParams.TCP_PORT), null, default);
+
+            receiveTask.CancellationTokenSource?.Cancel();
+
+            device.TransmissionTasks.Remove(receiveTask);
+        }
+
+        device.Progress = 0;
+        device.WorkState = WorkState.None;
+        CheckWorkBusyState();
+    }
+
 
     private Task SearchCommand()
     {
@@ -290,7 +321,7 @@ public partial class Home : PageComponentBase
         if (device is null) return;
         device.WorkState = WorkState.Sending;
         device.TransmissionTasks.Add(new TransmissionTaskModel(codeWord.TaskGuid, codeWord.TargetFlag,
-            codeWord.Flag, codeWord.Port, codeWord.SendType, codeWord.CancellationTokenSource));
+            codeWord.Flag, codeWord.Port, codeWord.SendType, cancelTokenSource));
     }
 
     private async Task DeviceDiscoverAsync()

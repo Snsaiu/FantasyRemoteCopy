@@ -7,7 +7,9 @@ public class ProgressStream : Stream
 {
     private readonly Stream stream;
 
-    private long totalBytesRead;
+    private long totalBytesRead = 0;
+
+    private int lastReportedProgress = -1; // 上次触发 ProgressChanged 的进度
 
     public event Action<long, long> ProgressChanged;
 
@@ -21,13 +23,7 @@ public class ProgressStream : Stream
         stream.Flush();
     }
 
-    public override int Read(byte[] buffer, int offset, int count)
-    {
-        var bytesRead = stream.Read(buffer, offset, count);
-        totalBytesRead += bytesRead;
-        ProgressChanged?.Invoke(totalBytesRead, Length);
-        return bytesRead;
-    }
+
 
     public override long Seek(long offset, SeekOrigin origin)
     {
@@ -39,11 +35,28 @@ public class ProgressStream : Stream
         stream.SetLength(value);
     }
 
+    public override int Read(byte[] buffer, int offset, int count)
+    {
+        var bytesRead = stream.Read(buffer, offset, count);
+        totalBytesRead += bytesRead;
+        ReportProgress();
+        return bytesRead;
+    }
+
+    private void ReportProgress()
+    {
+        var currentProgress = (int)((double)totalBytesRead / Length * 100);
+        if (Math.Abs(currentProgress - lastReportedProgress) < 3) return;
+
+        lastReportedProgress = currentProgress; // 更新上次触发进度
+        ProgressChanged?.Invoke(totalBytesRead, Length);
+    }
+
     public override void Write(byte[] buffer, int offset, int count)
     {
         stream.Write(buffer, offset, count);
         totalBytesRead += count;
-        ProgressChanged?.Invoke(totalBytesRead, Length);
+        ReportProgress();
     }
 
     protected override void Dispose(bool disposing)

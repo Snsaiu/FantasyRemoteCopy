@@ -27,6 +27,8 @@ public abstract class TcpSendFileBase : TcpSendBase<SendFileModel, ProgressValue
         var buffer = new byte[8192]; // 8KB 缓冲区
         int bytesRead;
 
+        double lastProgress = -1;
+
         await using var fs = new FileStream(message.FileFullPath, FileMode.Open, FileAccess.Read);
         while ((bytesRead = await fs.ReadAsync(buffer, 0, buffer.Length)) > 0)
         {
@@ -34,10 +36,16 @@ public abstract class TcpSendFileBase : TcpSendBase<SendFileModel, ProgressValue
             bytesSent += bytesRead;
             // 计算并显示上传进度
             var p = (double)bytesSent / totalBytes;
-            progress?.Report(new ProgressValueModel(message.Flag, message.TargetFlag, p));
+            if (Math.Abs(p - lastProgress) >= 0.1)
+            {
+                lastProgress = p;
+                progress?.Report(new(message.Flag, message.TargetFlag, p));
+            }
         }
 
         // 如果是压缩包，当上传结束后要删除
         if (message is ICompress) File.Delete(message.FileFullPath);
+        if (lastProgress != 1)
+            progress?.Report(new(message.Flag, message.TargetFlag, 1));
     }
 }

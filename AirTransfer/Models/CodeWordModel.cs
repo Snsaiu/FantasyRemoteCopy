@@ -27,7 +27,7 @@ public class CodeWordModel : TransmissionTaskModel
         int port,
         SendType sendType, DeviceModel deviceModel, CancellationTokenSource? cancellationTokenSource)
     {
-        return new CodeWordModel(taskId, type, flag, targetFlag, port, sendType, deviceModel, cancellationTokenSource);
+        return new(taskId, type, flag, targetFlag, port, sendType, deviceModel, cancellationTokenSource);
     }
 
     public CodeWordType Type { get; set; }

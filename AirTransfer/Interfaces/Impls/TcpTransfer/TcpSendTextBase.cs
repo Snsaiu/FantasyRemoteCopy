@@ -14,6 +14,6 @@ public abstract class TcpSendTextBase : TcpSendBase<SendTextModel, ProgressValue
     {
         var messageBytes = Encoding.UTF8.GetBytes(message.Text);
         await sender.WriteAsync(messageBytes, 0, (int)message.Size, cancellationToken);
-        progress?.Report(new ProgressValueModel(message.Flag, message.TargetFlag, 1));
+        progress?.Report(new(message.Flag, message.TargetFlag, 1));
     }
 }
