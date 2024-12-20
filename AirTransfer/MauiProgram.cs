@@ -25,6 +25,7 @@ namespace AirTransfer
 
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddFluentUIComponents(options => { options.UseTooltipServiceProvider = true; });
+            builder.Services.AddLocalization();
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();

@@ -3,8 +3,8 @@
 @using AirTransfer.Models
 @using Microsoft.FluentUI.AspNetCore.Components.Extensions
 @using Microsoft.FluentUI.AspNetCore.Components.Icons.Filled
-@using Size12 = Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12
 @inherits PageComponentBase
+
 
 <div class="main-container">
     <div class="top">
@@ -90,7 +90,7 @@
                                         case Enums.SystemType.MacOS:
                                             <div class="system-type-icon">
                                                 <FluentIcon Class="system-type-icon"
-                                                        Value="@(Icon.FromImageUrl("images/mac.png"))"></FluentIcon>
+                                                            Value="@(Icon.FromImageUrl("images/mac.png"))"></FluentIcon>
                                             </div>
                                             break;
                                         case Enums.SystemType.IOS:
@@ -101,8 +101,8 @@
                                             break;
                                         case Enums.SystemType.Android:
                                             <div class="system-type-icon">
-                                            <FluentIcon
-                                                Value="@(Icon.FromImageUrl("images/android.png"))"></FluentIcon>
+                                                <FluentIcon
+                                                    Value="@(Icon.FromImageUrl("images/android.png"))"></FluentIcon>
                                             </div>
                                             break;
                                         default:
@@ -130,13 +130,17 @@
                                 <FluentGridItem xs="5">
                                     @if (item.WorkState == WorkState.Downloading)
                                     {
-                                        var progress =  (int)(item.Progress * 100);
-                                        <FluentProgress Style="align-items: center;height: 100%"  Color="@OfficeColor.Exchange.ToAttributeValue()"  Min="0" Max="100" Value="@progress"></FluentProgress>
+                                        var progress = (int)(item.Progress * 100);
+                                        <FluentProgress Style="align-items: center;height: 100%"
+                                                        Color="@OfficeColor.Exchange.ToAttributeValue()" Min="0"
+                                                        Max="100" Value="@progress"></FluentProgress>
                                     }
-                                    else if(item.WorkState==WorkState.Sending)
+                                    else if (item.WorkState == WorkState.Sending)
                                     {
-                                        var progress =  (int)(item.Progress * 100);
-                                        <FluentProgress Style="align-items: center;height: 100%" Color="@OfficeColor.Booking.ToAttributeValue()" Min="0" Max="100"  Value="@progress"></FluentProgress>
+                                        var progress = (int)(item.Progress * 100);
+                                        <FluentProgress Style="align-items: center;height: 100%"
+                                                        Color="@OfficeColor.Booking.ToAttributeValue()" Min="0"
+                                                        Max="100" Value="@progress"></FluentProgress>
                                     }
 
                                 </FluentGridItem>
@@ -144,7 +148,7 @@
                                     @if (item.WorkState == WorkState.Downloading || item.WorkState == WorkState.Sending)
                                     {
                                         <FluentButton Style="align-items: center;height: 100%;margin-right: 5px;"
-                                                      OnClick="()=> CloseTransformCommand(item)"
+                                                      OnClick="() => CloseTransformCommand(item)"
                                                       IconStart="@(new Size24.ShareScreenStop())"></FluentButton>
                                     }
                                 </FluentGridItem>

@@ -63,6 +63,7 @@
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Maui" Version="9.1.1"/>
         <PackageReference Include="FantasyResultModel" Version="1.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.0"/>
         <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.10.4"/>
         <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Emoji" Version="4.6.0"/>
         <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.11.0-beta.1"/>
@@ -75,6 +76,26 @@
 
     <ItemGroup>
         <Content Remove="wwwroot\images\header.jpg"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Resources\Languages\AppResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>AppResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Languages\AppResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>AppResources.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Resources\Languages\AppResources.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
 
