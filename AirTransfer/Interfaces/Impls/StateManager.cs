@@ -25,4 +25,9 @@ public class StateManager : IStateManager
     {
         return stateDictionary.ContainsKey(key);
     }
+
+    public void Cleaer()
+    {
+        stateDictionary.Clear();
+    }
 }

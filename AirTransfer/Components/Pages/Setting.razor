@@ -1,7 +1,20 @@
 @page "/setting"
+@using Microsoft.FluentUI.AspNetCore.Components.Icons.Filled
+@inherits PageComponentBase
 
 
 <div>
+
+    <FluentAccordion>
+        <FluentAccordionItem Heading="扫描">
+            <FluentButton IconStart="@(new Size24.Globe())">全局刷新</FluentButton>
+        </FluentAccordionItem>
+        <FluentAccordionItem Heading="公共">
+            <FluentStack Orientation="Orientation.Horizontal" Wrap="true">
+                <FluentSelect TOption=""></FluentSelect>
+            </FluentStack>
+        </FluentAccordionItem>
+    </FluentAccordion>
 
     <FluentGrid AdaptiveRendering="true">
         <FluentGridItem xs="12">

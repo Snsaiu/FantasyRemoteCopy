@@ -9,4 +9,6 @@ public interface IStateManager
     public T? GetState<T>(string key);
 
     public bool ExistKey(string key);
+
+    public void Cleaer();
 }
