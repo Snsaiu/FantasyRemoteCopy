@@ -24,10 +24,10 @@ public partial class Home : PageComponentBase
     {
         await base.OnInitializedAsync();
         await Init();
-        
+
         var noWork = StateManager.Devices().All(x => x.WorkState == WorkState.None);
         StateManager.SetIsWorkingBusyState(!noWork);
-        
+
         if (StateManager.ExistKey(ConstParams.StateManagerKeys.ListenKey))
         {
             var state = StateManager.GetState<bool>(ConstParams.StateManagerKeys.ListenKey);
@@ -228,7 +228,7 @@ public partial class Home : PageComponentBase
         }
     }
 
-    private IProgress<ProgressValueModel> 
+    private IProgress<ProgressValueModel>
         ReportProgress(bool isSendModel, string taskId)
     {
         Progress<ProgressValueModel> progress = new(x =>
@@ -271,11 +271,10 @@ public partial class Home : PageComponentBase
             if (StateManager.ExistKey(ConstParams.StateManagerKeys.CurrentUriKey))
             {
                 var value = StateManager.GetState<string>(ConstParams.StateManagerKeys.CurrentUriKey);
-                if(value=="home")
+                if (value == "home")
                     StateManager.SetIsWorkingBusyState(!noWork);
-                
             }
-            
+
             if (noWork)
             {
                 StateManager.SetInformationModel(null);
@@ -343,6 +342,10 @@ public partial class Home : PageComponentBase
         saveDataModel.SourceDeviceNickName = model.NickName ?? string.Empty;
         saveDataModel.Guid = Guid.NewGuid().ToString();
         DataService.AddAsync(saveDataModel);
+
+        var noWork = StateManager.Devices().All(x => x.WorkState == WorkState.None);
+        StateManager.SetIsWorkingBusyState(!noWork);
+
         InvokeAsync(() =>
         {
             StateManager.AppendNotReadCount();
