@@ -1,4 +1,5 @@
 @page "/setting"
+@using AirTransfer.Language
 @using Microsoft.FluentUI.AspNetCore.Components.Icons.Filled
 @inherits PageComponentBase
 
@@ -11,7 +12,12 @@
         </FluentAccordionItem>
         <FluentAccordionItem Heading="公共">
             <FluentStack Orientation="Orientation.Horizontal" Wrap="true">
-                <FluentSelect TOption=""></FluentSelect>
+                <FluentSelect TOption="KeyValuePair<string, string>"
+                              Label="@Localizer["SelectLanguage"]"
+                              Items="@Languages"
+                              @bind-Value="@SelectedLanguage"
+                              OptionText="x => x.Key" OptionValue="x=>x.Value"
+                              SelectedOptionChanged="x=>SaveLanguageCommand(x)"></FluentSelect>
             </FluentStack>
         </FluentAccordionItem>
     </FluentAccordion>

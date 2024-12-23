@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Reflection.Metadata;
 using AirTransfer.Interfaces;
+using AirTransfer.Language;
 using AirTransfer.Resources.Languages;
 
 namespace AirTransfer
@@ -28,11 +29,7 @@ namespace AirTransfer
         {
             var languageService = Handler.MauiContext.Services.GetRequiredService<ILanguageService>();
             var language = languageService.GetLanguage();
-            if (string.IsNullOrEmpty(language))
-                AppResources.Culture = new("zh-hans");
-            else
-                AppResources.Culture = new(language);
-            // LocalizationResourceManager.Instance.SetCulture(new CultureInfo(language));
+            LocalizationResourceManager.Instance.SetCulture(new(language));
         }
     }
 }

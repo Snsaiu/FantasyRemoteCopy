@@ -1,6 +1,7 @@
+using System.Globalization;
 using AirTransfer.Extensions;
 using AirTransfer.Interfaces;
-using FantasyRemoteCopy.UI.Consts;
+using AirTransfer.Resources.Languages;
 using Microsoft.AspNetCore.Components;
 
 namespace AirTransfer.Components.Pages;
@@ -20,13 +21,29 @@ public partial class Setting : PageComponentBase
     #region Parameters
 
     [Parameter] public List<KeyValuePair<string, string>> Languages { get; set; } = [];
+
+    [Parameter] public string SelectedLanguage { get; set; } = string.Empty;
     #endregion
 
     #region Overrides
 
+    protected override Task OnPageInitializedAsync(string? url, Dictionary<string, object>? data)
+    {
+        InitLanguages();
+
+        return base.OnPageInitializedAsync(url, data);
+    }
+
     #endregion
 
     #region Commands
+
+    private Task SaveLanguageCommand(KeyValuePair<string, string> selectedLanguage)
+    {
+        LanguageService.SetLanguage(selectedLanguage.Value);
+        Localizer.SetCulture(new(selectedLanguage.Value));
+        return Task.CompletedTask;
+    }
 
     private async Task LogoutCommand()
     {
@@ -59,6 +76,9 @@ public partial class Setting : PageComponentBase
         Languages.Add(new("日本語", "ja-JP"));
         Languages.Add(new("한국어", "ko-KR"));
         Languages.Add(new("français", "fr-FR"));
+
+        SelectedLanguage = LanguageService.GetLanguage() ?? throw new ArgumentNullException(nameof(LanguageService));
+
     }
 
     #endregion

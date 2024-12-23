@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace FantasyRemoteCopy.UI.Tools;
+namespace AirTransfer.Tools;
 
 public class CertificateGenerator
 {

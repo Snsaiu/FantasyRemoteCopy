@@ -1,6 +1,5 @@
 ﻿using AirTransfer.Interfaces;
-
-using FantasyRemoteCopy.UI.Tools;
+using AirTransfer.Tools;
 
 namespace AirTransfer.Models;
 

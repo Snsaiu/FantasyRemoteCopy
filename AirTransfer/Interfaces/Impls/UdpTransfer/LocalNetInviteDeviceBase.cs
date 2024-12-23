@@ -1,9 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
-
+using AirTransfer.Consts;
 using AirTransfer.Models;
-
-using FantasyRemoteCopy.UI.Consts;
 
 namespace AirTransfer.Interfaces.Impls.UdpTransfer;
 

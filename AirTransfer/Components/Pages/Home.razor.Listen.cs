@@ -1,10 +1,10 @@
 ﻿#region
 
 using System.Net;
+using AirTransfer.Consts;
 using AirTransfer.Enums;
 using AirTransfer.Extensions;
 using AirTransfer.Models;
-using FantasyRemoteCopy.UI.Consts;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 

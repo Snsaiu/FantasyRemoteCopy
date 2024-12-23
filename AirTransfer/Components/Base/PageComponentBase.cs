@@ -1,6 +1,7 @@
-﻿using AirTransfer.Interfaces;
+﻿using AirTransfer.Consts;
+using AirTransfer.Interfaces;
+using AirTransfer.Language;
 using AirTransfer.Resources.Languages;
-using FantasyRemoteCopy.UI.Consts;
 using Microsoft.Extensions.Localization;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Newtonsoft.Json;
@@ -19,7 +20,7 @@ public abstract class PageComponentBase : ComponentBase
 
     [Inject] protected ISaveDataService SaveDataService { get; set; } = null!;
 
-    [Inject] protected IStringLocalizer<AppResources> Localizer { get; set; } = null!;
+    protected LocalizationResourceManager Localizer => LocalizationResourceManager.Instance;
 
     #endregion
 

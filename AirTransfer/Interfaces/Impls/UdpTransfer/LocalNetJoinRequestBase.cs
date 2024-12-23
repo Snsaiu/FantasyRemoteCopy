@@ -1,6 +1,6 @@
 using System.Net;
+using AirTransfer.Consts;
 using AirTransfer.Models;
-using FantasyRemoteCopy.UI.Consts;
 
 namespace AirTransfer.Interfaces.Impls.UdpTransfer;
 

@@ -1,6 +1,6 @@
 ﻿using System.IO.Compression;
 
-namespace FantasyRemoteCopy.UI.Tools;
+namespace AirTransfer.Tools;
 
 public static class ZipHelper
 {

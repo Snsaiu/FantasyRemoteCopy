@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using AirTransfer.Consts;
 using AirTransfer.Interfaces;
 using AirTransfer.Models;
-using FantasyRemoteCopy.UI.Consts;
 
 namespace AirTransfer.Extensions;
 

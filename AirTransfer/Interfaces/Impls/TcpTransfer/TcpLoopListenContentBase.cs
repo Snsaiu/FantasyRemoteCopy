@@ -2,7 +2,7 @@ using System.Net.Sockets;
 using AirTransfer.Enums;
 using AirTransfer.Interfaces.Impls.Configs;
 using AirTransfer.Models;
-using FantasyRemoteCopy.UI.Tools;
+using AirTransfer.Tools;
 
 namespace AirTransfer.Interfaces.Impls.TcpTransfer;
 
