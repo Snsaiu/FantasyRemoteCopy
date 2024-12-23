@@ -3,6 +3,7 @@ using AirTransfer.Extensions;
 using AirTransfer.Interfaces;
 using AirTransfer.Resources.Languages;
 using Microsoft.AspNetCore.Components;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace AirTransfer.Components.Pages;
 
@@ -12,20 +13,32 @@ public partial class Setting : PageComponentBase
 
     [Inject] private IUserService UserService { get; set; } = null!;
 
-    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-
     [Inject] private ILanguageService LanguageService { get; set; } = null!;
+
+    [Inject] private IThemeService ThemeService { get; set; } = null!;
 
     #endregion
 
     #region Parameters
 
-    [Parameter] public List<KeyValuePair<string, string>> Languages { get; set; } = [];
+    public List<KeyValuePair<string, string>> Languages { get; set; } = [];
+
+
+    [Parameter] public DesignThemeModes Theme { get; set; }
+
+    [Parameter] public OfficeColor? OfficeColor { get; set; }
 
     [Parameter] public string SelectedLanguage { get; set; } = string.Empty;
     #endregion
 
     #region Overrides
+
+    protected override Task OnParametersSetAsync()
+    {
+        Theme = ThemeService.GetDesignTheme();
+        OfficeColor = ThemeService.GetThemeColor();
+        return base.OnParametersSetAsync();
+    }
 
     protected override Task OnPageInitializedAsync(string? url, Dictionary<string, object>? data)
     {
@@ -82,4 +95,19 @@ public partial class Setting : PageComponentBase
     }
 
     #endregion
+
+
+    private void SaveThemeModeCommand(DesignThemeModes designThemeModes)
+    {
+        Theme = designThemeModes;
+        ThemeService.SetDesignTheme(designThemeModes);
+    }
+
+    private void SaveColorCommand(OfficeColor? officeColor)
+    {
+        OfficeColor = officeColor;
+        ThemeService.SetThemeColor(officeColor!.Value);
+    }
+
+
 }

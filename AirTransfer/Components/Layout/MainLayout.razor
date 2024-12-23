@@ -69,19 +69,25 @@
 <FluentTooltipProvider/>
 <FluentMessageBarProvider/>
 <FluentMenuProvider/>
-
+<FluentDesignTheme StorageName="theme" @bind-Mode="@ThemeMode" @bind-OfficeColor="@OfficeColor"/>
 
 @code{
     private Orientation orientation = Orientation.Horizontal;
 
     [Inject] private IStateManager StateManager { get; set; } = null!;
 
+    [Inject] private IThemeService ThemeService { get; set; } = null!;
+
     [Parameter] public int? NotReadCount { get; set; }
+
+    [Parameter] public DesignThemeModes ThemeMode { get; set; }
+
+    [Parameter] public OfficeColor? OfficeColor { get; set; }
 
     protected override Task OnInitializedAsync()
     {
         NotReadCount = StateManager.GetNotReadCount();
-        
+
         StateManager.StateChanged = null;
         StateManager.StateChanged += OnChanged;
         if (DeviceInfo.Current.Idiom == DeviceIdiom.Desktop || DeviceInfo.Current.Idiom == DeviceIdiom.Tablet)
@@ -92,6 +98,10 @@
         {
             orientation = Orientation.Vertical;
         }
+
+        ThemeMode = ThemeService.GetDesignTheme();
+        OfficeColor = ThemeService.GetThemeColor();
+
         return Task.CompletedTask;
 
     }
