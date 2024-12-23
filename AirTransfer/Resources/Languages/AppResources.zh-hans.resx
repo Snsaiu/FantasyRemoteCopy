@@ -66,4 +66,19 @@
     <data name="Folder" xml:space="preserve">
         <value>文件夹</value>
     </data>
+    <data name="Color" xml:space="preserve">
+        <value>颜色</value>
+    </data>
+    <data name="Theme" xml:space="preserve">
+        <value>主题</value>
+    </data>
+    <data name="Global" xml:space="preserve">
+        <value>全局</value>
+    </data>
+    <data name="Scan" xml:space="preserve">
+        <value>扫描</value>
+    </data>
+    <data name="Personalization" xml:space="preserve">
+        <value>个性化</value>
+    </data>
 </root>

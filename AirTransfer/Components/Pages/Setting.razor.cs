@@ -1,7 +1,9 @@
 using System.Globalization;
 using AirTransfer.Extensions;
 using AirTransfer.Interfaces;
+using AirTransfer.Interfaces.Impls.Configs;
 using AirTransfer.Resources.Languages;
+using CommunityToolkit.Maui.Storage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
 
@@ -12,6 +14,8 @@ public partial class Setting : PageComponentBase
     #region Injects
 
     [Inject] private IUserService UserService { get; set; } = null!;
+
+    [Inject] private  FileSavePathBase FileSavePath { get; set; } = null!;
 
     [Inject] private ILanguageService LanguageService { get; set; } = null!;
 
@@ -27,6 +31,8 @@ public partial class Setting : PageComponentBase
     [Parameter] public DesignThemeModes Theme { get; set; }
 
     [Parameter] public OfficeColor? OfficeColor { get; set; }
+    
+    private string SavePath { get; set; } =String.Empty;
 
     [Parameter] public string SelectedLanguage { get; set; } = string.Empty;
     #endregion
@@ -37,6 +43,7 @@ public partial class Setting : PageComponentBase
     {
         Theme = ThemeService.GetDesignTheme();
         OfficeColor = ThemeService.GetThemeColor();
+        SavePath = FileSavePath.SaveLocation;
         return base.OnParametersSetAsync();
     }
 
@@ -110,4 +117,14 @@ public partial class Setting : PageComponentBase
     }
 
 
+    private async Task SavePathCommand()
+    {
+        var result = await FolderPicker.Default.PickAsync();
+        if (result is not { IsSuccessful:true,Folder.Path :var path})
+        {
+            return;
+        }
+        ((IChangePathable)FileSavePath).ChangedPath(path);
+        SavePath= path;
+    }
 }

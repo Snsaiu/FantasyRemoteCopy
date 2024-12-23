@@ -7,10 +7,10 @@
 <div>
     <FluentDesignTheme @bind-Mode="@Theme" @bind-OfficeColor="@OfficeColor" StorageName="theme"/>
     <FluentAccordion ExpandMode="AccordionExpandMode.Multi">
-        <FluentAccordionItem Heading="扫描" Expanded="true">
-            <FluentButton IconStart="@(new Size24.Globe())">全局刷新</FluentButton>
+        <FluentAccordionItem Heading="@Localizer["Scan"]" Expanded="true">
+            <FluentButton IconStart="@(new Size24.Globe())">@Localizer["GlobalRefresh"]</FluentButton>
         </FluentAccordionItem>
-        <FluentAccordionItem Heading="个性化" Expanded="true">
+        <FluentAccordionItem Heading="@Localizer["Personalization"]" Expanded="true">
             <FluentStack Orientation="Orientation.Vertical">
                 <FluentSelect TOption="KeyValuePair<string, string>"
                               Label="@Localizer["SelectLanguage"]"
@@ -19,7 +19,7 @@
                               OptionText="x => x.Key" OptionValue="x=>x.Value"
                               SelectedOptionChanged="x=>SaveLanguageCommand(x)"></FluentSelect>
 
-                <FluentSelect Label="主题"
+                <FluentSelect Label="@Localizer["Theme"]"
                               TOption="DesignThemeModes"
                               SelectedOption="Theme"
                               Items="@(Enum.GetValues<DesignThemeModes>())"
@@ -27,7 +27,7 @@
                 >
                 </FluentSelect>
 
-                <FluentSelect Label="颜色"
+                <FluentSelect Label="@Localizer["Color"]"
                               SelectedOption="@OfficeColor"
                               TOption="OfficeColor?"
                               SelectedOptionChanged="SaveColorCommand"
@@ -44,6 +44,13 @@
                 </FluentSelect>
             </FluentStack>
         </FluentAccordionItem>
+        <FluentAccordionItem Heading="@Localizer["Global"]" Expanded="true">
+            <FluentStack Orientation="Orientation.Horizontal">
+                <FluentLabel> @($"{Localizer["SavePath"]}:")</FluentLabel>
+                <FluentLabel >@SavePath</FluentLabel>
+                <FluentButton OnClick="SavePathCommand" IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size24.Open())"></FluentButton>
+            </FluentStack>
+        </FluentAccordionItem>
     </FluentAccordion>
 
     <FluentGrid AdaptiveRendering="true">
@@ -52,7 +59,7 @@
             @*     xs=12222 *@
             @* </div> *@
             <FluentButton Style="width: 100%;margin: 5px;" Appearance="Appearance.Accent" OnClick="@LogoutCommand">
-                登出
+                @Localizer["Logout"]
             </FluentButton>
         </FluentGridItem>
     </FluentGrid>

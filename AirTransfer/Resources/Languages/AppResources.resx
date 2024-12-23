@@ -174,4 +174,19 @@
     <data name="Folder" xml:space="preserve">
         <value>Folder</value>
     </data>
+    <data name="Theme" xml:space="preserve">
+        <value>Theme</value>
+    </data>
+    <data name="Color" xml:space="preserve">
+        <value>Color</value>
+    </data>
+    <data name="Global" xml:space="preserve">
+        <value>Global</value>
+    </data>
+    <data name="Scan" xml:space="preserve">
+        <value>Scan</value>
+    </data>
+    <data name="Personalization" xml:space="preserve">
+        <value>Personalization</value>
+    </data>
 </root>

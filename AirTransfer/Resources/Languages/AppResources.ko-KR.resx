@@ -154,4 +154,19 @@
     <data name="Folder" xml:space="preserve">
 		<value>폴더</value>
 	</data>
+    <data name="Color" xml:space="preserve">
+        <value>색</value>
+    </data>
+    <data name="Theme" xml:space="preserve">
+        <value>테마</value>
+    </data>
+    <data name="Global" xml:space="preserve">
+        <value>글로벌</value>
+    </data>
+    <data name="Scan" xml:space="preserve">
+        <value>스캔</value>
+    </data>
+    <data name="Personalization" xml:space="preserve">
+        <value>개인화</value>
+    </data>
 </root>
