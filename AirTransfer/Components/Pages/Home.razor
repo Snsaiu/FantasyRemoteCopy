@@ -18,10 +18,10 @@
                         <FluentStack Orientation="Orientation.Vertical" Style="height: 100%">
                             <FluentLabel Alignment="HorizontalAlignment.Start" Style="margin-top: 20px;"
                                          Typo="Typography.H5">
-                                @LocalDevice.NickName
+                               @LocalDevice.NickName
                             </FluentLabel>
                             <FluentLabel Alignment="HorizontalAlignment.Start"
-                                         Typo="Typography.H6">@LocalDevice.DeviceName
+                                         Typo="Typography.H6">@($"{Localizer["DeviceNickname"]}:{LocalDevice.DeviceName}")
                             </FluentLabel>
                         </FluentStack>
                         <FluentSpacer></FluentSpacer>
@@ -32,13 +32,13 @@
                 </FluentCard>
             </FluentGridItem>
             <FluentGridItem xs="4">
-                <FluentButton Disabled="@StateManager.GetIsWorkingBusyState()" Style="width: 100%" OnClick="GotoTextInputPageCommand">文本</FluentButton>
+                <FluentButton Disabled="@StateManager.GetIsWorkingBusyState()" Style="width: 100%" OnClick="GotoTextInputPageCommand">@Localizer["Text"]</FluentButton>
             </FluentGridItem>
             <FluentGridItem xs="4">
-                <FluentButton Disabled="@StateManager.GetIsWorkingBusyState()" Style="width: 100%" OnClick="OpenFileCommand">文件</FluentButton>
+                <FluentButton Disabled="@StateManager.GetIsWorkingBusyState()" Style="width: 100%" OnClick="OpenFileCommand">@Localizer["File"]</FluentButton>
             </FluentGridItem>
             <FluentGridItem xs="4">
-                <FluentButton Disabled="@StateManager.GetIsWorkingBusyState()" Style="width: 100%" OnClick="OpenFolderCommand">文件夹</FluentButton>
+                <FluentButton Disabled="@StateManager.GetIsWorkingBusyState()" Style="width: 100%" OnClick="OpenFolderCommand">@Localizer["Folder"]</FluentButton>
             </FluentGridItem>
 
             @if (StateManager.GetInformationModel() is not null)
@@ -65,97 +65,105 @@
             }
 
             <FluentGridItem xs="12">
-                <FluentListbox Class="listbox" Style="overflow:hidden;outline:none;border:none"
-                               TOption="DiscoveredDeviceModel" Width="100%">
-                    @foreach (var item in StateManager.Devices())
-                    {
-                        <FluentCard Style="margin: 2px;">
-                            <FluentGrid>
-                                <FluentGridItem xs="1">
-                                    <FluentCheckbox
-                                        Disabled="@StateManager.GetIsWorkingBusyState()"
-                                        Style="margin-left: 5px; margin-right:5px; height: 100%;align-items: center"
-                                        @bind-Value="@item.IsChecked"></FluentCheckbox>
-                                </FluentGridItem>
+                @if (StateManager.Devices().Any())
+                {
+                    <FluentListbox Class="listbox" Style="overflow:hidden;outline:none;border:none"
+                                   TOption="DiscoveredDeviceModel" Width="100%">
+                        @foreach (var item in StateManager.Devices())
+                        {
+                            <FluentCard Style="margin: 2px;">
+                                <FluentGrid>
+                                    <FluentGridItem xs="1">
+                                        <FluentCheckbox
+                                            Disabled="@StateManager.GetIsWorkingBusyState()"
+                                            Style="margin-left: 5px; margin-right:5px; height: 100%;align-items: center"
+                                            @bind-Value="@item.IsChecked"></FluentCheckbox>
+                                    </FluentGridItem>
 
-                                <FluentGridItem xs="1">
-                                    @switch (item.SystemType)
-                                    {
-                                        case Enums.SystemType.Windows:
-                                            <div class="system-type-icon">
+                                    <FluentGridItem xs="1">
+                                        @switch (item.SystemType)
+                                        {
+                                            case Enums.SystemType.Windows:
+                                                <div class="system-type-icon">
+                                                    <FluentIcon
+                                                        Value="@(Icon.FromImageUrl("images/windows.png"))"></FluentIcon>
+                                                </div>
+                                                break;
+                                            case Enums.SystemType.MacOS:
+                                                <div class="system-type-icon">
+                                                    <FluentIcon Class="system-type-icon"
+                                                                Value="@(Icon.FromImageUrl("images/mac.png"))"></FluentIcon>
+                                                </div>
+                                                break;
+                                            case Enums.SystemType.IOS:
+                                                <div class="system-type-icon">
+                                                    <FluentIcon
+                                                        Value="@(Icon.FromImageUrl("images/iphone.png"))"></FluentIcon>
+                                                </div>
+                                                break;
+                                            case Enums.SystemType.Android:
+                                                <div class="system-type-icon">
+                                                    <FluentIcon
+                                                        Value="@(Icon.FromImageUrl("images/android.png"))"></FluentIcon>
+                                                </div>
+                                                break;
+                                            default:
+                                                throw new NotImplementedException("目前图标只支持 windows,mac,ios,android");
+                                        }
+                                    </FluentGridItem>
+                                    <FluentGridItem xs="4">
+                                        <FluentStack
+                                            HorizontalAlignment="HorizontalAlignment.Left"
+                                            HorizontalGap="0"
+                                            VerticalGap="0"
+                                            Orientation="Orientation.Vertical">
+                                            <FluentLabel Style="font-size: 10px;">
+                                                @( $"{Localizer["DeviceNickname"]}:{item.NickName}")
+                                            </FluentLabel>
+                                            <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="0"
+                                                         HorizontalAlignment="HorizontalAlignment.Left">
                                                 <FluentIcon
-                                                    Value="@(Icon.FromImageUrl("images/windows.png"))"></FluentIcon>
-                                            </div>
-                                            break;
-                                        case Enums.SystemType.MacOS:
-                                            <div class="system-type-icon">
-                                                <FluentIcon Class="system-type-icon"
-                                                            Value="@(Icon.FromImageUrl("images/mac.png"))"></FluentIcon>
-                                            </div>
-                                            break;
-                                        case Enums.SystemType.IOS:
-                                            <div class="system-type-icon">
-                                                <FluentIcon
-                                                    Value="@(Icon.FromImageUrl("images/iphone.png"))"></FluentIcon>
-                                            </div>
-                                            break;
-                                        case Enums.SystemType.Android:
-                                            <div class="system-type-icon">
-                                                <FluentIcon
-                                                    Value="@(Icon.FromImageUrl("images/android.png"))"></FluentIcon>
-                                            </div>
-                                            break;
-                                        default:
-                                            throw new NotImplementedException("目前图标只支持 windows,mac,ios,android");
-                                    }
-                                </FluentGridItem>
-                                <FluentGridItem xs="4">
-                                    <FluentStack
-                                        HorizontalAlignment="HorizontalAlignment.Left"
-                                        HorizontalGap="0"
-                                        VerticalGap="0"
-                                        Orientation="Orientation.Vertical">
-                                        <FluentLabel Style="font-size: 10px;">@item.NickName
-                                        </FluentLabel>
-                                        <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="0"
-                                                     HorizontalAlignment="HorizontalAlignment.Left">
-                                            <FluentIcon
-                                                Value="@(new Size20.Wifi1())"></FluentIcon>
-                                            <FluentLabel Alignment="HorizontalAlignment.Start"
-                                                         Typo="Typography.Body"
-                                                         Style="font-size: 10px;">@item.Flag</FluentLabel>
+                                                    Value="@(new Size20.Wifi1())"></FluentIcon>
+                                                <FluentLabel Alignment="HorizontalAlignment.Start"
+                                                             Typo="Typography.Body"
+                                                             Style="font-size: 10px;">@item.Flag</FluentLabel>
+                                            </FluentStack>
                                         </FluentStack>
-                                    </FluentStack>
-                                </FluentGridItem>
-                                <FluentGridItem xs="5">
-                                    @if (item.WorkState == WorkState.Downloading)
-                                    {
-                                        var progress = (int)(item.Progress * 100);
-                                        <FluentProgress Style="align-items: center;height: 100%"
-                                                        Color="@OfficeColor.Exchange.ToAttributeValue()" Min="0"
-                                                        Max="100" Value="@progress"></FluentProgress>
-                                    }
-                                    else if (item.WorkState == WorkState.Sending)
-                                    {
-                                        var progress = (int)(item.Progress * 100);
-                                        <FluentProgress Style="align-items: center;height: 100%"
-                                                        Color="@OfficeColor.Booking.ToAttributeValue()" Min="0"
-                                                        Max="100" Value="@progress"></FluentProgress>
-                                    }
+                                    </FluentGridItem>
+                                    <FluentGridItem xs="5">
+                                        @if (item.WorkState == WorkState.Downloading)
+                                        {
+                                            var progress = (int)(item.Progress * 100);
+                                            <FluentProgress Style="align-items: center;height: 100%"
+                                                            Color="@OfficeColor.Exchange.ToAttributeValue()" Min="0"
+                                                            Max="100" Value="@progress"></FluentProgress>
+                                        }
+                                        else if (item.WorkState == WorkState.Sending)
+                                        {
+                                            var progress = (int)(item.Progress * 100);
+                                            <FluentProgress Style="align-items: center;height: 100%"
+                                                            Color="@OfficeColor.Booking.ToAttributeValue()" Min="0"
+                                                            Max="100" Value="@progress"></FluentProgress>
+                                        }
 
-                                </FluentGridItem>
-                                <FluentGridItem xs="1">
-                                    @if (item.WorkState == WorkState.Downloading || item.WorkState == WorkState.Sending)
-                                    {
-                                        <FluentButton Style="align-items: center;height: 100%;margin-right: 5px;"
-                                                      OnClick="() => CloseTransformCommand(item)"
-                                                      IconStart="@(new Size24.ShareScreenStop())"></FluentButton>
-                                    }
-                                </FluentGridItem>
-                            </FluentGrid>
-                        </FluentCard>
-                    }
-                </FluentListbox>
+                                    </FluentGridItem>
+                                    <FluentGridItem xs="1">
+                                        @if (item.WorkState == WorkState.Downloading || item.WorkState == WorkState.Sending)
+                                        {
+                                            <FluentButton Style="align-items: center;height: 100%;margin-right: 5px;"
+                                                          OnClick="() => CloseTransformCommand(item)"
+                                                          IconStart="@(new Size24.ShareScreenStop())"></FluentButton>
+                                        }
+                                    </FluentGridItem>
+                                </FluentGrid>
+                            </FluentCard>
+                        }
+                    </FluentListbox>
+                }
+                else
+                {
+                    
+                }
             </FluentGridItem>
         </FluentGrid>
     </div>

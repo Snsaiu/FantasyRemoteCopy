@@ -17,6 +17,8 @@ body {
     font-weight: var(--font-weight);
     color: var(--neutral-foreground-rest);
     background: var(--neutral-fill-layer-rest);
+    touch-action: none;
+    overflow: hidden;
 }
 
 a, .btn-link {

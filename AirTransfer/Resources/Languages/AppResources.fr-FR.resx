@@ -170,4 +170,13 @@
     <data name="Personalization" xml:space="preserve">
         <value>Personnalisation</value>
     </data>
+    <data name="Home" xml:space="preserve">
+        <value>Accueil</value>
+    </data>
+    <data name="SetLanguageInfo" xml:space="preserve">
+        <value>Le changement de langue nécessite un redémarrage de l’application pour prendre effet.</value>
+    </data>
+    <data name="DeviceNickname" xml:space="preserve">
+        <value>Alias de l’appareil</value>
+    </data>
 </root>

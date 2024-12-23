@@ -61,7 +61,7 @@ public partial class Setting : PageComponentBase
     private Task SaveLanguageCommand(KeyValuePair<string, string> selectedLanguage)
     {
         LanguageService.SetLanguage(selectedLanguage.Value);
-        Localizer.SetCulture(new(selectedLanguage.Value));
+        this.ToastService.ShowInfo(Localizer["SetLanguageInfo"]);
         return Task.CompletedTask;
     }
 

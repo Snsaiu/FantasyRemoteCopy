@@ -169,4 +169,13 @@
     <data name="Personalization" xml:space="preserve">
         <value>개인화</value>
     </data>
+    <data name="Home" xml:space="preserve">
+        <value>홈</value>
+    </data>
+    <data name="SetLanguageInfo" xml:space="preserve">
+        <value>언어 변경 사항이 적용되려면 애플리케이션을 다시 시작해야 합니다。</value>
+    </data>
+    <data name="DeviceNickname" xml:space="preserve">
+        <value>디바이스 별칭</value>
+    </data>
 </root>

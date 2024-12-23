@@ -170,4 +170,13 @@
     <data name="Personalization" xml:space="preserve">
         <value>パーソナライズ</value>
     </data>
+    <data name="Home" xml:space="preserve">
+        <value>ホーム</value>
+    </data>
+    <data name="SetLanguageInfo" xml:space="preserve">
+        <value>言語を変更するにはアプリケーションを再起動する必要があります。</value>
+    </data>
+    <data name="DeviceNickname" xml:space="preserve">
+        <value>デバイスの別名</value>
+    </data>
 </root>

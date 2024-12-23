@@ -189,4 +189,13 @@
     <data name="Personalization" xml:space="preserve">
         <value>Personalization</value>
     </data>
+    <data name="Home" xml:space="preserve">
+        <value>Home</value>
+    </data>
+    <data name="SetLanguageInfo" xml:space="preserve">
+        <value>The language must be restarted for the changes to take effect.</value>
+    </data>
+    <data name="DeviceNickname" xml:space="preserve">
+        <value>Device Alias</value>
+    </data>
 </root>

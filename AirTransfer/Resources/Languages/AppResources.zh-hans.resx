@@ -81,4 +81,13 @@
     <data name="Personalization" xml:space="preserve">
         <value>个性化</value>
     </data>
+    <data name="Home" xml:space="preserve">
+        <value>主页</value>
+    </data>
+    <data name="SetLanguageInfo" xml:space="preserve">
+        <value>修改语言必须重启应用才能生效。</value>
+    </data>
+    <data name="DeviceNickname" xml:space="preserve">
+        <value>设备昵称</value>
+    </data>
 </root>

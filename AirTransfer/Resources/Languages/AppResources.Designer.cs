@@ -176,5 +176,23 @@ namespace AirTransfer.Resources.Languages {
                 return ResourceManager.GetString("Personalization", resourceCulture);
             }
         }
+        
+        internal static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        internal static string SetLanguageInfo {
+            get {
+                return ResourceManager.GetString("SetLanguageInfo", resourceCulture);
+            }
+        }
+        
+        internal static string DeviceNickname {
+            get {
+                return ResourceManager.GetString("DeviceNickname", resourceCulture);
+            }
+        }
     }
 }
