@@ -51,5 +51,7 @@ public partial class Home
 
     [Inject] private IUserService UserService { get; set; } = null!;
 
+    [Inject] private IClipboardWatchable ClipboardWatchable { get; set; } = null!;
+
     #endregion
 }

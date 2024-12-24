@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Reflection.Metadata;
+
 using AirTransfer.Interfaces;
 using AirTransfer.Language;
 using AirTransfer.Resources.Languages;
@@ -18,12 +19,29 @@ namespace AirTransfer
         protected override Window CreateWindow(IActivationState? activationState)
         {
             InitLanguage();
+
 #if WINDOWS ||MACCATALYST
-            return new Window(new MainPage()) { Title = "AirTransfer", Width = 600,  MinimumWidth = 600 };
+            var window = new Window(new MainPage()) { Title = "AirTransfer", Width = 600, MinimumWidth = 600 };
+
+            return window;
 #endif
 
             return new Window(new MainPage()) { Title = "AirTransfer" };
         }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+
+#if WINDOWS
+            var window = Current.Windows[0].Handler.PlatformView as Microsoft.UI.Xaml.Window;
+
+            var clip = Handler.MauiContext.Services.GetRequiredService<IClipboardWatchable>();
+            (clip as ClipboardWatcher)._window = window;
+            clip.Initialize(window);
+#endif
+        }
+
 
         private void InitLanguage()
         {

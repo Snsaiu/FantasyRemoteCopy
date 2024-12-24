@@ -72,6 +72,7 @@ namespace AirTransfer
             builder.Services.AddSingleton<IPortCheckable, PortChecker>();
 
             builder.Services.AddSingleton<IThemeService, ThemeService>();
+            builder.Services.AddSingleton<IClipboardWatchable, ClipboardWatcher>();
 
             return builder.Build();
         }

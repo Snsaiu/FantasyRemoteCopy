@@ -40,6 +40,8 @@ public partial class Home : PageComponentBase
         {
             StateManager.SetState(ConstParams.StateManagerKeys.ListenKey, true);
             await InitListenAsync();
+
+            ClipboardWatchable.ClipboardUpdate += ReceiveClipboard;
         }
 
 
@@ -185,6 +187,10 @@ public partial class Home : PageComponentBase
     #endregion
 
     #region Private Methods
+
+    private void ReceiveClipboard(object data)
+    {
+    }
 
     // private void InitData()
     // {
