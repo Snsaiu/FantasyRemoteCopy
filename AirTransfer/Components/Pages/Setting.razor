@@ -1,0 +1,67 @@
+@page "/setting"
+@using Microsoft.FluentUI.AspNetCore.Components.Extensions
+@using Microsoft.FluentUI.AspNetCore.Components.Icons.Filled
+@inherits PageComponentBase
+
+
+<div>
+    <FluentDesignTheme @bind-Mode="@Theme" @bind-OfficeColor="@OfficeColor" StorageName="theme"/>
+    <FluentAccordion ExpandMode="AccordionExpandMode.Multi">
+        <FluentAccordionItem Heading="@Localizer["Scan"]" Expanded="true">
+            <FluentButton IconStart="@(new Size24.Globe())">@Localizer["GlobalRefresh"]</FluentButton>
+        </FluentAccordionItem>
+        <FluentAccordionItem Heading="@Localizer["Personalization"]" Expanded="true">
+            <FluentStack Orientation="Orientation.Vertical">
+                <FluentSelect TOption="KeyValuePair<string, string>"
+                              Label="@Localizer["SelectLanguage"]"
+                              Items="@Languages"
+                              @bind-Value="@SelectedLanguage"
+                              OptionText="x => x.Key" OptionValue="x=>x.Value"
+                              SelectedOptionChanged="x=>SaveLanguageCommand(x)"></FluentSelect>
+
+                <FluentSelect Label="@Localizer["Theme"]"
+                              TOption="DesignThemeModes"
+                              SelectedOption="Theme"
+                              Items="@(Enum.GetValues<DesignThemeModes>())"
+                              SelectedOptionChanged="SaveThemeModeCommand"
+                >
+                </FluentSelect>
+
+                <FluentSelect Label="@Localizer["Color"]"
+                              SelectedOption="@OfficeColor"
+                              TOption="OfficeColor?"
+                              SelectedOptionChanged="SaveColorCommand"
+                              Items="@(Enum.GetValues<OfficeColor>().Select(i => (OfficeColor?)i))"
+                >
+                    <OptionTemplate>
+                        <FluentStack>
+                            <FluentIcon Value="@(new Size20.RectangleLandscape())"
+                                        Color="Color.Custom"
+                                        CustomColor="@(@context.ToAttributeValue() != "default" ? context.ToAttributeValue() : "#036ac4")"/>
+                            <FluentLabel>@context</FluentLabel>
+                        </FluentStack>
+                    </OptionTemplate>
+                </FluentSelect>
+            </FluentStack>
+        </FluentAccordionItem>
+        <FluentAccordionItem Heading="@Localizer["Global"]" Expanded="true">
+            <FluentStack Orientation="Orientation.Horizontal">
+                <FluentLabel> @($"{Localizer["SavePath"]}:")</FluentLabel>
+                <FluentLabel >@SavePath</FluentLabel>
+                <FluentButton OnClick="SavePathCommand" IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size24.Open())"></FluentButton>
+            </FluentStack>
+        </FluentAccordionItem>
+    </FluentAccordion>
+
+    <FluentGrid AdaptiveRendering="true">
+        <FluentGridItem xs="12">
+            @* <div class="card" style="background-color: red"> *@
+            @*     xs=12222 *@
+            @* </div> *@
+            <FluentButton Style="width: 100%;margin: 5px;" Appearance="Appearance.Accent" OnClick="@LogoutCommand">
+                @Localizer["Logout"]
+            </FluentButton>
+        </FluentGridItem>
+    </FluentGrid>
+
+</div>

@@ -1,0 +1,15 @@
+@layout EmptyLayout
+
+@page "/"
+@using AirTransfer.Components.Layout
+
+
+<FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center"
+             VerticalAlignment="VerticalAlignment.Center">
+
+    <FluentTextField Label="用户名称" TextFieldType="TextFieldType.Text" @bind-Value="@UserName"></FluentTextField>
+    <FluentTextField Label="设备昵称" TextFieldType="TextFieldType.Text"
+                     @bind-Value="@DeviceNiceName"></FluentTextField>
+    <FluentButton OnClick="LoginAsync">登陆</FluentButton>
+    <FluentProgressRing Visible="@IsBusy"></FluentProgressRing>
+</FluentStack>
