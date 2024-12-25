@@ -182,4 +182,10 @@
   <data name="UpdateClipboardStateMessage" xml:space="preserve">
     <value>リスニングクリップボードのステータスが正常に変更されました！ ！</value>
   </data>
+  <data name="InputText" xml:space="preserve">
+    <value>テキスト入力</value>
+  </data>
+  <data name="InputTextPlaceholder" xml:space="preserve">
+    <value>送信するテキストを入力してください</value>
+  </data>
 </root>

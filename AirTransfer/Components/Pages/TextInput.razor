@@ -9,7 +9,7 @@
                 <FluentButton OnClick="this.ReturnCommand" IconStart="@(new Size24.ArrowCircleLeft())"></FluentButton>
             </FluentGridItem>
             <FluentGridItem xs="8">
-                <FluentLabel  Alignment="HorizontalAlignment.Center" Typo="Typography.H2">输入文本</FluentLabel>
+                <FluentLabel  Alignment="HorizontalAlignment.Center" Typo="Typography.PageTitle">@Localizer["InputText"]</FluentLabel>
             </FluentGridItem>
             <FluentGridItem xs="2">
                 <FluentButton Style="display: flex;justify-content: flex-end;" IconStart="@(new Size24.Send())" OnClick="this.SubmitCommand"></FluentButton>
@@ -18,7 +18,7 @@
     </FluentHeader>
 
     <FluentTextArea Rows="20" Resize="TextAreaResize.Vertical"  @bind-Value="Text"
-                    Placeholder="请输入要发送的文本内容:" Autofocus="true"
+                    Placeholder="@Localizer["InputTextPlaceholder"]" Autofocus="true"
                     Style="width: 100%;"></FluentTextArea>
 </div>
 

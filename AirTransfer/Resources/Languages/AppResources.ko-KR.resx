@@ -182,4 +182,10 @@
   <data name="UpdateClipboardStateMessage" xml:space="preserve">
     <value>리스닝 클립보드 상태가 성공적으로 변경되었습니다!!</value>
   </data>
+  <data name="InputText" xml:space="preserve">
+      <value>텍스트 입력</value>
+  </data>
+  <data name="InputTextPlaceholder" xml:space="preserve">
+      <value>보낼 텍스트를 입력하세요</value>
+  </data>
 </root>

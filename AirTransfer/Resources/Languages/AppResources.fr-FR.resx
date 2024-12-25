@@ -182,4 +182,10 @@
   <data name="UpdateClipboardStateMessage" xml:space="preserve">
     <value>L'état du presse-papiers d'écoute a été modifié avec succès ! !</value>
   </data>
+  <data name="InputText" xml:space="preserve">
+      <value>Texte d'entrée</value>
+  </data>
+  <data name="InputTextPlaceholder" xml:space="preserve">
+      <value>Veuillez entrer le texte à envoyer</value>
+  </data>
 </root>

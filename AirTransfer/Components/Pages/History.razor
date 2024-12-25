@@ -43,12 +43,12 @@
                             <FluentLabel>
                                 @if (item.SendType == SendType.Text)
                                 {
-                                    <FluentLabel Style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">@item.Content</FluentLabel>
+                                    <FluentLabel >@(item.Content?.Length>20?item.Content.Substring(0,20):item.Content)</FluentLabel>
                                 }
                                 else
                                 {
                                     var summary = Path.GetFileName(@item.Content);
-                                    <FluentLabel Class="truncate">@summary</FluentLabel>
+                                    <FluentLabel >@summary</FluentLabel>
                                 }
 
                             </FluentLabel>
