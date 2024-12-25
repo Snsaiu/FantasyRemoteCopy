@@ -1,11 +1,14 @@
 ﻿#region
 
 using System.Net;
+
 using AirTransfer.Consts;
 using AirTransfer.Enums;
 using AirTransfer.Extensions;
 using AirTransfer.Models;
+
 using Microsoft.Extensions.Logging;
+
 using Newtonsoft.Json;
 
 #endregion
@@ -71,7 +74,7 @@ public partial class Home
                     StateManager.AddDiscoveryModel(x);
                 }, default);
             })
-            { IsBackground = true };
+        { IsBackground = true };
         thread.Start();
     }
 
@@ -83,7 +86,7 @@ public partial class Home
                     ReportProgress(false, string.Empty),
                     _cancelDownloadTokenSource.Token);
             })
-            { IsBackground = true };
+        { IsBackground = true };
         thread.Start();
     }
 
@@ -196,7 +199,7 @@ public partial class Home
 
                 SenderAddTaskAndShowProgress(codeWord, sendCancelTokenSource);
 
-                var information = StateManager.GetInformationModel();
+                var information = CloneHelper.DeepClone(StateManager.GetInformationModel());
                 if (information is null)
                     throw new NullReferenceException();
                 switch (information!.SendType)

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-    <!--
+  <!--
         Microsoft ResX Schema
 
         Version 1.3
@@ -58,125 +58,128 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-
-    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
-                id="root"
-                xmlns="">
-        <xsd:element name="root" msdata:IsDataSet="true">
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root" xmlns="">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
             <xsd:complexType>
-                <xsd:choice maxOccurs="unbounded">
-                    <xsd:element name="data">
-                        <xsd:complexType>
-                            <xsd:sequence>
-                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
-                            </xsd:sequence>
-                            <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1"/>
-                            <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-                            <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element name="resheader">
-                        <xsd:complexType>
-                            <xsd:sequence>
-                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                            </xsd:sequence>
-                            <xsd:attribute name="name" type="xsd:string" use="required"/>
-                        </xsd:complexType>
-                    </xsd:element>
-                </xsd:choice>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
             </xsd:complexType>
-        </xsd:element>
-    </xsd:schema>
-    <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
-    </resheader>
-    <resheader name="version">
-        <value>1.3</value>
-    </resheader>
-    <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral,
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral,
             PublicKeyToken=b77a5c561934e089
         </value>
-    </resheader>
-    <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral,
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral,
             PublicKeyToken=b77a5c561934e089
         </value>
-    </resheader>
-    <data name="SelectLanguage" xml:space="preserve">
+  </resheader>
+  <data name="SelectLanguage" xml:space="preserve">
 		<value>Select language</value>
 	</data>
-    <data name="NickOfName" xml:space="preserve">
+  <data name="NickOfName" xml:space="preserve">
 		<value>Nick of name:</value>
 	</data>
-    <data name="Text" xml:space="preserve">
+  <data name="Text" xml:space="preserve">
         <value>Text</value>
     </data>
-    <data name="File" xml:space="preserve">
+  <data name="File" xml:space="preserve">
         <value>File</value>
     </data>
-    <data name="Copy" xml:space="preserve">
+  <data name="Copy" xml:space="preserve">
         <value>Copy</value>
     </data>
-    <data name="DeviceType" xml:space="preserve">
+  <data name="DeviceType" xml:space="preserve">
         <value>Device type</value>
     </data>
-    <data name="GlobalRefresh" xml:space="preserve">
+  <data name="GlobalRefresh" xml:space="preserve">
         <value>Global refresh</value>
     </data>
-    <data name="History" xml:space="preserve">
+  <data name="History" xml:space="preserve">
         <value>History</value>
     </data>
-    <data name="InputYourDeviceName" xml:space="preserve">
+  <data name="InputYourDeviceName" xml:space="preserve">
         <value>Input your device name</value>
     </data>
-    <data name="InputYourLoginName" xml:space="preserve">
+  <data name="InputYourLoginName" xml:space="preserve">
         <value>Input your login name</value>
     </data>
-    <data name="Login" xml:space="preserve">
+  <data name="Login" xml:space="preserve">
         <value>Login</value>
     </data>
-    <data name="Logout" xml:space="preserve">
+  <data name="Logout" xml:space="preserve">
         <value>Logout</value>
     </data>
-    <data name="NoDeviceHasBeenFoundPleaseTryToClickTheGlobalRefreshTakesALongTime" xml:space="preserve">
+  <data name="NoDeviceHasBeenFoundPleaseTryToClickTheGlobalRefreshTakesALongTime" xml:space="preserve">
         <value>No device has been found. Please try to click the 'Global refresh' .Takes a long Time</value>
     </data>
-    <data name="Setting" xml:space="preserve">
+  <data name="Setting" xml:space="preserve">
         <value>Setting</value>
     </data>
-    <data name="SavePath" xml:space="preserve">
+  <data name="SavePath" xml:space="preserve">
         <value>Save Path</value>
     </data>
-    <data name="ModifyPath" xml:space="preserve">
+  <data name="ModifyPath" xml:space="preserve">
         <value>Modify Path</value>
     </data>
-    <data name="Folder" xml:space="preserve">
+  <data name="Folder" xml:space="preserve">
         <value>Folder</value>
     </data>
-    <data name="Theme" xml:space="preserve">
+  <data name="Theme" xml:space="preserve">
         <value>Theme</value>
     </data>
-    <data name="Color" xml:space="preserve">
+  <data name="Color" xml:space="preserve">
         <value>Color</value>
     </data>
-    <data name="Global" xml:space="preserve">
+  <data name="Global" xml:space="preserve">
         <value>Global</value>
     </data>
-    <data name="Scan" xml:space="preserve">
+  <data name="Scan" xml:space="preserve">
         <value>Scan</value>
     </data>
-    <data name="Personalization" xml:space="preserve">
+  <data name="Personalization" xml:space="preserve">
         <value>Personalization</value>
     </data>
-    <data name="Home" xml:space="preserve">
+  <data name="Home" xml:space="preserve">
         <value>Home</value>
     </data>
-    <data name="SetLanguageInfo" xml:space="preserve">
+  <data name="SetLanguageInfo" xml:space="preserve">
         <value>The language must be restarted for the changes to take effect.</value>
     </data>
-    <data name="DeviceNickname" xml:space="preserve">
+  <data name="DeviceNickname" xml:space="preserve">
         <value>Device Alias</value>
     </data>
+  <data name="ClipboardWatch" xml:space="preserve">
+    <value>Listen to the clipboard!</value>
+  </data>
+  <data name="UpdateClipboardStateMessage" xml:space="preserve">
+    <value>Listening clipboard status changed successfully!!</value>
+  </data>
 </root>

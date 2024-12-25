@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using AirTransfer.Enums;
+
+using Newtonsoft.Json;
 
 namespace AirTransfer.Models
 {
@@ -17,6 +20,7 @@ namespace AirTransfer.Models
 
         public IEnumerable<string>? Files { get; set; }
 
+        [JsonIgnore]
         public string? Summary => SendType switch
         {
             SendType.Text => Text?[..Math.Min(Text.Length, 20)],
@@ -25,5 +29,7 @@ namespace AirTransfer.Models
                 ..Math.Min(string.Join(",", Files.Select((Path.GetFileName))).Length, 20)],
             _ => throw new NotImplementedException()
         };
+
+
     }
 }

@@ -1,9 +1,12 @@
 using System.Globalization;
+
 using AirTransfer.Extensions;
 using AirTransfer.Interfaces;
 using AirTransfer.Interfaces.Impls.Configs;
 using AirTransfer.Resources.Languages;
+
 using CommunityToolkit.Maui.Storage;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
 
@@ -15,7 +18,7 @@ public partial class Setting : PageComponentBase
 
     [Inject] private IUserService UserService { get; set; } = null!;
 
-    [Inject] private  FileSavePathBase FileSavePath { get; set; } = null!;
+    [Inject] private FileSavePathBase FileSavePath { get; set; } = null!;
 
     [Inject] private ILanguageService LanguageService { get; set; } = null!;
 
@@ -31,8 +34,10 @@ public partial class Setting : PageComponentBase
     [Parameter] public DesignThemeModes Theme { get; set; }
 
     [Parameter] public OfficeColor? OfficeColor { get; set; }
-    
-    private string SavePath { get; set; } =String.Empty;
+
+    private string SavePath { get; set; } = String.Empty;
+
+    private bool IsClipboardWatch { get; set; } = false;
 
     [Parameter] public string SelectedLanguage { get; set; } = string.Empty;
     #endregion
@@ -61,7 +66,7 @@ public partial class Setting : PageComponentBase
     private Task SaveLanguageCommand(KeyValuePair<string, string> selectedLanguage)
     {
         LanguageService.SetLanguage(selectedLanguage.Value);
-        this.ToastService.ShowInfo(Localizer["SetLanguageInfo"]);
+        ToastService.ShowInfo(Localizer["SetLanguageInfo"]);
         return Task.CompletedTask;
     }
 
@@ -120,11 +125,17 @@ public partial class Setting : PageComponentBase
     private async Task SavePathCommand()
     {
         var result = await FolderPicker.Default.PickAsync();
-        if (result is not { IsSuccessful:true,Folder.Path :var path})
+        if (result is not { IsSuccessful: true, Folder.Path: var path })
         {
             return;
         }
         ((IChangePathable)FileSavePath).ChangedPath(path);
-        SavePath= path;
+        SavePath = path;
+    }
+
+    private void ClipboardWatchChangedCommand()
+    {
+        LoopWatchClipboardService.SetState(IsClipboardWatch);
+        ToastService.ShowSuccess(Localizer["UpdateClipboardStateMessage"]);
     }
 }

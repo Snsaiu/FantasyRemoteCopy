@@ -2,8 +2,10 @@
 using AirTransfer.Interfaces;
 using AirTransfer.Language;
 using AirTransfer.Resources.Languages;
+
 using Microsoft.Extensions.Localization;
 using Microsoft.FluentUI.AspNetCore.Components;
+
 using Newtonsoft.Json;
 
 namespace Microsoft.AspNetCore.Components;
@@ -21,6 +23,8 @@ public abstract class PageComponentBase : ComponentBase
     [Inject] protected ISaveDataService SaveDataService { get; set; } = null!;
 
     protected LocalizationResourceManager Localizer => LocalizationResourceManager.Instance;
+
+    [Inject] protected ILoopWatchClipboardService LoopWatchClipboardService { get; set; } = null!;
 
     #endregion
 

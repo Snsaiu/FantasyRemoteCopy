@@ -73,6 +73,7 @@ namespace AirTransfer
 
             builder.Services.AddSingleton<IThemeService, ThemeService>();
             builder.Services.AddSingleton<IClipboardWatchable, ClipboardWatcher>();
+            builder.Services.AddSingleton<ILoopWatchClipboardService, LoopWatchClipboardService>();
 
             return builder.Build();
         }
