@@ -133,8 +133,9 @@ public partial class Setting : PageComponentBase
         SavePath = path;
     }
 
-    private void ClipboardWatchChangedCommand()
+    private void ClipboardWatchChangedCommand(bool value)
     {
+        IsClipboardWatch = value;
         LoopWatchClipboardService.SetState(IsClipboardWatch);
         ToastService.ShowSuccess(Localizer["UpdateClipboardStateMessage"]);
     }
