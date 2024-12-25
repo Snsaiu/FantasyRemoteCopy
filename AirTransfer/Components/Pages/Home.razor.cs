@@ -41,7 +41,6 @@ public partial class Home : PageComponentBase
             StateManager.SetState(ConstParams.StateManagerKeys.ListenKey, true);
             await InitListenAsync();
 
-            ClipboardWatchable.ClipboardUpdate += ReceiveClipboard;
         }
 
 
@@ -190,6 +189,7 @@ public partial class Home : PageComponentBase
 
     private void ReceiveClipboard(object data)
     {
+
     }
 
     // private void InitData()
@@ -223,6 +223,10 @@ public partial class Home : PageComponentBase
     private async Task InitListenAsync()
     {
         await SetReceive();
+
+        ClipboardWatchable.Initialize(null);
+        ClipboardWatchable.ClipboardUpdate += ReceiveClipboard;
+
     }
 
 

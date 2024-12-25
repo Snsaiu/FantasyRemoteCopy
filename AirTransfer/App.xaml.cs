@@ -33,13 +33,10 @@ namespace AirTransfer
         {
             base.OnStart();
 
-#if WINDOWS
-            var window = Current.Windows[0].Handler.PlatformView as Microsoft.UI.Xaml.Window;
-
-            var clip = Handler.MauiContext.Services.GetRequiredService<IClipboardWatchable>();
-            (clip as ClipboardWatcher)._window = window;
-            clip.Initialize(window);
-#endif
+// #if WINDOWS
+//         var clip = Handler.MauiContext.Services.GetRequiredService<IClipboardWatchable>();
+//          clip.Initialize(null);
+// #endif
         }
 
 
