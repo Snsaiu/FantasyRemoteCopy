@@ -25,6 +25,8 @@ public abstract class PageComponentBase : ComponentBase
     protected LocalizationResourceManager Localizer => LocalizationResourceManager.Instance;
 
     [Inject] protected ILoopWatchClipboardService LoopWatchClipboardService { get; set; } = null!;
+    
+    [Inject] protected ISystemType SystemType { get; set; } = null!;
 
     #endregion
 

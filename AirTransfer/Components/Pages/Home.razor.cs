@@ -194,9 +194,14 @@ public partial class Home : PageComponentBase
             return;
 
 
-        var informationBackup = CloneHelper.DeepClone(StateManager.GetInformationModel());
-        await SendAsync();
-        StateManager.SetInformationModel(informationBackup);
+        Application.Current.Dispatcher.Dispatch(() =>
+        {
+            // var informationBackup = CloneHelper.DeepClone(StateManager.GetInformationModel());
+            StateManager.SetInformationModel((new InformationModel() { SendType = SendType.Text, Text = data.ToString() }));
+            SendAsync();
+        });
+
+
     }
 
     // private void InitData()
@@ -231,8 +236,10 @@ public partial class Home : PageComponentBase
     {
         await SetReceive();
 
+#if WINDOWS || MACCATALYST
         ClipboardWatchable.Initialize(null);
         ClipboardWatchable.ClipboardUpdate += ReceiveClipboard;
+#endif
 
     }
 

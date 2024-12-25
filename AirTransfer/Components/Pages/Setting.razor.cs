@@ -49,6 +49,7 @@ public partial class Setting : PageComponentBase
         Theme = ThemeService.GetDesignTheme();
         OfficeColor = ThemeService.GetThemeColor();
         SavePath = FileSavePath.SaveLocation;
+        IsClipboardWatch= LoopWatchClipboardService.GetState();
         return base.OnParametersSetAsync();
     }
 
