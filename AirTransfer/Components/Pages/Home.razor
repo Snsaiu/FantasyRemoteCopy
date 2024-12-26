@@ -14,7 +14,8 @@
                     <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Stretch">
                         <FluentPersona Status="PresenceStatus.Available"
                                        StatusSize="PresenceBadgeSize.Large"
-                                       Image="images/h.jpg" ImageSize="80px"></FluentPersona>
+                                       Image="@(new Size48.Person().ToDataUri(size: "50px", color: "white"))"
+                                       ImageSize="80px"></FluentPersona>
                         <FluentStack Orientation="Orientation.Vertical" Style="height: 100%">
                             <FluentLabel Alignment="HorizontalAlignment.Start" Style="margin-top: 20px;"
                                          Typo="Typography.H5">

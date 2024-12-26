@@ -194,7 +194,7 @@ public partial class Home : PageComponentBase
             return;
 
 
-        Application.Current.Dispatcher.Dispatch(() =>
+        Application.Current?.Dispatcher.Dispatch(() =>
         {
             // var informationBackup = CloneHelper.DeepClone(StateManager.GetInformationModel());
             StateManager.SetInformationModel((new InformationModel() { SendType = SendType.Text, Text = data.ToString() }));
