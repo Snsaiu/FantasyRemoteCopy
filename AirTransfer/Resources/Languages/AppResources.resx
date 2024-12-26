@@ -197,7 +197,7 @@
         <value>Device Alias</value>
     </data>
   <data name="ClipboardWatch" xml:space="preserve">
-    <value>Listen to the clipboard!</value>
+    <value>Listen to the clipboard</value>
   </data>
   <data name="UpdateClipboardStateMessage" xml:space="preserve">
     <value>Listening clipboard status changed successfully!!</value>

@@ -177,7 +177,7 @@
         <value>Alias de l’appareil</value>
     </data>
   <data name="ClipboardWatch" xml:space="preserve">
-    <value>Écoutez le presse-papiers !</value>
+    <value>Écoutez le presse-papiers </value>
   </data>
   <data name="UpdateClipboardStateMessage" xml:space="preserve">
     <value>L'état du presse-papiers d'écoute a été modifié avec succès ! !</value>

@@ -177,7 +177,7 @@
         <value>디바이스 별칭</value>
     </data>
   <data name="ClipboardWatch" xml:space="preserve">
-    <value>클립보드를 들어보세요!</value>
+    <value>클립보드를 들어보세요</value>
   </data>
   <data name="UpdateClipboardStateMessage" xml:space="preserve">
     <value>리스닝 클립보드 상태가 성공적으로 변경되었습니다!!</value>

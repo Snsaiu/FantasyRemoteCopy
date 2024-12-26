@@ -177,7 +177,7 @@
         <value>デバイスの別名</value>
     </data>
   <data name="ClipboardWatch" xml:space="preserve">
-    <value>クリップボードを聴いてください！</value>
+    <value>クリップボードを聴いてください</value>
   </data>
   <data name="UpdateClipboardStateMessage" xml:space="preserve">
     <value>リスニングクリップボードのステータスが正常に変更されました！ ！</value>
