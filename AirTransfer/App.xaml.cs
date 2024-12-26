@@ -33,12 +33,25 @@ namespace AirTransfer
         {
             base.OnStart();
 
-// #if WINDOWS
-//         var clip = Handler.MauiContext.Services.GetRequiredService<IClipboardWatchable>();
-//          clip.Initialize(null);
-// #endif
+        SetupTrayIcon();
         }
 
+        private void SetupTrayIcon()
+        {
+
+#if MACCATALYST
+            
+            
+            var trayService = Handler.MauiContext.Services.GetRequiredService<ITrayService>();
+           
+            if (trayService != null)
+            {
+                trayService.Initialize();
+                trayService.ClickHandler = () => { };
+            }
+#endif
+         
+        }
 
         private void InitLanguage()
         {

@@ -1,4 +1,6 @@
-﻿namespace AirTransfer
+﻿using AirTransfer.Interfaces;
+
+namespace AirTransfer
 {
     public partial class MainPage : ContentPage
     {
@@ -6,5 +8,7 @@
         {
             InitializeComponent();
         }
+        
+
     }
 }

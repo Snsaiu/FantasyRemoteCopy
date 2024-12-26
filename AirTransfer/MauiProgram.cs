@@ -75,6 +75,10 @@ namespace AirTransfer
             builder.Services.AddSingleton<IClipboardWatchable, ClipboardWatcher>();
             builder.Services.AddSingleton<ILoopWatchClipboardService, LoopWatchClipboardService>();
 
+#if MACCATALYST
+            builder.Services.AddSingleton<ITrayService, TrayService>();
+#endif
+
             return builder.Build();
         }
     }
