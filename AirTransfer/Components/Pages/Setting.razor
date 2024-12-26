@@ -45,10 +45,19 @@
             </FluentStack>
         </FluentAccordionItem>
         <FluentAccordionItem Heading="@Localizer["Global"]" Expanded="true">
-            <FluentStack Orientation="Orientation.Horizontal">
-                <FluentLabel> @($"{Localizer["SavePath"]}:")</FluentLabel>
-                <FluentLabel >@SavePath</FluentLabel>
-                <FluentButton OnClick="SavePathCommand" IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size24.Open())"></FluentButton>
+            <FluentStack Orientation=" Orientation.Vertical">
+                @if (SystemType.System is Enums.SystemType.Windows or Enums.SystemType.MacOS)
+                {
+                    <FluentStack Orientation="Orientation.Horizontal">
+                        <FluentLabel> @($"{Localizer["SavePath"]}:")</FluentLabel>
+                        <FluentLabel>@SavePath</FluentLabel>
+                        <FluentButton OnClick="SavePathCommand"
+                                      IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size24.Open())"></FluentButton>
+                    </FluentStack>
+
+                    <FluentSwitch Label="@(this.Localizer["ClipboardWatch"])" Value="IsClipboardWatch"
+                                  ValueChanged="ClipboardWatchChangedCommand"></FluentSwitch>
+                }
             </FluentStack>
         </FluentAccordionItem>
     </FluentAccordion>

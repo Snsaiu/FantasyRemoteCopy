@@ -40,6 +40,7 @@ public partial class Home : PageComponentBase
         {
             StateManager.SetState(ConstParams.StateManagerKeys.ListenKey, true);
             await InitListenAsync();
+
         }
 
 
@@ -109,28 +110,27 @@ public partial class Home : PageComponentBase
 
     private Task SearchCommand()
     {
-        // StateManager.ClearDiscoveryModel();
-        // StateManager.AddDiscoveryModel(new()
-        // {
-        //     Flag = "192.168.1.1",
-        //     DeviceName = "my window",
-        //     NickName = "�ҵ�windows",
-        //     SystemType = Enums.SystemType.Windows
-        // });
-        //  return Task.CompletedTask;
         return DeviceDiscoverAsync();
     }
 
-    private async Task SendCommand()
+    private Task SendCommand()
+    {
+        return SendAsync();
+    }
+
+    private async Task SendAsync()
     {
         StateManager.SetIsWorkingBusyState(true);
-        // 首先向目标电脑发送一个端口用于检查是否可以使用该端口
-        foreach (var item in StateManager.Devices())
+        
+        foreach (DiscoveredDeviceModel model in StateManager.Devices().Where(x=>x.IsChecked))
         {
-            if (!item.IsChecked)
-                continue;
-
-            var information = StateManager.GetInformationModel();
+            model.WorkState = WorkState.Waiting;
+        }
+        // 首先向目标电脑发送一个端口用于检查是否可以使用该端口
+        
+        foreach (var item in StateManager.Devices().Where(x => x.IsChecked))
+        {
+            var information = CloneHelper.DeepClone(StateManager.GetInformationModel());
             if (information is null)
                 throw new NullReferenceException();
 
@@ -186,6 +186,30 @@ public partial class Home : PageComponentBase
 
     #region Private Methods
 
+    private async void ReceiveClipboard(object data)
+    {
+        if (!StateManager.ExistKey(ConstParams.StateManagerKeys.LoopWatchClipboardKey))
+        {
+            var state = LoopWatchClipboardService.GetState();
+            StateManager.SetState(ConstParams.StateManagerKeys.LoopWatchClipboardKey, state);
+            if (!state)
+                return;
+        }
+
+        if (!StateManager.GetState<bool>(ConstParams.StateManagerKeys.LoopWatchClipboardKey) || !StateManager.Devices().Any(x => x.IsChecked))
+            return;
+
+
+        Application.Current?.Dispatcher.Dispatch(() =>
+        {
+            // var informationBackup = CloneHelper.DeepClone(StateManager.GetInformationModel());
+            StateManager.SetInformationModel((new InformationModel() { SendType = SendType.Text, Text = data.ToString() }));
+            SendAsync();
+        });
+
+
+    }
+
     // private void InitData()
     // {
     //     DiscoveredDevices.Add(new DiscoveredDeviceModel
@@ -217,6 +241,12 @@ public partial class Home : PageComponentBase
     private async Task InitListenAsync()
     {
         await SetReceive();
+
+#if WINDOWS || MACCATALYST
+        ClipboardWatchable.Initialize(null);
+        ClipboardWatchable.ClipboardUpdate += ReceiveClipboard;
+#endif
+
     }
 
 

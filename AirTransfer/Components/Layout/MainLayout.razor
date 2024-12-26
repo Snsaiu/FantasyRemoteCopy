@@ -39,19 +39,19 @@
                     <FluentGridItem sm="6">
                         <FluentAppBarItem Style="width: 100%;" Href="/home"
                                           IconRest="@(new Size20.Home())"
-                                          Text="主页"></FluentAppBarItem>
+                                          Text="@LocalizationResourceManager.Instance["Home"]"></FluentAppBarItem>
                     </FluentGridItem>
 
                     <FluentGridItem sm="6">
                         <FluentAppBarItem Style="width: 100%;" Href="/history"
                                           Count="NotReadCount"
                                           IconRest="@(new Size20.History())"
-                                          Text="历史"></FluentAppBarItem>
+                                          Text="@LocalizationResourceManager.Instance["History"]"></FluentAppBarItem>
                     </FluentGridItem>
 
                     <FluentGridItem sm="6">
                         <FluentAppBarItem Style="width: 100%" Href="/setting" IconRest="@(new Size20.Settings())"
-                                          Text="设置"></FluentAppBarItem>
+                                          Text="@LocalizationResourceManager.Instance["Setting"]"></FluentAppBarItem>
                     </FluentGridItem>
                 </FluentGrid>
 

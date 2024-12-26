@@ -4,7 +4,8 @@ public enum WorkState
 {
     None,
     Sending,
-    Downloading
+    Downloading,
+    Waiting,
 }
 
 /// <summary>

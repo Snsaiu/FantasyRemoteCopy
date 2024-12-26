@@ -24,6 +24,8 @@ public static class ConstParams
         public static readonly string NotReadCountKey = "notReadCount";
 
         public  static readonly string CurrentUriKey = "currentUri";
+
+        public static readonly string LoopWatchClipboardKey = "loopWatchClipboard";
     }
 
     public static string SaveFilePath()

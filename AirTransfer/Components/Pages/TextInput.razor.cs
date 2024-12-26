@@ -13,7 +13,7 @@ public partial class TextInput : PageComponentBase
     {
         if (string.IsNullOrEmpty(Text))
         {
-            this.ToastService.ShowError("Please enter a text");
+            this.ToastService.ShowError(Localizer["InputTextPlaceholder"]);
             return;
         }
         
