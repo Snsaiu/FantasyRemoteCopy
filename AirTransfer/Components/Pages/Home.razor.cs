@@ -121,7 +121,13 @@ public partial class Home : PageComponentBase
     private async Task SendAsync()
     {
         StateManager.SetIsWorkingBusyState(true);
+        
+        foreach (DiscoveredDeviceModel model in StateManager.Devices().Where(x=>x.IsChecked))
+        {
+            model.WorkState = WorkState.Waiting;
+        }
         // 首先向目标电脑发送一个端口用于检查是否可以使用该端口
+        
         foreach (var item in StateManager.Devices().Where(x => x.IsChecked))
         {
             var information = CloneHelper.DeepClone(StateManager.GetInformationModel());
