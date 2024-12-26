@@ -4,12 +4,16 @@
 @using AirTransfer.Components.Layout
 
 
-<FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center"
-             VerticalAlignment="VerticalAlignment.Center">
+<div>
 
-    <FluentTextField Label="用户名称" TextFieldType="TextFieldType.Text" @bind-Value="@UserName"></FluentTextField>
-    <FluentTextField Label="设备昵称" TextFieldType="TextFieldType.Text"
-                     @bind-Value="@DeviceNiceName"></FluentTextField>
-    <FluentButton OnClick="LoginAsync">登陆</FluentButton>
-    <FluentProgressRing Visible="@IsBusy"></FluentProgressRing>
-</FluentStack>
+    <FluentLabel Typo="Typography.Header" Color="@Color.Custom" CustomColor="deepskyblue" Alignment=" HorizontalAlignment.Center" Style=" margin-top:20px;">欢迎使用AirTransfer</FluentLabel>
+
+    <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center">
+        <FluentTextField TextFieldType="TextFieldType.Text" @bind-Value="@UserName"></FluentTextField>
+        <FluentTextField Label="设备昵称" TextFieldType="TextFieldType.Text"
+                         @bind-Value="@DeviceNiceName"></FluentTextField>
+        <FluentButton OnClick="LoginAsync">登陆</FluentButton>
+        <FluentProgressRing Visible="@IsBusy"></FluentProgressRing>
+    </FluentStack>
+
+</div>
