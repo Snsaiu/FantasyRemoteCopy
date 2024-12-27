@@ -5,7 +5,7 @@ using ObjCRuntime;
 
 namespace AirTransfer;
 
-public  class TrayService: NSObject, ITrayService
+public sealed class TrayService : NSObject, ITrayService
 {
     [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
     public static extern IntPtr IntPtr_objc_msgSend_nfloat(IntPtr receiver, IntPtr selector, nfloat arg1);
@@ -44,7 +44,7 @@ public  class TrayService: NSObject, ITrayService
             Console.WriteLine("Image file not found: " + imgPath);
             return;
         }
-        
+
         var imageFileStr = NSString.CreateNative(imgPath);
         var nsImagePtr = IntPtr_objc_msgSend_IntPtr(statusBarImage.Handle, Selector.GetHandle("initWithContentsOfFile:"), imageFileStr);
 

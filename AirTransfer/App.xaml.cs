@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Reflection.Metadata;
-
 using AirTransfer.Interfaces;
 using AirTransfer.Language;
 using AirTransfer.Resources.Languages;
@@ -12,7 +11,6 @@ namespace AirTransfer
         public App()
         {
             InitializeComponent();
-
         }
 
 
@@ -32,26 +30,9 @@ namespace AirTransfer
         protected override void OnStart()
         {
             base.OnStart();
-
-        SetupTrayIcon();
         }
 
-        private void SetupTrayIcon()
-        {
 
-#if MACCATALYST
-            
-            
-            var trayService = Handler.MauiContext.Services.GetRequiredService<ITrayService>();
-           
-            if (trayService != null)
-            {
-                trayService.Initialize();
-                trayService.ClickHandler = () => { };
-            }
-#endif
-         
-        }
 
         private void InitLanguage()
         {

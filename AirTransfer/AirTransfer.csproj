@@ -102,6 +102,26 @@
       <None Update="Platforms\MacCatalyst\trayicon.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+        <None Update="Platforms\Windows\trayicon.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Platforms\Windows\trayicon.ico">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="Platforms\Windows\trayicon.ico">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Platforms\MacCatalyst\trayicon.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
+        <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.0.1"/>
+        <PackageReference Include="PInvoke.User32" Version="0.7.104"/>
     </ItemGroup>
 
 
