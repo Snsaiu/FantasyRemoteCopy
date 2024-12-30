@@ -3,9 +3,7 @@ using AirTransfer.Interfaces.Impls;
 using AirTransfer.Interfaces.Impls.Configs;
 using AirTransfer.Interfaces.Impls.TcpTransfer;
 using AirTransfer.Interfaces.Impls.UdpTransfer;
-
 using CommunityToolkit.Maui;
-
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.Maui.LifecycleEvents;
@@ -29,6 +27,8 @@ namespace AirTransfer
                 lifecycle.AddWindows(windows => windows.OnWindowCreated((del) =>
                 {
                     del.ExtendsContentIntoTitleBar = true;
+                    var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(del);
+                    WindowExtensions.Hwnd = hwnd;
                 }));
 #endif
             });
@@ -44,7 +44,6 @@ namespace AirTransfer
 
             builder.Services.AddSingleton<IUserService, ConfigUserService>();
             builder.Services.AddSingleton<IStateManager, StateManager>();
-
 
 
             builder.Services.AddSingleton<IOpenFolder, DefaultOpenFolder>();
