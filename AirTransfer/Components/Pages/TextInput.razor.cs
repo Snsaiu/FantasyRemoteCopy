@@ -4,24 +4,23 @@ namespace AirTransfer.Components.Pages;
 
 public partial class TextInput : PageComponentBase
 {
-    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
 
-    [Parameter] public string? Text { get; set; }
+    private string? _text;
 
 
     private void SubmitCommand()
     {
-        if (string.IsNullOrEmpty(Text))
+        if (string.IsNullOrEmpty(_text))
         {
-            this.ToastService.ShowError(Localizer["InputTextPlaceholder"]);
+            ToastService.ShowError(Localizer["InputTextPlaceholder"]);
             return;
         }
-        
-        this.NavigateTo("/home", new Dictionary<string, object> { { "text", Text } });
+
+        NavigateTo("/home", new Dictionary<string, object> { { "text", _text } });
     }
 
     private void ReturnCommand()
     {
-        this.NavigateTo("/home");
+        NavigateTo("/home");
     }
 }

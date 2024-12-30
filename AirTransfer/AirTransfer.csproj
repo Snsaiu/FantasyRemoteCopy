@@ -44,10 +44,9 @@
 
     <ItemGroup>
         <!-- App Icon -->
-        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4"/>
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\logo.png" Color="white"/>
 
         <!-- Splash Screen -->
-        <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128"/>
 
         <!-- Images -->
         <MauiImage Include="Resources\Images\*"/>
@@ -58,6 +57,9 @@
 
         <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
         <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)"/>
+        <None Remove="Resources\AppIcon\logo_with_text.png"/>
+        <None Remove="Resources\AppIcon\logo.png"/>
+        <MauiIcon Include="Resources\AppIcon\logo.png"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -76,6 +78,7 @@
 
     <ItemGroup>
         <Content Remove="wwwroot\images\header.jpg"/>
+        <MauiSplashScreen Include="Resources\Splash\logo_with_text.png"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -122,6 +125,10 @@
     <ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
         <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.0.1"/>
         <PackageReference Include="PInvoke.User32" Version="0.7.104"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Resources\Splash\logo_with_text.png"/>
     </ItemGroup>
 
 

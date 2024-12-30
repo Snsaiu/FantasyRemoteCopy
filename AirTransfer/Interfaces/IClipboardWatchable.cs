@@ -6,6 +6,5 @@
 public interface IClipboardWatchable : IDisposable
 {
     Action<object>? ClipboardUpdate { get; set; }
-
     void Initialize(object parameter);
 }

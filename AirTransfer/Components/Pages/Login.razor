@@ -2,17 +2,18 @@
 
 @page "/"
 @using AirTransfer.Components.Layout
-
+@inherits PageComponentBase
 
 <div>
-
-    <FluentLabel Typo="Typography.Header" Color="@Color.Custom" CustomColor="deepskyblue" Alignment=" HorizontalAlignment.Center" Style=" margin-top:20px;">欢迎使用AirTransfer</FluentLabel>
+    <div style="text-align: center;">
+        <img src="images/logo_with_text.png" style="margin-top: 20%; width: 50%;"/>
+    </div>
 
     <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center">
-        <FluentTextField TextFieldType="TextFieldType.Text" @bind-Value="@UserName"></FluentTextField>
-        <FluentTextField Label="设备昵称" TextFieldType="TextFieldType.Text"
+        <FluentTextField Label="@Localizer["NickOfName"]" TextFieldType="TextFieldType.Text" @bind-Value="@UserName"></FluentTextField>
+        <FluentTextField Label="@Localizer["DeviceNickname"]" TextFieldType="TextFieldType.Text"
                          @bind-Value="@DeviceNiceName"></FluentTextField>
-        <FluentButton OnClick="LoginAsync">登陆</FluentButton>
+        <FluentButton OnClick="LoginAsync">@Localizer["Login"]</FluentButton>
         <FluentProgressRing Visible="@IsBusy"></FluentProgressRing>
     </FluentStack>
 

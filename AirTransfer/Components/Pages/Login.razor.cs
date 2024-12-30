@@ -1,26 +1,25 @@
 using AirTransfer.Interfaces;
 using AirTransfer.Models;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace AirTransfer.Components.Pages;
 
-public partial class Login : ComponentBase
+public partial class Login : PageComponentBase
 {
     #region MyRegion
 
-    [Parameter] public string? UserName { get; set; }
+    private string? UserName { get; set; }
 
-    [Parameter] public string? DeviceNiceName { get; set; }
+    private string? DeviceNiceName { get; set; }
 
-    [Parameter] public bool IsBusy { get; set; }
 
     #endregion Parameters
 
 
     #region Injects
 
-    [Inject] private NavigationManager? NavigationManager { get; set; }
 
     [Inject] private IUserService? UserService { get; set; }
 
@@ -29,13 +28,14 @@ public partial class Login : ComponentBase
 
     #endregion
 
+
     protected override async Task OnInitializedAsync()
     {
         if (UserService is null)
             throw new NullReferenceException();
         try
         {
-            this.IsBusy = true;
+            IsBusy = true;
             var userResult = await UserService.GetCurrentUserAsync();
             if (userResult.Ok)
             {
@@ -68,7 +68,7 @@ public partial class Login : ComponentBase
 
         if (UserService is null)
             throw new NullReferenceException(nameof(UserService));
-        this.IsBusy = true;
+        IsBusy = true;
         try
         {
             await UserService.SaveUserAsync(new UserInfo() { Name = UserName, DeviceNickName = DeviceNiceName });

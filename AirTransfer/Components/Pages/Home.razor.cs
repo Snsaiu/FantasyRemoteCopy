@@ -1,12 +1,14 @@
-using System.Collections.Specialized;
 using AirTransfer.Consts;
-using AirTransfer.Interfaces;
-using AirTransfer.Models;
-using Microsoft.AspNetCore.Components;
 using AirTransfer.Enums;
 using AirTransfer.Extensions;
+using AirTransfer.Models;
+
 using CommunityToolkit.Maui.Storage;
+
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
+
+using System.Collections.Specialized;
 
 namespace AirTransfer.Components.Pages;
 
@@ -88,7 +90,7 @@ public partial class Home : PageComponentBase
         {
             var cancelCodeWord = CodeWordModel.CreateCodeWord(receiveTask.TaskGuid, CodeWordType.CancelTransmission,
                 receiveTask.Flag,
-                receiveTask.TargetFlag, receiveTask.Port, receiveTask.SendType, LocalDevice, null);
+                receiveTask.TargetFlag, receiveTask.Port, receiveTask.SendType, _localDevice, null);
 
             Logger.LogInformation(
                 $"请求 {cancelCodeWord.Flag} 与 {cancelCodeWord.TargetFlag} 通过端口 {cancelCodeWord.Port} 的数据传输人工中断");
@@ -121,13 +123,13 @@ public partial class Home : PageComponentBase
     private async Task SendAsync()
     {
         StateManager.SetIsWorkingBusyState(true);
-        
-        foreach (DiscoveredDeviceModel model in StateManager.Devices().Where(x=>x.IsChecked))
+
+        foreach (var model in StateManager.Devices().Where(x => x.IsChecked))
         {
             model.WorkState = WorkState.Waiting;
         }
         // 首先向目标电脑发送一个端口用于检查是否可以使用该端口
-        
+
         foreach (var item in StateManager.Devices().Where(x => x.IsChecked))
         {
             var information = CloneHelper.DeepClone(StateManager.GetInformationModel());
@@ -135,12 +137,12 @@ public partial class Home : PageComponentBase
                 throw new NullReferenceException();
 
             var codeWord = CodeWordModel.CreateCodeWord(Guid.NewGuid().ToString("N"), CodeWordType.CheckingPort,
-                LocalDevice.Flag ?? throw new NullReferenceException(),
+                _localDevice.Flag ?? throw new NullReferenceException(),
                 item.Flag ?? throw new NullReferenceException(), 5005,
-                information.SendType, LocalDevice, null);
+                information.SendType, _localDevice, null);
 
 
-            var portCheckMessage = new SendTextModel(LocalDevice.Flag, item.Flag ?? throw new NullReferenceException(),
+            var portCheckMessage = new SendTextModel(_localDevice.Flag, item.Flag ?? throw new NullReferenceException(),
                 codeWord.ToJson(), ConstParams.TCP_PORT);
             await TcpSendTextBase.SendAsync(portCheckMessage, null, default);
         }
@@ -186,7 +188,7 @@ public partial class Home : PageComponentBase
 
     #region Private Methods
 
-    private async void ReceiveClipboard(object data)
+    private void ReceiveClipboard(object data)
     {
         if (!StateManager.ExistKey(ConstParams.StateManagerKeys.LoopWatchClipboardKey))
         {
@@ -202,48 +204,19 @@ public partial class Home : PageComponentBase
 
         Application.Current?.Dispatcher.Dispatch(() =>
         {
-            // var informationBackup = CloneHelper.DeepClone(StateManager.GetInformationModel());
             StateManager.SetInformationModel((new InformationModel() { SendType = SendType.Text, Text = data.ToString() }));
-            SendAsync();
+            SendAsync().GetAwaiter();
         });
 
 
     }
-
-    // private void InitData()
-    // {
-    //     DiscoveredDevices.Add(new DiscoveredDeviceModel
-    //     {
-    //         Flag = "192.168.1.1",
-    //         DeviceName = "my window",
-    //         NickName = "�ҵ�windows",
-    //         SystemType = Enums.SystemType.Windows
-    //     });
-    //     DiscoveredDevices.Add(new DiscoveredDeviceModel
-    //     {
-    //         Flag = "192.168.1.2",
-    //         DeviceName = "my macos",
-    //         NickName = "�ҵ�mac",
-    //         SystemType = Enums.SystemType.MacOS
-    //     });
-    //     DiscoveredDevices.Add(new DiscoveredDeviceModel
-    //         { Flag = "192.168.1.2", DeviceName = "my ios", NickName = "�ҵ�iphone", SystemType = Enums.SystemType.IOS });
-    //     DiscoveredDevices.Add(new DiscoveredDeviceModel
-    //     {
-    //         Flag = "192.168.1.2",
-    //         DeviceName = "my android",
-    //         NickName = "�ҵ�android",
-    //         SystemType = Enums.SystemType.Android
-    //     });
-    // }
-
 
     private async Task InitListenAsync()
     {
         await SetReceive();
 
 #if WINDOWS || MACCATALYST
-        ClipboardWatchable.Initialize(null);
+        ClipboardWatchable.Initialize(default);
         ClipboardWatchable.ClipboardUpdate += ReceiveClipboard;
 #endif
 
@@ -255,7 +228,7 @@ public partial class Home : PageComponentBase
         var userRes = await UserService.GetCurrentUserAsync();
         UserName = userRes.Data.Name;
         DeviceNickName = userRes.Data.DeviceNickName;
-        LocalDevice = new DeviceModel()
+        _localDevice = new DeviceModel()
         {
             DeviceName = DeviceNickName,
             DeviceType = DeviceType.Device.ToString(),
@@ -279,9 +252,9 @@ public partial class Home : PageComponentBase
                 ? new SendCompressFileModel(localIp, targetIp,
                     information.FolderPath ?? throw new NullReferenceException(), port)
                 : information.SendType == SendType.File
-                    ? information.Files.Count() == 1
+                    ? information.Files != null && information.Files.Count() == 1
                         ? new SendFileModel(localIp, targetIp, information.Files.First(), port)
-                        : new SendCompressFileModel(localIp, targetIp, information.Files, port)
+                        : new SendCompressFileModel(localIp, targetIp, information.Files ?? throw new NullReferenceException("发送文件集合，文件不能为空"), port)
                     : throw new NotSupportedException();
             await TcpSendFileBase.SendAsync(sendfile, ReportProgress(true, taskId), token);
         }
@@ -372,7 +345,7 @@ public partial class Home : PageComponentBase
                 try
                 {
                     await LocalNetInviteDeviceBase.SendAsync(
-                        new(UserName, LocalDevice.Flag, device.Flag), default);
+                        new(UserName, _localDevice.Flag ?? throw new NullReferenceException("发送必须要有Flag"), device.Flag), default);
                 }
                 catch (Exception exception)
                 {
@@ -400,8 +373,8 @@ public partial class Home : PageComponentBase
         if (model is null)
             throw new NullReferenceException();
         model.WorkState = WorkState.None;
-        NewMessageVisible = true;
-        IsDownLoadingVisible = false;
+        _newMessageVisible = true;
+        _isDownLoadingVisible = false;
         saveDataModel.SourceDeviceNickName = model.NickName ?? string.Empty;
         saveDataModel.Guid = Guid.NewGuid().ToString();
         DataService.AddAsync(saveDataModel);
