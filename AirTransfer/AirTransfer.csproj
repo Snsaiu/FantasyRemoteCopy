@@ -22,7 +22,7 @@
         <Nullable>enable</Nullable>
 
         <!-- Display name -->
-        <ApplicationTitle>AirTransfer</ApplicationTitle>
+        <ApplicationTitle>Tabby Cat</ApplicationTitle>
 
         <!-- App Identifier -->
         <ApplicationId>com.companyname.airtransfer</ApplicationId>
@@ -44,10 +44,10 @@
 
     <ItemGroup>
         <!-- App Icon -->
-        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\logo.png" Color="white"/>
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" BaseSize="128,128" ForegroundFile="Resources\AppIcon\logo.png" Color="white"/>
 
         <!-- Splash Screen -->
-
+        <MauiSplashScreen Include="Resources\Splash\logo_with_text.png" TintColor="Blue" Color="White"/>
         <!-- Images -->
         <MauiImage Include="Resources\Images\*"/>
         <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208"/>
@@ -78,7 +78,6 @@
 
     <ItemGroup>
         <Content Remove="wwwroot\images\header.jpg"/>
-        <MauiSplashScreen Include="Resources\Splash\logo_with_text.png"/>
     </ItemGroup>
 
     <ItemGroup>
