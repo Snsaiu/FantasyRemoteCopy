@@ -64,7 +64,7 @@ public sealed class TrayService : NSObject, ITrayService
 
         // Activate the app and bring it to the front
         void_objc_msgSend_bool(sharedApp.Handle, Selector.GetHandle("activateIgnoringOtherApps:"), true);
-        void_objc_msgSend(sharedApp.Handle, Selector.GetHandle("activateIgnoringOtherApps:"), true);
+        //void_objc_msgSend(sharedApp.Handle, Selector.GetHandle("activateIgnoringOtherApps:"), true);
 
         ClickHandler?.Invoke();
     }

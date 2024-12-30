@@ -314,6 +314,7 @@ public partial class Home : PageComponentBase
             if (noWork)
             {
                 StateManager.SetInformationModel(null);
+                StateManager.SetIsWorkingBusyState(!noWork);
             }
         });
 
