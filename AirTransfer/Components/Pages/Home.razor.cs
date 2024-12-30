@@ -205,7 +205,7 @@ public partial class Home : PageComponentBase
         Application.Current?.Dispatcher.Dispatch(() =>
         {
             StateManager.SetInformationModel((new InformationModel() { SendType = SendType.Text, Text = data.ToString() }));
-            SendAsync().GetAwaiter();
+            SendAsync();
         });
 
 

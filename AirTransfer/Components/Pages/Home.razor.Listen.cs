@@ -144,21 +144,21 @@ public partial class Home
                     receiveDevice.TransmissionTasks.Add(new(codeWord.TaskGuid,
                         _localDevice.Flag, codeWord.Flag, codeWord.Port, codeWord.SendType, cancelTokenSource));
 
-                await TcpLoopListenContentBase.ReceiveAsync(result =>
-                {
-                    // 保存到数据库
-                    SaveDataToLocalDbAsync(result).ContinueWith(x =>
-                    {
-                        if (receiveDevice.TryGetTransmissionTask(codeWord.TaskGuid,
-                                out var v))
-                        {
-                            v?.CancellationTokenSource?.Cancel();
-                            receiveDevice.RemoveTransmissionTask(codeWord.TaskGuid);
-                        }
-                    }, cancelTokenSource.Token);
+                TcpLoopListenContentBase.ReceiveAsync(async result =>
+               {
+                   // 保存到数据库
+                   await SaveDataToLocalDbAsync(result);
 
-                    //SendCommand.NotifyCanExecuteChanged();
-                }, IPAddress.Parse(data.Flag), port, ReportProgress(false, codeWord.TaskGuid), cancelTokenSource.Token);
+                   if (receiveDevice.TryGetTransmissionTask(codeWord.TaskGuid,
+                            out var v))
+                   {
+                       v?.CancellationTokenSource?.Cancel();
+                       receiveDevice.RemoveTransmissionTask(codeWord.TaskGuid);
+                   }
+
+
+                   //SendCommand.NotifyCanExecuteChanged();
+               }, IPAddress.Parse(data.Flag), port, ReportProgress(false, codeWord.TaskGuid), cancelTokenSource.Token);
             }
 
             await TcpSendTextBase.SendAsync(sendModel, null, default);
