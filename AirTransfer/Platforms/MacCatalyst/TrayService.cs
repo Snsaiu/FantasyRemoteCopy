@@ -62,7 +62,9 @@ public sealed class TrayService : NSObject, ITrayService
         var nsapp = Runtime.GetNSObject(Class.GetHandle("NSApplication"));
         var sharedApp = nsapp.PerformSelector(new Selector("sharedApplication"));
 
+        // Activate the app and bring it to the front
         void_objc_msgSend_bool(sharedApp.Handle, Selector.GetHandle("activateIgnoringOtherApps:"), true);
+        void_objc_msgSend(sharedApp.Handle, Selector.GetHandle("activateIgnoringOtherApps:"), true);
 
         ClickHandler?.Invoke();
     }
