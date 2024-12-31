@@ -21,11 +21,14 @@ public static class MauiAppExtension
             lifecycle.AddWindows(windows => windows.OnWindowCreated((del) =>
             {
                 del.ExtendsContentIntoTitleBar = true;
+                // del.SetTitleBar(null);
+
                 var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(del);
                 WindowExtensions.Hwnd = hwnd;
 
                 var id = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
                 var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(id);
+                appWindow.SetIcon(null);
 
                 appWindow.Closing += async (sender, args) =>
                 {

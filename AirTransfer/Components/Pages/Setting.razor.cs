@@ -67,7 +67,7 @@ public partial class Setting : PageComponentBase
         IsClipboardWatch= LoopWatchClipboardService.GetState();
 
         closeAppState = (CloseAppBehavior)CloseAppBehaviorService.Get<int>();
-        closeShowDialog = ShowCloseDialogService.Get<bool>();
+        closeShowDialog = !ShowCloseDialogService.Get<bool>();
 
         return base.OnParametersSetAsync();
     }
@@ -164,7 +164,7 @@ public partial class Setting : PageComponentBase
     private void CloseShowDialogChangedCommand(bool obj)
     {
         closeShowDialog = obj;
-        ShowCloseDialogService.Set(closeShowDialog);
+        ShowCloseDialogService.Set(!closeShowDialog);
     }
 
     private void CloseAppBehaviorChangedCommand(CloseAppBehavior obj)
