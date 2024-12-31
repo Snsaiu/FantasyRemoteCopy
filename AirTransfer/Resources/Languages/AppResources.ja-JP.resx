@@ -188,4 +188,7 @@
   <data name="InputTextPlaceholder" xml:space="preserve">
     <value>送信するテキストを入力してください</value>
   </data>
+    <data name="TabbyCat" xml:space="preserve">
+    <value>トラ猫</value>
+  </data>
 </root>

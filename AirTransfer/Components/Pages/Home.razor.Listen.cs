@@ -1,7 +1,5 @@
 ﻿#region
 
-using System.Net;
-
 using AirTransfer.Consts;
 using AirTransfer.Enums;
 using AirTransfer.Extensions;
@@ -10,6 +8,8 @@ using AirTransfer.Models;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
+
+using System.Net;
 
 #endregion
 
@@ -113,17 +113,17 @@ public partial class Home
             Logger.LogInformation($"端口{port}是否可用");
             var checkResult = await PortCheckable.IsPortInUse(port);
             Logger.LogInformation($"端口{port}可用状态为 {checkResult}");
-            var sendModel = new SendTextModel(LocalDevice.Flag, data.Flag,
+            var sendModel = new SendTextModel(_localDevice.Flag ?? throw new NullReferenceException("发送必须要有Flag"), data.Flag,
                 !checkResult
-                    ? CodeWordModel.CreateCodeWord(codeWord.TaskGuid, CodeWordType.CheckingPortCanUse, LocalDevice.Flag,
+                    ? CodeWordModel.CreateCodeWord(codeWord.TaskGuid, CodeWordType.CheckingPortCanUse, _localDevice.Flag,
                             data.Flag, port,
-                            codeWord.SendType, LocalDevice, null)
+                            codeWord.SendType, _localDevice, null)
                         .ToJson()
                     : CodeWordModel.CreateCodeWord(codeWord.TaskGuid, CodeWordType.CheckingPortCanNotUse,
-                        LocalDevice.Flag,
+                        _localDevice.Flag,
                         data.Flag,
                         port,
-                        codeWord.SendType, LocalDevice, null).ToJson(),
+                        codeWord.SendType, _localDevice, null).ToJson(),
                 ConstParams.TCP_PORT);
             Logger.LogInformation($"端口可用状态信息发送给{data.Flag}");
             if (!checkResult)
@@ -142,21 +142,23 @@ public partial class Home
                     Logger.LogInformation($"{data.Flag}中已经包含了 {data.Flag}-{port} 的任务");
                 else
                     receiveDevice.TransmissionTasks.Add(new(codeWord.TaskGuid,
-                        LocalDevice.Flag, codeWord.Flag, codeWord.Port, codeWord.SendType, cancelTokenSource));
+                        _localDevice.Flag, codeWord.Flag, codeWord.Port, codeWord.SendType, cancelTokenSource));
 
                 TcpLoopListenContentBase.ReceiveAsync(async result =>
-                {
-                    // 保存到数据库
-                    await SaveDataToLocalDbAsync(result);
-                    if (receiveDevice.TryGetTransmissionTask(codeWord.TaskGuid,
-                            out var v))
-                    {
-                        v?.CancellationTokenSource.Cancel();
-                        receiveDevice.RemoveTransmissionTask(codeWord.TaskGuid);
-                    }
+               {
+                   // 保存到数据库
+                   await SaveDataToLocalDbAsync(result);
 
-                    //SendCommand.NotifyCanExecuteChanged();
-                }, IPAddress.Parse(data.Flag), port, ReportProgress(false, codeWord.TaskGuid), cancelTokenSource.Token);
+                   if (receiveDevice.TryGetTransmissionTask(codeWord.TaskGuid,
+                            out var v))
+                   {
+                       v?.CancellationTokenSource?.Cancel();
+                       receiveDevice.RemoveTransmissionTask(codeWord.TaskGuid);
+                   }
+
+
+                   //SendCommand.NotifyCanExecuteChanged();
+               }, IPAddress.Parse(data.Flag), port, ReportProgress(false, codeWord.TaskGuid), cancelTokenSource.Token);
             }
 
             await TcpSendTextBase.SendAsync(sendModel, null, default);
@@ -166,7 +168,10 @@ public partial class Home
             foreach (var device in StateManager.Devices())
                 if (device.TryGetTransmissionTask(codeWord.TaskGuid, out var task))
                 {
-                    task?.CancellationTokenSource?.Cancel();
+                    if (task is null)
+                        throw new NullReferenceException();
+
+                    task.CancellationTokenSource?.Cancel();
                     device.TransmissionTasks.Remove(task);
                     device.Progress = 0;
                     device.WorkState = WorkState.None;
@@ -184,11 +189,11 @@ public partial class Home
             {
                 var port = codeWord.Port + 1;
                 Logger.LogInformation($"接收方{data.Flag}对于{codeWord.Port} 端口无法使用，所以向接收方再次发送{port}端口是否可用");
-                var portCheckMessage = new SendTextModel(LocalDevice.Flag,
+                var portCheckMessage = new SendTextModel(_localDevice.Flag ?? throw new NullReferenceException("发送Flag不能为空"),
                     data.Flag ?? throw new NullReferenceException(),
-                    CodeWordModel.CreateCodeWord(codeWord.TaskGuid, CodeWordType.CheckingPort, LocalDevice.Flag,
+                    CodeWordModel.CreateCodeWord(codeWord.TaskGuid, CodeWordType.CheckingPort, _localDevice.Flag,
                             data.Flag, port,
-                            codeWord.SendType, LocalDevice, null)
+                            codeWord.SendType, _localDevice, null)
                         .ToJson()
                     , ConstParams.TCP_PORT);
                 await TcpSendTextBase.SendAsync(portCheckMessage, null, default);
@@ -206,10 +211,10 @@ public partial class Home
                 {
                     case SendType.Text:
                         TcpSendTextBase.SendAsync(
-                            new(LocalDevice.Flag ?? throw new NullReferenceException(), data.Flag,
-                                information.Text ?? string.Empty, codeWord.Port),
-                            ReportProgress(true, codeWord.TaskGuid),
-                            sendCancelTokenSource.Token);
+                           new(_localDevice.Flag ?? throw new NullReferenceException(), data.Flag,
+                               information.Text ?? string.Empty, codeWord.Port),
+                           ReportProgress(true, codeWord.TaskGuid),
+                           sendCancelTokenSource.Token);
 
                         break;
                     case SendType.File:

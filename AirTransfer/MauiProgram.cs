@@ -3,11 +3,10 @@ using AirTransfer.Interfaces.Impls;
 using AirTransfer.Interfaces.Impls.Configs;
 using AirTransfer.Interfaces.Impls.TcpTransfer;
 using AirTransfer.Interfaces.Impls.UdpTransfer;
-
 using CommunityToolkit.Maui;
-
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Microsoft.Maui.LifecycleEvents;
 
 
 namespace AirTransfer
@@ -22,6 +21,17 @@ namespace AirTransfer
                 .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts => { fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular"); });
 
+            builder.ConfigureLifecycleEvents(lifecycle =>
+            {
+#if WINDOWS
+                lifecycle.AddWindows(windows => windows.OnWindowCreated((del) =>
+                {
+                    del.ExtendsContentIntoTitleBar = true;
+                    var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(del);
+                    WindowExtensions.Hwnd = hwnd;
+                }));
+#endif
+            });
 
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddFluentUIComponents(options => { options.UseTooltipServiceProvider = true; });
@@ -34,7 +44,6 @@ namespace AirTransfer
 
             builder.Services.AddSingleton<IUserService, ConfigUserService>();
             builder.Services.AddSingleton<IStateManager, StateManager>();
-
 
 
             builder.Services.AddSingleton<IOpenFolder, DefaultOpenFolder>();
@@ -74,6 +83,10 @@ namespace AirTransfer
             builder.Services.AddSingleton<IThemeService, ThemeService>();
             builder.Services.AddSingleton<IClipboardWatchable, ClipboardWatcher>();
             builder.Services.AddSingleton<ILoopWatchClipboardService, LoopWatchClipboardService>();
+
+#if MACCATALYST || WINDOWS
+            builder.Services.AddSingleton<ITrayService, TrayService>();
+#endif
 
             return builder.Build();
         }

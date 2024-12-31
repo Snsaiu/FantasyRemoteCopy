@@ -1,11 +1,11 @@
 ﻿#region
 
-using AirTransfer.Extensions;
 using AirTransfer.Interfaces;
 using AirTransfer.Interfaces.Impls;
 using AirTransfer.Interfaces.Impls.TcpTransfer;
 using AirTransfer.Interfaces.Impls.UdpTransfer;
 using AirTransfer.Models;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
@@ -20,19 +20,17 @@ public partial class Home
 
     private string DeviceNickName = string.Empty;
 
-    private bool IsBusy;
 
-    private bool IsDownLoadingVisible;
+    private bool _isDownLoadingVisible;
 
-    private bool NewMessageVisible;
+    private bool _newMessageVisible;
 
     private string UserName = string.Empty;
 
-    [Parameter] public DeviceModel LocalDevice { get; set; }
+    private DeviceModel _localDevice = null!;
 
     #region Injects
 
-    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
     [Inject] private ILogger<Home> Logger { get; set; } = null!;
     [Inject] private ISaveDataService DataService { get; set; } = null!;
     [Inject] private IDialogService DialogService { get; set; } = null!;
@@ -45,7 +43,6 @@ public partial class Home
     [Inject] private TcpLoopListenContentBase TcpLoopListenContentBase { get; set; } = null!;
     [Inject] private TcpSendFileBase TcpSendFileBase { get; set; } = null!;
     [Inject] private TcpSendTextBase TcpSendTextBase { get; set; } = null!;
-    [Inject] private ISystemType SystemType { get; set; } = null!;
     [Inject] private IDeviceType DeviceType { get; set; } = null!;
     [Inject] private IPortCheckable PortCheckable { get; set; } = null!;
 

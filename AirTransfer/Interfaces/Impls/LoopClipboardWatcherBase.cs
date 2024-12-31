@@ -1,10 +1,12 @@
-﻿using System.Timers;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Timers;
 
 namespace AirTransfer.Interfaces.Impls;
 
 public abstract class LoopClipboardWatcherBase : IClipboardWatchable
 {
-    private System.Timers.Timer _timer;
+    [NotNull]
+    private System.Timers.Timer _timer = null!;
     private string? _lastText;
 
     public void Initialize(object parameter)
@@ -21,7 +23,7 @@ public abstract class LoopClipboardWatcherBase : IClipboardWatchable
         _timer.Dispose();
     }
 
-    private void CheckClipboard(object sender, ElapsedEventArgs e)
+    private void CheckClipboard(object? sender, ElapsedEventArgs e)
     {
         Application.Current?.Dispatcher.Dispatch(async () =>
         {

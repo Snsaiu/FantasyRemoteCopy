@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Reflection.Metadata;
-
 using AirTransfer.Interfaces;
 using AirTransfer.Language;
 using AirTransfer.Resources.Languages;
@@ -12,7 +11,6 @@ namespace AirTransfer
         public App()
         {
             InitializeComponent();
-
         }
 
 
@@ -20,24 +18,21 @@ namespace AirTransfer
         {
             InitLanguage();
 
+            var title = LocalizationResourceManager.Instance["TabbyCat"];
 #if WINDOWS ||MACCATALYST
-            var window = new Window(new MainPage()) { Title = "AirTransfer", Width = 600, MinimumWidth = 600 };
+            var window = new Window(new MainPage()) { Title = title, Width = 600, MinimumWidth = 600 };
 
             return window;
 #endif
 
-            return new Window(new MainPage()) { Title = "AirTransfer" };
+            return new(new MainPage()) { Title = title };
         }
 
         protected override void OnStart()
         {
             base.OnStart();
-
-// #if WINDOWS
-//         var clip = Handler.MauiContext.Services.GetRequiredService<IClipboardWatchable>();
-//          clip.Initialize(null);
-// #endif
         }
+
 
 
         private void InitLanguage()

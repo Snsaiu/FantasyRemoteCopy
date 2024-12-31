@@ -22,7 +22,7 @@
         <Nullable>enable</Nullable>
 
         <!-- Display name -->
-        <ApplicationTitle>AirTransfer</ApplicationTitle>
+        <ApplicationTitle>Tabby Cat</ApplicationTitle>
 
         <!-- App Identifier -->
         <ApplicationId>com.companyname.airtransfer</ApplicationId>
@@ -44,11 +44,10 @@
 
     <ItemGroup>
         <!-- App Icon -->
-        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4"/>
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" BaseSize="128,128" ForegroundFile="Resources\AppIcon\logo.png" Color="white"/>
 
         <!-- Splash Screen -->
-        <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128"/>
-
+        <MauiSplashScreen Include="Resources\Splash\logo_with_text.png" TintColor="Blue" Color="White"/>
         <!-- Images -->
         <MauiImage Include="Resources\Images\*"/>
         <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208"/>
@@ -58,6 +57,9 @@
 
         <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
         <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)"/>
+        <None Remove="Resources\AppIcon\logo_with_text.png"/>
+        <None Remove="Resources\AppIcon\logo.png"/>
+        <MauiIcon Include="Resources\AppIcon\logo.png"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -96,6 +98,36 @@
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Platforms\MacCatalyst\trayicon.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+        <None Update="Platforms\Windows\trayicon.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Platforms\Windows\trayicon.ico">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="Platforms\Windows\trayicon.ico">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Platforms\MacCatalyst\trayicon.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
+        <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.0.1"/>
+        <PackageReference Include="PInvoke.User32" Version="0.7.104"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Resources\Splash\logo_with_text.png"/>
     </ItemGroup>
 
 
