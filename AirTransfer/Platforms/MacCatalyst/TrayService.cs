@@ -1,8 +1,10 @@
 using System.Runtime.InteropServices;
 using AirTransfer.Interfaces;
+using AirTransfer.Language;
+using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-using AppKit;
+using UIKit;
 
 namespace AirTransfer;
 
@@ -22,6 +24,11 @@ public sealed class TrayService : NSObject, ITrayService
 
     [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
     public static extern void void_objc_msgSend_bool(IntPtr receiver, IntPtr selector, bool arg1);
+    
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern void void_objc_msgSend_IntPtr_IntPtr_IntPtr(IntPtr receiver, IntPtr selector, IntPtr arg1, IntPtr arg2, IntPtr arg3);
+    
+    
 
     NSObject systemStatusBarObj;
     NSObject statusBarObj;
@@ -30,6 +37,7 @@ public sealed class TrayService : NSObject, ITrayService
     NSObject statusBarImage;
 
     public Action ClickHandler { get; set; }
+private bool isContextMenuVisible = false;
 
     public void Initialize()
     {
@@ -66,7 +74,7 @@ public sealed class TrayService : NSObject, ITrayService
     {
         var nsapp = Runtime.GetNSObject(Class.GetHandle("NSApplication"));
         var sharedApp = nsapp.PerformSelector(new Selector("sharedApplication"));
-
+     
         // Activate the app and bring it to the front
         void_objc_msgSend_bool(sharedApp.Handle, Selector.GetHandle("activateIgnoringOtherApps:"), true);
       
@@ -74,21 +82,67 @@ public sealed class TrayService : NSObject, ITrayService
         var eventType = IntPtr_objc_msgSend(currentEvent.Handle, Selector.GetHandle("type"));
         if (eventType == 1)
         {
+            sharedApp.PerformSelector(new Selector("activateIgnoringOtherApps:"), null, 1);
             ClickHandler?.Invoke();
         }
-        else
+        else if(eventType==3)
         {
-            // 右键点击
-            
+           if (!isContextMenuVisible)
+           {
+                ShowContextMenu();
+           }
         }
-     
         
-      //  ClickHandler?.Invoke();
     }
     
+    [Export("handleOption1:")]
+    public void HandleOption1(NSObject sender)
+    {
+      
+        var selector = new Selector("terminateWithSuccess");
+        UIApplication.SharedApplication.PerformSelector(selector, null, 0);
+    }
+
     public void ShowContextMenu()
     {
+        isContextMenuVisible = true;
+
+        var quitText = LocalizationResourceManager.Instance["ExitTheApplication"];
         
+        // 创建和配置菜单
+        var menu = Runtime.GetNSObject(IntPtr_objc_msgSend(ObjCRuntime.Class.GetHandle("NSMenu"),
+            Selector.GetHandle("alloc")));
+        menu = Runtime.GetNSObject(IntPtr_objc_msgSend(menu.Handle, Selector.GetHandle("init")));
+
+        var menuItem1 =
+            Runtime.GetNSObject(IntPtr_objc_msgSend(ObjCRuntime.Class.GetHandle("NSMenuItem"),
+                Selector.GetHandle("alloc")));
+
+        var title = NSString.CreateNative(quitText);
+        var keyEquivalent = NSString.CreateNative("");
+
+        // 初始化菜单项
+        void_objc_msgSend_IntPtr_IntPtr_IntPtr(menuItem1.Handle,
+            Selector.GetHandle("initWithTitle:action:keyEquivalent:"), title,
+            new Selector("handleOption1:").Handle, keyEquivalent);
+
+        // 释放临时字符串
+        NSString.ReleaseNative(title);
+        NSString.ReleaseNative(keyEquivalent);
+
+        // 设置菜单项启用状态
+        void_objc_msgSend_bool(menuItem1.Handle, Selector.GetHandle("setEnabled:"), true);
+
+        // 设置目标为当前实例
+        void_objc_msgSend_IntPtr(menuItem1.Handle, Selector.GetHandle("setTarget:"), this.Handle);
+
+        // 添加菜单项到菜单
+        void_objc_msgSend_IntPtr(menu.Handle, Selector.GetHandle("addItem:"), menuItem1.Handle);
+
+        // 显示菜单
+        void_objc_msgSend_IntPtr(statusBarItem.Handle, Selector.GetHandle("popUpStatusItemMenu:"), menu.Handle);
+
+        isContextMenuVisible = false;
     }
     
     
