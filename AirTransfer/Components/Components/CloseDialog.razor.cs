@@ -14,14 +14,14 @@ public partial class CloseDialog : DialogBase
     protected override void OnInitialized()
     {
 #if MACCATALYST || WINDOWS
-        isChecked = !ShowCloseDialogService.Get<bool>();
+        isChecked = ShowCloseDialogService.Get<bool>();
 #endif
     }
 
     private void CheckedChanged(bool? value)
     {
 #if MACCATALYST || WINDOWS
-        // isChecked = !(value!.Value);
+         isChecked = value!.Value;
         ShowCloseDialogService.Set(value!.Value);
 #endif
     }
