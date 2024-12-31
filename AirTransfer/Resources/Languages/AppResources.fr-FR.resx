@@ -188,7 +188,22 @@
   <data name="InputTextPlaceholder" xml:space="preserve">
       <value>Veuillez entrer le texte à envoyer</value>
   </data>
-    <data name="TabbyCat" xml:space="preserve">
+  <data name="TabbyCat" xml:space="preserve">
       <value>Chat tigré</value>
+  </data>
+  <data name="MinimizeToTray" xml:space="preserve">
+    <value>Réduire dans la barre d'état</value>
+  </data>
+  <data name="ExitTheApplication" xml:space="preserve">
+    <value>Quitter l'application</value>
+  </data>
+  <data name="DoYouWantToCloseTheProgram" xml:space="preserve">
+    <value>Voulez-vous quitter l'application ?</value>
+  </data>
+  <data name="DoNotShowMessage" xml:space="preserve">
+    <value>Ne plus afficher ce message</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Avertissement</value>
   </data>
 </root>
