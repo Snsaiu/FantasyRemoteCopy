@@ -188,4 +188,7 @@
   <data name="InputTextPlaceholder" xml:space="preserve">
       <value>Veuillez entrer le texte à envoyer</value>
   </data>
+    <data name="TabbyCat" xml:space="preserve">
+      <value>Chat tigré</value>
+  </data>
 </root>

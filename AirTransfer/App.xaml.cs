@@ -18,13 +18,14 @@ namespace AirTransfer
         {
             InitLanguage();
 
+            var title = LocalizationResourceManager.Instance["TabbyCat"];
 #if WINDOWS ||MACCATALYST
-            var window = new Window(new MainPage()) { Title = "AirTransfer", Width = 600, MinimumWidth = 600 };
+            var window = new Window(new MainPage()) { Title = title, Width = 600, MinimumWidth = 600 };
 
             return window;
 #endif
 
-            return new Window(new MainPage()) { Title = "AirTransfer" };
+            return new(new MainPage()) { Title = title };
         }
 
         protected override void OnStart()
