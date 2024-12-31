@@ -1,4 +1,6 @@
 ﻿using AirTransfer.Components.Components;
+using AirTransfer.Enums;
+using AirTransfer.Interfaces.IConfigs;
 using AirTransfer.Language;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.Maui.LifecycleEvents;
@@ -36,6 +38,27 @@ public static class MauiAppExtension
                     {
                         if (win.Title == title)
                         {
+                            var showCloseDialogService = ServiceProvider.RequestService<IShowCloseDialogService>();
+                            var closeAppBehaviorService = ServiceProvider.RequestService<ICloseAppBehaviorService>();
+
+                            if (showCloseDialogService.Get<bool>())
+                            {
+                                // 不在显示
+
+                                var closeState = (CloseAppBehavior)closeAppBehaviorService.Get<int>();
+
+                                if (closeState == CloseAppBehavior.Exit)
+                                {
+                                    Application.Current.CloseWindow(win);
+                                }
+                                else
+                                {
+                                    var p = appWindow.Presenter as OverlappedPresenter;
+                                    p?.Minimize();
+                                    return;
+                                }
+                            }
+
                             var dialogResult = await dialogService.ShowDialogAsync<CloseDialog>(new()
                             {
                                 ShowDismiss = false,
@@ -46,6 +69,8 @@ public static class MauiAppExtension
                             var result = await dialogResult.Result;
                             if (!result.Cancelled)
                             {
+                                if (showCloseDialogService.Get<bool>())
+                                    closeAppBehaviorService.Set<int>((int)CloseAppBehavior.Minimize);
                                 var p = appWindow.Presenter as OverlappedPresenter;
                                 p?.Minimize();
                                 await dialogResult.CloseAsync();
@@ -54,6 +79,8 @@ public static class MauiAppExtension
 
                             else
                             {
+                                if (showCloseDialogService.Get<bool>())
+                                    closeAppBehaviorService.Set<int>((int)CloseAppBehavior.Exit);
                                 Application.Current.CloseWindow(win);
                             }
                         }

@@ -1,10 +1,10 @@
 ﻿using AirTransfer.Extensions;
 using AirTransfer.Interfaces;
+using AirTransfer.Interfaces.IConfigs;
 using AirTransfer.Interfaces.Impls;
 using AirTransfer.Interfaces.Impls.Configs;
 using AirTransfer.Interfaces.Impls.TcpTransfer;
 using AirTransfer.Interfaces.Impls.UdpTransfer;
-
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
@@ -74,8 +74,11 @@ namespace AirTransfer
             builder.Services.AddSingleton<IClipboardWatchable, ClipboardWatcher>();
             builder.Services.AddSingleton<ILoopWatchClipboardService, LoopWatchClipboardService>();
             builder.Services.AddSingleton<IDialogService, DialogService>();
+
 #if MACCATALYST || WINDOWS
             builder.Services.AddSingleton<ITrayService, TrayService>();
+            builder.Services.AddSingleton<IShowCloseDialogService, ShowCloseDialogService>();
+            builder.Services.AddSingleton<ICloseAppBehaviorService, CloseAppBehaviorService>();
 #endif
 
             builder.ConfigureLifecycle();

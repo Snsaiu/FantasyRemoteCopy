@@ -1,7 +1,8 @@
 using System.Globalization;
-
+using AirTransfer.Enums;
 using AirTransfer.Extensions;
 using AirTransfer.Interfaces;
+using AirTransfer.Interfaces.IConfigs;
 using AirTransfer.Interfaces.Impls.Configs;
 using AirTransfer.Resources.Languages;
 
@@ -24,6 +25,12 @@ public partial class Setting : PageComponentBase
 
     [Inject] private IThemeService ThemeService { get; set; } = null!;
 
+
+    [Inject] private IShowCloseDialogService ShowCloseDialogService { get; set; } = null!;
+
+    [Inject] private ICloseAppBehaviorService CloseAppBehaviorService { get; set; } = null!;
+
+
     #endregion
 
     #region Parameters
@@ -42,6 +49,14 @@ public partial class Setting : PageComponentBase
     [Parameter] public string SelectedLanguage { get; set; } = string.Empty;
     #endregion
 
+    #region Private Fields
+
+    private CloseAppBehavior closeAppState;
+
+    private bool closeShowDialog;
+
+    #endregion
+
     #region Overrides
 
     protected override Task OnParametersSetAsync()
@@ -50,6 +65,10 @@ public partial class Setting : PageComponentBase
         OfficeColor = ThemeService.GetThemeColor();
         SavePath = FileSavePath.SaveLocation;
         IsClipboardWatch= LoopWatchClipboardService.GetState();
+
+        closeAppState = (CloseAppBehavior)CloseAppBehaviorService.Get<int>();
+        closeShowDialog = ShowCloseDialogService.Get<bool>();
+
         return base.OnParametersSetAsync();
     }
 
@@ -91,6 +110,7 @@ public partial class Setting : PageComponentBase
     }
 
     #endregion
+
 
 
     #region Private methods
@@ -139,5 +159,17 @@ public partial class Setting : PageComponentBase
         IsClipboardWatch = value;
         LoopWatchClipboardService.SetState(IsClipboardWatch);
         ToastService.ShowSuccess(Localizer["UpdateClipboardStateMessage"]);
+    }
+
+    private void CloseShowDialogChangedCommand(bool obj)
+    {
+        closeShowDialog = obj;
+        ShowCloseDialogService.Set(closeShowDialog);
+    }
+
+    private void CloseAppBehaviorChangedCommand(CloseAppBehavior obj)
+    {
+        closeAppState = obj;
+        CloseAppBehaviorService.Set((int)closeAppState);
     }
 }
