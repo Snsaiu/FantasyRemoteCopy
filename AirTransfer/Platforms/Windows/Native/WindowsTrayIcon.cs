@@ -12,7 +12,7 @@ public class WindowsTrayIcon
     /// <summary>
     /// Receives messages from the taskbar icon.
     /// </summary>
-    private readonly WindowMessageSink messageSink;
+    public readonly WindowMessageSink messageSink;
 
     public Action LeftClick { get; set; }
     public Action RightClick { get; set; }
