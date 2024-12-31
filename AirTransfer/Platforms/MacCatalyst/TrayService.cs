@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using AirTransfer.Interfaces;
 using Foundation;
 using ObjCRuntime;
+using AppKit;
 
 namespace AirTransfer;
 
@@ -54,8 +55,12 @@ public sealed class TrayService : NSObject, ITrayService
         // Handle click
         void_objc_msgSend_IntPtr(statusBarButton.Handle, Selector.GetHandle("setTarget:"), this.Handle);
         void_objc_msgSend_IntPtr(statusBarButton.Handle, Selector.GetHandle("setAction:"), new Selector("handleButtonClick:").Handle);
+        const IntPtr leftMouseUp = 1 << 1;
+        const IntPtr rightMouseUp = 1 << 3;
+        void_objc_msgSend_IntPtr(statusBarButton.Handle, Selector.GetHandle("sendActionOn:"), leftMouseUp | rightMouseUp);
     }
 
+    
     [Export("handleButtonClick:")]
     void HandleClick(NSObject senderStatusBarButton)
     {
@@ -64,8 +69,27 @@ public sealed class TrayService : NSObject, ITrayService
 
         // Activate the app and bring it to the front
         void_objc_msgSend_bool(sharedApp.Handle, Selector.GetHandle("activateIgnoringOtherApps:"), true);
-        //void_objc_msgSend(sharedApp.Handle, Selector.GetHandle("activateIgnoringOtherApps:"), true);
-
-        ClickHandler?.Invoke();
+      
+        var currentEvent = Runtime.GetNSObject(IntPtr_objc_msgSend(sharedApp.Handle, Selector.GetHandle("currentEvent")));
+        var eventType = IntPtr_objc_msgSend(currentEvent.Handle, Selector.GetHandle("type"));
+        if (eventType == 1)
+        {
+            ClickHandler?.Invoke();
+        }
+        else
+        {
+            // 右键点击
+            
+        }
+     
+        
+      //  ClickHandler?.Invoke();
     }
+    
+    public void ShowContextMenu()
+    {
+        
+    }
+    
+    
 }
