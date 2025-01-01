@@ -2,6 +2,7 @@
 @using AirTransfer.Enums
 @using Microsoft.FluentUI.AspNetCore.Components.Extensions
 @using Microsoft.FluentUI.AspNetCore.Components.Icons.Filled
+@using AirTransfer.Components.Components
 @inherits PageComponentBase
 
 
@@ -78,6 +79,10 @@
                     }
                 }
             </FluentStack>
+        </FluentAccordionItem>
+        
+        <FluentAccordionItem Heading="AI">
+            <AiSetting></AiSetting>
         </FluentAccordionItem>
     </FluentAccordion>
 
