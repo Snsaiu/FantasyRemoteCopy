@@ -91,6 +91,47 @@ public static class MauiAppExtension
                 };
             }));
 #endif
+            
+#if MACCATALYST
+            // lifecycle.AddiOS(iOS => iOS.WillTerminate(application =>
+            // {
+            //     // 在应用即将关闭时执行最小化逻辑
+            //     UIApplication.SharedApplication.KeyWindow?.ResignKeyWindow();
+            // }));
+            //
+            //
+            //    lifecycle.AddiOS(iOS=> iOS.OnActivated(window =>
+            //     {
+            //         MacOSWindowExtensions.EnableCloseButtonAsMinimize();
+            //     }));
+           
+ #endif
         });
     }
 }
+
+
+#if MACCATALYST
+
+
+public static class MacOSWindowExtensions
+{
+    public static void EnableCloseButtonAsMinimize()
+    {
+        var keyWindow = UIApplication.SharedApplication.KeyWindow;
+
+        if (keyWindow != null)
+        {
+            // 捕获关闭操作（系统设计中无法阻止关闭）
+            NSNotificationCenter.DefaultCenter.AddObserver(
+                new NSString("UIApplicationWillTerminateNotification"),
+                notification =>
+                {
+                    // 在关闭时执行最小化逻辑
+                    keyWindow.ResignKeyWindow();
+                }
+            );
+        }
+    }
+}
+#endif
