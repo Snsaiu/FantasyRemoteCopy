@@ -11,7 +11,7 @@ public abstract class LoopClipboardWatcherBase : IClipboardWatchable
 
     public void Initialize(object parameter)
     {
-        _timer = new System.Timers.Timer(500); // 每500毫秒检测一次
+        _timer = new(1000);
         _timer.Elapsed += CheckClipboard;
         _timer.AutoReset = true;
         _timer.Start();

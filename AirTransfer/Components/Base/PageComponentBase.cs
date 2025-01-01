@@ -1,32 +1,17 @@
 ﻿using AirTransfer.Consts;
 using AirTransfer.Interfaces;
-using AirTransfer.Language;
-using AirTransfer.Resources.Languages;
-
-using Microsoft.Extensions.Localization;
-using Microsoft.FluentUI.AspNetCore.Components;
 
 using Newtonsoft.Json;
 
 namespace Microsoft.AspNetCore.Components;
 
-public abstract class PageComponentBase : ComponentBase
+public abstract class PageComponentBase : VisualBase
 {
     #region Injects
 
-    [Inject] protected NavigationManager NavigationManager { get; set; } = null!;
-
-    [Inject] protected IStateManager StateManager { get; set; } = null!;
-
-    [Inject] protected IToastService ToastService { get; set; } = null!;
-
-    [Inject] protected ISaveDataService SaveDataService { get; set; } = null!;
-
-    protected LocalizationResourceManager Localizer => LocalizationResourceManager.Instance;
 
     [Inject] protected ILoopWatchClipboardService LoopWatchClipboardService { get; set; } = null!;
-    
-    [Inject] protected ISystemType SystemType { get; set; } = null!;
+
 
     #endregion
 
@@ -38,7 +23,7 @@ public abstract class PageComponentBase : ComponentBase
 
     #endregion
 
-    public bool IsBusy { get; set; }
+
 
     protected override Task OnInitializedAsync()
     {

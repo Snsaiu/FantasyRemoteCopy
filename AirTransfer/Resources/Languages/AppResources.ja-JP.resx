@@ -188,7 +188,22 @@
   <data name="InputTextPlaceholder" xml:space="preserve">
     <value>送信するテキストを入力してください</value>
   </data>
-    <data name="TabbyCat" xml:space="preserve">
+  <data name="TabbyCat" xml:space="preserve">
     <value>トラ猫</value>
+  </data>
+  <data name="MinimizeToTray" xml:space="preserve">
+    <value>トレイに最小化</value>
+  </data>
+  <data name="ExitTheApplication" xml:space="preserve">
+    <value>アプリケーションを終了する</value>
+  </data>
+  <data name="DoYouWantToCloseTheProgram" xml:space="preserve">
+    <value>アプリケーションを終了しますか？</value>
+  </data>
+  <data name="DoNotShowMessage" xml:space="preserve">
+    <value>このメッセージを再表示しない</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>警告</value>
   </data>
 </root>

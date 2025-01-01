@@ -97,13 +97,28 @@
   <data name="UpdateClipboardStateMessage" xml:space="preserve">
     <value>修改监听剪切板状态成功！</value>
   </data>
-    <data name="InputText" xml:space="preserve">
+  <data name="InputText" xml:space="preserve">
         <value>输入文本</value>
     </data>
-    <data name="InputTextPlaceholder" xml:space="preserve">
+  <data name="InputTextPlaceholder" xml:space="preserve">
         <value>请输入要发送的文本内容</value>
     </data>
-    <data name="TabbyCat" xml:space="preserve">
+  <data name="TabbyCat" xml:space="preserve">
         <value>狸花猫</value>
     </data>
+  <data name="MinimizeToTray" xml:space="preserve">
+    <value>最小化到托盘</value>
+  </data>
+  <data name="ExitTheApplication" xml:space="preserve">
+    <value>退出程序</value>
+  </data>
+  <data name="DoYouWantToCloseTheProgram" xml:space="preserve">
+    <value>你想要退出程序吗？</value>
+  </data>
+  <data name="DoNotShowMessage" xml:space="preserve">
+    <value>不再显示此消息</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>警告</value>
+  </data>
 </root>

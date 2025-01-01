@@ -1,4 +1,5 @@
 @page "/setting"
+@using AirTransfer.Enums
 @using Microsoft.FluentUI.AspNetCore.Components.Extensions
 @using Microsoft.FluentUI.AspNetCore.Components.Icons.Filled
 @inherits PageComponentBase
@@ -50,13 +51,31 @@
                 {
                     <FluentStack Orientation="Orientation.Horizontal">
                         <FluentLabel> @($"{Localizer["SavePath"]}:")</FluentLabel>
-                        <FluentLabel>@SavePath</FluentLabel>
+                        <FluentTextField Value="@SavePath" Maxlength="30" ReadOnly="true"></FluentTextField>
                         <FluentButton OnClick="SavePathCommand"
                                       IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size24.Open())"></FluentButton>
                     </FluentStack>
 
                     <FluentSwitch Label="@(this.Localizer["ClipboardWatch"])" Value="IsClipboardWatch"
                                   ValueChanged="ClipboardWatchChangedCommand"></FluentSwitch>
+
+                    @if (SystemType.System is Enums.SystemType.Windows)
+                    {
+
+                        <FluentSwitch Label="关闭主面板显示关闭对话框"
+                                      ValueChanged="CloseShowDialogChangedCommand"
+                                      Value="closeShowDialog">
+                        </FluentSwitch>
+
+                        <FluentStack Orientation="Orientation.Horizontal">
+                            <FluentLabel>关闭主面板</FluentLabel>
+                            <FluentRadioGroup Value="closeAppState" ValueChanged="CloseAppBehaviorChangedCommand"
+                                              TValue="CloseAppBehavior">
+                                <FluentRadio Value="CloseAppBehavior.Minimize" Label="最小化到系统"></FluentRadio>
+                                <FluentRadio Value="CloseAppBehavior.Exit" Label="退出程序"></FluentRadio>
+                            </FluentRadioGroup>
+                        </FluentStack>
+                    }
                 }
             </FluentStack>
         </FluentAccordionItem>
