@@ -1,0 +1,34 @@
+﻿@using Microsoft.FluentUI.AspNetCore.Components.Icons.Filled
+
+
+<FluentFooter Class="w-100" Style="position:fixed; bottom:15px;">
+    <FluentStack Class="chat-messages input-area">
+        <div class="file-input-area">
+            <FluentCounterBadge
+                ShowZero="true"
+                BottomPosition="-10">
+                <FluentButton Id="uploadButton"
+                              IconStart="new Size24.Attach()"
+                              Style="margin-top:6px;"></FluentButton>
+            </FluentCounterBadge>
+        </div>
+        <div style="flex-grow:1;" class="min-h-100">
+            <textarea placeholder="Shift+Enter for new line"
+                      rows="1"
+
+                      class="main-textarea"
+
+                      @bind:event="oninput"></textarea>
+        </div>
+        <div>
+
+            <FluentButton
+
+                Appearance="Appearance.Accent"
+                IconStart="new Size24.Send()"
+                Style="margin-top:6px;"></FluentButton>
+
+
+        </div>
+    </FluentStack>
+</FluentFooter>

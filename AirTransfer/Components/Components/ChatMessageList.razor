@@ -1,0 +1,38 @@
+﻿@using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
+<div class="chat-messages">
+
+
+    @foreach (var message in messages)
+    {
+        <FluentCard>
+            <FluentStack>
+                <div>
+                    <FluentIcon Value="@(new Size24.PersonChat())"/>
+                </div>
+
+                <div>
+                    <span>@message.Content</span>
+                </div>
+            </FluentStack>
+
+        </FluentCard>
+
+        <FluentCard>
+            <FluentStack>
+                <div style="position:relative;">
+                    <FluentIcon Value="@(new Size24.LightbulbPerson())"/>
+
+                    <FluentProgressRing
+                        Style="height:24px; width:24px; position:absolute; top:0px; left:0px;"></FluentProgressRing>
+                </div>
+
+                <div>
+                    <ModelMarkdown></ModelMarkdown>
+                </div>
+            </FluentStack>
+
+        </FluentCard>
+    }
+
+    <div style="height:125px"></div>
+</div>
