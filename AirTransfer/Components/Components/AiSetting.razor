@@ -1,43 +1,63 @@
 @using AirTransfer.Interfaces
 @using AirTransfer.Models
 
-<div>
-    
+<FluentStack Orientation="Orientation.Vertical">
+
     <FluentSelect Label="模型提供方" TOption="AiApiModelBase" Items="aiModels" OptionText="x=>x.Provider" SelectedOptionChanged="SelectedOptionChangedCommand"></FluentSelect>
-   
+
     @if (selectedAiModel is IApiKey )
     {
         var apikey = ((IApiKey)selectedAiModel);
-        
-        <FluentTextField Label="API 密钥" @bind-Value="@apikey.ApiKey"></FluentTextField>
+
+        <FluentTextField Label="API 密钥" TextFieldType="TextFieldType.Password"
+                         @bind-Value="@apikey.ApiKey"></FluentTextField>
     }
     @if(selectedAiModel is IApiDomain)
     {
         var apiDomain = ((IApiDomain)selectedAiModel);
         <FluentTextField Label="API 域名" @bind-Value="@apiDomain.ApiDomain"></FluentTextField>
     }
-    
+
     @if (selectedAiModel is IHasCustomModel)
     {
         var customModel = ((IHasCustomModel)selectedAiModel);
         <FluentSelect Label="模型" TOption="String" Items="@customModel.GetAllModels()" @bind-Value="@customModel.SelectedModel"></FluentSelect>
-        
+
         if(customModel.SelectedModel == "Custom")
         {
             <FluentTextField Label="自定义模型名" @bind-Value="@customModel.CustomModelName"></FluentTextField>
         }
     }
-    <FluentSlider Label="严谨与想象" TValue="double" Min="0" Max="2" Step="0.1" @bind-Value="@selectedAiModel.Temperature">
-  
-    </FluentSlider>
-    
+
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+        <FluentStack Orientation="Orientation.Vertical">
+            <FluentLabel>严谨与想象</FluentLabel>
+            <FluentSlider TValue="double" Min="0" Max="2" Step="0.1"
+                          @bind-Value="@selectedAiModel.Temperature">
+            </FluentSlider>
+        </FluentStack>
+
+        <FluentLabel>@selectedAiModel.Temperature</FluentLabel>
+    </FluentStack>
+
+
     <FluentSwitch Label="上下文有上限" @bind-Value="@selectedAiModel.ContextCountLimit"></FluentSwitch>
-   
-    <FluentSlider Label="上下文消息数量上限" Step="1" TValue="int" Min="0" Max="20"></FluentSlider>
-    
+
+
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+        <FluentStack Orientation="Orientation.Vertical">
+            <FluentLabel>上下文消息数量上限</FluentLabel>
+            <FluentSlider Step="1" TValue="int" Min="0" Max="20" Disabled="!selectedAiModel.ContextCountLimit"
+                          @bind-Value="@selectedAiModel.ContextCount"></FluentSlider>
+
+        </FluentStack>
+        <FluentLabel Disabled="!selectedAiModel.ContextCountLimit">@selectedAiModel.ContextCount</FluentLabel>
+    </FluentStack>
+
+
     @if(selectedAiModel is ITopP topP)
     {
         <FluentSlider Label="Top P" TValue="double" Min="0" Max="1" Step="0.1" @bind-Value="@topP.TopP"></FluentSlider>
     }
-   
-</div>
+
+</FluentStack>

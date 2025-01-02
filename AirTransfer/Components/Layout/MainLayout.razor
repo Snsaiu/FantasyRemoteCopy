@@ -19,6 +19,11 @@
                     Count="NotReadCount"
                     Href="/history" IconRest="@(new Size32.History())"
                     Text="@LocalizationResourceManager.Instance["History"]"></FluentAppBarItem>
+
+                <FluentAppBarItem Style="width: 100%;" Href="/ai-chat"
+                                  Text="AI聊天"
+                                  IconRest="@(new Size20.ChatSparkle())"></FluentAppBarItem>
+
                 <FluentAppBarItem Href="/setting" IconRest="@(new Size32.Settings())" Text="@LocalizationResourceManager.Instance["Setting"]"></FluentAppBarItem>
             </FluentAppBar>
             <FluentBodyContent>
@@ -47,6 +52,11 @@
                                           Count="NotReadCount"
                                           IconRest="@(new Size20.History())"
                                           Text="@LocalizationResourceManager.Instance["History"]"></FluentAppBarItem>
+                    </FluentGridItem>
+
+                    <FluentGridItem sm="6">
+                        <FluentAppBarItem Style="width: 100%;" Href="/ai-chat"
+                                          IconRest="@(new Size20.ChatSparkle())"></FluentAppBarItem>
                     </FluentGridItem>
 
                     <FluentGridItem sm="6">
