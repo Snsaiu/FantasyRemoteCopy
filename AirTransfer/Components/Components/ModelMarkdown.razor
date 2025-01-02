@@ -1,5 +1,69 @@
-﻿<h3>ModelMarkdown</h3>
+﻿@using AirTransfer.Models
+<MarkdownSection @ref="mdSection" Content="@_inferenceMarkdownToRender"></MarkdownSection>
 
 @code {
-    
+
+    /// <summary>
+    /// The markdown to render.
+    /// </summary>
+    private string _inferenceMarkdownToRender { get; set; } = string.Empty;
+
+    /// <summary>
+    /// The <see cref="Message"/> to display.
+    /// </summary>
+    [Parameter]
+    public ChatModel? Message { get; set; }
+
+    /// <summary>
+    /// The markdown renderer reference to refresh the content.
+    /// </summary>
+    private MarkdownSection? mdSection { get; set; }
+
+    /// <summary>
+    /// Event handler for when the <see cref="WebSocketChatMessage.ResponseChanged"/> event is fired.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void _handleResponseChanged(object? sender, EventArgs? e)
+    {
+        // Update the markdownToRender variable based on the new response
+        _inferenceMarkdownToRender = Message?.Resonse ?? string.Empty;
+        StateHasChanged();
+    }
+
+    /// <summary>
+    /// Setup the response event handling.
+    /// </summary>
+    protected override void OnParametersSet()
+    {
+        // Unsubscribe from the old ModelResponse's event to avoid memory leaks
+        if (Message != null)
+        {
+            Message.ResponseChanged -= _handleResponseChanged;
+            Message.ResponseCompleted -= _handleResponseChanged;
+        }
+
+        // Assign the new ModelResponse object
+        base.OnParametersSet();
+
+        // Subscribe to the new ModelResponse's event
+        if (Message != null)
+        {
+            Message.ResponseChanged += _handleResponseChanged;
+            Message.ResponseCompleted += _handleResponseChanged;
+
+            // Update the UI with the current state of the response
+            _inferenceMarkdownToRender = Message.Resonse;
+        }
+    }
+
+    // Ensure to unsubscribe when the component is disposed to avoid memory leaks
+    public void Dispose()
+    {
+        if (Message != null)
+        {
+            Message.ResponseChanged -= _handleResponseChanged;
+            Message.ResponseCompleted -= _handleResponseChanged;
+        }
+    }
 }

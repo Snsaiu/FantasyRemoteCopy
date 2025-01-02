@@ -1,3 +1,16 @@
 ﻿@page "/ai-chat"
 @using AirTransfer.Components.Components
 @using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
+<div>
+    <FluentHeader Style="position: fixed;top: 0; width: 100%">
+        <FluentSpacer></FluentSpacer>
+        AI Chat
+        <FluentSpacer></FluentSpacer>
+    </FluentHeader>
+    <FluentBodyContent>
+        <ChatMessageList></ChatMessageList>
+    </FluentBodyContent>
+    <FluentFooter >
+        <ChatInput></ChatInput>
+    </FluentFooter>
+</div>

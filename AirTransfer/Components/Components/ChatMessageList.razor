@@ -11,7 +11,7 @@
                 </div>
 
                 <div>
-                    <span>@message.Content</span>
+                    <span>@message.Prompt</span>
                 </div>
             </FluentStack>
 
@@ -22,12 +22,12 @@
                 <div style="position:relative;">
                     <FluentIcon Value="@(new Size24.LightbulbPerson())"/>
 
-                    <FluentProgressRing
+                    <FluentProgressRing   Visible="!message.IsComplete"
                         Style="height:24px; width:24px; position:absolute; top:0px; left:0px;"></FluentProgressRing>
                 </div>
 
                 <div>
-                    <ModelMarkdown></ModelMarkdown>
+                    <ModelMarkdown Message="message"></ModelMarkdown>
                 </div>
             </FluentStack>
 
