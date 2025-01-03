@@ -40,7 +40,7 @@ public class MessageSession
     ///
     /// </summary>
     [JsonProperty("messages")]
-    public List<MessagesItem> Messages { get; set; }
+    public List<MessagesItem> Messages { get; set; } = [];
 
     /// <summary>
     ///
@@ -58,7 +58,7 @@ public class MessageSession
     ///
     /// </summary>
     [JsonProperty("max_tokens")]
-    public int MaxTokens { get; set; }
+    public int MaxTokens { get; set; } = 2048;
 
     /// <summary>
     ///
@@ -70,7 +70,7 @@ public class MessageSession
     ///
     /// </summary>
     [JsonProperty("response_format")]
-    public ResponseFormat ResponseFormat { get; set; }
+    public ResponseFormat ResponseFormat { get; set; } = new() { Type = "text" };
 
     /// <summary>
     ///
@@ -94,13 +94,13 @@ public class MessageSession
     ///
     /// </summary>
     [JsonProperty("temperature")]
-    public int Temperature { get; set; }
+    public double Temperature { get; set; }
 
     /// <summary>
     ///
     /// </summary>
     [JsonProperty("top_p")]
-    public int TopP { get; set; }
+    public double TopP { get; set; }
 
     /// <summary>
     ///
@@ -112,7 +112,7 @@ public class MessageSession
     ///
     /// </summary>
     [JsonProperty("tool_choice")]
-    public string ToolChoice { get; set; }
+    public string ToolChoice { get; set; } = "none";
 
     /// <summary>
     ///
@@ -124,18 +124,24 @@ public class MessageSession
     ///
     /// </summary>
     [JsonProperty("top_logprobs")]
-    public int TopLogprobs { get; set; }
+    public object? TopLogprobs { get; set; } = null;
 }
 
 public class RoleConverter : StringEnumConverter
 {
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
     {
-        writer.WriteValue(value.ToString());
+        writer.WriteValue(value.ToString().ToLower());
     }
 
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
-        return Enum.Parse(typeof(Role), reader.Value.ToString());
+        return reader.Value.ToString() switch
+        {
+            "user" => Role.User,
+            "system" => Role.System,
+            "assistant" => Role.Assistant,
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
 }

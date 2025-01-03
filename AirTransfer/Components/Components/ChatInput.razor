@@ -6,10 +6,12 @@
 <div class="bottom-div">
   <FluentStack Orientation="Orientation.Vertical">
     <FluentStack Orientation="Orientation.Horizontal" Style="width: calc(100vw - 80px);" HorizontalAlignment="HorizontalAlignment.Right">
-      
-      <FluentButton  IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size24.Send())"></FluentButton>
+
+      <FluentButton OnClick="SendCommand" Disabled="@(string.IsNullOrEmpty(text))"
+
+                    IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size24.Send())"></FluentButton>
     </FluentStack>
-    <FluentTextArea Style="width: 100%"></FluentTextArea>
+    <textarea Style="width: 100%" @bind-Value="text" @bind-Value:event="oninput"></textarea>
   </FluentStack>
 </div>
 </div>

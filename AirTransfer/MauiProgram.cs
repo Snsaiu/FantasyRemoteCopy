@@ -74,15 +74,17 @@ namespace AirTransfer
             builder.Services.AddSingleton<IClipboardWatchable, ClipboardWatcher>();
             builder.Services.AddSingleton<ILoopWatchClipboardService, LoopWatchClipboardService>();
             builder.Services.AddSingleton<IDialogService, DialogService>();
-
+            builder.Services.AddSingleton<IAiSettingService, AiSettingService>();
 #if MACCATALYST || WINDOWS
             builder.Services.AddSingleton<ITrayService, TrayService>();
             builder.Services.AddSingleton<IShowCloseDialogService, ShowCloseDialogService>();
             builder.Services.AddSingleton<ICloseAppBehaviorService, CloseAppBehaviorService>();
 #endif
+            builder.Services.AddHttpClient();
+
 
             builder.ConfigureLifecycle();
-            
+
             return builder.Build();
         }
     }
