@@ -2,6 +2,7 @@
 
 namespace AirTransfer.Components.Pages;
 
-public partial class AiChat : ComponentBase
+public partial class AiChat : PageComponentBase
 {
+
 }
